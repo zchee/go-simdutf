@@ -7,7 +7,7 @@ Port one routine at a time from upstream [simdutf/simdutf](https://github.com/si
 
 ## Steps
 
-1. **Read upstream first.** Locate the routine in the upstream repo (scalar versions live under `src/scalar/`, SIMD kernels under `src/generic/` and per-ISA directories). Understand the algorithm and its edge cases (truncated sequences, surrogates, overlong encodings) before writing any Go.
+1. **Read upstream first.** Locate the routine in the upstream repo: per-ISA kernels live under `src/<isa>/` (`arm64`, `haswell`, `icelake`, `westmere`, `rvv`, `ppc64`, `lsx`, `lasx`), shared vector algorithms under `src/generic/`, and the portable non-SIMD fallback under `src/fallback/`. Understand the algorithm and its edge cases (truncated sequences, surrogates, overlong encodings) before writing any Go.
 2. **Write the pure-Go scalar implementation.** This is the reference oracle and portable fallback. Match upstream semantics exactly, including error kinds and error positions.
 3. **Port upstream test vectors** into a Go test using the map-based named-case pattern. Cover the edge cases upstream tests cover.
 4. **Add a benchmark** for the scalar path using `for b.Loop()`.
