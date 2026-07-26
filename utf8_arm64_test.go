@@ -18,8 +18,12 @@ package simdutf
 
 import (
 	"bytes"
+	"encoding/binary"
+	"os"
+	"regexp"
 	"slices"
 	"strconv"
+	"strings"
 	"testing"
 )
 
@@ -27,6 +31,99 @@ import (
 // port pinned to simdutf/simdutf@dec3aad192f47081110d9c766d4917bad243906f:
 // src/generic/utf8_validation/utf8_lookup4_algorithm.h:12-216 and
 // src/generic/utf8_validation/utf8_validator.h:10-80.
+
+func TestValidateUTF8NEONLookupTablesMatchPinnedUpstream(t *testing.T) {
+	// Pinned table bytes from simdutf/simdutf@dec3aad192f47081110d9c766d4917bad243906f:
+	// src/generic/utf8_validation/utf8_lookup4_algorithm.h:37-153.
+	tables := []struct {
+		name string
+		want [16]byte
+	}{
+		{
+			name: "utf8Lookup4Byte1HighNEON",
+			want: [16]byte{
+				0x02, 0x02, 0x02, 0x02, 0x02, 0x02, 0x02, 0x02,
+				0x80, 0x80, 0x80, 0x80, 0x21, 0x01, 0x15, 0x49,
+			},
+		},
+		{
+			name: "utf8Lookup4Byte1LowNEON",
+			want: [16]byte{
+				0xe7, 0xa3, 0x83, 0x83, 0x8b, 0xcb, 0xcb, 0xcb,
+				0xcb, 0xcb, 0xcb, 0xcb, 0xcb, 0xdb, 0xcb, 0xcb,
+			},
+		},
+		{
+			name: "utf8Lookup4Byte2HighNEON",
+			want: [16]byte{
+				0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01,
+				0xe6, 0xae, 0xba, 0xba, 0x01, 0x01, 0x01, 0x01,
+			},
+		},
+		{
+			name: "utf8Lookup4IncompleteMaxNEON",
+			want: [16]byte{
+				0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff,
+				0xff, 0xff, 0xff, 0xff, 0xff, 0xef, 0xdf, 0xbf,
+			},
+		},
+	}
+
+	source, err := os.ReadFile("utf8_arm64.s")
+	if err != nil {
+		t.Fatal(err)
+	}
+	dataPattern := regexp.MustCompile(`^DATA ·([[:alnum:]]+)<>\+([0-9]+)\(SB\)/8, \$(0x[0-9a-fA-F]{16})$`)
+	globlPattern := regexp.MustCompile(`^GLOBL ·([[:alnum:]]+)<>\(SB\), RODATA\|NOPTR, \$16$`)
+	var dataRecords, globlRecords [][]string
+	for lineNumber, line := range strings.Split(string(source), "\n") {
+		switch {
+		case strings.HasPrefix(line, "DATA "):
+			match := dataPattern.FindStringSubmatch(line)
+			if match == nil {
+				t.Fatalf("utf8_arm64.s:%d: malformed DATA declaration %q", lineNumber+1, line)
+			}
+			dataRecords = append(dataRecords, match)
+		case strings.HasPrefix(line, "GLOBL "):
+			match := globlPattern.FindStringSubmatch(line)
+			if match == nil {
+				t.Fatalf("utf8_arm64.s:%d: malformed GLOBL declaration %q", lineNumber+1, line)
+			}
+			globlRecords = append(globlRecords, match)
+		}
+	}
+
+	if got, want := len(dataRecords), len(tables)*2; got != want {
+		t.Fatalf("DATA /8 declaration count = %d, want %d", got, want)
+	}
+	if got, want := len(globlRecords), len(tables); got != want {
+		t.Fatalf("GLOBL RODATA|NOPTR, $16 declaration count = %d, want %d", got, want)
+	}
+	for tableIndex, table := range tables {
+		var got [16]byte
+		for chunk := 0; chunk < 2; chunk++ {
+			record := dataRecords[tableIndex*2+chunk]
+			if record[1] != table.name {
+				t.Fatalf("DATA declaration %d symbol = %q, want %q", tableIndex*2+chunk, record[1], table.name)
+			}
+			wantOffset := strconv.Itoa(chunk * 8)
+			if record[2] != wantOffset {
+				t.Fatalf("DATA declaration %d offset = %q, want %q", tableIndex*2+chunk, record[2], wantOffset)
+			}
+			literal, err := strconv.ParseUint(record[3], 0, 64)
+			if err != nil {
+				t.Fatalf("DATA declaration %d literal %q: %v", tableIndex*2+chunk, record[3], err)
+			}
+			binary.LittleEndian.PutUint64(got[chunk*8:], literal)
+		}
+		if !slices.Equal(got[:], table.want[:]) {
+			t.Errorf("%s bytes = % x, want % x", table.name, got, table.want)
+		}
+		if gotName := globlRecords[tableIndex][1]; gotName != table.name {
+			t.Errorf("GLOBL declaration %d symbol = %q, want exact declaration for %q", tableIndex, gotName, table.name)
+		}
+	}
+}
 
 func TestValidateUTF8NEONScalarParity(t *testing.T) {
 	inputs := [][]byte{nil, {}}
