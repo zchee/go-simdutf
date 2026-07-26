@@ -21,7 +21,27 @@ package simdutf
 // and .omx/plans/port-simdutf-dec3aad192f4-go.md section 5.5; this is not an
 // algorithm translation.
 
-//lint:ignore U1000 Phase 1 freezes the dispatch skeleton; Phase 2's first operation will consume this declaration and remove the exception.
 func detectHostFeatures() cpuFeatures {
 	return cpuNEON
+}
+
+func makeImplementation(input selectionInput) implementation {
+	return implementation{
+		validateASCII: selectVariant(input,
+			variant[func([]byte) bool]{value: validateASCIINEON, kind: implementationNEON, required: cpuNEON, available: true},
+			variant[func([]byte) bool]{value: validateASCIIScalar, kind: implementationScalar, available: true},
+		),
+		validateASCIIWithErrors: selectVariant(input,
+			variant[func([]byte) Result]{value: validateASCIIWithErrorsNEON, kind: implementationNEON, required: cpuNEON, available: true},
+			variant[func([]byte) Result]{value: validateASCIIWithErrorsScalar, kind: implementationScalar, available: true},
+		),
+		validateUTF16LEAsASCII: selectVariant(input,
+			variant[func([]uint16) bool]{value: validateUTF16LEAsASCIINEON, kind: implementationNEON, required: cpuNEON, available: true},
+			variant[func([]uint16) bool]{value: validateUTF16LEAsASCIIScalar, kind: implementationScalar, available: true},
+		),
+		validateUTF16BEAsASCII: selectVariant(input,
+			variant[func([]uint16) bool]{value: validateUTF16BEAsASCIINEON, kind: implementationNEON, required: cpuNEON, available: true},
+			variant[func([]uint16) bool]{value: validateUTF16BEAsASCIIScalar, kind: implementationScalar, available: true},
+		),
+	}
 }

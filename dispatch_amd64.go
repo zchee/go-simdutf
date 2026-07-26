@@ -21,7 +21,40 @@ package simdutf
 // and .omx/plans/port-simdutf-dec3aad192f4-go.md section 5.5; this is not an
 // algorithm translation.
 
-//lint:ignore U1000 Phase 1 freezes the dispatch skeleton; Phase 2's first operation will consume this declaration and remove the exception.
 func detectHostFeatures() cpuFeatures {
 	return detectAMD64Features()
+}
+
+func makeImplementation(input selectionInput) implementation {
+	archsimdASCII := archsimdValidateASCII()
+	archsimdASCIIWithErrors := archsimdValidateASCIIWithErrors()
+	archsimdUTF16LE := archsimdValidateUTF16LEAsASCII()
+	archsimdUTF16BE := archsimdValidateUTF16BEAsASCII()
+
+	return implementation{
+		validateASCII: selectVariant(input,
+			variant[func([]byte) bool]{value: archsimdASCII, kind: implementationArchsimd, required: cpuAVX2, available: archsimdASCII != nil},
+			variant[func([]byte) bool]{value: validateASCIIHaswell, kind: implementationHaswell, required: cpuAVX2, available: true},
+			variant[func([]byte) bool]{value: validateASCIIWestmere, kind: implementationWestmere, available: true},
+			variant[func([]byte) bool]{value: validateASCIIScalar, kind: implementationScalar, available: true},
+		),
+		validateASCIIWithErrors: selectVariant(input,
+			variant[func([]byte) Result]{value: archsimdASCIIWithErrors, kind: implementationArchsimd, required: cpuAVX2, available: archsimdASCIIWithErrors != nil},
+			variant[func([]byte) Result]{value: validateASCIIWithErrorsHaswell, kind: implementationHaswell, required: cpuAVX2, available: true},
+			variant[func([]byte) Result]{value: validateASCIIWithErrorsWestmere, kind: implementationWestmere, available: true},
+			variant[func([]byte) Result]{value: validateASCIIWithErrorsScalar, kind: implementationScalar, available: true},
+		),
+		validateUTF16LEAsASCII: selectVariant(input,
+			variant[func([]uint16) bool]{value: archsimdUTF16LE, kind: implementationArchsimd, required: cpuAVX2, available: archsimdUTF16LE != nil},
+			variant[func([]uint16) bool]{value: validateUTF16LEAsASCIIHaswell, kind: implementationHaswell, required: cpuAVX2, available: true},
+			variant[func([]uint16) bool]{value: validateUTF16LEAsASCIIWestmere, kind: implementationWestmere, available: true},
+			variant[func([]uint16) bool]{value: validateUTF16LEAsASCIIScalar, kind: implementationScalar, available: true},
+		),
+		validateUTF16BEAsASCII: selectVariant(input,
+			variant[func([]uint16) bool]{value: archsimdUTF16BE, kind: implementationArchsimd, required: cpuAVX2, available: archsimdUTF16BE != nil},
+			variant[func([]uint16) bool]{value: validateUTF16BEAsASCIIHaswell, kind: implementationHaswell, required: cpuAVX2, available: true},
+			variant[func([]uint16) bool]{value: validateUTF16BEAsASCIIWestmere, kind: implementationWestmere, available: true},
+			variant[func([]uint16) bool]{value: validateUTF16BEAsASCIIScalar, kind: implementationScalar, available: true},
+		),
+	}
 }

@@ -84,39 +84,16 @@ var activeImplementation = makeImplementation(detectSelectionInput())
 func detectSelectionInput() selectionInput {
 	return selectionInput{
 		features:     detectHostFeatures(),
-		archsimdAVX2: archsimdAVX2Available(),
+		archsimdAVX2: archsimdProvidersAvailable() && archsimdAVX2Available(),
 	}
 }
 
-func makeImplementation(input selectionInput) implementation {
-	return implementation{
-		validateASCII: selectVariant(input,
-			variant[func([]byte) bool]{
-				value:     validateASCIIScalar,
-				kind:      implementationScalar,
-				available: true,
-			},
-		),
-		validateASCIIWithErrors: selectVariant(input,
-			variant[func([]byte) Result]{
-				value:     validateASCIIWithErrorsScalar,
-				kind:      implementationScalar,
-				available: true,
-			},
-		),
-		validateUTF16LEAsASCII: selectVariant(input,
-			variant[func([]uint16) bool]{
-				value:     validateUTF16LEAsASCIIScalar,
-				kind:      implementationScalar,
-				available: true,
-			},
-		),
-		validateUTF16BEAsASCII: selectVariant(input,
-			variant[func([]uint16) bool]{
-				value:     validateUTF16BEAsASCIIScalar,
-				kind:      implementationScalar,
-				available: true,
-			},
-		),
+func archsimdProvidersAvailable() bool {
+	available := archsimdValidateASCII() != nil
+	if (archsimdValidateASCIIWithErrors() != nil) != available ||
+		(archsimdValidateUTF16LEAsASCII() != nil) != available ||
+		(archsimdValidateUTF16BEAsASCII() != nil) != available {
+		panic("simdutf: internal dispatch has incomplete archsimd providers")
 	}
+	return available
 }

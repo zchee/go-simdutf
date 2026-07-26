@@ -1,0 +1,40 @@
+// Copyright 2026 The go-simdutf Authors.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+//go:build amd64 && !goexperiment.simd
+
+package simdutf
+
+import "testing"
+
+// Hand-authored Go-only tests for non-SIMD archsimd provider absence and
+// fallback selection without references to tagged backend symbols. The
+// dispatch contract is pinned to
+// simdutf/simdutf@dec3aad192f47081110d9c766d4917bad243906f:src/implementation.cpp
+// and .omx/plans/port-simdutf-dec3aad192f4-go.md section 5.5; these are not
+// upstream test vectors.
+
+func TestArchsimdProvidersUnavailableWithoutExperiment(t *testing.T) {
+	if archsimdAVX2Available() ||
+		archsimdValidateASCII() != nil ||
+		archsimdValidateASCIIWithErrors() != nil ||
+		archsimdValidateUTF16LEAsASCII() != nil ||
+		archsimdValidateUTF16BEAsASCII() != nil {
+		t.Fatal("archsimd provider is available without GOEXPERIMENT=simd")
+	}
+	checkImplementationFunctions(t,
+		makeImplementation(selectionInput{features: cpuAVX2, archsimdAVX2: true}),
+		validateASCIIHaswell, validateASCIIWithErrorsHaswell,
+		validateUTF16LEAsASCIIHaswell, validateUTF16BEAsASCIIHaswell)
+}

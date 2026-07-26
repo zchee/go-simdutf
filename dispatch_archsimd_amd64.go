@@ -23,7 +23,22 @@ import "simd/archsimd"
 // and .omx/plans/port-simdutf-dec3aad192f4-go.md section 5.5; this is not an
 // algorithm translation.
 
-//lint:ignore U1000 Phase 1 freezes the dispatch skeleton; Phase 2's first operation will consume this declaration and remove the exception.
 func archsimdAVX2Available() bool {
 	return archsimd.X86.AVX2()
+}
+
+func archsimdValidateASCII() func([]byte) bool {
+	return validateASCIIArchsimd
+}
+
+func archsimdValidateASCIIWithErrors() func([]byte) Result {
+	return validateASCIIWithErrorsArchsimd
+}
+
+func archsimdValidateUTF16LEAsASCII() func([]uint16) bool {
+	return validateUTF16LEAsASCIIArchsimd
+}
+
+func archsimdValidateUTF16BEAsASCII() func([]uint16) bool {
+	return validateUTF16BEAsASCIIArchsimd
 }
