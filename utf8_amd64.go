@@ -31,7 +31,10 @@ package simdutf
 // public error identity and Count relocation. Rewinding also makes the scalar
 // tail observe incomplete sequences at a full-block boundary, so a clean
 // lookup4 prefix cannot mask a truncated or invalid final sequence. The rewind
-// is bounded to the pinned driver's at most five continuation bytes.
+// is bounded to the pinned driver's at most five continuation bytes. The
+// Haswell wrapper requires two complete blocks before entering assembly because
+// the one-block class regresses against the scalar oracle on the required amd64
+// host; lookup4 itself still consumes the pinned 64-byte block shape.
 
 //go:noescape
 func validateUTF8PrefixWestmere(input []byte) int
@@ -54,14 +57,14 @@ func validateUTF8WithErrorsWestmere(input []byte) Result {
 }
 
 func validateUTF8Haswell(input []byte) bool {
-	if len(input) < 64 {
+	if len(input) < 128 {
 		return validateUTF8Scalar(input)
 	}
 	return validateUTF8AMD64FromPrefix(input, validateUTF8PrefixHaswell(input)).Error == Success
 }
 
 func validateUTF8WithErrorsHaswell(input []byte) Result {
-	if len(input) < 64 {
+	if len(input) < 128 {
 		return validateUTF8WithErrorsScalar(input)
 	}
 	return validateUTF8AMD64FromPrefix(input, validateUTF8PrefixHaswell(input))

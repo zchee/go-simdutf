@@ -34,44 +34,53 @@ func makeImplementation(input selectionInput) implementation {
 	archsimdUTF16LE := archsimdValidateUTF16LEAsASCII()
 	archsimdUTF16BE := archsimdValidateUTF16BEAsASCII()
 
+	// The translated Westmere UTF-8 validators remain available to direct tests,
+	// fuzzing, and benchmarks. They are not production candidates because they
+	// regress both the complete-block short class and the pinned bulk corpus
+	// against the scalar oracle on the required amd64 host.
 	return implementation{
-		validateUTF8: selectVariant(input,
+		validateUTF8: selectVariant(
+			input,
 			variant[func([]byte) bool]{value: archsimdUTF8, kind: implementationArchsimd, required: cpuAVX2, available: archsimdUTF8 != nil},
 			variant[func([]byte) bool]{value: validateUTF8Haswell, kind: implementationHaswell, required: cpuAVX2, available: true},
-			variant[func([]byte) bool]{value: validateUTF8Westmere, kind: implementationWestmere, required: cpuSSSE3, available: true},
 			variant[func([]byte) bool]{value: validateUTF8Scalar, kind: implementationScalar, available: true},
 		),
-		validateUTF8WithErrors: selectVariant(input,
+		validateUTF8WithErrors: selectVariant(
+			input,
 			variant[func([]byte) Result]{value: archsimdUTF8WithErrors, kind: implementationArchsimd, required: cpuAVX2, available: archsimdUTF8WithErrors != nil},
 			variant[func([]byte) Result]{value: validateUTF8WithErrorsHaswell, kind: implementationHaswell, required: cpuAVX2, available: true},
-			variant[func([]byte) Result]{value: validateUTF8WithErrorsWestmere, kind: implementationWestmere, required: cpuSSSE3, available: true},
 			variant[func([]byte) Result]{value: validateUTF8WithErrorsScalar, kind: implementationScalar, available: true},
 		),
-		countUTF8: selectVariant(input,
+		countUTF8: selectVariant(
+			input,
 			variant[func([]byte) int]{value: archsimdCount, kind: implementationArchsimd, required: cpuAVX2, available: archsimdCount != nil},
 			variant[func([]byte) int]{value: countUTF8Haswell, kind: implementationHaswell, required: cpuAVX2, available: true},
 			variant[func([]byte) int]{value: countUTF8Westmere, kind: implementationWestmere, available: true},
 			variant[func([]byte) int]{value: countUTF8Scalar, kind: implementationScalar, available: true},
 		),
-		validateASCII: selectVariant(input,
+		validateASCII: selectVariant(
+			input,
 			variant[func([]byte) bool]{value: archsimdASCII, kind: implementationArchsimd, required: cpuAVX2, available: archsimdASCII != nil},
 			variant[func([]byte) bool]{value: validateASCIIHaswell, kind: implementationHaswell, required: cpuAVX2, available: true},
 			variant[func([]byte) bool]{value: validateASCIIWestmere, kind: implementationWestmere, available: true},
 			variant[func([]byte) bool]{value: validateASCIIScalar, kind: implementationScalar, available: true},
 		),
-		validateASCIIWithErrors: selectVariant(input,
+		validateASCIIWithErrors: selectVariant(
+			input,
 			variant[func([]byte) Result]{value: archsimdASCIIWithErrors, kind: implementationArchsimd, required: cpuAVX2, available: archsimdASCIIWithErrors != nil},
 			variant[func([]byte) Result]{value: validateASCIIWithErrorsHaswell, kind: implementationHaswell, required: cpuAVX2, available: true},
 			variant[func([]byte) Result]{value: validateASCIIWithErrorsWestmere, kind: implementationWestmere, available: true},
 			variant[func([]byte) Result]{value: validateASCIIWithErrorsScalar, kind: implementationScalar, available: true},
 		),
-		validateUTF16LEAsASCII: selectVariant(input,
+		validateUTF16LEAsASCII: selectVariant(
+			input,
 			variant[func([]uint16) bool]{value: archsimdUTF16LE, kind: implementationArchsimd, required: cpuAVX2, available: archsimdUTF16LE != nil},
 			variant[func([]uint16) bool]{value: validateUTF16LEAsASCIIHaswell, kind: implementationHaswell, required: cpuAVX2, available: true},
 			variant[func([]uint16) bool]{value: validateUTF16LEAsASCIIWestmere, kind: implementationWestmere, available: true},
 			variant[func([]uint16) bool]{value: validateUTF16LEAsASCIIScalar, kind: implementationScalar, available: true},
 		),
-		validateUTF16BEAsASCII: selectVariant(input,
+		validateUTF16BEAsASCII: selectVariant(
+			input,
 			variant[func([]uint16) bool]{value: archsimdUTF16BE, kind: implementationArchsimd, required: cpuAVX2, available: archsimdUTF16BE != nil},
 			variant[func([]uint16) bool]{value: validateUTF16BEAsASCIIHaswell, kind: implementationHaswell, required: cpuAVX2, available: true},
 			variant[func([]uint16) bool]{value: validateUTF16BEAsASCIIWestmere, kind: implementationWestmere, available: true},

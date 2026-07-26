@@ -134,10 +134,12 @@ func TestValidateUTF8AMD64Lookup4RODATA(t *testing.T) {
 	}
 }
 
-func TestValidateUTF8AMD64ShortInputScalarCutoffSourceContract(t *testing.T) {
+func TestValidateUTF8AMD64ScalarCutoffSourceContract(t *testing.T) {
 	// The pinned generic driver only enters lookup4 while it has a complete
-	// 64-byte block. Lock the wrapper control flow so every short input returns
-	// from the scalar oracle before an ABI0 prefix symbol can be invoked.
+	// 64-byte block. Westmere preserves that structural cutoff. Haswell requires
+	// two complete blocks because the one-block class regresses against scalar on
+	// the required amd64 host. Lock both Go wrapper policies before an ABI0 prefix
+	// symbol can be invoked.
 	source, err := os.ReadFile("utf8_amd64.go")
 	if err != nil {
 		t.Fatal(err)
@@ -156,13 +158,13 @@ func TestValidateUTF8AMD64ShortInputScalarCutoffSourceContract(t *testing.T) {
 	return validateUTF8AMD64FromPrefix(input, validateUTF8PrefixWestmere(input))
 }`,
 		"ValidateUTF8/Haswell": `func validateUTF8Haswell(input []byte) bool {
-	if len(input) < 64 {
+	if len(input) < 128 {
 		return validateUTF8Scalar(input)
 	}
 	return validateUTF8AMD64FromPrefix(input, validateUTF8PrefixHaswell(input)).Error == Success
 }`,
 		"ValidateUTF8WithErrors/Haswell": `func validateUTF8WithErrorsHaswell(input []byte) Result {
-	if len(input) < 64 {
+	if len(input) < 128 {
 		return validateUTF8WithErrorsScalar(input)
 	}
 	return validateUTF8AMD64FromPrefix(input, validateUTF8PrefixHaswell(input))
@@ -245,9 +247,18 @@ func TestValidateUTF8AMD64ScalarParity(t *testing.T) {
 		}
 	}
 	invalid := [][]byte{
-		{0x80}, {0xff}, {0xc0, 0x80}, {0xe0, 0x80, 0x80}, {0xed, 0xa0, 0x80},
-		{0xf0, 0x80, 0x80, 0x80}, {0xf4, 0x90, 0x80, 0x80}, {0xf5, 0x80, 0x80, 0x80},
-		{0xc2}, {0xe1, 0x80}, {0xf0, 0x90, 0x80}, {0xe1, 0x80, 'x'},
+		{0x80},
+		{0xff},
+		{0xc0, 0x80},
+		{0xe0, 0x80, 0x80},
+		{0xed, 0xa0, 0x80},
+		{0xf0, 0x80, 0x80, 0x80},
+		{0xf4, 0x90, 0x80, 0x80},
+		{0xf5, 0x80, 0x80, 0x80},
+		{0xc2},
+		{0xe1, 0x80},
+		{0xf0, 0x90, 0x80},
+		{0xe1, 0x80, 'x'},
 	}
 	for _, prefix := range []int{0, 15, 16, 31, 32, 61, 62, 63, 64, 65, 81, 126, 127, 128} {
 		for _, suffix := range invalid {

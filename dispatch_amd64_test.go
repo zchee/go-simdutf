@@ -34,9 +34,9 @@ func TestMakeImplementationAMD64SyntheticPriority(t *testing.T) {
 		}
 	})
 	checkUTF8ImplementationFunctions(t, makeImplementation(selectionInput{}))
-	checkUTF8ImplementationFunctionsWant(t,
-		makeImplementation(selectionInput{features: cpuSSSE3}),
-		validateUTF8Westmere, validateUTF8WithErrorsWestmere)
+	t.Run("UTF-8 Westmere remains direct-only", func(t *testing.T) {
+		checkUTF8ImplementationFunctions(t, makeImplementation(selectionInput{features: cpuSSSE3}))
+	})
 	checkUTF8ImplementationFunctionsWant(t,
 		makeImplementation(selectionInput{features: cpuAVX2}),
 		validateUTF8Haswell, validateUTF8WithErrorsHaswell)
@@ -89,8 +89,6 @@ func TestMakeImplementationAMD64Live(t *testing.T) {
 		checkUTF8ImplementationFunctionsWant(t, got, archsimdValidateUTF8(), archsimdValidateUTF8WithErrors())
 	case input.features&cpuAVX2 == cpuAVX2:
 		checkUTF8ImplementationFunctionsWant(t, got, validateUTF8Haswell, validateUTF8WithErrorsHaswell)
-	case input.features&cpuSSSE3 == cpuSSSE3:
-		checkUTF8ImplementationFunctionsWant(t, got, validateUTF8Westmere, validateUTF8WithErrorsWestmere)
 	default:
 		checkUTF8ImplementationFunctions(t, got)
 	}
