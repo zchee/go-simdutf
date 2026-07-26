@@ -40,18 +40,30 @@ func validateUTF8PrefixWestmere(input []byte) int
 func validateUTF8PrefixHaswell(input []byte) int
 
 func validateUTF8Westmere(input []byte) bool {
+	if len(input) < 64 {
+		return validateUTF8Scalar(input)
+	}
 	return validateUTF8AMD64FromPrefix(input, validateUTF8PrefixWestmere(input)).Error == Success
 }
 
 func validateUTF8WithErrorsWestmere(input []byte) Result {
+	if len(input) < 64 {
+		return validateUTF8WithErrorsScalar(input)
+	}
 	return validateUTF8AMD64FromPrefix(input, validateUTF8PrefixWestmere(input))
 }
 
 func validateUTF8Haswell(input []byte) bool {
+	if len(input) < 64 {
+		return validateUTF8Scalar(input)
+	}
 	return validateUTF8AMD64FromPrefix(input, validateUTF8PrefixHaswell(input)).Error == Success
 }
 
 func validateUTF8WithErrorsHaswell(input []byte) Result {
+	if len(input) < 64 {
+		return validateUTF8WithErrorsScalar(input)
+	}
 	return validateUTF8AMD64FromPrefix(input, validateUTF8PrefixHaswell(input))
 }
 

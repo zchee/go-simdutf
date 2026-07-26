@@ -134,6 +134,48 @@ func TestValidateUTF8AMD64Lookup4RODATA(t *testing.T) {
 	}
 }
 
+func TestValidateUTF8AMD64ShortInputScalarCutoffSourceContract(t *testing.T) {
+	// The pinned generic driver only enters lookup4 while it has a complete
+	// 64-byte block. Lock the wrapper control flow so every short input returns
+	// from the scalar oracle before an ABI0 prefix symbol can be invoked.
+	source, err := os.ReadFile("utf8_amd64.go")
+	if err != nil {
+		t.Fatal(err)
+	}
+	for name, want := range map[string]string{
+		"ValidateUTF8/Westmere": `func validateUTF8Westmere(input []byte) bool {
+	if len(input) < 64 {
+		return validateUTF8Scalar(input)
+	}
+	return validateUTF8AMD64FromPrefix(input, validateUTF8PrefixWestmere(input)).Error == Success
+}`,
+		"ValidateUTF8WithErrors/Westmere": `func validateUTF8WithErrorsWestmere(input []byte) Result {
+	if len(input) < 64 {
+		return validateUTF8WithErrorsScalar(input)
+	}
+	return validateUTF8AMD64FromPrefix(input, validateUTF8PrefixWestmere(input))
+}`,
+		"ValidateUTF8/Haswell": `func validateUTF8Haswell(input []byte) bool {
+	if len(input) < 64 {
+		return validateUTF8Scalar(input)
+	}
+	return validateUTF8AMD64FromPrefix(input, validateUTF8PrefixHaswell(input)).Error == Success
+}`,
+		"ValidateUTF8WithErrors/Haswell": `func validateUTF8WithErrorsHaswell(input []byte) Result {
+	if len(input) < 64 {
+		return validateUTF8WithErrorsScalar(input)
+	}
+	return validateUTF8AMD64FromPrefix(input, validateUTF8PrefixHaswell(input))
+}`,
+	} {
+		t.Run(name, func(t *testing.T) {
+			if count := strings.Count(string(source), want); count != 1 {
+				t.Fatalf("exact short-input scalar cutoff contract occurs %d times, want 1\n%s", count, want)
+			}
+		})
+	}
+}
+
 func repeatedUTF8AMD64TableByte(value byte) (table [32]byte) {
 	for i := range table {
 		table[i] = value
