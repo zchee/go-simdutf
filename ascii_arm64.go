@@ -32,6 +32,11 @@ func validateUTF16LEASCIIPrefixNEON(input []uint16) int
 func validateUTF16BEASCIIPrefixNEON(input []uint16) int
 
 func validateASCIINEON(input []byte) bool {
+	// The assembly prefix handles only complete 64-byte blocks. Avoid an ABI
+	// call before the scalar-only path when there is no complete block.
+	if len(input) < 64 {
+		return validateASCIIScalar(input)
+	}
 	prefix := validateASCIIPrefixNEON(input)
 	if prefix < len(input)&^63 {
 		return false
@@ -40,6 +45,11 @@ func validateASCIINEON(input []byte) bool {
 }
 
 func validateASCIIWithErrorsNEON(input []byte) Result {
+	// The assembly prefix handles only complete 64-byte blocks. Avoid an ABI
+	// call before the scalar-only path when there is no complete block.
+	if len(input) < 64 {
+		return validateASCIIWithErrorsScalar(input)
+	}
 	prefix := validateASCIIPrefixNEON(input)
 	result := validateASCIIWithErrorsScalar(input[prefix:])
 	result.Count += prefix
