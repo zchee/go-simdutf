@@ -51,18 +51,10 @@ func TestImplementationTableExactFields(t *testing.T) {
 	}
 }
 
-func TestCountUTF8DispatchAlwaysSelectsScalar(t *testing.T) {
-	for _, input := range []selectionInput{
-		{},
-		{features: ^cpuFeatures(0), archsimdAVX2: true},
-	} {
-		got := makeImplementation(input)
-		if !sameFunction(got.countUTF8, countUTF8Scalar) {
-			t.Errorf("countUTF8 selected %x, want scalar %x", reflect.ValueOf(got.countUTF8).Pointer(), reflect.ValueOf(countUTF8Scalar).Pointer())
-		}
-	}
-	if !sameFunction(activeImplementation.countUTF8, countUTF8Scalar) {
-		t.Errorf("active countUTF8 selected %x, want scalar %x", reflect.ValueOf(activeImplementation.countUTF8).Pointer(), reflect.ValueOf(countUTF8Scalar).Pointer())
+func TestCountUTF8DispatchZeroFeaturesSelectsScalar(t *testing.T) {
+	got := makeImplementation(selectionInput{})
+	if !sameFunction(got.countUTF8, countUTF8Scalar) {
+		t.Errorf("countUTF8 selected %x, want scalar %x", reflect.ValueOf(got.countUTF8).Pointer(), reflect.ValueOf(countUTF8Scalar).Pointer())
 	}
 }
 

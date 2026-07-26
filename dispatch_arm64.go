@@ -36,6 +36,7 @@ func makeImplementation(input selectionInput) implementation {
 			variant[func([]byte) Result]{value: validateUTF8WithErrorsScalar, kind: implementationScalar, available: true},
 		),
 		countUTF8: selectVariant(input,
+			variant[func([]byte) int]{value: countUTF8NEON, kind: implementationNEON, required: cpuNEON, available: true},
 			variant[func([]byte) int]{value: countUTF8Scalar, kind: implementationScalar, available: true},
 		),
 		validateASCII: selectVariant(input,
