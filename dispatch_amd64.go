@@ -47,6 +47,8 @@ func makeImplementation(input selectionInput) implementation {
 			variant[func([]byte) Result]{value: validateUTF8WithErrorsScalar, kind: implementationScalar, available: true},
 		),
 		countUTF8: selectVariant(input,
+			variant[func([]byte) int]{value: countUTF8Haswell, kind: implementationHaswell, required: cpuAVX2, available: true},
+			variant[func([]byte) int]{value: countUTF8Westmere, kind: implementationWestmere, available: true},
 			variant[func([]byte) int]{value: countUTF8Scalar, kind: implementationScalar, available: true},
 		),
 		validateASCII: selectVariant(input,

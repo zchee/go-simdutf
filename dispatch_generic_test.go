@@ -36,3 +36,10 @@ func TestMakeImplementationGenericSyntheticAndLive(t *testing.T) {
 			validateUTF16LEAsASCIIScalar, validateUTF16BEAsASCIIScalar)
 	}
 }
+
+func TestCountUTF8DispatchZeroFeaturesSelectsScalar(t *testing.T) {
+	got := makeImplementation(selectionInput{})
+	if !sameFunction(got.countUTF8, countUTF8Scalar) {
+		t.Errorf("countUTF8 selected %p, want scalar %p", got.countUTF8, countUTF8Scalar)
+	}
+}

@@ -51,13 +51,6 @@ func TestImplementationTableExactFields(t *testing.T) {
 	}
 }
 
-func TestCountUTF8DispatchZeroFeaturesSelectsScalar(t *testing.T) {
-	got := makeImplementation(selectionInput{})
-	if !sameFunction(got.countUTF8, countUTF8Scalar) {
-		t.Errorf("countUTF8 selected %x, want scalar %x", reflect.ValueOf(got.countUTF8).Pointer(), reflect.ValueOf(countUTF8Scalar).Pointer())
-	}
-}
-
 func checkUTF8ImplementationFunctions(t *testing.T, got implementation) {
 	checkUTF8ImplementationFunctionsWant(t, got, validateUTF8Scalar, validateUTF8WithErrorsScalar)
 }

@@ -25,6 +25,14 @@ import "testing"
 // upstream test vectors.
 
 func TestMakeImplementationAMD64SyntheticPriority(t *testing.T) {
+	t.Run("count UTF-8", func(t *testing.T) {
+		if got := makeImplementation(selectionInput{}).countUTF8; !sameFunction(got, countUTF8Westmere) {
+			t.Errorf("zero features selected %p, want Westmere %p", got, countUTF8Westmere)
+		}
+		if got := makeImplementation(selectionInput{features: cpuAVX2}).countUTF8; !sameFunction(got, countUTF8Haswell) {
+			t.Errorf("AVX2 selected %p, want Haswell %p", got, countUTF8Haswell)
+		}
+	})
 	checkUTF8ImplementationFunctions(t, makeImplementation(selectionInput{}))
 	checkUTF8ImplementationFunctionsWant(t,
 		makeImplementation(selectionInput{features: cpuSSSE3}),
@@ -65,6 +73,13 @@ func TestMakeImplementationAMD64SyntheticPriority(t *testing.T) {
 func TestMakeImplementationAMD64Live(t *testing.T) {
 	input := detectSelectionInput()
 	got := activeImplementation
+	if input.features&cpuAVX2 == cpuAVX2 {
+		if !sameFunction(got.countUTF8, countUTF8Haswell) {
+			t.Errorf("live countUTF8 selected %p, want Haswell %p", got.countUTF8, countUTF8Haswell)
+		}
+	} else if !sameFunction(got.countUTF8, countUTF8Westmere) {
+		t.Errorf("live countUTF8 selected %p, want Westmere %p", got.countUTF8, countUTF8Westmere)
+	}
 	switch {
 	case input.archsimdAVX2 && input.features&cpuAVX2 == cpuAVX2 && archsimdValidateUTF8() != nil:
 		checkUTF8ImplementationFunctionsWant(t, got, archsimdValidateUTF8(), archsimdValidateUTF8WithErrors())
