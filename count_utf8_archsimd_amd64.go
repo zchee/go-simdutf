@@ -37,6 +37,10 @@ import "simd/archsimd"
 // src/simd/archsimd/extra_amd64.go:9-17.
 
 func countUTF8Archsimd(input []byte) int {
+	if len(input) < 128 {
+		return countUTF8Scalar(input)
+	}
+
 	threshold := archsimd.BroadcastInt8x32(-65)
 	var local archsimd.Uint8x32
 	var counters archsimd.Uint64x4

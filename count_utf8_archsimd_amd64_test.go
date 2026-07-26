@@ -18,8 +18,10 @@ package simdutf
 
 import (
 	"bytes"
+	"os"
 	"slices"
 	"strconv"
+	"strings"
 	"testing"
 )
 
@@ -82,6 +84,23 @@ func TestCountUTF8ArchsimdCanariesAndImmutability(t *testing.T) {
 		if !slices.Equal(guard.storage, before) {
 			t.Fatalf("length %d input or canary modified", length)
 		}
+	}
+}
+
+func TestCountUTF8ArchsimdShortInputScalarCutoffSourceContract(t *testing.T) {
+	// The pinned generic driver enters the four-vector bytemask loop only for a
+	// complete 128-byte Haswell block. Lock the wrapper control flow so shorter
+	// inputs return through the scalar oracle before vector state is initialized.
+	source, err := os.ReadFile("count_utf8_archsimd_amd64.go")
+	if err != nil {
+		t.Fatal(err)
+	}
+	want := `func countUTF8Archsimd(input []byte) int {
+	if len(input) < 128 {
+		return countUTF8Scalar(input)
+	}`
+	if count := strings.Count(string(source), want); count != 1 {
+		t.Fatalf("exact short-input scalar cutoff contract occurs %d times, want 1\n%s", count, want)
 	}
 }
 
