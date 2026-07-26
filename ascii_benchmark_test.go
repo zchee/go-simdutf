@@ -27,6 +27,8 @@ import (
 // shortbench validate_ascii registration and zero-buffer prefix loop. The
 // ValidateASCIIWithErrors benchmark maps only the main benchmark registration
 // and runner; main-zero-128 is a procedure label, not a corpus ID.
+// Public rows call the exported functions literally so their wrappers remain
+// inlineable; direct diagnostic rows intentionally use registry indirection.
 
 func BenchmarkValidateASCII(b *testing.B) {
 	corpus := materializeShortbenchZero128()
@@ -43,6 +45,12 @@ func BenchmarkValidateASCII(b *testing.B) {
 					b.Run(candidate.name, func(b *testing.B) {
 						b.ReportAllocs()
 						b.SetBytes(int64(len(input)))
+						if candidate.name == "public" {
+							for b.Loop() {
+								benchmarkBoolSink = ValidateASCII(input)
+							}
+							return
+						}
 						fn := candidate.value
 						if fn == nil || !candidate.variant.supportedBy(selection) {
 							b.Skip("direct variant is unavailable or unsupported")
@@ -71,6 +79,12 @@ func BenchmarkValidateASCIIWithErrors(b *testing.B) {
 				b.Run(candidate.name, func(b *testing.B) {
 					b.ReportAllocs()
 					b.SetBytes(int64(len(input)))
+					if candidate.name == "public" {
+						for b.Loop() {
+							benchmarkResultSink = ValidateASCIIWithErrors(input)
+						}
+						return
+					}
 					fn := candidate.value
 					if fn == nil || !candidate.variant.supportedBy(selection) {
 						b.Skip("direct variant is unavailable or unsupported")
