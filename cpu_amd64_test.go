@@ -155,6 +155,7 @@ func TestDetectAMD64FeaturesIndependentBits(t *testing.T) {
 		extendedECX uint32
 		want        cpuFeatures
 	}{
+		{name: "SSSE3", leaf1ECX: 1 << 9, want: cpuSSSE3},
 		{name: "SSE4.2", leaf1ECX: 1 << 20, want: cpuSSE42},
 		{name: "POPCNT", leaf1ECX: 1 << 23, want: cpuPOPCNT},
 		{name: "BMI1", leaf7EBX: 1 << 3, want: cpuBMI1},
@@ -171,9 +172,9 @@ func TestDetectAMD64FeaturesIndependentBits(t *testing.T) {
 }
 
 func TestDetectAMD64FeaturesFullySupported(t *testing.T) {
-	const leaf1 = 1<<20 | 1<<23 | 1<<27 | 1<<28
+	const leaf1 = 1<<9 | 1<<20 | 1<<23 | 1<<27 | 1<<28
 	const leaf7 = 1<<3 | 1<<5 | 1<<8
-	want := cpuSSE42 | cpuPOPCNT | cpuAVX2 | cpuBMI1 | cpuBMI2 | cpuLZCNT
+	want := cpuSSSE3 | cpuSSE42 | cpuPOPCNT | cpuAVX2 | cpuBMI1 | cpuBMI2 | cpuLZCNT
 	got := detectAMD64FeaturesWith(fakeCPUID(t, completeCPUID(leaf1, leaf7, 1<<5)), func() (uint32, uint32) {
 		return 0x6, 0
 	})
@@ -183,7 +184,7 @@ func TestDetectAMD64FeaturesFullySupported(t *testing.T) {
 }
 
 func TestDetectAMD64FeaturesLiveHost(t *testing.T) {
-	known := cpuSSE42 | cpuPOPCNT | cpuAVX2 | cpuBMI1 | cpuBMI2 | cpuLZCNT
+	known := cpuSSSE3 | cpuSSE42 | cpuPOPCNT | cpuAVX2 | cpuBMI1 | cpuBMI2 | cpuLZCNT
 	if got := detectAMD64Features(); got & ^known != 0 {
 		t.Fatalf("features = %#x, contains unknown amd64 feature bits %#x", got, got & ^known)
 	}

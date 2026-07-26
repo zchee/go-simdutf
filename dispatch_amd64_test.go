@@ -18,16 +18,25 @@ package simdutf
 
 import "testing"
 
-// Hand-authored Go-only tests for amd64 implementation-table priority, scalar-
-// only UTF-8 fields, feature gates, and live function identity. The dispatch contract is pinned
+// Hand-authored Go-only tests for amd64 implementation-table priority, UTF-8
+// and ASCII feature gates, and live function identity. The dispatch contract is pinned
 // to simdutf/simdutf@dec3aad192f47081110d9c766d4917bad243906f:src/implementation.cpp
 // and .omx/plans/port-simdutf-dec3aad192f4-go.md section 5.5; these are not
 // upstream test vectors.
 
 func TestMakeImplementationAMD64SyntheticPriority(t *testing.T) {
-	for _, input := range []selectionInput{{}, {features: ^cpuFeatures(0), archsimdAVX2: true}} {
-		checkUTF8ImplementationFunctions(t, makeImplementation(input))
-	}
+	checkUTF8ImplementationFunctions(t, makeImplementation(selectionInput{}))
+	checkUTF8ImplementationFunctionsWant(t,
+		makeImplementation(selectionInput{features: cpuSSSE3}),
+		validateUTF8Westmere, validateUTF8WithErrorsWestmere)
+	checkUTF8ImplementationFunctionsWant(t,
+		makeImplementation(selectionInput{features: cpuAVX2}),
+		validateUTF8Haswell, validateUTF8WithErrorsHaswell)
+	checkUTF8ImplementationFunctionsWant(t,
+		makeImplementation(selectionInput{features: ^cpuFeatures(0), archsimdAVX2: true}),
+		validateUTF8Haswell, validateUTF8WithErrorsHaswell)
+
+	checkUTF8ImplementationFunctions(t, makeImplementation(selectionInput{features: cpuSSE42 | cpuPOPCNT}))
 	t.Run("westmere requires no feature bits", func(t *testing.T) {
 		checkImplementationFunctions(t, makeImplementation(selectionInput{}),
 			validateASCIIWestmere, validateASCIIWithErrorsWestmere,
@@ -50,7 +59,14 @@ func TestMakeImplementationAMD64SyntheticPriority(t *testing.T) {
 func TestMakeImplementationAMD64Live(t *testing.T) {
 	input := detectSelectionInput()
 	got := activeImplementation
-	checkUTF8ImplementationFunctions(t, got)
+	switch {
+	case input.features&cpuAVX2 == cpuAVX2:
+		checkUTF8ImplementationFunctionsWant(t, got, validateUTF8Haswell, validateUTF8WithErrorsHaswell)
+	case input.features&cpuSSSE3 == cpuSSSE3:
+		checkUTF8ImplementationFunctionsWant(t, got, validateUTF8Westmere, validateUTF8WithErrorsWestmere)
+	default:
+		checkUTF8ImplementationFunctions(t, got)
+	}
 	if input.archsimdAVX2 && input.features&cpuAVX2 != 0 && archsimdValidateASCII() != nil {
 		checkImplementationFunctions(t, got,
 			archsimdValidateASCII(), archsimdValidateASCIIWithErrors(),

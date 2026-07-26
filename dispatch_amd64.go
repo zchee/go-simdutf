@@ -33,9 +33,13 @@ func makeImplementation(input selectionInput) implementation {
 
 	return implementation{
 		validateUTF8: selectVariant(input,
+			variant[func([]byte) bool]{value: validateUTF8Haswell, kind: implementationHaswell, required: cpuAVX2, available: true},
+			variant[func([]byte) bool]{value: validateUTF8Westmere, kind: implementationWestmere, required: cpuSSSE3, available: true},
 			variant[func([]byte) bool]{value: validateUTF8Scalar, kind: implementationScalar, available: true},
 		),
 		validateUTF8WithErrors: selectVariant(input,
+			variant[func([]byte) Result]{value: validateUTF8WithErrorsHaswell, kind: implementationHaswell, required: cpuAVX2, available: true},
+			variant[func([]byte) Result]{value: validateUTF8WithErrorsWestmere, kind: implementationWestmere, required: cpuSSSE3, available: true},
 			variant[func([]byte) Result]{value: validateUTF8WithErrorsScalar, kind: implementationScalar, available: true},
 		),
 		validateASCII: selectVariant(input,

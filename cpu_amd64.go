@@ -28,6 +28,11 @@ type (
 	xgetbvFunc func() (eax, edx uint32)
 )
 
+// cpuSSSE3 is amd64-local because no other architecture selector consumes it.
+// It represents CPUID leaf 1 ECX bit 9 exactly; the UTF-8 Westmere kernel uses
+// PALIGNR and PSHUFB but no SSE4, POPCNT, or later integer feature.
+const cpuSSSE3 cpuFeatures = 1 << 7
+
 //go:noescape
 func cpuid(eaxArg, ecxArg uint32) (eax, ebx, ecx, edx uint32)
 
@@ -45,6 +50,9 @@ func detectAMD64FeaturesWith(cpuid cpuidFunc, xgetbv xgetbvFunc) cpuFeatures {
 	var avx, osxsave bool
 	if maxBasic >= 1 {
 		_, _, ecx, _ := cpuid(1, 0)
+		if ecx&(1<<9) != 0 {
+			features |= cpuSSSE3
+		}
 		if ecx&(1<<20) != 0 {
 			features |= cpuSSE42
 		}
