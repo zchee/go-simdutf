@@ -120,7 +120,52 @@ func TestSourcesRecordPinnedProvenance(t *testing.T) {
 			upstreamSHA,
 			"fuzz/conversion.cpp:68-74",
 			"Go-only public-versus-scalar differential fuzz scaffold",
-			"remains public-versus-scalar until",
+			"every registered direct accelerated implementation",
+		}},
+		{"utf8_arm64.go", []string{
+			upstreamSHA,
+			"src/arm64/implementation.cpp:13-28",
+			"src/generic/utf8_validation/utf8_lookup4_algorithm.h:12-216",
+			"src/generic/utf8_validation/utf8_validator.h:10-80",
+			"direct Go adaptation of the pinned",
+		}},
+		{"utf8_arm64.s", []string{
+			upstreamSHA,
+			"src/arm64/implementation.cpp:13-28",
+			"src/generic/utf8_validation/utf8_lookup4_algorithm.h:12-216",
+			"Independent Go arm64 assembly translation",
+			"four chunks while keeping checker state in vector registers",
+		}},
+		{"utf8_arm64_test.go", []string{
+			upstreamSHA,
+			"src/generic/utf8_validation/utf8_lookup4_algorithm.h:12-216",
+			"src/generic/utf8_validation/utf8_validator.h:10-80",
+			"Hand-authored Go-only direct differential coverage",
+		}},
+		{"utf8_fuzz_variants_test.go", []string{
+			upstreamSHA,
+			"Hand-authored Go-only direct UTF-8 differential fuzz registry scaffolding",
+			"test metadata only and adds no product behavior",
+		}},
+		{"utf8_fuzz_variants_arm64_test.go", []string{
+			upstreamSHA,
+			"Hand-authored Go-only direct fuzz registration",
+			"registers test functions only and adds no product behavior",
+		}},
+		{"utf8_direct_variants_test.go", []string{
+			upstreamSHA,
+			"Hand-authored Go-only direct UTF-8 benchmark registry scaffolding",
+			"test-only variant slots and adds no product behavior",
+		}},
+		{"utf8_direct_variants_arm64_test.go", []string{
+			upstreamSHA,
+			"Go-only registration of the direct arm64 lookup4 implementation",
+			"defines no\n// product dispatch behavior and translates no additional upstream algorithm",
+		}},
+		{"utf8_page_guard_arm64_test.go", []string{
+			upstreamSHA,
+			"Hand-authored Go-only deterministic no-overread coverage",
+			"invokes direct test functions only and adds no product behavior",
 		}},
 		{"utf8_benchmark_test.go", []string{
 			upstreamSHA,
@@ -374,7 +419,7 @@ func TestSourcesRecordPinnedProvenance(t *testing.T) {
 			upstreamSHA + ":src/implementation.cpp",
 			"Hand-authored Go-only tests",
 			"arm64 NEON feature gating",
-			"scalar-only UTF-8 fields",
+			"UTF-8 and ASCII-family fallback",
 			"not\n// upstream test vectors",
 		}},
 		{"dispatch_generic_test.go", []string{

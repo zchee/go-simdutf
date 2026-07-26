@@ -51,12 +51,21 @@ func TestImplementationTableExactFields(t *testing.T) {
 }
 
 func checkUTF8ImplementationFunctions(t *testing.T, got implementation) {
+	checkUTF8ImplementationFunctionsWant(t, got, validateUTF8Scalar, validateUTF8WithErrorsScalar)
+}
+
+func checkUTF8ImplementationFunctionsWant(
+	t *testing.T,
+	got implementation,
+	wantValidate func([]byte) bool,
+	wantWithErrors func([]byte) Result,
+) {
 	t.Helper()
-	if !sameFunction(got.validateUTF8, validateUTF8Scalar) {
-		t.Errorf("validateUTF8 selected %x, want scalar %x", reflect.ValueOf(got.validateUTF8).Pointer(), reflect.ValueOf(validateUTF8Scalar).Pointer())
+	if !sameFunction(got.validateUTF8, wantValidate) {
+		t.Errorf("validateUTF8 selected %x, want %x", reflect.ValueOf(got.validateUTF8).Pointer(), reflect.ValueOf(wantValidate).Pointer())
 	}
-	if !sameFunction(got.validateUTF8WithErrors, validateUTF8WithErrorsScalar) {
-		t.Errorf("validateUTF8WithErrors selected %x, want scalar %x", reflect.ValueOf(got.validateUTF8WithErrors).Pointer(), reflect.ValueOf(validateUTF8WithErrorsScalar).Pointer())
+	if !sameFunction(got.validateUTF8WithErrors, wantWithErrors) {
+		t.Errorf("validateUTF8WithErrors selected %x, want %x", reflect.ValueOf(got.validateUTF8WithErrors).Pointer(), reflect.ValueOf(wantWithErrors).Pointer())
 	}
 }
 

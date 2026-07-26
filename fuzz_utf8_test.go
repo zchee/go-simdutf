@@ -22,8 +22,8 @@ import (
 // Go-only public-versus-scalar differential fuzz scaffold. The pinned upstream
 // fuzz target exercises both validation entry points at
 // simdutf/simdutf@dec3aad192f47081110d9c766d4917bad243906f:
-// fuzz/conversion.cpp:68-74; this scaffold remains public-versus-scalar until
-// direct accelerated UTF-8 variants exist.
+// fuzz/conversion.cpp:68-74. Scalar functions are the explicit oracle for the
+// public entry points and every registered direct accelerated implementation.
 
 func FuzzValidateUTF8(f *testing.F) {
 	seeds := [][]byte{
@@ -74,6 +74,17 @@ func FuzzValidateUTF8(f *testing.F) {
 		}
 		if got, want := ValidateUTF8(guarded), validateUTF8Scalar(guarded); got != want {
 			t.Fatalf("ValidateUTF8() = %t, scalar = %t", got, want)
+		}
+		for _, candidate := range utf8FuzzVariants {
+			if !candidate.validate.supportedBy(detectSelectionInput()) || !candidate.withErrors.supportedBy(detectSelectionInput()) {
+				continue
+			}
+			if got, want := candidate.withErrors.value(guarded), validateUTF8WithErrorsScalar(guarded); got != want {
+				t.Fatalf("%s ValidateUTF8WithErrors() = %+v, scalar = %+v", candidate.name, got, want)
+			}
+			if got, want := candidate.validate.value(guarded), validateUTF8Scalar(guarded); got != want {
+				t.Fatalf("%s ValidateUTF8() = %t, scalar = %t", candidate.name, got, want)
+			}
 		}
 		if !bytes.Equal(backing, before) {
 			t.Fatal("validation modified input or canaries")

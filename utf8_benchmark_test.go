@@ -49,6 +49,18 @@ func BenchmarkValidateUTF8(b *testing.B) {
 						benchmarkBoolSink = validateUTF8Scalar(input)
 					}
 				})
+				for _, candidate := range utf8DirectVariants {
+					if !candidate.validate.supportedBy(detectSelectionInput()) {
+						continue
+					}
+					b.Run(candidate.name, func(b *testing.B) {
+						b.ReportAllocs()
+						b.SetBytes(int64(len(input)))
+						for b.Loop() {
+							benchmarkBoolSink = candidate.validate.value(input)
+						}
+					})
+				}
 			})
 		}
 	})
@@ -75,6 +87,18 @@ func BenchmarkValidateUTF8WithErrors(b *testing.B) {
 					benchmarkResultSink = validateUTF8WithErrorsScalar(input)
 				}
 			})
+			for _, candidate := range utf8DirectVariants {
+				if !candidate.withErrors.supportedBy(detectSelectionInput()) {
+					continue
+				}
+				b.Run(candidate.name, func(b *testing.B) {
+					b.ReportAllocs()
+					b.SetBytes(int64(len(input)))
+					for b.Loop() {
+						benchmarkResultSink = candidate.withErrors.value(input)
+					}
+				})
+			}
 		})
 	})
 }
