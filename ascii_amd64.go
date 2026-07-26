@@ -46,6 +46,9 @@ func validateUTF16LEASCIIPrefixHaswell(input []uint16) int
 func validateUTF16BEASCIIPrefixHaswell(input []uint16) int
 
 func validateASCIIWestmere(input []byte) bool {
+	if len(input) < 64 {
+		return validateASCIIScalar(input)
+	}
 	prefix := validateASCIIPrefixWestmere(input)
 	if prefix != len(input)&^63 {
 		return false
@@ -54,6 +57,9 @@ func validateASCIIWestmere(input []byte) bool {
 }
 
 func validateASCIIWithErrorsWestmere(input []byte) Result {
+	if len(input) < 64 {
+		return validateASCIIWithErrorsScalar(input)
+	}
 	prefix := validateASCIIPrefixWestmere(input)
 	result := validateASCIIWithErrorsScalar(input[prefix:])
 	result.Count += prefix
@@ -61,6 +67,9 @@ func validateASCIIWithErrorsWestmere(input []byte) Result {
 }
 
 func validateASCIIHaswell(input []byte) bool {
+	if len(input) < 64 {
+		return validateASCIIScalar(input)
+	}
 	prefix := validateASCIIPrefixHaswell(input)
 	if prefix != len(input)&^63 {
 		return false
@@ -69,6 +78,9 @@ func validateASCIIHaswell(input []byte) bool {
 }
 
 func validateASCIIWithErrorsHaswell(input []byte) Result {
+	if len(input) < 64 {
+		return validateASCIIWithErrorsScalar(input)
+	}
 	prefix := validateASCIIPrefixHaswell(input)
 	result := validateASCIIWithErrorsScalar(input[prefix:])
 	result.Count += prefix
