@@ -108,6 +108,26 @@ func TestLastChunkHandlingOptions(t *testing.T) {
 	}
 }
 
+func TestIsPartial(t *testing.T) {
+	tests := []struct {
+		name    string
+		options LastChunkHandlingOptions
+		want    bool
+	}{
+		{"loose", Loose, false},
+		{"strict", Strict, false},
+		{"stop before partial", StopBeforePartial, true},
+		{"only full chunks", OnlyFullChunks, true},
+	}
+	for _, test := range tests {
+		t.Run(test.name, func(t *testing.T) {
+			if got := IsPartial(test.options); got != test.want {
+				t.Errorf("IsPartial() = %v, want %v", got, test.want)
+			}
+		})
+	}
+}
+
 func TestLastChunkHandlingOptionsStringUnknown(t *testing.T) {
 	for _, options := range []LastChunkHandlingOptions{4, 255} {
 		if got := LastChunkHandlingOptionsString(options); got != "<unknown>" {

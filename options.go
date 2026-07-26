@@ -15,7 +15,7 @@
 package simdutf
 
 // Ported from simdutf commit dec3aad192f47081110d9c766d4917bad243906f,
-// include/simdutf/implementation.h:187-188,4094-4133,4194-4228.
+// include/simdutf/implementation.h:187-188,4094-4138,4194-4228.
 
 const DefaultLineLength int = 76
 
@@ -65,6 +65,10 @@ const (
 	StopBeforePartial
 	OnlyFullChunks
 )
+
+func IsPartial(options LastChunkHandlingOptions) bool {
+	return options == StopBeforePartial || options == OnlyFullChunks
+}
 
 func LastChunkHandlingOptionsString(options LastChunkHandlingOptions) string {
 	switch options {
