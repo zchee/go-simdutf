@@ -27,7 +27,15 @@ package simdutf
 //go:noescape
 func validateUTF8Lookup4NEON(input []byte, remainder *[64]byte) (count int, hasError uint64)
 
+// The pinned lookup4 validator consumes 64-byte blocks. Measurements on the
+// required arm64 host show that smaller inputs can regress the scalar oracle,
+// so production dispatch enters NEON only at one complete lookup4 block.
+const validateUTF8NEONMinInputSize = 64
+
 func validateUTF8NEON(input []byte) bool {
+	if len(input) < validateUTF8NEONMinInputSize {
+		return validateUTF8Scalar(input)
+	}
 	var remainder [64]byte
 	copy(remainder[:], input[len(input)&^63:])
 	_, hasError := validateUTF8Lookup4NEON(input, &remainder)
@@ -35,6 +43,9 @@ func validateUTF8NEON(input []byte) bool {
 }
 
 func validateUTF8WithErrorsNEON(input []byte) Result {
+	if len(input) < validateUTF8NEONMinInputSize {
+		return validateUTF8WithErrorsScalar(input)
+	}
 	var remainder [64]byte
 	copy(remainder[:], input[len(input)&^63:])
 	count, hasError := validateUTF8Lookup4NEON(input, &remainder)
