@@ -68,6 +68,9 @@ func validateASCIIWithErrorsArchsimd(input []byte) Result {
 			return Result{Error: TooLarge, Count: offset + bits.TrailingZeros32(mask)}
 		}
 	}
+	if offset == len(input) {
+		return Result{Error: Success, Count: len(input)}
+	}
 	result := validateASCIIWithErrorsScalar(input[offset:])
 	result.Count += offset
 	return result
