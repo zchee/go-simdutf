@@ -27,6 +27,12 @@ func detectHostFeatures() cpuFeatures {
 
 func makeImplementation(input selectionInput) implementation {
 	return implementation{
+		validateUTF8: selectVariant(input,
+			variant[func([]byte) bool]{value: validateUTF8Scalar, kind: implementationScalar, available: true},
+		),
+		validateUTF8WithErrors: selectVariant(input,
+			variant[func([]byte) Result]{value: validateUTF8WithErrorsScalar, kind: implementationScalar, available: true},
+		),
 		validateASCII: selectVariant(input,
 			variant[func([]byte) bool]{value: validateASCIIScalar, kind: implementationScalar, available: true},
 		),

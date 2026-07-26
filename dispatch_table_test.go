@@ -19,7 +19,7 @@ import (
 	"testing"
 )
 
-// Hand-authored Go-only tests for the exact four-field implementation-table
+// Hand-authored Go-only tests for the exact six-field implementation-table
 // shape, selected function identities, and all-or-none archsimd providers. The
 // dispatch contract is pinned to
 // simdutf/simdutf@dec3aad192f47081110d9c766d4917bad243906f:src/implementation.cpp
@@ -32,6 +32,8 @@ func TestImplementationTableExactFields(t *testing.T) {
 		name string
 		typ  reflect.Type
 	}{
+		{name: "validateUTF8", typ: reflect.TypeFor[func([]byte) bool]()},
+		{name: "validateUTF8WithErrors", typ: reflect.TypeFor[func([]byte) Result]()},
 		{name: "validateASCII", typ: reflect.TypeFor[func([]byte) bool]()},
 		{name: "validateASCIIWithErrors", typ: reflect.TypeFor[func([]byte) Result]()},
 		{name: "validateUTF16LEAsASCII", typ: reflect.TypeFor[func([]uint16) bool]()},
@@ -45,6 +47,16 @@ func TestImplementationTableExactFields(t *testing.T) {
 		if got.Name != field.name || got.Type != field.typ {
 			t.Errorf("field %d = %s %v, want %s %v", i, got.Name, got.Type, field.name, field.typ)
 		}
+	}
+}
+
+func checkUTF8ImplementationFunctions(t *testing.T, got implementation) {
+	t.Helper()
+	if !sameFunction(got.validateUTF8, validateUTF8Scalar) {
+		t.Errorf("validateUTF8 selected %x, want scalar %x", reflect.ValueOf(got.validateUTF8).Pointer(), reflect.ValueOf(validateUTF8Scalar).Pointer())
+	}
+	if !sameFunction(got.validateUTF8WithErrors, validateUTF8WithErrorsScalar) {
+		t.Errorf("validateUTF8WithErrors selected %x, want scalar %x", reflect.ValueOf(got.validateUTF8WithErrors).Pointer(), reflect.ValueOf(validateUTF8WithErrorsScalar).Pointer())
 	}
 }
 

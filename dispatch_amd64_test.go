@@ -18,13 +18,16 @@ package simdutf
 
 import "testing"
 
-// Hand-authored Go-only tests for amd64 ASCII implementation-table priority,
-// feature gates, and live function identity. The dispatch contract is pinned
+// Hand-authored Go-only tests for amd64 implementation-table priority, scalar-
+// only UTF-8 fields, feature gates, and live function identity. The dispatch contract is pinned
 // to simdutf/simdutf@dec3aad192f47081110d9c766d4917bad243906f:src/implementation.cpp
 // and .omx/plans/port-simdutf-dec3aad192f4-go.md section 5.5; these are not
 // upstream test vectors.
 
 func TestMakeImplementationAMD64SyntheticPriority(t *testing.T) {
+	for _, input := range []selectionInput{{}, {features: ^cpuFeatures(0), archsimdAVX2: true}} {
+		checkUTF8ImplementationFunctions(t, makeImplementation(input))
+	}
 	t.Run("westmere requires no feature bits", func(t *testing.T) {
 		checkImplementationFunctions(t, makeImplementation(selectionInput{}),
 			validateASCIIWestmere, validateASCIIWithErrorsWestmere,
@@ -47,6 +50,7 @@ func TestMakeImplementationAMD64SyntheticPriority(t *testing.T) {
 func TestMakeImplementationAMD64Live(t *testing.T) {
 	input := detectSelectionInput()
 	got := activeImplementation
+	checkUTF8ImplementationFunctions(t, got)
 	if input.archsimdAVX2 && input.features&cpuAVX2 != 0 && archsimdValidateASCII() != nil {
 		checkImplementationFunctions(t, got,
 			archsimdValidateASCII(), archsimdValidateASCIIWithErrors(),

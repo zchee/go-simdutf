@@ -19,7 +19,7 @@ package simdutf
 import "testing"
 
 // Hand-authored Go-only tests for arm64 NEON feature gating, irrelevant-bit
-// handling, scalar fallback, and live implementation-table identity. The
+// handling, scalar-only UTF-8 fields, fallback, and live table identity. The
 // dispatch contract is pinned to
 // simdutf/simdutf@dec3aad192f47081110d9c766d4917bad243906f:src/implementation.cpp
 // and .omx/plans/port-simdutf-dec3aad192f4-go.md section 5.5; these are not
@@ -27,11 +27,13 @@ import "testing"
 
 func TestMakeImplementationARM64SyntheticNEONGate(t *testing.T) {
 	for _, input := range []selectionInput{{}, {features: ^cpuNEON}} {
+		checkUTF8ImplementationFunctions(t, makeImplementation(input))
 		checkImplementationFunctions(t, makeImplementation(input),
 			validateASCIIScalar, validateASCIIWithErrorsScalar,
 			validateUTF16LEAsASCIIScalar, validateUTF16BEAsASCIIScalar)
 	}
 	for _, input := range []selectionInput{{features: cpuNEON}, {features: ^cpuFeatures(0)}} {
+		checkUTF8ImplementationFunctions(t, makeImplementation(input))
 		checkImplementationFunctions(t, makeImplementation(input),
 			validateASCIINEON, validateASCIIWithErrorsNEON,
 			validateUTF16LEAsASCIINEON, validateUTF16BEAsASCIINEON)
@@ -39,6 +41,7 @@ func TestMakeImplementationARM64SyntheticNEONGate(t *testing.T) {
 }
 
 func TestMakeImplementationARM64Live(t *testing.T) {
+	checkUTF8ImplementationFunctions(t, activeImplementation)
 	checkImplementationFunctions(t, activeImplementation,
 		validateASCIINEON, validateASCIIWithErrorsNEON,
 		validateUTF16LEAsASCIINEON, validateUTF16BEAsASCIINEON)

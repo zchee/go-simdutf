@@ -73,6 +73,8 @@ func selectVariant[T any](input selectionInput, candidates ...variant[T]) T {
 }
 
 type implementation struct {
+	validateUTF8            func([]byte) bool
+	validateUTF8WithErrors  func([]byte) Result
 	validateASCII           func([]byte) bool
 	validateASCIIWithErrors func([]byte) Result
 	validateUTF16LEAsASCII  func([]uint16) bool

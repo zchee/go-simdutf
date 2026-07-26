@@ -16,6 +16,7 @@ package simdutf
 
 import (
 	"crypto/sha256"
+	_ "embed"
 	"errors"
 	"fmt"
 	"testing"
@@ -30,7 +31,13 @@ import (
 // b.Loop and per-iteration operation visibly local rather than use a generic
 // closure helper.
 
-const shortbenchZero128SHA256 = "38723a2e5e8a17aa7950dc008209944e898f69a7bd10a23c839d341e935fd5ca"
+const (
+	shortbenchZero128SHA256 = "38723a2e5e8a17aa7950dc008209944e898f69a7bd10a23c839d341e935fd5ca"
+	upstreamEmojiUTF8SHA256 = "d6484d359bff183e4d6a4d20b3cc7056c55f372011f28b21b06462ba4d643523"
+)
+
+//go:embed testdata/upstream/emoji.txt
+var upstreamEmojiUTF8 []byte
 
 var shortbenchPrefixSizes = [...]int{1, 11, 21, 31, 41, 51, 61, 71, 81, 91, 101, 111, 121}
 
@@ -46,6 +53,16 @@ var shortbenchZero128Spec = benchmarkCorpusSpec{
 	size:     128,
 	sha256:   shortbenchZero128SHA256,
 	prefixes: shortbenchPrefixSizes[:],
+}
+
+// Frozen exact bytes from
+// simdutf/simdutf@dec3aad192f47081110d9c766d4917bad243906f:
+// benchmarks/dataset/emoji.txt. The embed and specification keep file loading
+// and integrity verification outside benchmark b.Loop bodies.
+var upstreamEmojiUTF8Spec = benchmarkCorpusSpec{
+	name:   "upstream-emoji-utf8",
+	size:   3150,
+	sha256: upstreamEmojiUTF8SHA256,
 }
 
 func materializeShortbenchZero128() []byte {
@@ -112,6 +129,12 @@ func TestShortbenchPrefixSizes(t *testing.T) {
 	want := [...]int{1, 11, 21, 31, 41, 51, 61, 71, 81, 91, 101, 111, 121}
 	if shortbenchPrefixSizes != want {
 		t.Fatalf("shortbench prefix sizes = %v, want %v", shortbenchPrefixSizes, want)
+	}
+}
+
+func TestUpstreamEmojiUTF8Corpus(t *testing.T) {
+	if err := checkBenchmarkCorpus(upstreamEmojiUTF8Spec, upstreamEmojiUTF8); err != nil {
+		t.Fatal(err)
 	}
 }
 

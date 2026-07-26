@@ -86,6 +86,50 @@ func TestAssemblySourcesBeginWithApacheLicenseHeader(t *testing.T) {
 func TestSourcesRecordPinnedProvenance(t *testing.T) {
 	const upstreamSHA = "dec3aad192f47081110d9c766d4917bad243906f"
 	expectations := []provenanceExpectation{
+		{"utf8.go", []string{
+			upstreamSHA,
+			"include/simdutf/implementation.h:253-306",
+			"Go slices replace C++ pointer/length",
+		}},
+		{"utf8_scalar.go", []string{
+			upstreamSHA,
+			"include/simdutf/scalar/utf8.h:9-218",
+			"src/fallback/implementation.cpp:35-48",
+			"credit: based on code from Google Fuchsia (Apache Licensed)",
+			"bounds-checked loads",
+		}},
+		{"utf8_test.go", []string{
+			upstreamSHA,
+			"tests/validate_utf8_basic_tests.cpp:7-130",
+			"tests/validate_utf8_with_errors_tests.cpp:7-205",
+			"tests/validate_utf8_puzzler_tests.cpp:5-39",
+			"Named map cases",
+		}},
+		{"utf8_reference_test.go", []string{
+			upstreamSHA,
+			"tests/reference/validate_utf8.cpp:7-78",
+			"validate_utf8.h:3-8",
+			"credit: based on code from Google Fuchsia (Apache Licensed)",
+			"tests/validate_utf8_basic_tests.cpp:24-108",
+			"additional tests are from autobahn websocket testsuite",
+			"https://github.com/crossbario/autobahn-testsuite/tree/master/autobahntestsuite/autobahntestsuite/case",
+			"tests/validate_utf8_brute_force_tests.cpp:7-86",
+			"Go uses a deterministic Go",
+		}},
+		{"fuzz_utf8_test.go", []string{
+			upstreamSHA,
+			"fuzz/conversion.cpp:68-74",
+			"Go-only public-versus-scalar differential fuzz scaffold",
+			"remains public-versus-scalar until",
+		}},
+		{"utf8_benchmark_test.go", []string{
+			upstreamSHA,
+			"benchmarks/shortbench.cpp:29-40,419-422,493-497,520-526",
+			"benchmarks/src/benchmark.cpp:611-645",
+			"benchmarks/dataset/emoji.txt",
+			"ValidateUTF8 keeps shortbench's frozen",
+			"Public and scalar rows deliberately",
+		}},
 		{"ascii.go", []string{
 			upstreamSHA,
 			"include/simdutf/implementation.h:315-455",
@@ -272,6 +316,8 @@ func TestSourcesRecordPinnedProvenance(t *testing.T) {
 			upstreamSHA,
 			"benchmarks/shortbench.cpp:419-422,493-497,520-526",
 			"docs/porting/benchmark-contract.md",
+			"benchmarks/dataset/emoji.txt",
+			"upstream-emoji-utf8",
 			"Hand-authored Go-only benchmark scaffolding",
 			"adds no product behavior, upstream algorithm vectors",
 			"Benchmark function, or benchmark result",
@@ -308,7 +354,8 @@ func TestSourcesRecordPinnedProvenance(t *testing.T) {
 		{"dispatch_amd64_test.go", []string{
 			upstreamSHA + ":src/implementation.cpp",
 			"Hand-authored Go-only tests",
-			"amd64 ASCII implementation-table priority",
+			"amd64 implementation-table priority",
+			"scalar-\n// only UTF-8 fields",
 			"not\n// upstream test vectors",
 		}},
 		{"dispatch_archsimd_amd64_test.go", []string{
@@ -327,6 +374,7 @@ func TestSourcesRecordPinnedProvenance(t *testing.T) {
 			upstreamSHA + ":src/implementation.cpp",
 			"Hand-authored Go-only tests",
 			"arm64 NEON feature gating",
+			"scalar-only UTF-8 fields",
 			"not\n// upstream test vectors",
 		}},
 		{"dispatch_generic_test.go", []string{
@@ -338,7 +386,7 @@ func TestSourcesRecordPinnedProvenance(t *testing.T) {
 		{"dispatch_table_test.go", []string{
 			upstreamSHA + ":src/implementation.cpp",
 			"Hand-authored Go-only tests",
-			"exact four-field implementation-table",
+			"exact six-field implementation-table",
 			"not\n// upstream test vectors",
 		}},
 		{"ascii_fuzz_variants_test.go", []string{

@@ -25,10 +25,12 @@ import "testing"
 // upstream test vectors.
 
 func TestMakeImplementationGenericSyntheticAndLive(t *testing.T) {
+	checkUTF8ImplementationFunctions(t, activeImplementation)
 	checkImplementationFunctions(t, activeImplementation,
 		validateASCIIScalar, validateASCIIWithErrorsScalar,
 		validateUTF16LEAsASCIIScalar, validateUTF16BEAsASCIIScalar)
 	for _, input := range []selectionInput{{}, {features: ^cpuFeatures(0), archsimdAVX2: true}} {
+		checkUTF8ImplementationFunctions(t, makeImplementation(input))
 		checkImplementationFunctions(t, makeImplementation(input),
 			validateASCIIScalar, validateASCIIWithErrorsScalar,
 			validateUTF16LEAsASCIIScalar, validateUTF16BEAsASCIIScalar)

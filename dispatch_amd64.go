@@ -32,6 +32,12 @@ func makeImplementation(input selectionInput) implementation {
 	archsimdUTF16BE := archsimdValidateUTF16BEAsASCII()
 
 	return implementation{
+		validateUTF8: selectVariant(input,
+			variant[func([]byte) bool]{value: validateUTF8Scalar, kind: implementationScalar, available: true},
+		),
+		validateUTF8WithErrors: selectVariant(input,
+			variant[func([]byte) Result]{value: validateUTF8WithErrorsScalar, kind: implementationScalar, available: true},
+		),
 		validateASCII: selectVariant(input,
 			variant[func([]byte) bool]{value: archsimdASCII, kind: implementationArchsimd, required: cpuAVX2, available: archsimdASCII != nil},
 			variant[func([]byte) bool]{value: validateASCIIHaswell, kind: implementationHaswell, required: cpuAVX2, available: true},
