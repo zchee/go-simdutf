@@ -19,7 +19,7 @@ import (
 	"testing"
 )
 
-// Hand-authored Go-only tests for the exact seven-field implementation-table
+// Hand-authored Go-only tests for the exact ten-field implementation-table
 // shape, selected function identities, and all-or-none archsimd providers. The
 // dispatch contract is pinned to
 // simdutf/simdutf@dec3aad192f47081110d9c766d4917bad243906f:src/implementation.cpp
@@ -35,6 +35,9 @@ func TestImplementationTableExactFields(t *testing.T) {
 		{name: "validateUTF8", typ: reflect.TypeFor[func([]byte) bool]()},
 		{name: "validateUTF8WithErrors", typ: reflect.TypeFor[func([]byte) Result]()},
 		{name: "countUTF8", typ: reflect.TypeFor[func([]byte) int]()},
+		{name: "latin1LengthFromUTF8", typ: reflect.TypeFor[func([]byte) int]()},
+		{name: "utf16LengthFromUTF8", typ: reflect.TypeFor[func([]byte) int]()},
+		{name: "utf32LengthFromUTF8", typ: reflect.TypeFor[func([]byte) int]()},
 		{name: "validateASCII", typ: reflect.TypeFor[func([]byte) bool]()},
 		{name: "validateASCIIWithErrors", typ: reflect.TypeFor[func([]byte) Result]()},
 		{name: "validateUTF16LEAsASCII", typ: reflect.TypeFor[func([]uint16) bool]()},
@@ -47,6 +50,25 @@ func TestImplementationTableExactFields(t *testing.T) {
 		got := typ.Field(i)
 		if got.Name != field.name || got.Type != field.typ {
 			t.Errorf("field %d = %s %v, want %s %v", i, got.Name, got.Type, field.name, field.typ)
+		}
+	}
+}
+
+func TestUTF8LengthDispatchAlwaysSelectsScalar(t *testing.T) {
+	for _, input := range []selectionInput{
+		{},
+		{features: ^cpuFeatures(0)},
+		{features: ^cpuFeatures(0), archsimdAVX2: true},
+	} {
+		got := makeImplementation(input)
+		if !sameFunction(got.latin1LengthFromUTF8, latin1LengthFromUTF8Scalar) {
+			t.Errorf("latin1LengthFromUTF8 selected %p, want scalar %p", got.latin1LengthFromUTF8, latin1LengthFromUTF8Scalar)
+		}
+		if !sameFunction(got.utf16LengthFromUTF8, utf16LengthFromUTF8Scalar) {
+			t.Errorf("utf16LengthFromUTF8 selected %p, want scalar %p", got.utf16LengthFromUTF8, utf16LengthFromUTF8Scalar)
+		}
+		if !sameFunction(got.utf32LengthFromUTF8, utf32LengthFromUTF8Scalar) {
+			t.Errorf("utf32LengthFromUTF8 selected %p, want scalar %p", got.utf32LengthFromUTF8, utf32LengthFromUTF8Scalar)
 		}
 	}
 }
