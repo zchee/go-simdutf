@@ -14,6 +14,11 @@
 
 package simdutf
 
+// Contract cases derived from simdutf commit dec3aad192f47081110d9c766d4917bad243906f,
+// include/simdutf/implementation.h:187-188,4094-4138,4194-4228.
+// Narrow Go-only scaffolding covers underlying types, unknown values, and
+// typed bit composition; these are not upstream test vectors.
+
 import (
 	"reflect"
 	"testing"
