@@ -211,6 +211,22 @@ func TestSourcesRecordPinnedProvenance(t *testing.T) {
 			"adds no product behavior, upstream algorithm vectors",
 			"Benchmark function, or benchmark result",
 		}},
+		{"ascii_direct_variants_test.go", []string{
+			upstreamSHA,
+			"docs/porting/benchmark-contract.md",
+			"Hand-authored Go-only benchmark registry scaffolding",
+			"test-only direct\n// variant slots",
+			"defines no product behavior and translates no upstream\n// algorithm",
+		}},
+		{"ascii_benchmark_test.go", []string{
+			upstreamSHA,
+			"benchmarks/shortbench.cpp:29-35,419-422,493-497,520-526",
+			"benchmarks/src/benchmark.cpp:120-127,697-715",
+			"docs/porting/benchmark-contract.md",
+			"shortbench validate_ascii registration and zero-buffer prefix loop",
+			"maps only the main benchmark registration\n// and runner",
+			"main-zero-128 is a procedure label, not a corpus ID",
+		}},
 	}
 	requireProvenance(t, expectations...)
 }

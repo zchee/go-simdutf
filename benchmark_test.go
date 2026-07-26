@@ -91,10 +91,8 @@ func (input benchmarkUint32s) inputBytes() int { return 4 * len(input) }
 
 func benchmarkInputBytes(input benchmarkInput) int { return input.inputBytes() }
 
-//lint:ignore U1000 Phase 2's first bool-returning benchmark consumes this typed sink.
 var benchmarkBoolSink bool
 
-//lint:ignore U1000 Phase 2's first Result-returning benchmark consumes this typed sink.
 var benchmarkResultSink Result
 
 func TestShortbenchZero128Corpus(t *testing.T) {
