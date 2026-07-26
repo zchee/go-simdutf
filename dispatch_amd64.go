@@ -34,6 +34,8 @@ func makeImplementation(input selectionInput) implementation {
 	return implementation{
 		validateASCII: selectVariant(input,
 			variant[func([]byte) bool]{value: archsimdASCII, kind: implementationArchsimd, required: cpuAVX2, available: archsimdASCII != nil},
+			variant[func([]byte) bool]{value: validateASCIIHaswell, kind: implementationHaswell, required: cpuAVX2, available: true},
+			variant[func([]byte) bool]{value: validateASCIIWestmere, kind: implementationWestmere, available: true},
 			variant[func([]byte) bool]{value: validateASCIIScalar, kind: implementationScalar, available: true},
 		),
 		validateASCIIWithErrors: selectVariant(input,
