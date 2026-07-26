@@ -35,6 +35,6 @@ func TestArchsimdProvidersUnavailableWithoutExperiment(t *testing.T) {
 	}
 	checkImplementationFunctions(t,
 		makeImplementation(selectionInput{features: cpuAVX2, archsimdAVX2: true}),
-		validateASCIIScalar, validateASCIIWithErrorsHaswell,
+		validateASCIIHaswell, validateASCIIWithErrorsHaswell,
 		validateUTF16LEAsASCIIHaswell, validateUTF16BEAsASCIIHaswell)
 }

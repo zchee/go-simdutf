@@ -28,12 +28,12 @@ import "testing"
 func TestMakeImplementationArchsimdSyntheticRuntimeGate(t *testing.T) {
 	withoutRuntimeGate := makeImplementation(selectionInput{features: cpuAVX2})
 	checkImplementationFunctions(t, withoutRuntimeGate,
-		validateASCIIScalar, validateASCIIWithErrorsHaswell,
+		validateASCIIHaswell, validateASCIIWithErrorsHaswell,
 		validateUTF16LEAsASCIIHaswell, validateUTF16BEAsASCIIHaswell)
 
 	withoutCPUFeature := makeImplementation(selectionInput{archsimdAVX2: true})
 	checkImplementationFunctions(t, withoutCPUFeature,
-		validateASCIIScalar, validateASCIIWithErrorsWestmere,
+		validateASCIIWestmere, validateASCIIWithErrorsWestmere,
 		validateUTF16LEAsASCIIWestmere, validateUTF16BEAsASCIIWestmere)
 
 	withBothGates := makeImplementation(selectionInput{features: cpuAVX2, archsimdAVX2: true})
