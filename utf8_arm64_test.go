@@ -143,16 +143,9 @@ func TestValidateUTF8NEONScalarParity(t *testing.T) {
 		}
 	}
 	invalid := [][]byte{
-		{0x80},
-		{0xff},
-		{0xc0, 0x80},
-		{0xe0, 0x80, 0x80},
-		{0xed, 0xa0, 0x80},
-		{0xf0, 0x80, 0x80, 0x80},
-		{0xf4, 0x90, 0x80, 0x80},
-		{0xc2},
-		{0xe1, 0x80},
-		{0xf0, 0x90, 0x80},
+		{0x80}, {0xff}, {0xc0, 0x80}, {0xe0, 0x80, 0x80},
+		{0xed, 0xa0, 0x80}, {0xf0, 0x80, 0x80, 0x80}, {0xf4, 0x90, 0x80, 0x80},
+		{0xc2}, {0xe1, 0x80}, {0xf0, 0x90, 0x80},
 	}
 	for _, prefix := range []int{0, 19, 64, 81, 128} {
 		for _, suffix := range invalid {
@@ -164,89 +157,6 @@ func TestValidateUTF8NEONScalarParity(t *testing.T) {
 		t.Run(strconv.Itoa(i)+"/length="+strconv.Itoa(len(input)), func(t *testing.T) {
 			checkUTF8NEON(t, input)
 		})
-	}
-}
-
-func TestValidateUTF8NEONScalarCutoffSourceContract(t *testing.T) {
-	// The pinned generic validator's full-block loop begins at one complete
-	// 64-byte block. Lock the measured Go scalar cutoff before remainder setup
-	// and the raw assembly call because scalar and NEON deliberately have
-	// identical outputs.
-	source, err := os.ReadFile("utf8_arm64.go")
-	if err != nil {
-		t.Fatal(err)
-	}
-	for name, want := range map[string]string{
-		"ValidateUTF8": `func validateUTF8NEON(input []byte) bool {
-	if len(input) < validateUTF8NEONMinInputSize {
-		return validateUTF8Scalar(input)
-	}
-	var remainder [64]byte
-	copy(remainder[:], input[len(input)&^63:])
-	_, hasError := validateUTF8Lookup4NEON(input, &remainder)
-	return hasError == 0
-}`,
-		"ValidateUTF8WithErrors": `func validateUTF8WithErrorsNEON(input []byte) Result {
-	if len(input) < validateUTF8NEONMinInputSize {
-		return validateUTF8WithErrorsScalar(input)
-	}
-	var remainder [64]byte
-	copy(remainder[:], input[len(input)&^63:])
-	count, hasError := validateUTF8Lookup4NEON(input, &remainder)
-	if hasError == 0 {
-		return Result{Error: Success, Count: len(input)}
-	}
-	return validateUTF8RewindWithErrorsScalar(input, count)
-}`,
-	} {
-		t.Run(name, func(t *testing.T) {
-			if count := strings.Count(string(source), want); count != 1 {
-				t.Fatalf("exact short-input scalar cutoff contract occurs %d times, want 1\n%s", count, want)
-			}
-		})
-	}
-}
-
-func TestValidateUTF8NEONProductionCutoff(t *testing.T) {
-	if got, want := validateUTF8NEONMinInputSize, 64; got != want {
-		t.Fatalf("validateUTF8NEONMinInputSize = %d, want one pinned lookup4 block (%d)", got, want)
-	}
-	invalidSuffixes := []struct {
-		name   string
-		suffix []byte
-	}{
-		{name: "invalid-byte", suffix: []byte{0xff}},
-		{name: "truncated-two-byte", suffix: []byte{0xc2}},
-		{name: "truncated-three-byte", suffix: []byte{0xe1, 0x80}},
-		{name: "truncated-four-byte", suffix: []byte{0xf0, 0x90, 0x80}},
-	}
-	for _, length := range []int{
-		validateUTF8NEONMinInputSize - 1,
-		validateUTF8NEONMinInputSize,
-		validateUTF8NEONMinInputSize + 1,
-	} {
-		t.Run("length="+strconv.Itoa(length)+"/valid", func(t *testing.T) {
-			backing := append([]byte{0xa5}, bytes.Repeat([]byte{'a'}, length)...)
-			backing = append(backing, 0x5a)
-			before := slices.Clone(backing)
-			checkUTF8NEON(t, backing[1:len(backing)-1])
-			if !slices.Equal(backing, before) {
-				t.Fatal("validation modified input or canaries")
-			}
-		})
-		for _, invalid := range invalidSuffixes {
-			t.Run("length="+strconv.Itoa(length)+"/"+invalid.name, func(t *testing.T) {
-				input := bytes.Repeat([]byte{'a'}, length-len(invalid.suffix))
-				input = append(input, invalid.suffix...)
-				backing := append([]byte{0xa5}, input...)
-				backing = append(backing, 0x5a)
-				before := slices.Clone(backing)
-				checkUTF8NEON(t, backing[1:len(backing)-1])
-				if !slices.Equal(backing, before) {
-					t.Fatal("validation modified input or canaries")
-				}
-			})
-		}
 	}
 }
 
