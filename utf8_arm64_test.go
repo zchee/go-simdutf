@@ -168,9 +168,10 @@ func TestValidateUTF8NEONScalarParity(t *testing.T) {
 }
 
 func TestValidateUTF8NEONScalarCutoffSourceContract(t *testing.T) {
-	// The pinned generic driver enters lookup4 only with a complete 64-byte
-	// block. Lock the scalar return before remainder setup and the raw assembly
-	// call because scalar and NEON deliberately have identical outputs.
+	// The pinned generic validator's full-block loop begins at one complete
+	// 64-byte block. Lock the measured Go scalar cutoff before remainder setup
+	// and the raw assembly call because scalar and NEON deliberately have
+	// identical outputs.
 	source, err := os.ReadFile("utf8_arm64.go")
 	if err != nil {
 		t.Fatal(err)
