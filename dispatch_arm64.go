@@ -26,41 +26,52 @@ func detectHostFeatures() cpuFeatures {
 }
 
 func makeImplementation(input selectionInput) implementation {
+	// Keep the direct NEON validators available to tests, fuzzing, and benchmarks.
+	// Production stays scalar because all-length NEON and every tested Go cutoff
+	// significantly regress short inputs; pinned upstream has no short path.
 	return implementation{
-		validateUTF8: selectVariant(input,
-			variant[func([]byte) bool]{value: validateUTF8NEON, kind: implementationNEON, required: cpuNEON, available: true},
+		validateUTF8: selectVariant(
+			input,
 			variant[func([]byte) bool]{value: validateUTF8Scalar, kind: implementationScalar, available: true},
 		),
-		validateUTF8WithErrors: selectVariant(input,
-			variant[func([]byte) Result]{value: validateUTF8WithErrorsNEON, kind: implementationNEON, required: cpuNEON, available: true},
+		validateUTF8WithErrors: selectVariant(
+			input,
 			variant[func([]byte) Result]{value: validateUTF8WithErrorsScalar, kind: implementationScalar, available: true},
 		),
-		countUTF8: selectVariant(input,
+		countUTF8: selectVariant(
+			input,
 			variant[func([]byte) int]{value: countUTF8NEON, kind: implementationNEON, required: cpuNEON, available: true},
 			variant[func([]byte) int]{value: countUTF8Scalar, kind: implementationScalar, available: true},
 		),
-		latin1LengthFromUTF8: selectVariant(input,
+		latin1LengthFromUTF8: selectVariant(
+			input,
 			variant[func([]byte) int]{value: latin1LengthFromUTF8Scalar, kind: implementationScalar, available: true},
 		),
-		utf16LengthFromUTF8: selectVariant(input,
+		utf16LengthFromUTF8: selectVariant(
+			input,
 			variant[func([]byte) int]{value: utf16LengthFromUTF8Scalar, kind: implementationScalar, available: true},
 		),
-		utf32LengthFromUTF8: selectVariant(input,
+		utf32LengthFromUTF8: selectVariant(
+			input,
 			variant[func([]byte) int]{value: utf32LengthFromUTF8Scalar, kind: implementationScalar, available: true},
 		),
-		validateASCII: selectVariant(input,
+		validateASCII: selectVariant(
+			input,
 			variant[func([]byte) bool]{value: validateASCIINEON, kind: implementationNEON, required: cpuNEON, available: true},
 			variant[func([]byte) bool]{value: validateASCIIScalar, kind: implementationScalar, available: true},
 		),
-		validateASCIIWithErrors: selectVariant(input,
+		validateASCIIWithErrors: selectVariant(
+			input,
 			variant[func([]byte) Result]{value: validateASCIIWithErrorsNEON, kind: implementationNEON, required: cpuNEON, available: true},
 			variant[func([]byte) Result]{value: validateASCIIWithErrorsScalar, kind: implementationScalar, available: true},
 		),
-		validateUTF16LEAsASCII: selectVariant(input,
+		validateUTF16LEAsASCII: selectVariant(
+			input,
 			variant[func([]uint16) bool]{value: validateUTF16LEAsASCIINEON, kind: implementationNEON, required: cpuNEON, available: true},
 			variant[func([]uint16) bool]{value: validateUTF16LEAsASCIIScalar, kind: implementationScalar, available: true},
 		),
-		validateUTF16BEAsASCII: selectVariant(input,
+		validateUTF16BEAsASCII: selectVariant(
+			input,
 			variant[func([]uint16) bool]{value: validateUTF16BEAsASCIINEON, kind: implementationNEON, required: cpuNEON, available: true},
 			variant[func([]uint16) bool]{value: validateUTF16BEAsASCIIScalar, kind: implementationScalar, available: true},
 		),

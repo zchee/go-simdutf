@@ -36,7 +36,7 @@ func TestMakeImplementationARM64SyntheticNEONGate(t *testing.T) {
 			validateUTF16LEAsASCIIScalar, validateUTF16BEAsASCIIScalar)
 	}
 	for _, input := range []selectionInput{{features: cpuNEON}, {features: ^cpuFeatures(0)}} {
-		checkUTF8ImplementationFunctionsWant(t, makeImplementation(input), validateUTF8NEON, validateUTF8WithErrorsNEON)
+		checkUTF8ImplementationFunctions(t, makeImplementation(input))
 		if got := makeImplementation(input).countUTF8; !sameFunction(got, countUTF8NEON) {
 			t.Errorf("with NEON countUTF8 selected %p, want NEON %p", got, countUTF8NEON)
 		}
@@ -47,11 +47,37 @@ func TestMakeImplementationARM64SyntheticNEONGate(t *testing.T) {
 }
 
 func TestMakeImplementationARM64Live(t *testing.T) {
-	checkUTF8ImplementationFunctionsWant(t, activeImplementation, validateUTF8NEON, validateUTF8WithErrorsNEON)
+	checkUTF8ImplementationFunctions(t, activeImplementation)
 	if got := activeImplementation.countUTF8; !sameFunction(got, countUTF8NEON) {
 		t.Errorf("live countUTF8 selected %p, want NEON %p", got, countUTF8NEON)
 	}
 	checkImplementationFunctions(t, activeImplementation,
 		validateASCIINEON, validateASCIIWithErrorsNEON,
 		validateUTF16LEAsASCIINEON, validateUTF16BEAsASCIINEON)
+}
+
+func TestARM64DirectRegistriesRetainNEONValidators(t *testing.T) {
+	check := func(name string, candidates []utf8DirectVariant) {
+		t.Helper()
+		for _, candidate := range candidates {
+			if candidate.name != "neon" {
+				continue
+			}
+			if !sameFunction(candidate.validate.value, validateUTF8NEON) {
+				t.Errorf("%s neon validate = %p, want %p", name, candidate.validate.value, validateUTF8NEON)
+			}
+			if !sameFunction(candidate.withErrors.value, validateUTF8WithErrorsNEON) {
+				t.Errorf("%s neon with-errors = %p, want %p", name, candidate.withErrors.value, validateUTF8WithErrorsNEON)
+			}
+			return
+		}
+		t.Errorf("%s registry has no neon variant", name)
+	}
+
+	check("direct", utf8DirectVariants)
+	fuzz := make([]utf8DirectVariant, len(utf8FuzzVariants))
+	for i, candidate := range utf8FuzzVariants {
+		fuzz[i] = utf8DirectVariant(candidate)
+	}
+	check("fuzz", fuzz)
 }
