@@ -55,6 +55,32 @@ func TestUTF8LengthsUpstreamCases(t *testing.T) {
 	}
 }
 
+func TestUTF8LengthsAreNotBOMAware(t *testing.T) {
+	input := []byte{0xef, 0xbb, 0xbf}
+	before := bytes.Clone(input)
+	tests := map[string]struct {
+		public func([]byte) int
+		scalar func([]byte) int
+	}{
+		"Latin1LengthFromUTF8": {public: Latin1LengthFromUTF8, scalar: latin1LengthFromUTF8Scalar},
+		"UTF16LengthFromUTF8":  {public: UTF16LengthFromUTF8, scalar: utf16LengthFromUTF8Scalar},
+		"UTF32LengthFromUTF8":  {public: UTF32LengthFromUTF8, scalar: utf32LengthFromUTF8Scalar},
+	}
+	for name, test := range tests {
+		t.Run(name, func(t *testing.T) {
+			if got := test.public(input); got != 1 {
+				t.Errorf("public result = %d, want 1", got)
+			}
+			if got := test.scalar(input); got != 1 {
+				t.Errorf("scalar result = %d, want 1", got)
+			}
+		})
+	}
+	if !bytes.Equal(input, before) {
+		t.Fatal("UTF-8 length helper modified BOM input")
+	}
+}
+
 func TestUTF8LengthScalarArbitraryByteFormula(t *testing.T) {
 	input := []byte{0x00, 0x7f, 0x80, 0xbf, 0xc0, 0xef, 0xf0, 0xf4, 0xf8, 0xff}
 	if got, want := latin1LengthFromUTF8Scalar(input), 8; got != want {

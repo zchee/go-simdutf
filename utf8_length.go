@@ -22,20 +22,21 @@ package simdutf
 
 // Latin1LengthFromUTF8 returns the number of bytes needed to represent input
 // as Latin-1. It does not validate input; for arbitrary bytes it follows the
-// pinned scalar byte-counting formula.
+// pinned scalar byte-counting formula. It is not BOM-aware.
 func Latin1LengthFromUTF8(input []byte) int {
 	return activeImplementation.latin1LengthFromUTF8(input)
 }
 
 // UTF16LengthFromUTF8 returns the number of UTF-16 code units needed to
 // represent input. It does not validate input; for arbitrary bytes it follows
-// the pinned scalar byte-counting formula.
+// the pinned scalar byte-counting formula. It is not BOM-aware.
 func UTF16LengthFromUTF8(input []byte) int {
 	return activeImplementation.utf16LengthFromUTF8(input)
 }
 
 // UTF32LengthFromUTF8 returns the number of UTF-32 code units needed to
 // represent input. It is equivalent to CountUTF8 and does not validate input.
+// It is not BOM-aware.
 func UTF32LengthFromUTF8(input []byte) int {
 	return activeImplementation.utf32LengthFromUTF8(input)
 }
