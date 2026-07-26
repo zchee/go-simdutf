@@ -35,6 +35,7 @@ func BenchmarkUTF16LengthFromUTF8(b *testing.B) {
 	if err := checkBenchmarkCorpus(shortbenchZero128Spec, corpus); err != nil {
 		b.Fatal(err)
 	}
+	selection := detectSelectionInput()
 	b.Run("shortbench-zero-128", func(b *testing.B) {
 		for _, prefix := range shortbenchZero128Spec.prefixes {
 			input := corpus[:prefix]
@@ -60,6 +61,18 @@ func BenchmarkUTF16LengthFromUTF8(b *testing.B) {
 						benchmarkIntSink = utf16LengthFromUTF8Scalar(input)
 					}
 				})
+				for _, candidate := range utf8LengthDirectVariants {
+					if !candidate.utf16.supportedBy(selection) {
+						continue
+					}
+					b.Run(candidate.name, func(b *testing.B) {
+						b.ReportAllocs()
+						b.SetBytes(int64(len(input)))
+						for b.Loop() {
+							benchmarkIntSink = candidate.utf16.value(input)
+						}
+					})
+				}
 			})
 		}
 	})
@@ -91,6 +104,18 @@ func BenchmarkUTF16LengthFromUTF8(b *testing.B) {
 					benchmarkIntSink = utf16LengthFromUTF8Scalar(input)
 				}
 			})
+			for _, candidate := range utf8LengthDirectVariants {
+				if !candidate.utf16.supportedBy(selection) {
+					continue
+				}
+				b.Run(candidate.name, func(b *testing.B) {
+					b.ReportAllocs()
+					b.SetBytes(int64(len(input)))
+					for b.Loop() {
+						benchmarkIntSink = candidate.utf16.value(input)
+					}
+				})
+			}
 		})
 	})
 }
@@ -100,6 +125,7 @@ func BenchmarkUTF32LengthFromUTF8(b *testing.B) {
 	if err := checkBenchmarkCorpus(shortbenchZero128Spec, corpus); err != nil {
 		b.Fatal(err)
 	}
+	selection := detectSelectionInput()
 	b.Run("shortbench-zero-128", func(b *testing.B) {
 		for _, prefix := range shortbenchZero128Spec.prefixes {
 			input := corpus[:prefix]
@@ -125,6 +151,18 @@ func BenchmarkUTF32LengthFromUTF8(b *testing.B) {
 						benchmarkIntSink = utf32LengthFromUTF8Scalar(input)
 					}
 				})
+				for _, candidate := range utf8LengthDirectVariants {
+					if !candidate.utf32.supportedBy(selection) {
+						continue
+					}
+					b.Run(candidate.name, func(b *testing.B) {
+						b.ReportAllocs()
+						b.SetBytes(int64(len(input)))
+						for b.Loop() {
+							benchmarkIntSink = candidate.utf32.value(input)
+						}
+					})
+				}
 			})
 		}
 	})

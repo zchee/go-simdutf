@@ -140,6 +140,22 @@ func TestSourcesRecordPinnedProvenance(t *testing.T) {
 			"fuzz/roundtrip.cpp",
 			"fuzz/misc.cpp",
 			"The scalar functions are the permanent arbitrary-byte Go oracles",
+			"ret + 3 < N",
+		}},
+		{"utf8_length_direct_variants_test.go", []string{
+			upstreamSHA,
+			"eb5429bb160dfdf1a7d208f0184d3379940e69ee",
+			"Hand-authored Go-only direct UTF-8 length benchmark registry scaffolding",
+			"benchmarks/shortbench.cpp:29-65,419-422,493-497,520-526",
+			"test-only named\n// variant slots and adds no product behavior or mutable dispatch override",
+		}},
+		{"utf8_length_fuzz_variants_test.go", []string{
+			upstreamSHA,
+			"eb5429bb160dfdf1a7d208f0184d3379940e69ee",
+			"Hand-authored Go-only direct UTF-8 length differential fuzz registry",
+			"fuzz/conversion.cpp",
+			"include/simdutf/scalar/utf8.h:258-325",
+			"test metadata only and adds no product behavior or mutable",
 		}},
 		{"utf8_length_benchmark_test.go", []string{
 			upstreamSHA,
