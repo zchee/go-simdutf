@@ -99,6 +99,42 @@ competition procedures are not Go-port targets. The same inventory retains all
 | `upstream-emoji-utf8` | `benchmarks/dataset/emoji.txt`; main `-F <path> -P <exact> -I <fixed>`; Base64 encode/roundtrip may use identical bytes | 3150 bytes; `d6484d359bff183e4d6a4d20b3cc7056c55f372011f28b21b06462ba4d643523` | valid UTF-8 Unicode mix or arbitrary binary/Base64 encode; denominator 3150 input bytes |
 | `shortbench-zero-128` | built-in `std::vector<char>(max_size, 0)`; exact options must record `--max-size 128`, chosen step, and exact function | logical SHA-256 `38723a2e5e8a17aa7950dc008209944e898f69a7bd10a23c839d341e935fd5ca` | each prefix row uses its own input length denominator |
 
+The canonical corpus ID remains `shortbench-zero-128`. Its original pinned
+`shortbench` behavior remains unchanged: `benchmarks/shortbench.cpp:419-422`
+sets the 128-byte maximum and 10-byte step, while lines 493-526 construct the
+zero-filled buffer and benchmark prefixes `1, 11, ..., 121`. Pinned
+`shortbench` registers `validate_ascii`, not `validate_ascii_with_errors`; do
+not issue or report a `shortbench` command for the latter.
+
+Phase 2 may materialize those same 128 zero bytes as an ignored or temporary
+binary file solely for the pinned main-target procedure
+`validate_ascii_with_errors+<exact-implementation>`. `main-zero-128` is only a
+benchmark procedure or hierarchy label, never a new corpus ID. The main
+procedure consumes the full 128-byte file with denominator 128; it does not use
+the `shortbench` prefix series. Before timing on each host, verify byte count
+128 and exact SHA-256
+`38723a2e5e8a17aa7950dc008209944e898f69a7bd10a23c839d341e935fd5ca`.
+Treat the file only as ignored benchmark evidence/cache: do not commit it as
+testdata, a shipped fixture, or a new upstream corpus. This authorization does
+not extend to another procedure or to another encoding or validity class.
+
+Use the exact main-target command shape locally on arm64 and remotely on amd64:
+
+```sh
+# local arm64
+"$BUILD/benchmarks/benchmark" \
+  -P 'validate_ascii_with_errors+arm64' \
+  -F "$CORPUS/shortbench-zero-128.bin" -I 30000
+
+# remote amd64 comparable indicator
+"$BUILD/benchmarks/benchmark" \
+  -P 'validate_ascii_with_errors+haswell' \
+  -F "$CORPUS/shortbench-zero-128.bin" -I 30000
+```
+
+Retain the Ice Lake fastest row separately as non-comparable under the
+same-host C++ indicator contract below.
+
 `emoji.txt` is the only benchmark payload tracked at the pinned checkout. The
 tracked `wikipedia_mars` content consists of recipes and ignores generated
 `.txt`, `.html`, and `.utf16`; historical README sizes are not checksums.
