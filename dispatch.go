@@ -1,0 +1,88 @@
+// Copyright 2026 The go-simdutf Authors.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+package simdutf
+
+// Go-only dispatch glue based on the first-supported priority semantics in
+// simdutf/simdutf@dec3aad192f47081110d9c766d4917bad243906f:src/implementation.cpp
+// and .omx/plans/port-simdutf-dec3aad192f4-go.md section 5.5; this is not an
+// algorithm translation.
+
+type cpuFeatures uint16
+
+const (
+	cpuSSE42 cpuFeatures = 1 << iota
+	cpuPOPCNT
+	cpuAVX2
+	cpuBMI1
+	cpuBMI2
+	cpuLZCNT
+	cpuNEON
+)
+
+type implementationKind uint8
+
+const (
+	implementationScalar implementationKind = iota
+	implementationWestmere
+	implementationHaswell
+	implementationNEON
+	implementationArchsimd
+)
+
+type selectionInput struct {
+	features     cpuFeatures
+	archsimdAVX2 bool
+}
+
+type variant[T any] struct {
+	value     T
+	kind      implementationKind
+	required  cpuFeatures
+	available bool
+}
+
+func selectVariant[T any](input selectionInput, candidates ...variant[T]) T {
+	for _, candidate := range candidates {
+		if !candidate.available {
+			continue
+		}
+		if candidate.kind == implementationArchsimd && !input.archsimdAVX2 {
+			continue
+		}
+		if input.features&candidate.required == candidate.required {
+			return candidate.value
+		}
+	}
+	panic("simdutf: internal dispatch has no available implementation")
+}
+
+//lint:ignore U1000 Phase 1 freezes the dispatch skeleton; Phase 2's first operation will consume this declaration and remove the exception.
+type implementation struct{}
+
+//lint:ignore U1000 Phase 1 freezes the dispatch skeleton; Phase 2's first operation will consume this declaration and remove the exception.
+var activeImplementation = makeImplementation(detectSelectionInput())
+
+//lint:ignore U1000 Phase 1 freezes the dispatch skeleton; Phase 2's first operation will consume this declaration and remove the exception.
+func detectSelectionInput() selectionInput {
+	return selectionInput{
+		features:     detectHostFeatures(),
+		archsimdAVX2: archsimdAVX2Available(),
+	}
+}
+
+//lint:ignore U1000 Phase 1 freezes the dispatch skeleton; Phase 2's first operation will consume this declaration and remove the exception.
+func makeImplementation(_ selectionInput) implementation {
+	return implementation{}
+}
