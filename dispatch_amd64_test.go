@@ -27,19 +27,19 @@ import "testing"
 func TestMakeImplementationAMD64SyntheticPriority(t *testing.T) {
 	t.Run("westmere requires no feature bits", func(t *testing.T) {
 		checkImplementationFunctions(t, makeImplementation(selectionInput{}),
-			validateASCIIWestmere, validateASCIIWithErrorsWestmere,
+			validateASCIIScalar, validateASCIIWithErrorsWestmere,
 			validateUTF16LEAsASCIIWestmere, validateUTF16BEAsASCIIWestmere)
 	})
 
 	t.Run("haswell requires AVX2", func(t *testing.T) {
 		checkImplementationFunctions(t, makeImplementation(selectionInput{features: cpuAVX2}),
-			validateASCIIHaswell, validateASCIIWithErrorsHaswell,
+			validateASCIIScalar, validateASCIIWithErrorsHaswell,
 			validateUTF16LEAsASCIIHaswell, validateUTF16BEAsASCIIHaswell)
 	})
 
 	t.Run("one missing AVX2 gate falls through", func(t *testing.T) {
 		checkImplementationFunctions(t, makeImplementation(selectionInput{archsimdAVX2: true}),
-			validateASCIIWestmere, validateASCIIWithErrorsWestmere,
+			validateASCIIScalar, validateASCIIWithErrorsWestmere,
 			validateUTF16LEAsASCIIWestmere, validateUTF16BEAsASCIIWestmere)
 	})
 }
@@ -55,11 +55,11 @@ func TestMakeImplementationAMD64Live(t *testing.T) {
 	}
 	if input.features&cpuAVX2 != 0 {
 		checkImplementationFunctions(t, got,
-			validateASCIIHaswell, validateASCIIWithErrorsHaswell,
+			validateASCIIScalar, validateASCIIWithErrorsHaswell,
 			validateUTF16LEAsASCIIHaswell, validateUTF16BEAsASCIIHaswell)
 		return
 	}
 	checkImplementationFunctions(t, got,
-		validateASCIIWestmere, validateASCIIWithErrorsWestmere,
+		validateASCIIScalar, validateASCIIWithErrorsWestmere,
 		validateUTF16LEAsASCIIWestmere, validateUTF16BEAsASCIIWestmere)
 }
