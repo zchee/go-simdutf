@@ -73,7 +73,11 @@ func TestMakeImplementationAMD64SyntheticPriority(t *testing.T) {
 func TestMakeImplementationAMD64Live(t *testing.T) {
 	input := detectSelectionInput()
 	got := activeImplementation
-	if input.features&cpuAVX2 == cpuAVX2 {
+	if input.archsimdAVX2 && input.features&cpuAVX2 == cpuAVX2 && archsimdCountUTF8() != nil {
+		if !sameFunction(got.countUTF8, archsimdCountUTF8()) {
+			t.Errorf("live countUTF8 selected %p, want archsimd %p", got.countUTF8, archsimdCountUTF8())
+		}
+	} else if input.features&cpuAVX2 == cpuAVX2 {
 		if !sameFunction(got.countUTF8, countUTF8Haswell) {
 			t.Errorf("live countUTF8 selected %p, want Haswell %p", got.countUTF8, countUTF8Haswell)
 		}

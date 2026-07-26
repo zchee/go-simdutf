@@ -27,6 +27,9 @@ import "testing"
 
 func TestMakeImplementationArchsimdSyntheticRuntimeGate(t *testing.T) {
 	withoutRuntimeGate := makeImplementation(selectionInput{features: cpuAVX2})
+	if !sameFunction(withoutRuntimeGate.countUTF8, countUTF8Haswell) {
+		t.Errorf("without runtime gate countUTF8 selected %p, want Haswell %p", withoutRuntimeGate.countUTF8, countUTF8Haswell)
+	}
 	checkUTF8ImplementationFunctionsWant(t, withoutRuntimeGate,
 		validateUTF8Haswell, validateUTF8WithErrorsHaswell)
 	checkImplementationFunctions(t, withoutRuntimeGate,
@@ -34,12 +37,18 @@ func TestMakeImplementationArchsimdSyntheticRuntimeGate(t *testing.T) {
 		validateUTF16LEAsASCIIHaswell, validateUTF16BEAsASCIIHaswell)
 
 	withoutCPUFeature := makeImplementation(selectionInput{archsimdAVX2: true})
+	if !sameFunction(withoutCPUFeature.countUTF8, countUTF8Westmere) {
+		t.Errorf("without CPU feature countUTF8 selected %p, want Westmere %p", withoutCPUFeature.countUTF8, countUTF8Westmere)
+	}
 	checkUTF8ImplementationFunctions(t, withoutCPUFeature)
 	checkImplementationFunctions(t, withoutCPUFeature,
 		validateASCIIWestmere, validateASCIIWithErrorsWestmere,
 		validateUTF16LEAsASCIIWestmere, validateUTF16BEAsASCIIWestmere)
 
 	withBothGates := makeImplementation(selectionInput{features: cpuAVX2, archsimdAVX2: true})
+	if !sameFunction(withBothGates.countUTF8, countUTF8Archsimd) {
+		t.Errorf("with both gates countUTF8 selected %p, want archsimd %p", withBothGates.countUTF8, countUTF8Archsimd)
+	}
 	checkUTF8ImplementationFunctionsWant(t, withBothGates,
 		validateUTF8Archsimd, validateUTF8WithErrorsArchsimd)
 	checkImplementationFunctions(t, withBothGates,
@@ -48,6 +57,9 @@ func TestMakeImplementationArchsimdSyntheticRuntimeGate(t *testing.T) {
 }
 
 func TestArchsimdProvidersMatchBackends(t *testing.T) {
+	if got := archsimdCountUTF8(); !sameFunction(got, countUTF8Archsimd) {
+		t.Errorf("archsimdCountUTF8 = %p, want %p", got, countUTF8Archsimd)
+	}
 	got := implementation{
 		validateUTF8:            archsimdValidateUTF8(),
 		validateUTF8WithErrors:  archsimdValidateUTF8WithErrors(),

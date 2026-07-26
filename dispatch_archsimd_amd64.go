@@ -27,6 +27,10 @@ func archsimdAVX2Available() bool {
 	return archsimd.X86.AVX2()
 }
 
+func archsimdCountUTF8() func([]byte) int {
+	return countUTF8Archsimd
+}
+
 func archsimdValidateASCII() func([]byte) bool {
 	return validateASCIIArchsimd
 }

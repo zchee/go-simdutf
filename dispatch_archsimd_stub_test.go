@@ -27,6 +27,7 @@ import "testing"
 
 func TestArchsimdProvidersUnavailableWithoutExperiment(t *testing.T) {
 	if archsimdAVX2Available() ||
+		archsimdCountUTF8() != nil ||
 		archsimdValidateASCII() != nil ||
 		archsimdValidateASCIIWithErrors() != nil ||
 		archsimdValidateUTF16LEAsASCII() != nil ||
@@ -36,6 +37,9 @@ func TestArchsimdProvidersUnavailableWithoutExperiment(t *testing.T) {
 		t.Fatal("archsimd provider is available without GOEXPERIMENT=simd")
 	}
 	got := makeImplementation(selectionInput{features: cpuAVX2, archsimdAVX2: true})
+	if !sameFunction(got.countUTF8, countUTF8Haswell) {
+		t.Errorf("countUTF8 selected %p, want Haswell %p", got.countUTF8, countUTF8Haswell)
+	}
 	checkUTF8ImplementationFunctionsWant(t, got, validateUTF8Haswell, validateUTF8WithErrorsHaswell)
 	checkImplementationFunctions(t, got,
 		validateASCIIHaswell, validateASCIIWithErrorsHaswell,

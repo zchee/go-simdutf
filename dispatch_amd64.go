@@ -28,6 +28,7 @@ func detectHostFeatures() cpuFeatures {
 func makeImplementation(input selectionInput) implementation {
 	archsimdUTF8 := archsimdValidateUTF8()
 	archsimdUTF8WithErrors := archsimdValidateUTF8WithErrors()
+	archsimdCount := archsimdCountUTF8()
 	archsimdASCII := archsimdValidateASCII()
 	archsimdASCIIWithErrors := archsimdValidateASCIIWithErrors()
 	archsimdUTF16LE := archsimdValidateUTF16LEAsASCII()
@@ -47,6 +48,7 @@ func makeImplementation(input selectionInput) implementation {
 			variant[func([]byte) Result]{value: validateUTF8WithErrorsScalar, kind: implementationScalar, available: true},
 		),
 		countUTF8: selectVariant(input,
+			variant[func([]byte) int]{value: archsimdCount, kind: implementationArchsimd, required: cpuAVX2, available: archsimdCount != nil},
 			variant[func([]byte) int]{value: countUTF8Haswell, kind: implementationHaswell, required: cpuAVX2, available: true},
 			variant[func([]byte) int]{value: countUTF8Westmere, kind: implementationWestmere, available: true},
 			variant[func([]byte) int]{value: countUTF8Scalar, kind: implementationScalar, available: true},
