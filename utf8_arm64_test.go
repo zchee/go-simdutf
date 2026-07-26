@@ -28,21 +28,6 @@ import (
 // src/generic/utf8_validation/utf8_lookup4_algorithm.h:12-216 and
 // src/generic/utf8_validation/utf8_validator.h:10-80.
 
-func TestUTF8Lookup4NEONTables(t *testing.T) {
-	if got, want := utf8Lookup4Byte1HighNEON, ([16]byte{2, 2, 2, 2, 2, 2, 2, 2, 128, 128, 128, 128, 33, 1, 21, 73}); got != want {
-		t.Fatalf("byte1High = %v, want %v", got, want)
-	}
-	if got, want := utf8Lookup4Byte1LowNEON, ([16]byte{231, 163, 131, 131, 139, 203, 203, 203, 203, 203, 203, 203, 203, 219, 203, 203}); got != want {
-		t.Fatalf("byte1Low = %v, want %v", got, want)
-	}
-	if got, want := utf8Lookup4Byte2HighNEON, ([16]byte{1, 1, 1, 1, 1, 1, 1, 1, 230, 174, 186, 186, 1, 1, 1, 1}); got != want {
-		t.Fatalf("byte2High = %v, want %v", got, want)
-	}
-	if got, want := utf8Lookup4IncompleteMax, ([16]byte{255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 239, 223, 191}); got != want {
-		t.Fatalf("incompleteMax = %v, want %v", got, want)
-	}
-}
-
 func TestValidateUTF8NEONScalarParity(t *testing.T) {
 	inputs := [][]byte{nil, {}}
 	for _, length := range []int{15, 16, 17, 31, 32, 33, 63, 64, 65, 127, 128, 129} {

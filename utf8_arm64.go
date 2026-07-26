@@ -12,6 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+// Portions Copyright 2021 The simdutf Authors.
+
 //go:build arm64
 
 package simdutf
@@ -19,14 +21,8 @@ package simdutf
 // Translated and adapted from simdutf/simdutf@dec3aad192f47081110d9c766d4917bad243906f:
 // src/arm64/implementation.cpp:13-28,
 // src/generic/utf8_validation/utf8_lookup4_algorithm.h:12-216, and
-// src/generic/utf8_validation/utf8_validator.h:10-80.
-
-var (
-	utf8Lookup4Byte1HighNEON = [16]byte{2, 2, 2, 2, 2, 2, 2, 2, 128, 128, 128, 128, 33, 1, 21, 73}
-	utf8Lookup4Byte1LowNEON  = [16]byte{231, 163, 131, 131, 139, 203, 203, 203, 203, 203, 203, 203, 203, 219, 203, 203}
-	utf8Lookup4Byte2HighNEON = [16]byte{1, 1, 1, 1, 1, 1, 1, 1, 230, 174, 186, 186, 1, 1, 1, 1}
-	utf8Lookup4IncompleteMax = [16]byte{255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 239, 223, 191}
-)
+// src/generic/utf8_validation/utf8_validator.h:10-80, and
+// include/simdutf/scalar/utf8.h:225-251.
 
 //go:noescape
 func validateUTF8Lookup4NEON(input []byte, remainder *[64]byte) (count int, hasError uint64)

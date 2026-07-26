@@ -21,6 +21,22 @@
 
 #include "textflag.h"
 
+DATA ·utf8Lookup4Byte1HighNEON<>+0(SB)/8, $0x0202020202020202
+DATA ·utf8Lookup4Byte1HighNEON<>+8(SB)/8, $0x4915012180808080
+GLOBL ·utf8Lookup4Byte1HighNEON<>(SB), RODATA|NOPTR, $16
+
+DATA ·utf8Lookup4Byte1LowNEON<>+0(SB)/8, $0xcbcbcb8b8383a3e7
+DATA ·utf8Lookup4Byte1LowNEON<>+8(SB)/8, $0xcbcbdbcbcbcbcbcb
+GLOBL ·utf8Lookup4Byte1LowNEON<>(SB), RODATA|NOPTR, $16
+
+DATA ·utf8Lookup4Byte2HighNEON<>+0(SB)/8, $0x0101010101010101
+DATA ·utf8Lookup4Byte2HighNEON<>+8(SB)/8, $0x01010101babaaee6
+GLOBL ·utf8Lookup4Byte2HighNEON<>(SB), RODATA|NOPTR, $16
+
+DATA ·utf8Lookup4IncompleteMaxNEON<>+0(SB)/8, $0xffffffffffffffff
+DATA ·utf8Lookup4IncompleteMaxNEON<>+8(SB)/8, $0xbfdfefffffffffff
+GLOBL ·utf8Lookup4IncompleteMaxNEON<>(SB), RODATA|NOPTR, $16
+
 // func validateUTF8Lookup4NEON(input []byte, remainder *[64]byte) (count int, hasError uint64)
 TEXT ·validateUTF8Lookup4NEON(SB), NOSPLIT|NOFRAME, $0-48
 	MOVD	input_base+0(FP), R0
@@ -35,13 +51,13 @@ TEXT ·validateUTF8Lookup4NEON(SB), NOSPLIT|NOFRAME, $0-48
 	VEOR	V1.B16, V1.B16, V1.B16
 	VEOR	V2.B16, V2.B16, V2.B16
 
-	MOVD	$·utf8Lookup4Byte1HighNEON(SB), R5
+	MOVD	$·utf8Lookup4Byte1HighNEON<>(SB), R5
 	VLD1	(R5), [V20.B16]
-	MOVD	$·utf8Lookup4Byte1LowNEON(SB), R5
+	MOVD	$·utf8Lookup4Byte1LowNEON<>(SB), R5
 	VLD1	(R5), [V21.B16]
-	MOVD	$·utf8Lookup4Byte2HighNEON(SB), R5
+	MOVD	$·utf8Lookup4Byte2HighNEON<>(SB), R5
 	VLD1	(R5), [V22.B16]
-	MOVD	$·utf8Lookup4IncompleteMax(SB), R5
+	MOVD	$·utf8Lookup4IncompleteMaxNEON<>(SB), R5
 	VLD1	(R5), [V23.B16]
 	VMOVI	$15, V24.B16
 	VMOVI	$128, V25.B16

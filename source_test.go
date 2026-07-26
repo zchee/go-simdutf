@@ -124,9 +124,11 @@ func TestSourcesRecordPinnedProvenance(t *testing.T) {
 		}},
 		{"utf8_arm64.go", []string{
 			upstreamSHA,
+			"Portions Copyright 2021 The simdutf Authors",
 			"src/arm64/implementation.cpp:13-28",
 			"src/generic/utf8_validation/utf8_lookup4_algorithm.h:12-216",
 			"src/generic/utf8_validation/utf8_validator.h:10-80",
+			"include/simdutf/scalar/utf8.h:225-251",
 			"direct Go adaptation of the pinned",
 		}},
 		{"utf8_arm64.s", []string{
@@ -134,6 +136,11 @@ func TestSourcesRecordPinnedProvenance(t *testing.T) {
 			"src/arm64/implementation.cpp:13-28",
 			"src/generic/utf8_validation/utf8_lookup4_algorithm.h:12-216",
 			"Independent Go arm64 assembly translation",
+			"DATA ·utf8Lookup4Byte1HighNEON<>+0(SB)/8, $0x0202020202020202",
+			"DATA ·utf8Lookup4Byte1LowNEON<>+8(SB)/8, $0xcbcbdbcbcbcbcbcb",
+			"DATA ·utf8Lookup4Byte2HighNEON<>+8(SB)/8, $0x01010101babaaee6",
+			"DATA ·utf8Lookup4IncompleteMaxNEON<>+8(SB)/8, $0xbfdfefffffffffff",
+			"GLOBL ·utf8Lookup4IncompleteMaxNEON<>(SB), RODATA|NOPTR, $16",
 			"four chunks while keeping checker state in vector registers",
 		}},
 		{"utf8_arm64_test.go", []string{

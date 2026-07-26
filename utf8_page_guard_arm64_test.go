@@ -19,6 +19,7 @@ package simdutf
 import (
 	"os"
 	"strconv"
+	"strings"
 	"testing"
 )
 
@@ -29,26 +30,56 @@ import (
 const utf8NEONPageGuardEnv = "SIMDUTF_UTF8_NEON_GUARD"
 
 func TestValidateUTF8NEONGuardPageNoOverread(t *testing.T) {
-	for _, length := range []int{0, 15, 16, 17, 31, 32, 33, 63, 64, 65, 127, 128, 129} {
-		t.Run("length="+strconv.Itoa(length), func(t *testing.T) {
-			runPageGuardSubprocess(t, "TestValidateUTF8NEONGuardPageHelper", utf8NEONPageGuardEnv, strconv.Itoa(length))
-		})
+	lengths := []int{0, 1, 15, 16, 17, 31, 32, 33, 61, 62, 63, 64, 65, 66, 67, 68, 95, 96, 97, 127, 128, 129}
+	for _, kind := range []string{"ascii", "valid-tail", "truncated-tail"} {
+		for _, length := range lengths {
+			t.Run(kind+"/length="+strconv.Itoa(length), func(t *testing.T) {
+				runPageGuardSubprocess(t, "TestValidateUTF8NEONGuardPageHelper", utf8NEONPageGuardEnv,
+					kind+","+strconv.Itoa(length))
+			})
+		}
 	}
 }
 
 func TestValidateUTF8NEONGuardPageHelper(t *testing.T) {
-	value := os.Getenv(utf8NEONPageGuardEnv)
-	if value == "" {
+	guardCase := os.Getenv(utf8NEONPageGuardEnv)
+	if guardCase == "" {
 		return
 	}
-	length, err := strconv.Atoi(value)
+	parts := strings.Split(guardCase, ",")
+	if len(parts) != 2 {
+		t.Fatalf("invalid guard case %q", guardCase)
+	}
+	length, err := strconv.Atoi(parts[1])
 	if err != nil {
-		t.Fatal(err)
+		t.Fatalf("invalid guard length %q: %v", parts[1], err)
 	}
 	withGuardPageBytes(t, length, func(input []byte) {
 		for i := range input {
-			input[i] = byte(i & 0x7f)
+			input[i] = 'a'
 		}
+		switch parts[0] {
+		case "ascii":
+		case "valid-tail":
+			switch {
+			case len(input) >= 4:
+				copy(input[len(input)-4:], []byte{0xf0, 0x90, 0x80, 0x80})
+			case len(input) >= 3:
+				copy(input[len(input)-3:], []byte{0xe0, 0xa0, 0x80})
+			case len(input) >= 2:
+				copy(input[len(input)-2:], []byte{0xc2, 0x80})
+			}
+		case "truncated-tail":
+			if len(input) != 0 {
+				input[len(input)-1] = 0xf0
+			}
+		default:
+			t.Fatalf("invalid guard kind %q", parts[0])
+		}
+
+		var remainder [64]byte
+		copy(remainder[:], input[len(input)&^63:])
+		validateUTF8Lookup4NEON(input, &remainder)
 		checkUTF8NEON(t, input)
 	})
 }
