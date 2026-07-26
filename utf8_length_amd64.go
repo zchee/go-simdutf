@@ -44,11 +44,17 @@ func utf16LengthFromUTF8BlocksHaswell(input []byte) (length int)
 
 func utf16LengthFromUTF8Westmere(input []byte) int {
 	complete := len(input) &^ 15
+	if complete == 0 {
+		return utf16LengthFromUTF8Scalar(input)
+	}
 	return utf16LengthFromUTF8BlocksWestmere(input[:complete]) + utf16LengthFromUTF8Scalar(input[complete:])
 }
 
 func utf16LengthFromUTF8Haswell(input []byte) int {
 	complete := len(input) &^ 31
+	if complete == 0 {
+		return utf16LengthFromUTF8Scalar(input)
+	}
 	return utf16LengthFromUTF8BlocksHaswell(input[:complete]) + utf16LengthFromUTF8Scalar(input[complete:])
 }
 
@@ -60,10 +66,16 @@ func utf32LengthFromUTF8BlocksHaswell(input []byte) (length int)
 
 func utf32LengthFromUTF8Westmere(input []byte) int {
 	complete := len(input) &^ 63
+	if complete == 0 {
+		return utf32LengthFromUTF8Scalar(input)
+	}
 	return utf32LengthFromUTF8BlocksWestmere(input[:complete]) + utf32LengthFromUTF8Scalar(input[complete:])
 }
 
 func utf32LengthFromUTF8Haswell(input []byte) int {
 	complete := len(input) &^ 63
+	if complete == 0 {
+		return utf32LengthFromUTF8Scalar(input)
+	}
 	return utf32LengthFromUTF8BlocksHaswell(input[:complete]) + utf32LengthFromUTF8Scalar(input[complete:])
 }

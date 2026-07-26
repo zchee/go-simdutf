@@ -18,6 +18,9 @@ package simdutf
 
 import (
 	"bytes"
+	"go/ast"
+	"go/parser"
+	"go/token"
 	"slices"
 	"strconv"
 	"testing"
@@ -58,6 +61,92 @@ func TestUTF8LengthAMD64ScalarParity(t *testing.T) {
 			})
 		}
 	}
+}
+
+func TestUTF8LengthAMD64ShortInputGuardContracts(t *testing.T) {
+	fset := token.NewFileSet()
+	file, err := parser.ParseFile(fset, "utf8_length_amd64.go", nil, 0)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	functions := make(map[string]*ast.FuncDecl)
+	for _, declaration := range file.Decls {
+		if function, ok := declaration.(*ast.FuncDecl); ok {
+			functions[function.Name.Name] = function
+		}
+	}
+	tests := []struct {
+		wrapper string
+		scalar  string
+		raw     string
+	}{
+		{"utf16LengthFromUTF8Westmere", "utf16LengthFromUTF8Scalar", "utf16LengthFromUTF8BlocksWestmere"},
+		{"utf16LengthFromUTF8Haswell", "utf16LengthFromUTF8Scalar", "utf16LengthFromUTF8BlocksHaswell"},
+		{"utf32LengthFromUTF8Westmere", "utf32LengthFromUTF8Scalar", "utf32LengthFromUTF8BlocksWestmere"},
+		{"utf32LengthFromUTF8Haswell", "utf32LengthFromUTF8Scalar", "utf32LengthFromUTF8BlocksHaswell"},
+	}
+	for _, test := range tests {
+		t.Run(test.wrapper, func(t *testing.T) {
+			function := functions[test.wrapper]
+			if function == nil || function.Body == nil {
+				t.Fatalf("function %s not found", test.wrapper)
+			}
+
+			guardIndex, rawCallIndex := -1, -1
+			for index, statement := range function.Body.List {
+				if rawCallIndex < 0 && callsNamed(statement, test.raw) {
+					rawCallIndex = index
+				}
+				guard, ok := statement.(*ast.IfStmt)
+				if guardIndex >= 0 || !ok {
+					continue
+				}
+				condition, ok := guard.Cond.(*ast.BinaryExpr)
+				if !ok || condition.Op != token.EQL {
+					continue
+				}
+				complete, completeOK := condition.X.(*ast.Ident)
+				zero, zeroOK := condition.Y.(*ast.BasicLit)
+				if !completeOK || complete.Name != "complete" || !zeroOK || zero.Kind != token.INT || zero.Value != "0" {
+					continue
+				}
+				guardIndex = index
+				if guard.Else != nil || len(guard.Body.List) != 1 {
+					t.Fatal("complete == 0 guard must have one unconditional return")
+				}
+				result, ok := guard.Body.List[0].(*ast.ReturnStmt)
+				if !ok || len(result.Results) != 1 || !callsNamed(result.Results[0], test.scalar) {
+					t.Fatalf("complete == 0 guard must return %s(input)", test.scalar)
+				}
+			}
+			if guardIndex < 0 {
+				t.Fatal("complete == 0 guard not found")
+			}
+			if rawCallIndex < 0 {
+				t.Fatalf("function does not call %s", test.raw)
+			}
+			if guardIndex >= rawCallIndex {
+				t.Fatalf("complete == 0 guard must precede %s", test.raw)
+			}
+		})
+	}
+}
+
+func callsNamed(node ast.Node, function string) bool {
+	found := false
+	ast.Inspect(node, func(node ast.Node) bool {
+		call, ok := node.(*ast.CallExpr)
+		if !ok {
+			return true
+		}
+		identifier, ok := call.Fun.(*ast.Ident)
+		if ok && identifier.Name == function {
+			found = true
+		}
+		return !found
+	})
+	return found
 }
 
 func TestUTF8LengthAMD64AllByteValues(t *testing.T) {
