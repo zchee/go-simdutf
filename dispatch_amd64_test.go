@@ -32,9 +32,15 @@ func TestMakeImplementationAMD64SyntheticPriority(t *testing.T) {
 	checkUTF8ImplementationFunctionsWant(t,
 		makeImplementation(selectionInput{features: cpuAVX2}),
 		validateUTF8Haswell, validateUTF8WithErrorsHaswell)
-	checkUTF8ImplementationFunctionsWant(t,
-		makeImplementation(selectionInput{features: ^cpuFeatures(0), archsimdAVX2: true}),
-		validateUTF8Haswell, validateUTF8WithErrorsHaswell)
+	if archsimdValidateUTF8() != nil {
+		checkUTF8ImplementationFunctionsWant(t,
+			makeImplementation(selectionInput{features: ^cpuFeatures(0), archsimdAVX2: true}),
+			archsimdValidateUTF8(), archsimdValidateUTF8WithErrors())
+	} else {
+		checkUTF8ImplementationFunctionsWant(t,
+			makeImplementation(selectionInput{features: ^cpuFeatures(0), archsimdAVX2: true}),
+			validateUTF8Haswell, validateUTF8WithErrorsHaswell)
+	}
 
 	checkUTF8ImplementationFunctions(t, makeImplementation(selectionInput{features: cpuSSE42 | cpuPOPCNT}))
 	t.Run("westmere requires no feature bits", func(t *testing.T) {
@@ -60,6 +66,8 @@ func TestMakeImplementationAMD64Live(t *testing.T) {
 	input := detectSelectionInput()
 	got := activeImplementation
 	switch {
+	case input.archsimdAVX2 && input.features&cpuAVX2 == cpuAVX2 && archsimdValidateUTF8() != nil:
+		checkUTF8ImplementationFunctionsWant(t, got, archsimdValidateUTF8(), archsimdValidateUTF8WithErrors())
 	case input.features&cpuAVX2 == cpuAVX2:
 		checkUTF8ImplementationFunctionsWant(t, got, validateUTF8Haswell, validateUTF8WithErrorsHaswell)
 	case input.features&cpuSSSE3 == cpuSSSE3:

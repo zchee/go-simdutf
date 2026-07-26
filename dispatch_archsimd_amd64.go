@@ -42,3 +42,11 @@ func archsimdValidateUTF16LEAsASCII() func([]uint16) bool {
 func archsimdValidateUTF16BEAsASCII() func([]uint16) bool {
 	return validateUTF16BEAsASCIIArchsimd
 }
+
+func archsimdValidateUTF8() func([]byte) bool {
+	return validateUTF8Archsimd
+}
+
+func archsimdValidateUTF8WithErrors() func([]byte) Result {
+	return validateUTF8WithErrorsArchsimd
+}

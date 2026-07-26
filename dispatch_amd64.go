@@ -26,6 +26,8 @@ func detectHostFeatures() cpuFeatures {
 }
 
 func makeImplementation(input selectionInput) implementation {
+	archsimdUTF8 := archsimdValidateUTF8()
+	archsimdUTF8WithErrors := archsimdValidateUTF8WithErrors()
 	archsimdASCII := archsimdValidateASCII()
 	archsimdASCIIWithErrors := archsimdValidateASCIIWithErrors()
 	archsimdUTF16LE := archsimdValidateUTF16LEAsASCII()
@@ -33,11 +35,13 @@ func makeImplementation(input selectionInput) implementation {
 
 	return implementation{
 		validateUTF8: selectVariant(input,
+			variant[func([]byte) bool]{value: archsimdUTF8, kind: implementationArchsimd, required: cpuAVX2, available: archsimdUTF8 != nil},
 			variant[func([]byte) bool]{value: validateUTF8Haswell, kind: implementationHaswell, required: cpuAVX2, available: true},
 			variant[func([]byte) bool]{value: validateUTF8Westmere, kind: implementationWestmere, required: cpuSSSE3, available: true},
 			variant[func([]byte) bool]{value: validateUTF8Scalar, kind: implementationScalar, available: true},
 		),
 		validateUTF8WithErrors: selectVariant(input,
+			variant[func([]byte) Result]{value: archsimdUTF8WithErrors, kind: implementationArchsimd, required: cpuAVX2, available: archsimdUTF8WithErrors != nil},
 			variant[func([]byte) Result]{value: validateUTF8WithErrorsHaswell, kind: implementationHaswell, required: cpuAVX2, available: true},
 			variant[func([]byte) Result]{value: validateUTF8WithErrorsWestmere, kind: implementationWestmere, required: cpuSSSE3, available: true},
 			variant[func([]byte) Result]{value: validateUTF8WithErrorsScalar, kind: implementationScalar, available: true},

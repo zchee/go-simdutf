@@ -131,6 +131,31 @@ func TestSourcesRecordPinnedProvenance(t *testing.T) {
 			"src/haswell/implementation.cpp:19-29",
 			"at most five continuation bytes",
 		}},
+		{"utf8_archsimd_amd64.go", []string{
+			upstreamSHA,
+			"src/generic/utf8_validation/utf8_lookup4_algorithm.h:12-216",
+			"src/generic/utf8_validation/utf8_validator.h:10-80",
+			"src/haswell/implementation.cpp:19-29",
+			"Independently adapted",
+			"VPERM2I128, VPALIGNR, VPSHUFB, VPSRLW, and VPSUBUSB",
+		}},
+		{"utf8_archsimd_amd64_test.go", []string{
+			upstreamSHA,
+			"src/generic/utf8_validation/utf8_lookup4_algorithm.h:12-216",
+			"src/generic/utf8_validation/utf8_validator.h:10-80",
+			"Direct differential coverage",
+		}},
+		{"utf8_direct_variants_archsimd_amd64_test.go", []string{
+			upstreamSHA,
+			"Go-only direct benchmark and scalar-differential fuzz registration",
+			"tagged lookup4 adaptation",
+		}},
+		{"utf8_page_guard_archsimd_amd64_test.go", []string{
+			upstreamSHA,
+			"src/generic/utf8_validation/utf8_lookup4_algorithm.h:12-216",
+			"Hand-authored Go-only direct no-overread coverage",
+			"invokes\n// tagged test functions only and adds no product behavior",
+		}},
 		{"utf8_amd64.s", []string{
 			upstreamSHA,
 			"Independent Go assembly translations",
@@ -385,6 +410,12 @@ func TestSourcesRecordPinnedProvenance(t *testing.T) {
 			"src/implementation.cpp",
 			"Go-only dispatch glue",
 			"this is not an\n// algorithm translation",
+		}},
+		{"dispatch_archsimd_utf8_stub_amd64.go", []string{
+			upstreamSHA + ":src/implementation.cpp",
+			"Go-only dispatch stubs",
+			"exists only in amd64 experiment builds",
+			"this is not an algorithm translation",
 		}},
 		{"dispatch_arm64.go", []string{
 			upstreamSHA,

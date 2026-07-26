@@ -86,7 +86,7 @@ var activeImplementation = makeImplementation(detectSelectionInput())
 func detectSelectionInput() selectionInput {
 	return selectionInput{
 		features:     detectHostFeatures(),
-		archsimdAVX2: archsimdProvidersAvailable() && archsimdAVX2Available(),
+		archsimdAVX2: archsimdAVX2Available(),
 	}
 }
 
@@ -95,7 +95,7 @@ func archsimdProvidersAvailable() bool {
 	if (archsimdValidateASCIIWithErrors() != nil) != available ||
 		(archsimdValidateUTF16LEAsASCII() != nil) != available ||
 		(archsimdValidateUTF16BEAsASCII() != nil) != available {
-		panic("simdutf: internal dispatch has incomplete archsimd providers")
+		panic("simdutf: internal dispatch has incomplete ASCII archsimd providers")
 	}
 	return available
 }

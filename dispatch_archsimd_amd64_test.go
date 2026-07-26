@@ -27,27 +27,37 @@ import "testing"
 
 func TestMakeImplementationArchsimdSyntheticRuntimeGate(t *testing.T) {
 	withoutRuntimeGate := makeImplementation(selectionInput{features: cpuAVX2})
+	checkUTF8ImplementationFunctionsWant(t, withoutRuntimeGate,
+		validateUTF8Haswell, validateUTF8WithErrorsHaswell)
 	checkImplementationFunctions(t, withoutRuntimeGate,
 		validateASCIIHaswell, validateASCIIWithErrorsHaswell,
 		validateUTF16LEAsASCIIHaswell, validateUTF16BEAsASCIIHaswell)
 
 	withoutCPUFeature := makeImplementation(selectionInput{archsimdAVX2: true})
+	checkUTF8ImplementationFunctions(t, withoutCPUFeature)
 	checkImplementationFunctions(t, withoutCPUFeature,
 		validateASCIIWestmere, validateASCIIWithErrorsWestmere,
 		validateUTF16LEAsASCIIWestmere, validateUTF16BEAsASCIIWestmere)
 
 	withBothGates := makeImplementation(selectionInput{features: cpuAVX2, archsimdAVX2: true})
+	checkUTF8ImplementationFunctionsWant(t, withBothGates,
+		validateUTF8Archsimd, validateUTF8WithErrorsArchsimd)
 	checkImplementationFunctions(t, withBothGates,
 		validateASCIIArchsimd, validateASCIIWithErrorsArchsimd,
 		validateUTF16LEAsASCIIArchsimd, validateUTF16BEAsASCIIArchsimd)
 }
 
 func TestArchsimdProvidersMatchBackends(t *testing.T) {
-	checkImplementationFunctions(t, implementation{
+	got := implementation{
+		validateUTF8:            archsimdValidateUTF8(),
+		validateUTF8WithErrors:  archsimdValidateUTF8WithErrors(),
 		validateASCII:           archsimdValidateASCII(),
 		validateASCIIWithErrors: archsimdValidateASCIIWithErrors(),
 		validateUTF16LEAsASCII:  archsimdValidateUTF16LEAsASCII(),
 		validateUTF16BEAsASCII:  archsimdValidateUTF16BEAsASCII(),
-	}, validateASCIIArchsimd, validateASCIIWithErrorsArchsimd,
+	}
+	checkUTF8ImplementationFunctionsWant(t, got,
+		validateUTF8Archsimd, validateUTF8WithErrorsArchsimd)
+	checkImplementationFunctions(t, got, validateASCIIArchsimd, validateASCIIWithErrorsArchsimd,
 		validateUTF16LEAsASCIIArchsimd, validateUTF16BEAsASCIIArchsimd)
 }

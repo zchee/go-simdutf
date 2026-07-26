@@ -30,11 +30,14 @@ func TestArchsimdProvidersUnavailableWithoutExperiment(t *testing.T) {
 		archsimdValidateASCII() != nil ||
 		archsimdValidateASCIIWithErrors() != nil ||
 		archsimdValidateUTF16LEAsASCII() != nil ||
-		archsimdValidateUTF16BEAsASCII() != nil {
+		archsimdValidateUTF16BEAsASCII() != nil ||
+		archsimdValidateUTF8() != nil ||
+		archsimdValidateUTF8WithErrors() != nil {
 		t.Fatal("archsimd provider is available without GOEXPERIMENT=simd")
 	}
-	checkImplementationFunctions(t,
-		makeImplementation(selectionInput{features: cpuAVX2, archsimdAVX2: true}),
+	got := makeImplementation(selectionInput{features: cpuAVX2, archsimdAVX2: true})
+	checkUTF8ImplementationFunctionsWant(t, got, validateUTF8Haswell, validateUTF8WithErrorsHaswell)
+	checkImplementationFunctions(t, got,
 		validateASCIIHaswell, validateASCIIWithErrorsHaswell,
 		validateUTF16LEAsASCIIHaswell, validateUTF16BEAsASCIIHaswell)
 }

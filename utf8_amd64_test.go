@@ -191,6 +191,12 @@ func TestValidateUTF8AMD64VariantRegistries(t *testing.T) {
 		"westmere": {implementationWestmere, cpuSSSE3},
 		"haswell":  {implementationHaswell, cpuAVX2},
 	}
+	if archsimdValidateUTF8() != nil {
+		want["archsimd"] = struct {
+			kind     implementationKind
+			required cpuFeatures
+		}{implementationArchsimd, cpuAVX2}
+	}
 	check := func(name string, variants []utf8DirectVariant) {
 		t.Helper()
 		if len(variants) != len(want) {
