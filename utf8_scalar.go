@@ -19,7 +19,8 @@ package simdutf
 import "encoding/binary"
 
 // Translated and adapted from simdutf/simdutf@dec3aad192f47081110d9c766d4917bad243906f:
-// include/simdutf/scalar/utf8.h:9-218 and src/fallback/implementation.cpp:35-48.
+// include/simdutf/scalar/utf8.h:9-218,258-268 and
+// src/fallback/implementation.cpp:35-48,431-433.
 // credit: based on code from Google Fuchsia (Apache Licensed)
 // Go uses bounds-checked loads.
 
@@ -146,4 +147,14 @@ func validateUTF8WithErrorsScalar(input []byte) Result {
 		pos = next
 	}
 	return Result{Error: Success, Count: len(input)}
+}
+
+func countUTF8Scalar(input []byte) int {
+	count := 0
+	for _, value := range input {
+		if int8(value) > -65 {
+			count++
+		}
+	}
+	return count
 }

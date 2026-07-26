@@ -15,8 +15,8 @@
 package simdutf
 
 // Public API adapted from simdutf/simdutf@dec3aad192f47081110d9c766d4917bad243906f:
-// include/simdutf/implementation.h:253-306. Go slices replace C++ pointer/length
-// pairs.
+// include/simdutf/implementation.h:253-306,3931-3938. Go slices replace C++
+// pointer/length pairs.
 
 // ValidateUTF8 reports whether input is valid UTF-8.
 func ValidateUTF8(input []byte) bool {
@@ -27,4 +27,11 @@ func ValidateUTF8(input []byte) bool {
 // length, or the exact validation error with Count equal to its byte position.
 func ValidateUTF8WithErrors(input []byte) Result {
 	return activeImplementation.validateUTF8WithErrors(input)
+}
+
+// CountUTF8 returns the number of Unicode scalar values in valid UTF-8 input.
+// Like upstream simdutf, it assumes that input is valid UTF-8 and does not
+// validate it.
+func CountUTF8(input []byte) int {
+	return activeImplementation.countUTF8(input)
 }

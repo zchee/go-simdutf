@@ -19,7 +19,7 @@ import (
 	"testing"
 )
 
-// Hand-authored Go-only tests for the exact six-field implementation-table
+// Hand-authored Go-only tests for the exact seven-field implementation-table
 // shape, selected function identities, and all-or-none archsimd providers. The
 // dispatch contract is pinned to
 // simdutf/simdutf@dec3aad192f47081110d9c766d4917bad243906f:src/implementation.cpp
@@ -34,6 +34,7 @@ func TestImplementationTableExactFields(t *testing.T) {
 	}{
 		{name: "validateUTF8", typ: reflect.TypeFor[func([]byte) bool]()},
 		{name: "validateUTF8WithErrors", typ: reflect.TypeFor[func([]byte) Result]()},
+		{name: "countUTF8", typ: reflect.TypeFor[func([]byte) int]()},
 		{name: "validateASCII", typ: reflect.TypeFor[func([]byte) bool]()},
 		{name: "validateASCIIWithErrors", typ: reflect.TypeFor[func([]byte) Result]()},
 		{name: "validateUTF16LEAsASCII", typ: reflect.TypeFor[func([]uint16) bool]()},
@@ -47,6 +48,21 @@ func TestImplementationTableExactFields(t *testing.T) {
 		if got.Name != field.name || got.Type != field.typ {
 			t.Errorf("field %d = %s %v, want %s %v", i, got.Name, got.Type, field.name, field.typ)
 		}
+	}
+}
+
+func TestCountUTF8DispatchAlwaysSelectsScalar(t *testing.T) {
+	for _, input := range []selectionInput{
+		{},
+		{features: ^cpuFeatures(0), archsimdAVX2: true},
+	} {
+		got := makeImplementation(input)
+		if !sameFunction(got.countUTF8, countUTF8Scalar) {
+			t.Errorf("countUTF8 selected %x, want scalar %x", reflect.ValueOf(got.countUTF8).Pointer(), reflect.ValueOf(countUTF8Scalar).Pointer())
+		}
+	}
+	if !sameFunction(activeImplementation.countUTF8, countUTF8Scalar) {
+		t.Errorf("active countUTF8 selected %x, want scalar %x", reflect.ValueOf(activeImplementation.countUTF8).Pointer(), reflect.ValueOf(countUTF8Scalar).Pointer())
 	}
 }
 

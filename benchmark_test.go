@@ -112,6 +112,8 @@ var benchmarkBoolSink bool
 
 var benchmarkResultSink Result
 
+var benchmarkIntSink int
+
 func TestShortbenchZero128Corpus(t *testing.T) {
 	corpus := materializeShortbenchZero128()
 	if err := checkBenchmarkCorpus(shortbenchZero128Spec, corpus); err != nil {

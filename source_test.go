@@ -88,15 +88,46 @@ func TestSourcesRecordPinnedProvenance(t *testing.T) {
 	expectations := []provenanceExpectation{
 		{"utf8.go", []string{
 			upstreamSHA,
-			"include/simdutf/implementation.h:253-306",
-			"Go slices replace C++ pointer/length",
+			"include/simdutf/implementation.h:253-306,3931-3938",
+			"Go slices replace C++\n// pointer/length",
 		}},
 		{"utf8_scalar.go", []string{
 			upstreamSHA,
-			"include/simdutf/scalar/utf8.h:9-218",
-			"src/fallback/implementation.cpp:35-48",
+			"include/simdutf/scalar/utf8.h:9-218,258-268",
+			"src/fallback/implementation.cpp:35-48,431-433",
 			"credit: based on code from Google Fuchsia (Apache Licensed)",
 			"bounds-checked loads",
+		}},
+		{"count_utf8_test.go", []string{
+			upstreamSHA,
+			"tests/count_utf8.cpp:11-84",
+			"upstream byte sizes and ASCII/one-to-four-byte mixture categories",
+			"it does\n// not claim byte-identical output",
+			"counts every byte except UTF-8 continuation bytes 0x80..0xbf",
+		}},
+		{"fuzz_count_utf8_test.go", []string{
+			upstreamSHA,
+			"fuzz/conversion.cpp and tests/count_utf8.cpp:11-84",
+			"Go-only public-versus-scalar differential fuzz scaffold",
+			"every registered direct\n// accelerated implementation",
+		}},
+		{"count_utf8_direct_variants_test.go", []string{
+			upstreamSHA,
+			"Hand-authored Go-only direct CountUTF8 benchmark registry scaffolding",
+			"test-only variant slots and adds no product behavior",
+		}},
+		{"count_utf8_fuzz_variants_test.go", []string{
+			upstreamSHA,
+			"Hand-authored Go-only direct CountUTF8 differential fuzz registry",
+			"test\n// metadata only and adds no product behavior",
+		}},
+		{"count_utf8_benchmark_test.go", []string{
+			upstreamSHA,
+			"benchmarks/shortbench.cpp:29-40,66-72,419-422,493-497,520-526",
+			"benchmarks/src/benchmark.cpp:3428-3443",
+			"shortbench's frozen\n// zero prefixes",
+			"benchmarks/dataset/emoji.txt",
+			"Public and scalar rows deliberately share identical corpus setup and names",
 		}},
 		{"utf8_test.go", []string{
 			upstreamSHA,
@@ -509,7 +540,7 @@ func TestSourcesRecordPinnedProvenance(t *testing.T) {
 		{"dispatch_table_test.go", []string{
 			upstreamSHA + ":src/implementation.cpp",
 			"Hand-authored Go-only tests",
-			"exact six-field implementation-table",
+			"exact seven-field implementation-table",
 			"not\n// upstream test vectors",
 		}},
 		{"ascii_fuzz_variants_test.go", []string{
