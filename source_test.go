@@ -85,10 +85,7 @@ func TestAssemblySourcesBeginWithApacheLicenseHeader(t *testing.T) {
 // enforcement, not an upstream test vector.
 func TestPhase1SourcesRecordPinnedProvenance(t *testing.T) {
 	const upstreamSHA = "dec3aad192f47081110d9c766d4917bad243906f"
-	files := []struct {
-		name              string
-		requiredFragments []string
-	}{
+	expectations := []provenanceExpectation{
 		{"errors.go", []string{
 			upstreamSHA,
 			"include/simdutf/error.h",
@@ -179,18 +176,20 @@ func TestPhase1SourcesRecordPinnedProvenance(t *testing.T) {
 			"Go-only dispatch glue",
 			"this is not an\n// algorithm translation",
 		}},
+		{"test_helpers_test.go", []string{
+			upstreamSHA,
+			"Hand-authored Go-only test scaffolding",
+			"test guards, direct-variant invocation, and provenance enforcement only",
+			"does not define product behavior or port upstream algorithm vectors",
+		}},
+		{"benchmark_test.go", []string{
+			upstreamSHA,
+			"benchmarks/shortbench.cpp:419-422,493-497,520-526",
+			"docs/porting/benchmark-contract.md",
+			"Hand-authored Go-only benchmark scaffolding",
+			"adds no product behavior, upstream algorithm vectors",
+			"Benchmark function, or benchmark result",
+		}},
 	}
-
-	for _, file := range files {
-		contents, err := os.ReadFile(file.name)
-		if err != nil {
-			t.Errorf("read %s: %v", file.name, err)
-			continue
-		}
-		for _, fragment := range file.requiredFragments {
-			if !bytes.Contains(contents, []byte(fragment)) {
-				t.Errorf("%s does not record required provenance fragment %q", file.name, fragment)
-			}
-		}
-	}
+	requireProvenance(t, expectations...)
 }

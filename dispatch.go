@@ -53,15 +53,19 @@ type variant[T any] struct {
 	available bool
 }
 
+func (candidate variant[T]) supportedBy(input selectionInput) bool {
+	if !candidate.available {
+		return false
+	}
+	if candidate.kind == implementationArchsimd && !input.archsimdAVX2 {
+		return false
+	}
+	return input.features&candidate.required == candidate.required
+}
+
 func selectVariant[T any](input selectionInput, candidates ...variant[T]) T {
 	for _, candidate := range candidates {
-		if !candidate.available {
-			continue
-		}
-		if candidate.kind == implementationArchsimd && !input.archsimdAVX2 {
-			continue
-		}
-		if input.features&candidate.required == candidate.required {
+		if candidate.supportedBy(input) {
 			return candidate.value
 		}
 	}
