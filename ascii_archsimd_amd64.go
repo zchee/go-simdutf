@@ -27,11 +27,13 @@ import (
 // dec3aad192f47081110d9c766d4917bad243906f (tree
 // eb5429bb160dfdf1a7d208f0184d3379940e69ee):
 // src/generic/ascii_validation.h:6-45 and
+// include/simdutf/scalar/ascii.h:15-81 and
 // src/generic/validate_utf16.h:128-158 and
-// src/haswell/implementation.cpp:278-307. The zero-filled partial vectors
-// preserve the upstream remainder-block semantics. The UTF-16 adaptation uses
-// 16-lane AVX2 vectors over raw []uint16 storage: mask 0xff80 for little-endian
-// input and 0x80ff for big-endian input, with a zero-filled partial tail.
+// src/haswell/implementation.cpp:278-307. Byte input uses AVX2 for complete
+// vectors and the pinned scalar oracle for the remainder. The UTF-16 adaptation
+// uses 16-lane AVX2 vectors over raw []uint16 storage: mask 0xff80 for
+// little-endian input and 0x80ff for big-endian input, with a zero-filled
+// partial tail.
 //
 // The Go 1.26.5 archsimd API usage is pinned to:
 // src/simd/archsimd/slice_gen_amd64.go:149-162,1059-1092;
@@ -53,13 +55,7 @@ func validateASCIIArchsimd(input []byte) bool {
 			return false
 		}
 	}
-	if offset != len(input) {
-		value := archsimd.LoadUint8x32SlicePart(input[offset:])
-		if value.AsInt8x32().Less(zero).ToBits() != 0 {
-			return false
-		}
-	}
-	return true
+	return validateASCIIScalar(input[offset:])
 }
 
 func validateASCIIWithErrorsArchsimd(input []byte) Result {
@@ -72,14 +68,9 @@ func validateASCIIWithErrorsArchsimd(input []byte) Result {
 			return Result{Error: TooLarge, Count: offset + bits.TrailingZeros32(mask)}
 		}
 	}
-	if offset != len(input) {
-		value := archsimd.LoadUint8x32SlicePart(input[offset:])
-		mask := value.AsInt8x32().Less(zero).ToBits()
-		if mask != 0 {
-			return Result{Error: TooLarge, Count: offset + bits.TrailingZeros32(mask)}
-		}
-	}
-	return Result{Error: Success, Count: len(input)}
+	result := validateASCIIWithErrorsScalar(input[offset:])
+	result.Count += offset
+	return result
 }
 
 func validateUTF16LEAsASCIIArchsimd(input []uint16) bool {
