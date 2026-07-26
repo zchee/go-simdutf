@@ -32,7 +32,9 @@ or generated output can fill a semantic or algorithm gap.
 
 The initial acceleration inventory is in
 [`isa-eligibility.tsv`](isa-eligibility.tsv). It is an evidence
-and work-planning matrix, not a claim that Go acceleration is implemented.
+and work-planning matrix that may also record later audited implementations.
+Only a row explicitly marked `implemented` makes that narrow implementation
+claim; eligibility or a `required` phase value alone does not.
 
 ## Apache-2.0 selection and required source treatment
 
@@ -85,7 +87,7 @@ object code.
 5. Audit POPCNT, LZCNT/TZCNT, BMI1, BMI2, PCLMULQDQ, and every other non-baseline instruction per symbol. `_popcnt64` occurs in pinned Westmere/Haswell bit-manipulation headers; that is a trigger to audit the affected symbol, not evidence that every family symbol needs POPCNT.
 6. Compile amd64 audit artifacts with `GOAMD64=v1`. Save `go tool objdump` (or equivalent) per direct symbol. A selector must cover every emitted non-baseline opcode, and must not require a feature solely because the C++ family region permitted it.
 7. Initial arm64 acceleration is NEON hand-written `.s` only. Audit emitted NEON instructions and Go ABI/bounds safety. No arm64 file may import `simd/archsimd`.
-8. A tagged `amd64 && goexperiment.simd` implementation begins `pending-audit`. It uses `archsimd.X86.AVX2()` for runtime AVX2 safety, then satisfies the same per-symbol instruction audit, direct scalar-differential fuzzing, and `GOAMD64=v1` object proof. A successful tagged build is not eligibility proof; ordinary Go loops are not an archsimd implementation.
+8. `archsimd_status` has exactly three values: `pending-audit` for eligible or partially implemented work that has not passed every gate; `implemented` only when the implementation is tagged `amd64 && goexperiment.simd`, runtime-gated by `archsimd.X86.AVX2()`, covered by direct scalar-differential fuzzing, and backed by per-symbol `GOAMD64=v1` object proof; and `not_applicable` when no direct archsimd implementation is appropriate. A successful tagged build is not eligibility proof, and ordinary Go loops are not an archsimd implementation.
 
 ## Per-change merge gate
 
