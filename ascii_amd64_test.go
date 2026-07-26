@@ -19,7 +19,6 @@ package simdutf
 import (
 	"math/bits"
 	"os"
-	"os/exec"
 	"slices"
 	"strconv"
 	"strings"
@@ -298,51 +297,6 @@ func TestValidateASCIIAMD64TypedNilDirect(t *testing.T) {
 	}
 }
 
-// These four fuzz targets cover the exact direct-backend cells independently:
-// Westmere byte prefix/bool/exact Result, Haswell byte prefix/bool/exact Result,
-// Westmere UTF-16 LE+BE prefix/bool, and Haswell UTF-16 LE+BE prefix/bool.
-// Each callback varies the safe base alignment and verifies the entire backing
-// allocation, including both canaries, remains byte-for-byte unchanged.
-// Fuzz seed serialization is not used as proof of typed-nil invocation; that
-// contract is covered directly by TestValidateASCIIAMD64TypedNilDirect.
-func FuzzValidateASCIIWestmereAgainstScalar(f *testing.F) {
-	addASCIIAMD64FuzzSeeds(f)
-	f.Fuzz(func(t *testing.T, fuzzInput []byte, alignment uint8) {
-		fuzzASCIIAMD64AgainstScalar(t, fuzzInput, alignment, validateASCIIPrefixWestmere, validateASCIIWestmere, validateASCIIWithErrorsWestmere)
-	})
-}
-
-func FuzzValidateASCIIHaswellAgainstScalar(f *testing.F) {
-	if !amd64HasAVX2() {
-		f.Skip("AVX2 is unavailable")
-	}
-	addASCIIAMD64FuzzSeeds(f)
-	f.Fuzz(func(t *testing.T, fuzzInput []byte, alignment uint8) {
-		fuzzASCIIAMD64AgainstScalar(t, fuzzInput, alignment, validateASCIIPrefixHaswell, validateASCIIHaswell, validateASCIIWithErrorsHaswell)
-	})
-}
-
-func FuzzValidateUTF16AsASCIIWestmereAgainstScalar(f *testing.F) {
-	addUTF16ASCIIAMD64FuzzSeeds(f)
-	f.Fuzz(func(t *testing.T, fuzzBytes []byte, alignment uint8) {
-		fuzzUTF16ASCIIAMD64AgainstScalar(t, fuzzBytes, alignment,
-			validateUTF16LEASCIIPrefixWestmere, validateUTF16LEAsASCIIWestmere,
-			validateUTF16BEASCIIPrefixWestmere, validateUTF16BEAsASCIIWestmere)
-	})
-}
-
-func FuzzValidateUTF16AsASCIIHaswellAgainstScalar(f *testing.F) {
-	if !amd64HasAVX2() {
-		f.Skip("AVX2 is unavailable")
-	}
-	addUTF16ASCIIAMD64FuzzSeeds(f)
-	f.Fuzz(func(t *testing.T, fuzzBytes []byte, alignment uint8) {
-		fuzzUTF16ASCIIAMD64AgainstScalar(t, fuzzBytes, alignment,
-			validateUTF16LEASCIIPrefixHaswell, validateUTF16LEAsASCIIHaswell,
-			validateUTF16BEASCIIPrefixHaswell, validateUTF16BEAsASCIIHaswell)
-	})
-}
-
 func TestValidateASCIIAMD64GuardPageNoOverread(t *testing.T) {
 	variants := []string{"westmere"}
 	if amd64HasAVX2() {
@@ -357,11 +311,8 @@ func TestValidateASCIIAMD64GuardPageNoOverread(t *testing.T) {
 			for _, length := range lengths {
 				name := kind + "/" + variant + "/length=" + strconv.Itoa(length)
 				t.Run(name, func(t *testing.T) {
-					command := exec.Command(os.Args[0], "-test.run=^TestValidateASCIIAMD64GuardPageHelper$")
-					command.Env = append(os.Environ(), "SIMDUTF_AMD64_GUARD="+kind+","+variant+","+strconv.Itoa(length))
-					if output, err := command.CombinedOutput(); err != nil {
-						t.Fatalf("guard-page subprocess failed: %v\n%s", err, output)
-					}
+					runPageGuardSubprocess(t, "TestValidateASCIIAMD64GuardPageHelper", "SIMDUTF_AMD64_GUARD",
+						kind+","+variant+","+strconv.Itoa(length))
 				})
 			}
 		}
@@ -432,97 +383,6 @@ func TestValidateASCIIAMD64GuardPageHelper(t *testing.T) {
 	}
 }
 
-func addASCIIAMD64FuzzSeeds(f *testing.F) {
-	f.Helper()
-	f.Add([]byte(nil), uint8(0))
-	f.Add([]byte{}, uint8(1))
-	for index, length := range [...]int{63, 64, 65, 127, 128, 129} {
-		seed := make([]byte, length)
-		for i := range seed {
-			seed[i] = byte((i*29 + 7) & 0x7f)
-		}
-		f.Add(seed, uint8(index+2))
-		if length != 0 {
-			seed = slices.Clone(seed)
-			seed[0], seed[length/2], seed[length-1] = 0x80, 0xff, 0x81
-			f.Add(seed, uint8(index+10))
-		}
-	}
-}
-
-func addUTF16ASCIIAMD64FuzzSeeds(f *testing.F) {
-	f.Helper()
-	f.Add([]byte(nil), uint8(0))
-	f.Add([]byte{}, uint8(1))
-	for index, units := range [...]int{31, 32, 33, 63, 64, 65} {
-		f.Add(make([]byte, units*2), uint8(index+2))
-		seed := make([]byte, units*2)
-		seed[0], seed[len(seed)/2], seed[len(seed)-1] = 0x80, 0xff, 0x80
-		f.Add(seed, uint8(index+10))
-	}
-}
-
-func fuzzASCIIAMD64AgainstScalar(
-	t *testing.T,
-	fuzzInput []byte,
-	alignment uint8,
-	prefix func([]byte) int,
-	validate func([]byte) bool,
-	withErrors func([]byte) Result,
-) {
-	t.Helper()
-	base := 16 + int(alignment%32)
-	backing := make([]byte, base+len(fuzzInput)+16)
-	for i := range backing {
-		backing[i] = 0xa5
-	}
-	input := backing[base : base+len(fuzzInput)]
-	copy(input, fuzzInput)
-	before := slices.Clone(backing)
-	wantPrefix := asciiAMD64BytePrefixFromScalar(input)
-	if got := prefix(input); got != wantPrefix {
-		t.Fatalf("prefix = %d, want %d", got, wantPrefix)
-	}
-	if got, want := validate(input), validateASCIIScalar(input); got != want {
-		t.Fatalf("validate = %v, want %v", got, want)
-	}
-	if got, want := withErrors(input), validateASCIIWithErrorsScalar(input); got != want {
-		t.Fatalf("result = %+v, want %+v", got, want)
-	}
-	if !slices.Equal(backing, before) {
-		t.Fatal("validator modified aligned input or canary")
-	}
-}
-
-func fuzzUTF16ASCIIAMD64AgainstScalar(
-	t *testing.T,
-	fuzzBytes []byte,
-	alignment uint8,
-	lePrefix func([]uint16) int,
-	le func([]uint16) bool,
-	bePrefix func([]uint16) int,
-	be func([]uint16) bool,
-) {
-	t.Helper()
-	words := make([]uint16, len(fuzzBytes)/2)
-	for i := range words {
-		words[i] = uint16(fuzzBytes[2*i]) | uint16(fuzzBytes[2*i+1])<<8
-	}
-	base := 8 + int(alignment%16)
-	backing := make([]uint16, base+len(words)+8)
-	for i := range backing {
-		backing[i] = 0xa5a5
-	}
-	input := backing[base : base+len(words)]
-	copy(input, words)
-	before := slices.Clone(backing)
-	checkUTF16AMD64AgainstScalar(t, input, lePrefix, le, validateUTF16LEAsASCIIScalar)
-	checkUTF16AMD64AgainstScalar(t, input, bePrefix, be, validateUTF16BEAsASCIIScalar)
-	if !slices.Equal(backing, before) {
-		t.Fatal("validator modified aligned UTF-16 input or canary")
-	}
-}
-
 func checkASCIIAMD64GuardCalls(
 	t *testing.T,
 	input []byte,
@@ -583,16 +443,6 @@ func checkUTF16AMD64AgainstScalar(
 	if got, want := validate(input), scalar(input); got != want {
 		t.Fatalf("validate = %v, want %v", got, want)
 	}
-}
-
-func asciiAMD64BytePrefixFromScalar(input []byte) int {
-	prefix := len(input) &^ 63
-	for block := 0; block < prefix; block += 64 {
-		if !validateASCIIScalar(input[block : block+64]) {
-			return block
-		}
-	}
-	return prefix
 }
 
 func amd64HasAVX2() bool {

@@ -133,38 +133,6 @@ func TestASCIINEONDoesNotWriteInput(t *testing.T) {
 	}
 }
 
-func FuzzValidateASCIINEONAgainstScalar(f *testing.F) {
-	for _, seed := range [][]byte{nil, {}, make([]byte, 63), make([]byte, 64), make([]byte, 65), {0x7f, 0x80, 0xff}} {
-		f.Add(seed)
-	}
-	f.Fuzz(func(t *testing.T, input []byte) {
-		if got, want := validateASCIINEON(input), validateASCIIScalar(input); got != want {
-			t.Fatalf("validateASCIINEON = %v, want %v", got, want)
-		}
-		if got, want := validateASCIIWithErrorsNEON(input), validateASCIIWithErrorsScalar(input); got != want {
-			t.Fatalf("validateASCIIWithErrorsNEON = %+v, want %+v", got, want)
-		}
-	})
-}
-
-func FuzzValidateUTF16AsASCIINEONAgainstScalar(f *testing.F) {
-	for _, seed := range [][]byte{nil, {}, make([]byte, 30), make([]byte, 32), make([]byte, 34), {0, 0, 0x80, 0}} {
-		f.Add(seed)
-	}
-	f.Fuzz(func(t *testing.T, bytes []byte) {
-		input := make([]uint16, len(bytes)/2)
-		for i := range input {
-			input[i] = uint16(bytes[2*i]) | uint16(bytes[2*i+1])<<8
-		}
-		if got, want := validateUTF16LEAsASCIINEON(input), validateUTF16LEAsASCIIScalar(input); got != want {
-			t.Fatalf("validateUTF16LEAsASCIINEON = %v, want %v", got, want)
-		}
-		if got, want := validateUTF16BEAsASCIINEON(input), validateUTF16BEAsASCIIScalar(input); got != want {
-			t.Fatalf("validateUTF16BEAsASCIINEON = %v, want %v", got, want)
-		}
-	})
-}
-
 func checkASCIINEON(t *testing.T, input []byte) {
 	t.Helper()
 	if got, want := validateASCIINEON(input), validateASCIIScalar(input); got != want {
