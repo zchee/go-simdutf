@@ -72,13 +72,15 @@ func selectVariant[T any](input selectionInput, candidates ...variant[T]) T {
 	panic("simdutf: internal dispatch has no available implementation")
 }
 
-//lint:ignore U1000 Phase 1 freezes the dispatch skeleton; Phase 2's first operation will consume this declaration and remove the exception.
-type implementation struct{}
+type implementation struct {
+	validateASCII           func([]byte) bool
+	validateASCIIWithErrors func([]byte) Result
+	validateUTF16LEAsASCII  func([]uint16) bool
+	validateUTF16BEAsASCII  func([]uint16) bool
+}
 
-//lint:ignore U1000 Phase 1 freezes the dispatch skeleton; Phase 2's first operation will consume this declaration and remove the exception.
 var activeImplementation = makeImplementation(detectSelectionInput())
 
-//lint:ignore U1000 Phase 1 freezes the dispatch skeleton; Phase 2's first operation will consume this declaration and remove the exception.
 func detectSelectionInput() selectionInput {
 	return selectionInput{
 		features:     detectHostFeatures(),
@@ -86,7 +88,35 @@ func detectSelectionInput() selectionInput {
 	}
 }
 
-//lint:ignore U1000 Phase 1 freezes the dispatch skeleton; Phase 2's first operation will consume this declaration and remove the exception.
-func makeImplementation(_ selectionInput) implementation {
-	return implementation{}
+func makeImplementation(input selectionInput) implementation {
+	return implementation{
+		validateASCII: selectVariant(input,
+			variant[func([]byte) bool]{
+				value:     validateASCIIScalar,
+				kind:      implementationScalar,
+				available: true,
+			},
+		),
+		validateASCIIWithErrors: selectVariant(input,
+			variant[func([]byte) Result]{
+				value:     validateASCIIWithErrorsScalar,
+				kind:      implementationScalar,
+				available: true,
+			},
+		),
+		validateUTF16LEAsASCII: selectVariant(input,
+			variant[func([]uint16) bool]{
+				value:     validateUTF16LEAsASCIIScalar,
+				kind:      implementationScalar,
+				available: true,
+			},
+		),
+		validateUTF16BEAsASCII: selectVariant(input,
+			variant[func([]uint16) bool]{
+				value:     validateUTF16BEAsASCIIScalar,
+				kind:      implementationScalar,
+				available: true,
+			},
+		),
+	}
 }

@@ -81,11 +81,32 @@ func TestAssemblySourcesBeginWithApacheLicenseHeader(t *testing.T) {
 	}
 }
 
-// TestPhase1SourcesRecordPinnedProvenance is hand-authored Go-only provenance
+// TestSourcesRecordPinnedProvenance is hand-authored Go-only provenance
 // enforcement, not an upstream test vector.
-func TestPhase1SourcesRecordPinnedProvenance(t *testing.T) {
+func TestSourcesRecordPinnedProvenance(t *testing.T) {
 	const upstreamSHA = "dec3aad192f47081110d9c766d4917bad243906f"
 	expectations := []provenanceExpectation{
+		{"ascii.go", []string{
+			upstreamSHA,
+			"include/simdutf/implementation.h:315-455",
+			"raw []uint16 storage encoding",
+		}},
+		{"ascii_scalar.go", []string{
+			upstreamSHA,
+			"include/simdutf/scalar/ascii.h:15-81",
+			"include/simdutf/scalar/utf16.h:8-18",
+			"src/fallback/implementation.cpp:49-73",
+			"bounds-checked loads",
+		}},
+		{"ascii_test.go", []string{
+			upstreamSHA,
+			"tests/validate_ascii_basic_tests.cpp:8-125",
+			"tests/validate_ascii_with_errors_tests.cpp:7-38",
+			"tests/validate_utf16be_basic_tests.cpp:12-20,158-174",
+			"tests/validate_utf16le_basic_tests.cpp:31-41,257-265",
+			"do not claim byte-identical output to C++ mt19937 fixtures",
+			"they do not prove absence of overreads",
+		}},
 		{"errors.go", []string{
 			upstreamSHA,
 			"include/simdutf/error.h",
