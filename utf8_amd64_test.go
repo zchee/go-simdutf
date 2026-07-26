@@ -191,7 +191,10 @@ func TestValidateUTF8AMD64VariantRegistries(t *testing.T) {
 		"westmere": {implementationWestmere, cpuSSSE3},
 		"haswell":  {implementationHaswell, cpuAVX2},
 	}
-	if archsimdValidateUTF8() != nil {
+	// The direct archsimd implementation remains registered for benchmarks and
+	// scalar-differential fuzzing even when the performance no-go keeps its
+	// production provider unavailable.
+	if archsimdUTF8DirectVariantsExpected() {
 		want["archsimd"] = struct {
 			kind     implementationKind
 			required cpuFeatures

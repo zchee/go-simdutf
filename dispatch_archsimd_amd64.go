@@ -48,9 +48,12 @@ func archsimdValidateUTF16BEAsASCII() func([]uint16) bool {
 }
 
 func archsimdValidateUTF8() func([]byte) bool {
-	return validateUTF8Archsimd
+	// Keep the direct variant available for differential testing, but do not
+	// select it in production while the Go 1.26.5 lowering significantly
+	// regresses both short full-block and pinned bulk workloads.
+	return nil
 }
 
 func archsimdValidateUTF8WithErrors() func([]byte) Result {
-	return validateUTF8WithErrorsArchsimd
+	return nil
 }

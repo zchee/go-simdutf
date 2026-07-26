@@ -25,6 +25,10 @@ import "testing"
 // and .omx/plans/port-simdutf-dec3aad192f4-go.md section 5.5; these are not
 // upstream test vectors.
 
+func archsimdUTF8DirectVariantsExpected() bool {
+	return false
+}
+
 func TestArchsimdProvidersUnavailableWithoutExperiment(t *testing.T) {
 	if archsimdAVX2Available() ||
 		archsimdCountUTF8() != nil ||

@@ -25,6 +25,10 @@ import "testing"
 // and .omx/plans/port-simdutf-dec3aad192f4-go.md section 5.5; these are not
 // upstream test vectors.
 
+func archsimdUTF8DirectVariantsExpected() bool {
+	return true
+}
+
 func TestMakeImplementationArchsimdSyntheticRuntimeGate(t *testing.T) {
 	withoutRuntimeGate := makeImplementation(selectionInput{features: cpuAVX2})
 	if !sameFunction(withoutRuntimeGate.countUTF8, countUTF8Haswell) {
@@ -50,26 +54,25 @@ func TestMakeImplementationArchsimdSyntheticRuntimeGate(t *testing.T) {
 		t.Errorf("with both gates countUTF8 selected %p, want archsimd %p", withBothGates.countUTF8, countUTF8Archsimd)
 	}
 	checkUTF8ImplementationFunctionsWant(t, withBothGates,
-		validateUTF8Archsimd, validateUTF8WithErrorsArchsimd)
+		validateUTF8Haswell, validateUTF8WithErrorsHaswell)
 	checkImplementationFunctions(t, withBothGates,
 		validateASCIIArchsimd, validateASCIIWithErrorsArchsimd,
 		validateUTF16LEAsASCIIArchsimd, validateUTF16BEAsASCIIArchsimd)
 }
 
-func TestArchsimdProvidersMatchBackends(t *testing.T) {
+func TestArchsimdProvidersMatchBackendsAndUTF8NoGo(t *testing.T) {
 	if got := archsimdCountUTF8(); !sameFunction(got, countUTF8Archsimd) {
 		t.Errorf("archsimdCountUTF8 = %p, want %p", got, countUTF8Archsimd)
 	}
+	if archsimdValidateUTF8() != nil || archsimdValidateUTF8WithErrors() != nil {
+		t.Fatal("UTF-8 archsimd providers bypass the performance no-go")
+	}
 	got := implementation{
-		validateUTF8:            archsimdValidateUTF8(),
-		validateUTF8WithErrors:  archsimdValidateUTF8WithErrors(),
 		validateASCII:           archsimdValidateASCII(),
 		validateASCIIWithErrors: archsimdValidateASCIIWithErrors(),
 		validateUTF16LEAsASCII:  archsimdValidateUTF16LEAsASCII(),
 		validateUTF16BEAsASCII:  archsimdValidateUTF16BEAsASCII(),
 	}
-	checkUTF8ImplementationFunctionsWant(t, got,
-		validateUTF8Archsimd, validateUTF8WithErrorsArchsimd)
 	checkImplementationFunctions(t, got, validateASCIIArchsimd, validateASCIIWithErrorsArchsimd,
 		validateUTF16LEAsASCIIArchsimd, validateUTF16BEAsASCIIArchsimd)
 }
