@@ -34,6 +34,7 @@ func TestMakeImplementationArchsimdSyntheticRuntimeGate(t *testing.T) {
 	if !sameFunction(withoutRuntimeGate.countUTF8, countUTF8Haswell) {
 		t.Errorf("without runtime gate countUTF8 selected %p, want Haswell %p", withoutRuntimeGate.countUTF8, countUTF8Haswell)
 	}
+	checkUTF8LengthImplementationFunctions(t, withoutRuntimeGate, utf16LengthFromUTF8Westmere, utf32LengthFromUTF8Scalar)
 	checkUTF8ImplementationFunctionsWant(t, withoutRuntimeGate,
 		validateUTF8Haswell, validateUTF8WithErrorsHaswell)
 	checkImplementationFunctions(t, withoutRuntimeGate,
@@ -44,18 +45,26 @@ func TestMakeImplementationArchsimdSyntheticRuntimeGate(t *testing.T) {
 	if !sameFunction(withoutCPUFeature.countUTF8, countUTF8Westmere) {
 		t.Errorf("without CPU feature countUTF8 selected %p, want Westmere %p", withoutCPUFeature.countUTF8, countUTF8Westmere)
 	}
+	checkUTF8LengthImplementationFunctions(t, withoutCPUFeature, utf16LengthFromUTF8Westmere, utf32LengthFromUTF8Scalar)
 	checkUTF8ImplementationFunctions(t, withoutCPUFeature)
 	checkImplementationFunctions(t, withoutCPUFeature,
 		validateASCIIWestmere, validateASCIIWithErrorsWestmere,
 		validateUTF16LEAsASCIIWestmere, validateUTF16BEAsASCIIWestmere)
 
-	withBothGates := makeImplementation(selectionInput{features: cpuAVX2, archsimdAVX2: true})
-	if !sameFunction(withBothGates.countUTF8, countUTF8Archsimd) {
-		t.Errorf("with both gates countUTF8 selected %p, want archsimd %p", withBothGates.countUTF8, countUTF8Archsimd)
+	withoutPOPCNT := makeImplementation(selectionInput{features: cpuAVX2, archsimdAVX2: true})
+	if !sameFunction(withoutPOPCNT.countUTF8, countUTF8Archsimd) {
+		t.Errorf("without POPCNT countUTF8 selected %p, want archsimd %p", withoutPOPCNT.countUTF8, countUTF8Archsimd)
 	}
-	checkUTF8ImplementationFunctionsWant(t, withBothGates,
+	checkUTF8LengthImplementationFunctions(t, withoutPOPCNT, utf16LengthFromUTF8Westmere, utf32LengthFromUTF8Scalar)
+
+	withPOPCNT := makeImplementation(selectionInput{features: cpuAVX2 | cpuPOPCNT, archsimdAVX2: true})
+	if !sameFunction(withPOPCNT.countUTF8, countUTF8Archsimd) {
+		t.Errorf("with POPCNT countUTF8 selected %p, want archsimd %p", withPOPCNT.countUTF8, countUTF8Archsimd)
+	}
+	checkUTF8LengthImplementationFunctions(t, withPOPCNT, utf16LengthFromUTF8Westmere, utf32LengthFromUTF8Westmere)
+	checkUTF8ImplementationFunctionsWant(t, withPOPCNT,
 		validateUTF8Haswell, validateUTF8WithErrorsHaswell)
-	checkImplementationFunctions(t, withBothGates,
+	checkImplementationFunctions(t, withPOPCNT,
 		validateASCIIArchsimd, validateASCIIWithErrorsArchsimd,
 		validateUTF16LEAsASCIIArchsimd, validateUTF16BEAsASCIIArchsimd)
 }

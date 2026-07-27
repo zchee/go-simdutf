@@ -31,6 +31,9 @@ func Latin1LengthFromUTF8(input []byte) int {
 // represent input. It does not validate input; for arbitrary bytes it follows
 // the pinned scalar byte-counting formula. It is not BOM-aware.
 func UTF16LengthFromUTF8(input []byte) int {
+	if len(input) < utf16LengthFromUTF8DispatchCutoff {
+		return utf16LengthFromUTF8Scalar(input)
+	}
 	return activeImplementation.utf16LengthFromUTF8(input)
 }
 
@@ -38,6 +41,9 @@ func UTF16LengthFromUTF8(input []byte) int {
 // represent input. It is equivalent to CountUTF8 and does not validate input.
 // It is not BOM-aware.
 func UTF32LengthFromUTF8(input []byte) int {
+	if len(input) < utf32LengthFromUTF8DispatchCutoff {
+		return utf32LengthFromUTF8Scalar(input)
+	}
 	return activeImplementation.utf32LengthFromUTF8(input)
 }
 

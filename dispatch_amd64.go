@@ -33,6 +33,13 @@ func makeImplementation(input selectionInput) implementation {
 	archsimdASCIIWithErrors := archsimdValidateASCIIWithErrors()
 	archsimdUTF16LE := archsimdValidateUTF16LEAsASCII()
 	archsimdUTF16BE := archsimdValidateUTF16BEAsASCII()
+	countUTF8 := selectVariant(
+		input,
+		variant[func([]byte) int]{value: archsimdCount, kind: implementationArchsimd, required: cpuAVX2, available: archsimdCount != nil},
+		variant[func([]byte) int]{value: countUTF8Haswell, kind: implementationHaswell, required: cpuAVX2, available: true},
+		variant[func([]byte) int]{value: countUTF8Westmere, kind: implementationWestmere, available: true},
+		variant[func([]byte) int]{value: countUTF8Scalar, kind: implementationScalar, available: true},
+	)
 
 	// The translated Westmere UTF-8 validators remain available to direct tests,
 	// fuzzing, and benchmarks. They are not production candidates because they
@@ -51,20 +58,14 @@ func makeImplementation(input selectionInput) implementation {
 			variant[func([]byte) Result]{value: validateUTF8WithErrorsHaswell, kind: implementationHaswell, required: cpuAVX2, available: true},
 			variant[func([]byte) Result]{value: validateUTF8WithErrorsScalar, kind: implementationScalar, available: true},
 		),
-		countUTF8: selectVariant(
-			input,
-			variant[func([]byte) int]{value: archsimdCount, kind: implementationArchsimd, required: cpuAVX2, available: archsimdCount != nil},
-			variant[func([]byte) int]{value: countUTF8Haswell, kind: implementationHaswell, required: cpuAVX2, available: true},
-			variant[func([]byte) int]{value: countUTF8Westmere, kind: implementationWestmere, available: true},
-			variant[func([]byte) int]{value: countUTF8Scalar, kind: implementationScalar, available: true},
-		),
-		latin1LengthFromUTF8: selectVariant(input,
-			variant[func([]byte) int]{value: latin1LengthFromUTF8Scalar, kind: implementationScalar, available: true},
-		),
+		countUTF8:            countUTF8,
+		latin1LengthFromUTF8: countUTF8,
 		utf16LengthFromUTF8: selectVariant(input,
+			variant[func([]byte) int]{value: utf16LengthFromUTF8Westmere, kind: implementationWestmere, available: true},
 			variant[func([]byte) int]{value: utf16LengthFromUTF8Scalar, kind: implementationScalar, available: true},
 		),
 		utf32LengthFromUTF8: selectVariant(input,
+			variant[func([]byte) int]{value: utf32LengthFromUTF8Westmere, kind: implementationWestmere, required: cpuPOPCNT, available: true},
 			variant[func([]byte) int]{value: utf32LengthFromUTF8Scalar, kind: implementationScalar, available: true},
 		),
 		validateASCII: selectVariant(

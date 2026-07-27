@@ -26,21 +26,28 @@ import "testing"
 // upstream test vectors.
 
 func TestMakeImplementationARM64SyntheticNEONGate(t *testing.T) {
+	if utf16LengthFromUTF8DispatchCutoff != 0 || utf32LengthFromUTF8DispatchCutoff != 0 {
+		t.Fatalf("arm64 length cutoffs = (%d, %d), want zero", utf16LengthFromUTF8DispatchCutoff, utf32LengthFromUTF8DispatchCutoff)
+	}
 	for _, input := range []selectionInput{{}, {features: ^cpuNEON}} {
-		checkUTF8ImplementationFunctions(t, makeImplementation(input))
-		if got := makeImplementation(input).countUTF8; !sameFunction(got, countUTF8Scalar) {
-			t.Errorf("without exact NEON countUTF8 selected %p, want scalar %p", got, countUTF8Scalar)
+		got := makeImplementation(input)
+		checkUTF8ImplementationFunctions(t, got)
+		if gotCount := got.countUTF8; !sameFunction(gotCount, countUTF8Scalar) {
+			t.Errorf("without exact NEON countUTF8 selected %p, want scalar %p", gotCount, countUTF8Scalar)
 		}
-		checkImplementationFunctions(t, makeImplementation(input),
+		checkUTF8LengthImplementationFunctions(t, got, utf16LengthFromUTF8Scalar, utf32LengthFromUTF8Scalar)
+		checkImplementationFunctions(t, got,
 			validateASCIIScalar, validateASCIIWithErrorsScalar,
 			validateUTF16LEAsASCIIScalar, validateUTF16BEAsASCIIScalar)
 	}
 	for _, input := range []selectionInput{{features: cpuNEON}, {features: ^cpuFeatures(0)}} {
-		checkUTF8ImplementationFunctions(t, makeImplementation(input))
-		if got := makeImplementation(input).countUTF8; !sameFunction(got, countUTF8NEON) {
-			t.Errorf("with NEON countUTF8 selected %p, want NEON %p", got, countUTF8NEON)
+		got := makeImplementation(input)
+		checkUTF8ImplementationFunctions(t, got)
+		if gotCount := got.countUTF8; !sameFunction(gotCount, countUTF8NEON) {
+			t.Errorf("with NEON countUTF8 selected %p, want NEON %p", gotCount, countUTF8NEON)
 		}
-		checkImplementationFunctions(t, makeImplementation(input),
+		checkUTF8LengthImplementationFunctions(t, got, utf16LengthFromUTF8Scalar, utf32LengthFromUTF8Scalar)
+		checkImplementationFunctions(t, got,
 			validateASCIINEON, validateASCIIWithErrorsNEON,
 			validateUTF16LEAsASCIINEON, validateUTF16BEAsASCIINEON)
 	}
@@ -48,6 +55,7 @@ func TestMakeImplementationARM64SyntheticNEONGate(t *testing.T) {
 
 func TestMakeImplementationARM64Live(t *testing.T) {
 	checkUTF8ImplementationFunctions(t, activeImplementation)
+	checkUTF8LengthImplementationFunctions(t, activeImplementation, utf16LengthFromUTF8Scalar, utf32LengthFromUTF8Scalar)
 	if got := activeImplementation.countUTF8; !sameFunction(got, countUTF8NEON) {
 		t.Errorf("live countUTF8 selected %p, want NEON %p", got, countUTF8NEON)
 	}

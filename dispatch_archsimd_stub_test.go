@@ -44,8 +44,12 @@ func TestArchsimdProvidersUnavailableWithoutExperiment(t *testing.T) {
 	if !sameFunction(got.countUTF8, countUTF8Haswell) {
 		t.Errorf("countUTF8 selected %p, want Haswell %p", got.countUTF8, countUTF8Haswell)
 	}
+	checkUTF8LengthImplementationFunctions(t, got, utf16LengthFromUTF8Westmere, utf32LengthFromUTF8Scalar)
 	checkUTF8ImplementationFunctionsWant(t, got, validateUTF8Haswell, validateUTF8WithErrorsHaswell)
 	checkImplementationFunctions(t, got,
 		validateASCIIHaswell, validateASCIIWithErrorsHaswell,
 		validateUTF16LEAsASCIIHaswell, validateUTF16BEAsASCIIHaswell)
+
+	withPOPCNT := makeImplementation(selectionInput{features: cpuAVX2 | cpuPOPCNT, archsimdAVX2: true})
+	checkUTF8LengthImplementationFunctions(t, withPOPCNT, utf16LengthFromUTF8Westmere, utf32LengthFromUTF8Westmere)
 }

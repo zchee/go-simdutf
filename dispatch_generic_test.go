@@ -25,13 +25,19 @@ import "testing"
 // upstream test vectors.
 
 func TestMakeImplementationGenericSyntheticAndLive(t *testing.T) {
+	if utf16LengthFromUTF8DispatchCutoff != 0 || utf32LengthFromUTF8DispatchCutoff != 0 {
+		t.Fatalf("generic length cutoffs = (%d, %d), want zero", utf16LengthFromUTF8DispatchCutoff, utf32LengthFromUTF8DispatchCutoff)
+	}
 	checkUTF8ImplementationFunctions(t, activeImplementation)
+	checkUTF8LengthImplementationFunctions(t, activeImplementation, utf16LengthFromUTF8Scalar, utf32LengthFromUTF8Scalar)
 	checkImplementationFunctions(t, activeImplementation,
 		validateASCIIScalar, validateASCIIWithErrorsScalar,
 		validateUTF16LEAsASCIIScalar, validateUTF16BEAsASCIIScalar)
 	for _, input := range []selectionInput{{}, {features: ^cpuFeatures(0), archsimdAVX2: true}} {
-		checkUTF8ImplementationFunctions(t, makeImplementation(input))
-		checkImplementationFunctions(t, makeImplementation(input),
+		got := makeImplementation(input)
+		checkUTF8ImplementationFunctions(t, got)
+		checkUTF8LengthImplementationFunctions(t, got, utf16LengthFromUTF8Scalar, utf32LengthFromUTF8Scalar)
+		checkImplementationFunctions(t, got,
 			validateASCIIScalar, validateASCIIWithErrorsScalar,
 			validateUTF16LEAsASCIIScalar, validateUTF16BEAsASCIIScalar)
 	}

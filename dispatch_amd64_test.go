@@ -25,12 +25,38 @@ import "testing"
 // upstream test vectors.
 
 func TestMakeImplementationAMD64SyntheticPriority(t *testing.T) {
+	if utf16LengthFromUTF8DispatchCutoff != 16 || utf32LengthFromUTF8DispatchCutoff != 64 {
+		t.Fatalf("amd64 length cutoffs = (%d, %d), want (16, 64)", utf16LengthFromUTF8DispatchCutoff, utf32LengthFromUTF8DispatchCutoff)
+	}
 	t.Run("count UTF-8", func(t *testing.T) {
-		if got := makeImplementation(selectionInput{}).countUTF8; !sameFunction(got, countUTF8Westmere) {
+		zero := makeImplementation(selectionInput{})
+		if got := zero.countUTF8; !sameFunction(got, countUTF8Westmere) {
 			t.Errorf("zero features selected %p, want Westmere %p", got, countUTF8Westmere)
 		}
-		if got := makeImplementation(selectionInput{features: cpuAVX2}).countUTF8; !sameFunction(got, countUTF8Haswell) {
+		if !sameFunction(zero.latin1LengthFromUTF8, zero.countUTF8) {
+			t.Errorf("zero features selected Latin-1 %p and CountUTF8 %p", zero.latin1LengthFromUTF8, zero.countUTF8)
+		}
+		avx2 := makeImplementation(selectionInput{features: cpuAVX2})
+		if got := avx2.countUTF8; !sameFunction(got, countUTF8Haswell) {
 			t.Errorf("AVX2 selected %p, want Haswell %p", got, countUTF8Haswell)
+		}
+		if !sameFunction(avx2.latin1LengthFromUTF8, avx2.countUTF8) {
+			t.Errorf("AVX2 selected Latin-1 %p and CountUTF8 %p", avx2.latin1LengthFromUTF8, avx2.countUTF8)
+		}
+	})
+	t.Run("UTF-8 lengths", func(t *testing.T) {
+		for _, input := range []selectionInput{
+			{},
+			{features: cpuAVX2},
+			{features: cpuPOPCNT},
+			{features: cpuAVX2 | cpuPOPCNT},
+			{features: ^cpuFeatures(0), archsimdAVX2: true},
+		} {
+			wantUTF32 := utf32LengthFromUTF8Scalar
+			if input.features&cpuPOPCNT == cpuPOPCNT {
+				wantUTF32 = utf32LengthFromUTF8Westmere
+			}
+			checkUTF8LengthImplementationFunctions(t, makeImplementation(input), utf16LengthFromUTF8Westmere, wantUTF32)
 		}
 	})
 	checkUTF8ImplementationFunctions(t, makeImplementation(selectionInput{}))
@@ -73,6 +99,11 @@ func TestMakeImplementationAMD64SyntheticPriority(t *testing.T) {
 func TestMakeImplementationAMD64Live(t *testing.T) {
 	input := detectSelectionInput()
 	got := activeImplementation
+	wantUTF32 := utf32LengthFromUTF8Scalar
+	if input.features&cpuPOPCNT == cpuPOPCNT {
+		wantUTF32 = utf32LengthFromUTF8Westmere
+	}
+	checkUTF8LengthImplementationFunctions(t, got, utf16LengthFromUTF8Westmere, wantUTF32)
 	if input.archsimdAVX2 && input.features&cpuAVX2 == cpuAVX2 && archsimdCountUTF8() != nil {
 		if !sameFunction(got.countUTF8, archsimdCountUTF8()) {
 			t.Errorf("live countUTF8 selected %p, want archsimd %p", got.countUTF8, archsimdCountUTF8())

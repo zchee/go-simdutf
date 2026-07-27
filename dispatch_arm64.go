@@ -16,6 +16,11 @@
 
 package simdutf
 
+const (
+	utf16LengthFromUTF8DispatchCutoff = 0
+	utf32LengthFromUTF8DispatchCutoff = 0
+)
+
 // Go-only dispatch glue based on the first-supported priority semantics in
 // simdutf/simdutf@dec3aad192f47081110d9c766d4917bad243906f:src/implementation.cpp
 // and .omx/plans/port-simdutf-dec3aad192f4-go.md section 5.5; this is not an
@@ -26,6 +31,12 @@ func detectHostFeatures() cpuFeatures {
 }
 
 func makeImplementation(input selectionInput) implementation {
+	countUTF8 := selectVariant(
+		input,
+		variant[func([]byte) int]{value: countUTF8NEON, kind: implementationNEON, required: cpuNEON, available: true},
+		variant[func([]byte) int]{value: countUTF8Scalar, kind: implementationScalar, available: true},
+	)
+
 	// Keep the direct NEON validators available to tests, fuzzing, and benchmarks.
 	// Production stays scalar because all-length NEON and every tested Go cutoff
 	// significantly regress short inputs; pinned upstream has no short path.
@@ -38,15 +49,8 @@ func makeImplementation(input selectionInput) implementation {
 			input,
 			variant[func([]byte) Result]{value: validateUTF8WithErrorsScalar, kind: implementationScalar, available: true},
 		),
-		countUTF8: selectVariant(
-			input,
-			variant[func([]byte) int]{value: countUTF8NEON, kind: implementationNEON, required: cpuNEON, available: true},
-			variant[func([]byte) int]{value: countUTF8Scalar, kind: implementationScalar, available: true},
-		),
-		latin1LengthFromUTF8: selectVariant(
-			input,
-			variant[func([]byte) int]{value: latin1LengthFromUTF8Scalar, kind: implementationScalar, available: true},
-		),
+		countUTF8:            countUTF8,
+		latin1LengthFromUTF8: countUTF8,
 		utf16LengthFromUTF8: selectVariant(
 			input,
 			variant[func([]byte) int]{value: utf16LengthFromUTF8Scalar, kind: implementationScalar, available: true},

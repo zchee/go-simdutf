@@ -54,22 +54,34 @@ func TestImplementationTableExactFields(t *testing.T) {
 	}
 }
 
-func TestUTF8LengthDispatchAlwaysSelectsScalar(t *testing.T) {
+func TestLatin1LengthDispatchMatchesCountUTF8(t *testing.T) {
 	for _, input := range []selectionInput{
 		{},
 		{features: ^cpuFeatures(0)},
 		{features: ^cpuFeatures(0), archsimdAVX2: true},
 	} {
 		got := makeImplementation(input)
-		if !sameFunction(got.latin1LengthFromUTF8, latin1LengthFromUTF8Scalar) {
-			t.Errorf("latin1LengthFromUTF8 selected %p, want scalar %p", got.latin1LengthFromUTF8, latin1LengthFromUTF8Scalar)
+		if !sameFunction(got.latin1LengthFromUTF8, got.countUTF8) {
+			t.Errorf("input %+v selected Latin-1 %p and CountUTF8 %p", input, got.latin1LengthFromUTF8, got.countUTF8)
 		}
-		if !sameFunction(got.utf16LengthFromUTF8, utf16LengthFromUTF8Scalar) {
-			t.Errorf("utf16LengthFromUTF8 selected %p, want scalar %p", got.utf16LengthFromUTF8, utf16LengthFromUTF8Scalar)
-		}
-		if !sameFunction(got.utf32LengthFromUTF8, utf32LengthFromUTF8Scalar) {
-			t.Errorf("utf32LengthFromUTF8 selected %p, want scalar %p", got.utf32LengthFromUTF8, utf32LengthFromUTF8Scalar)
-		}
+	}
+}
+
+func checkUTF8LengthImplementationFunctions(
+	t *testing.T,
+	got implementation,
+	wantUTF16 func([]byte) int,
+	wantUTF32 func([]byte) int,
+) {
+	t.Helper()
+	if !sameFunction(got.latin1LengthFromUTF8, got.countUTF8) {
+		t.Errorf("latin1LengthFromUTF8 selected %p, countUTF8 selected %p", got.latin1LengthFromUTF8, got.countUTF8)
+	}
+	if !sameFunction(got.utf16LengthFromUTF8, wantUTF16) {
+		t.Errorf("utf16LengthFromUTF8 selected %p, want %p", got.utf16LengthFromUTF8, wantUTF16)
+	}
+	if !sameFunction(got.utf32LengthFromUTF8, wantUTF32) {
+		t.Errorf("utf32LengthFromUTF8 selected %p, want %p", got.utf32LengthFromUTF8, wantUTF32)
 	}
 }
 

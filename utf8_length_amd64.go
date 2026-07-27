@@ -18,6 +18,11 @@
 
 package simdutf
 
+const (
+	utf16LengthFromUTF8DispatchCutoff = 16
+	utf32LengthFromUTF8DispatchCutoff = 64
+)
+
 // Independently translated from
 // simdutf/simdutf@dec3aad192f47081110d9c766d4917bad243906f (tree
 // eb5429bb160dfdf1a7d208f0184d3379940e69ee):

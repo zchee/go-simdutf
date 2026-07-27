@@ -16,6 +16,11 @@ package simdutf
 
 import (
 	"bytes"
+	"go/ast"
+	"go/parser"
+	"go/token"
+	"slices"
+	"strconv"
 	"testing"
 )
 
@@ -112,6 +117,143 @@ func TestUTF8LengthScalarArbitraryByteFormula(t *testing.T) {
 			t.Errorf("UTF32LengthFromUTF8({%#02x}) = %d, want %d", value, got, codePoints)
 		}
 	}
+}
+
+func TestUTF8LengthPublicScalarBoundaryParity(t *testing.T) {
+	tests := []struct {
+		name    string
+		lengths []int
+		public  func([]byte) int
+		scalar  func([]byte) int
+	}{
+		{
+			name:    "UTF16",
+			lengths: []int{0, 1, 14, 15, 16, 17, 31, 32, 33},
+			public:  UTF16LengthFromUTF8,
+			scalar:  utf16LengthFromUTF8Scalar,
+		},
+		{
+			name:    "UTF32",
+			lengths: []int{0, 1, 62, 63, 64, 65, 127, 128, 129},
+			public:  UTF32LengthFromUTF8,
+			scalar:  utf32LengthFromUTF8Scalar,
+		},
+	}
+	for _, test := range tests {
+		for _, length := range test.lengths {
+			t.Run(test.name+"/length="+strconv.Itoa(length), func(t *testing.T) {
+				input := make([]byte, length)
+				for i := range input {
+					input[i] = byte(i*131 + length*17)
+				}
+				before := slices.Clone(input)
+				if got, want := test.public(input), test.scalar(input); got != want {
+					t.Errorf("public = %d, scalar = %d", got, want)
+				}
+				if !slices.Equal(input, before) {
+					t.Fatal("length helper modified input")
+				}
+			})
+		}
+	}
+}
+
+func TestLatin1LengthFromUTF8MatchesCountUTF8(t *testing.T) {
+	all := make([]byte, 256)
+	for i := range all {
+		all[i] = byte(i)
+	}
+	inputs := [][]byte{nil, {}, all}
+	for _, length := range []int{1, 15, 16, 17, 63, 64, 65, 127, 128, 129} {
+		input := make([]byte, length)
+		for i := range input {
+			input[i] = byte(i*29 + length)
+		}
+		inputs = append(inputs, input)
+	}
+	for index, input := range inputs {
+		t.Run(strconv.Itoa(index)+"/length="+strconv.Itoa(len(input)), func(t *testing.T) {
+			before := slices.Clone(input)
+			want := countUTF8Scalar(input)
+			if got := CountUTF8(input); got != want {
+				t.Errorf("CountUTF8 = %d, scalar = %d", got, want)
+			}
+			if got := Latin1LengthFromUTF8(input); got != want {
+				t.Errorf("Latin1LengthFromUTF8 = %d, scalar = %d", got, want)
+			}
+			if !slices.Equal(input, before) {
+				t.Fatal("CountUTF8 or Latin1LengthFromUTF8 modified input")
+			}
+		})
+	}
+}
+
+func TestUTF8LengthPublicShortInputGuardSourceShape(t *testing.T) {
+	fset := token.NewFileSet()
+	file, err := parser.ParseFile(fset, "utf8_length.go", nil, 0)
+	if err != nil {
+		t.Fatal(err)
+	}
+	functions := make(map[string]*ast.FuncDecl)
+	for _, declaration := range file.Decls {
+		if function, ok := declaration.(*ast.FuncDecl); ok {
+			functions[function.Name.Name] = function
+		}
+	}
+	tests := []struct {
+		function, cutoff, scalar, field string
+	}{
+		{"UTF16LengthFromUTF8", "utf16LengthFromUTF8DispatchCutoff", "utf16LengthFromUTF8Scalar", "utf16LengthFromUTF8"},
+		{"UTF32LengthFromUTF8", "utf32LengthFromUTF8DispatchCutoff", "utf32LengthFromUTF8Scalar", "utf32LengthFromUTF8"},
+	}
+	for _, test := range tests {
+		t.Run(test.function, func(t *testing.T) {
+			function := functions[test.function]
+			if function == nil || function.Body == nil || len(function.Body.List) != 2 {
+				t.Fatalf("%s must contain exactly a guard and dispatch return", test.function)
+			}
+			guard, ok := function.Body.List[0].(*ast.IfStmt)
+			if !ok || guard.Else != nil || len(guard.Body.List) != 1 {
+				t.Fatal("first statement must be an unconditional short-input guard")
+			}
+			condition, ok := guard.Cond.(*ast.BinaryExpr)
+			if !ok || condition.Op != token.LSS || !isLenInputCall(condition.X) || !isIdentifier(condition.Y, test.cutoff) {
+				t.Fatalf("guard must be len(input) < %s", test.cutoff)
+			}
+			guardReturn, ok := guard.Body.List[0].(*ast.ReturnStmt)
+			if !ok || len(guardReturn.Results) != 1 || !isDirectCall(guardReturn.Results[0], test.scalar) {
+				t.Fatalf("short-input guard must return %s(input)", test.scalar)
+			}
+			dispatchReturn, ok := function.Body.List[1].(*ast.ReturnStmt)
+			if !ok || len(dispatchReturn.Results) != 1 || !isImplementationCall(dispatchReturn.Results[0], test.field) {
+				t.Fatalf("guard must precede activeImplementation.%s(input)", test.field)
+			}
+		})
+	}
+}
+
+func isLenInputCall(expression ast.Expr) bool {
+	call, ok := expression.(*ast.CallExpr)
+	return ok && len(call.Args) == 1 && isIdentifier(call.Fun, "len") && isIdentifier(call.Args[0], "input")
+}
+
+func isIdentifier(expression ast.Expr, name string) bool {
+	identifier, ok := expression.(*ast.Ident)
+	return ok && identifier.Name == name
+}
+
+func isDirectCall(expression ast.Expr, function string) bool {
+	call, ok := expression.(*ast.CallExpr)
+	return ok && len(call.Args) == 1 && isIdentifier(call.Fun, function) && isIdentifier(call.Args[0], "input")
+}
+
+func isImplementationCall(expression ast.Expr, field string) bool {
+	call, ok := expression.(*ast.CallExpr)
+	if !ok || len(call.Args) != 1 || !isIdentifier(call.Args[0], "input") {
+		return false
+	}
+	selector, ok := call.Fun.(*ast.SelectorExpr)
+	return ok && isIdentifier(selector.X, "activeImplementation") && selector.Sel.Name == field
 }
 
 func TestTrimPartialUTF8UpstreamTailCases(t *testing.T) {
