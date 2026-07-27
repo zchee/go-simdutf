@@ -230,6 +230,29 @@ func TestValidateUTF8AMD64VariantRegistries(t *testing.T) {
 	check("fuzz", fuzz)
 }
 
+func TestValidateUTF8WestmereVariantFeatureGate(t *testing.T) {
+	for _, candidate := range utf8DirectVariants {
+		if candidate.name != "westmere" {
+			continue
+		}
+		withSSSE3 := selectionInput{features: cpuSSSE3}
+		if !candidate.validate.supportedBy(withSSSE3) {
+			t.Error("ValidateUTF8 Westmere cell rejected SSSE3")
+		}
+		if !candidate.withErrors.supportedBy(withSSSE3) {
+			t.Error("ValidateUTF8WithErrors Westmere cell rejected SSSE3")
+		}
+		if candidate.validate.supportedBy(selectionInput{}) {
+			t.Error("ValidateUTF8 Westmere cell accepted missing SSSE3")
+		}
+		if candidate.withErrors.supportedBy(selectionInput{}) {
+			t.Error("ValidateUTF8WithErrors Westmere cell accepted missing SSSE3")
+		}
+		return
+	}
+	t.Fatal("direct registry has no Westmere variant")
+}
+
 func TestValidateUTF8AMD64ScalarParity(t *testing.T) {
 	inputs := [][]byte{nil, {}}
 	for _, length := range []int{15, 16, 17, 31, 32, 33, 63, 64, 65, 66, 67, 68, 95, 96, 97, 127, 128, 129} {
