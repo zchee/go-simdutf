@@ -29,6 +29,9 @@ import (
 // Public, direct-dispatch, and scalar rows share identical setup and input-byte
 // denominators. Latin1LengthFromUTF8 and TrimPartialUTF8 have no registered
 // standalone pinned benchmark procedure.
+//
+// The dispatch-boundary and UTF-32 emoji comparisons are Go-only diagnostics
+// over the same frozen corpora.
 
 func BenchmarkUTF16LengthFromUTF8(b *testing.B) {
 	corpus := materializeShortbenchZero128()
@@ -73,6 +76,28 @@ func BenchmarkUTF16LengthFromUTF8(b *testing.B) {
 						}
 					})
 				}
+			})
+		}
+	})
+
+	b.Run("go-only-dispatch-boundary-zero-128", func(b *testing.B) {
+		for _, length := range [...]int{0, 1, 11, 15, 16, 17, 21} {
+			input := corpus[:length]
+			b.Run(fmt.Sprintf("%03dB", len(input)), func(b *testing.B) {
+				b.Run("public", func(b *testing.B) {
+					b.ReportAllocs()
+					b.SetBytes(int64(len(input)))
+					for b.Loop() {
+						benchmarkIntSink = UTF16LengthFromUTF8(input)
+					}
+				})
+				b.Run("scalar", func(b *testing.B) {
+					b.ReportAllocs()
+					b.SetBytes(int64(len(input)))
+					for b.Loop() {
+						benchmarkIntSink = utf16LengthFromUTF8Scalar(input)
+					}
+				})
 			})
 		}
 	})
@@ -165,5 +190,50 @@ func BenchmarkUTF32LengthFromUTF8(b *testing.B) {
 				}
 			})
 		}
+	})
+
+	b.Run("go-only-dispatch-boundary-zero-128", func(b *testing.B) {
+		for _, length := range [...]int{0, 1, 11, 61, 63, 64, 65, 71} {
+			input := corpus[:length]
+			b.Run(fmt.Sprintf("%03dB", len(input)), func(b *testing.B) {
+				b.Run("public", func(b *testing.B) {
+					b.ReportAllocs()
+					b.SetBytes(int64(len(input)))
+					for b.Loop() {
+						benchmarkIntSink = UTF32LengthFromUTF8(input)
+					}
+				})
+				b.Run("scalar", func(b *testing.B) {
+					b.ReportAllocs()
+					b.SetBytes(int64(len(input)))
+					for b.Loop() {
+						benchmarkIntSink = utf32LengthFromUTF8Scalar(input)
+					}
+				})
+			})
+		}
+	})
+
+	if err := checkBenchmarkCorpus(upstreamEmojiUTF8Spec, upstreamEmojiUTF8); err != nil {
+		b.Fatal(err)
+	}
+	input := upstreamEmojiUTF8[:len(upstreamEmojiUTF8)/4]
+	b.Run("go-only-upstream-emoji-utf8", func(b *testing.B) {
+		b.Run(fmt.Sprintf("%04dB", len(input)), func(b *testing.B) {
+			b.Run("public", func(b *testing.B) {
+				b.ReportAllocs()
+				b.SetBytes(int64(len(input)))
+				for b.Loop() {
+					benchmarkIntSink = UTF32LengthFromUTF8(input)
+				}
+			})
+			b.Run("scalar", func(b *testing.B) {
+				b.ReportAllocs()
+				b.SetBytes(int64(len(input)))
+				for b.Loop() {
+					benchmarkIntSink = utf32LengthFromUTF8Scalar(input)
+				}
+			})
+		})
 	})
 }
