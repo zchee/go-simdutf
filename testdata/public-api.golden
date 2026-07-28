@@ -1,0 +1,67 @@
+const	Base64ReversePadding	uint64	2
+const	DefaultLineLength	int	76
+enum-const	Base64Default	Base64Options	0
+enum-const	Base64DefaultAcceptGarbage	Base64Options	4
+enum-const	Base64DefaultNoPadding	Base64Options	2
+enum-const	Base64DefaultOrURL	Base64Options	8
+enum-const	Base64DefaultOrURLAcceptGarbage	Base64Options	12
+enum-const	Base64ExtraBits	ErrorCode	9
+enum-const	Base64InputRemainder	ErrorCode	8
+enum-const	Base64URL	Base64Options	1
+enum-const	Base64URLAcceptGarbage	Base64Options	5
+enum-const	Base64URLWithPadding	Base64Options	3
+enum-const	HeaderBits	ErrorCode	1
+enum-const	InvalidBase64Character	ErrorCode	7
+enum-const	Latin1	Encoding	32
+enum-const	Loose	LastChunkHandlingOptions	0
+enum-const	OnlyFullChunks	LastChunkHandlingOptions	3
+enum-const	Other	ErrorCode	11
+enum-const	OutputBufferTooSmall	ErrorCode	10
+enum-const	Overlong	ErrorCode	4
+enum-const	StopBeforePartial	LastChunkHandlingOptions	2
+enum-const	Strict	LastChunkHandlingOptions	1
+enum-const	Success	ErrorCode	0
+enum-const	Surrogate	ErrorCode	6
+enum-const	TooLarge	ErrorCode	5
+enum-const	TooLong	ErrorCode	3
+enum-const	TooShort	ErrorCode	2
+enum-const	UTF16BE	Encoding	4
+enum-const	UTF16LE	Encoding	2
+enum-const	UTF32BE	Encoding	16
+enum-const	UTF32LE	Encoding	8
+enum-const	UTF8	Encoding	1
+enum-const	Unspecified	Encoding	0
+field	FullResult.Error	0	ErrorCode	embedded=false	tag=""
+field	FullResult.InputCount	1	int	embedded=false	tag=""
+field	FullResult.OutputCount	2	int	embedded=false	tag=""
+field	FullResult.PaddingError	3	bool	embedded=false	tag=""
+field	Result.Count	1	int	embedded=false	tag=""
+field	Result.Error	0	ErrorCode	embedded=false	tag=""
+func	BOMByteSize	func(Encoding) int
+func	Base64OptionsString	func(Base64Options) string
+func	CheckBOM	func([]byte) Encoding
+func	CountUTF8	func([]byte) int
+func	EncodingString	func(Encoding) string
+func	ErrorToString	func(ErrorCode) string
+func	IsPartial	func(LastChunkHandlingOptions) bool
+func	LastChunkHandlingOptionsString	func(LastChunkHandlingOptions) string
+func	Latin1LengthFromUTF8	func([]byte) int
+func	TrimPartialUTF8	func([]byte) int
+func	UTF16LengthFromUTF8	func([]byte) int
+func	UTF32LengthFromUTF8	func([]byte) int
+func	ValidateASCII	func([]byte) bool
+func	ValidateASCIIWithErrors	func([]byte) Result
+func	ValidateUTF16AsASCII	func([]uint16) bool
+func	ValidateUTF16BEAsASCII	func([]uint16) bool
+func	ValidateUTF16LEAsASCII	func([]uint16) bool
+func	ValidateUTF8	func([]byte) bool
+func	ValidateUTF8WithErrors	func([]byte) Result
+method	FullResult.Result	FullResult	func() Result
+method	Result.IsErr	Result	func() bool
+method	Result.IsOK	Result	func() bool
+type	Base64Options	uint64
+type	Encoding	uint8
+type	ErrorCode	uint8
+type	FullResult	struct
+type	LastChunkHandlingOptions	uint64
+type	Result	struct

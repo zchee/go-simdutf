@@ -10,7 +10,7 @@ character-width and enum-type overloads that Go observes remain separate.
 
 ## Schema
 
-`api-manifest.tsv` has one row per Go-observable semantic overload, public semantic type/constant, or evidence-backed exclusion. `header_path_line` pins declaration evidence. `feature_gate` records the controlling upstream gate. `overload_disposition` states mapping/collapse/split/exclusion. Unit, result/count, destination, and alias columns freeze observable contracts. Source columns contain exact pinned-tree occurrence paths or an explicit `not_applicable` reason. `status` is `planned` or `implemented` for in-scope declarations and `excluded` only with `exclusion_reason`. `implemented` records a completed API row; it does not by itself claim that a phase hard gate is complete.
+`api-manifest.tsv` has one row per Go-observable semantic overload, public semantic type/constant, or evidence-backed exclusion. `header_path_line` pins declaration evidence. `feature_gate` records the controlling upstream gate. `overload_disposition` states mapping/collapse/split/exclusion. Unit, result/count, destination, and alias columns freeze observable contracts. Source columns contain exact pinned-tree occurrence paths or an explicit `not_applicable` reason. `status` is `planned` or `implemented` for in-scope declarations and `excluded` only with `exclusion_reason`. `milestone` separates the 30 rows in the current API (`611becc-current-api`) from 125 planned upstream rows (`future-upstream-api`) and 9 evidence-backed exclusions (`upstream-excluded`). `implemented` records a completed API row; it does not by itself claim that a phase hard gate is complete.
 
 The frozen mappings use `[]byte`, `[]uint16`, and `[]uint32`; `size_t` becomes `int`; width-distinct overloads use `UTF16`; UTF-16 LE/BE slices represent raw storage; native UTF-16 functions delegate by native endian. Ordinary destination-taking operations preserve the upstream sufficiently-sized destination precondition with a stable Go bounds panic. Bounded Latin-1/UTF-16-to-UTF-8 safe forms return only written `int`; Base64 safe forms return `(Result, written int)`.
 
@@ -34,7 +34,8 @@ the byte overload is not evidence for a `const char16_t *` procedure.
 - In-scope public type rows: **6**
 - In-scope public constant rows: **2**
 - Evidence-backed exclusions: **9**
-- Implementation status: **19 implemented**, **136 planned**, **9 excluded**
+- Implementation status: **30 implemented**, **125 planned**, **9 excluded**
+- Milestone scope: **30 `611becc-current-api`**, **125 `future-upstream-api`**, **9 `upstream-excluded`**
 - Candidate-ledger symbols reconciled: **133 / 133**
 - Additional public semantic/type/overload/exclusion rows found independently:
   **24**
@@ -155,15 +156,22 @@ import csv
 p='docs/porting/api-manifest.tsv'
 rows=list(csv.reader(open(p), delimiter='\t'))
 assert len(set(map(len, rows))) == 1, set(map(len, rows))
+assert len(rows) == 165 and len(rows[0]) == 23, (len(rows), len(rows[0]))
 h=dict(enumerate(rows[0])); idx={v:k for k,v in h.items()}
 for n,r in enumerate(rows[1:], 2):
     assert r[idx['status']] in ("planned", "implemented", "excluded"), (n, r[idx['status']])
     assert r[idx['overload_disposition']], n
     if r[idx['status']] == "excluded": assert r[idx['exclusion_reason']] != "not_applicable", n
+    expected_milestone = {"implemented": "611becc-current-api", "planned": "future-upstream-api", "excluded": "upstream-excluded"}[r[idx['status']]]
+    assert r[idx['milestone']] == expected_milestone, (n, r[idx['milestone']], expected_milestone)
 statuses = {status: 0 for status in ("implemented", "planned", "excluded")}
-for r in rows[1:]: statuses[r[idx['status']]] += 1
-assert statuses == {"implemented": 19, "planned": 136, "excluded": 9}, statuses
-print(f"{len(rows)-1} rows, {len(rows[0])} columns; {statuses}")
+milestones = {milestone: 0 for milestone in ("611becc-current-api", "future-upstream-api", "upstream-excluded")}
+for r in rows[1:]:
+    statuses[r[idx['status']]] += 1
+    milestones[r[idx['milestone']]] += 1
+assert statuses == {"implemented": 30, "planned": 125, "excluded": 9}, statuses
+assert milestones == {"611becc-current-api": 30, "future-upstream-api": 125, "upstream-excluded": 9}, milestones
+print(f"{len(rows)-1} rows, {len(rows[0])} columns; {statuses}; {milestones}")
 PY
 ```
 

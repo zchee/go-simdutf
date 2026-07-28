@@ -1,0 +1,343 @@
+// Copyright 2026 The go-simdutf Authors.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+package simdutf
+
+import (
+	"bytes"
+	"encoding/csv"
+	"fmt"
+	"go/ast"
+	"go/build"
+	"go/importer"
+	"go/parser"
+	"go/token"
+	"go/types"
+	"maps"
+	"os"
+	"path/filepath"
+	"slices"
+	"strings"
+	"testing"
+)
+
+func TestPublicAPIContract(t *testing.T) {
+	got := publicAPIRecords(t)
+
+	counts := make(map[string]int)
+	for _, record := range got {
+		kind, _, ok := strings.Cut(record, "\t")
+		if !ok {
+			t.Fatalf("API record has no kind separator: %q", record)
+		}
+		counts[kind]++
+	}
+	wantCounts := map[string]int{
+		"const":      2,
+		"enum-const": 31,
+		"field":      6,
+		"func":       19,
+		"method":     3,
+		"type":       6,
+	}
+	if !maps.Equal(counts, wantCounts) {
+		t.Fatalf("API leaf counts = %v, want %v", counts, wantCounts)
+	}
+	if len(got) != 67 {
+		t.Fatalf("API leaf record count = %d, want 67", len(got))
+	}
+
+	want, err := os.ReadFile(filepath.Join("testdata", "public-api.golden"))
+	if err != nil {
+		t.Fatal(err)
+	}
+	gotBytes := []byte(strings.Join(got, "\n") + "\n")
+	if !bytes.Equal(gotBytes, want) {
+		t.Fatalf("public API changed (-want +got):\n%s", lineDiff(string(want), string(gotBytes)))
+	}
+}
+
+func publicAPIRecords(t *testing.T) []string {
+	t.Helper()
+
+	buildPackage, err := build.Default.ImportDir(".", 0)
+	if err != nil {
+		t.Fatal(err)
+	}
+	sourceNames := append(slices.Clone(buildPackage.GoFiles), buildPackage.CgoFiles...)
+	slices.Sort(sourceNames)
+
+	fset := token.NewFileSet()
+	files := make([]*ast.File, 0, len(sourceNames))
+	for _, name := range sourceNames {
+		file, err := parser.ParseFile(fset, name, nil, parser.SkipObjectResolution)
+		if err != nil {
+			t.Fatalf("parse %s: %v", name, err)
+		}
+		files = append(files, file)
+	}
+	if len(files) == 0 {
+		t.Fatal("package has no buildable Go source files")
+	}
+
+	config := types.Config{Importer: importer.Default()}
+	checked, err := config.Check(buildPackage.ImportPath, fset, files, nil)
+	if err != nil {
+		t.Fatal(err)
+	}
+	qualifier := func(other *types.Package) string {
+		if other == checked {
+			return ""
+		}
+		return other.Name()
+	}
+
+	var records []string
+	for _, name := range checked.Scope().Names() {
+		object := checked.Scope().Lookup(name)
+		if !object.Exported() {
+			continue
+		}
+		switch object := object.(type) {
+		case *types.Const:
+			typeName := types.TypeString(object.Type(), qualifier)
+			kind := "const"
+			if _, ok := object.Type().(*types.Named); ok {
+				kind = "enum-const"
+			}
+			records = append(records, fmt.Sprintf("%s\t%s\t%s\t%s", kind, name, typeName, object.Val().ExactString()))
+		case *types.Func:
+			records = append(records, fmt.Sprintf("func\t%s\t%s", name, canonicalSignature(object.Type().(*types.Signature), qualifier)))
+		case *types.TypeName:
+			named, ok := object.Type().(*types.Named)
+			if !ok {
+				records = append(records, fmt.Sprintf("type\t%s\talias %s", name, types.TypeString(object.Type(), qualifier)))
+				continue
+			}
+			underlying := named.Underlying()
+			typeDescription := types.TypeString(underlying, qualifier)
+			if structure, ok := underlying.(*types.Struct); ok {
+				typeDescription = "struct"
+				for fieldIndex := range structure.NumFields() {
+					field := structure.Field(fieldIndex)
+					if !field.Exported() {
+						continue
+					}
+					records = append(records, fmt.Sprintf(
+						"field\t%s.%s\t%d\t%s\tembedded=%t\ttag=%q",
+						name,
+						field.Name(),
+						fieldIndex,
+						types.TypeString(field.Type(), qualifier),
+						field.Embedded(),
+						structure.Tag(fieldIndex),
+					))
+				}
+			}
+			records = append(records, fmt.Sprintf("type\t%s\t%s", name, typeDescription))
+			for methodIndex := range named.NumMethods() {
+				method := named.Method(methodIndex)
+				if !method.Exported() {
+					continue
+				}
+				signature := method.Type().(*types.Signature)
+				records = append(records, fmt.Sprintf(
+					"method\t%s.%s\t%s\t%s",
+					name,
+					method.Name(),
+					types.TypeString(signature.Recv().Type(), qualifier),
+					canonicalSignature(signature, qualifier),
+				))
+			}
+		case *types.Var:
+			records = append(records, fmt.Sprintf("var\t%s\t%s", name, types.TypeString(object.Type(), qualifier)))
+		default:
+			t.Fatalf("unsupported exported object %s (%T)", name, object)
+		}
+	}
+	slices.Sort(records)
+	return records
+}
+
+func canonicalSignature(signature *types.Signature, qualifier types.Qualifier) string {
+	withoutNames := func(tuple *types.Tuple) *types.Tuple {
+		variables := make([]*types.Var, tuple.Len())
+		for index := range tuple.Len() {
+			variables[index] = types.NewVar(token.NoPos, nil, "", tuple.At(index).Type())
+		}
+		return types.NewTuple(variables...)
+	}
+	typeParameters := func(list *types.TypeParamList) []*types.TypeParam {
+		parameters := make([]*types.TypeParam, list.Len())
+		for index := range list.Len() {
+			parameters[index] = list.At(index)
+		}
+		return parameters
+	}
+	canonical := types.NewSignatureType(
+		signature.Recv(),
+		typeParameters(signature.RecvTypeParams()),
+		typeParameters(signature.TypeParams()),
+		withoutNames(signature.Params()),
+		withoutNames(signature.Results()),
+		signature.Variadic(),
+	)
+	return types.TypeString(canonical, qualifier)
+}
+
+func TestAPIManifestMilestones(t *testing.T) {
+	file, err := os.Open(filepath.Join("docs", "porting", "api-manifest.tsv"))
+	if err != nil {
+		t.Fatal(err)
+	}
+	defer file.Close()
+
+	reader := csv.NewReader(file)
+	reader.Comma = '\t'
+	rows, err := reader.ReadAll()
+	if err != nil {
+		t.Fatal(err)
+	}
+	if len(rows) != 165 {
+		t.Fatalf("manifest row count = %d, want 165 including header", len(rows))
+	}
+
+	columns := make(map[string]int, len(rows[0]))
+	for index, name := range rows[0] {
+		columns[name] = index
+	}
+	for _, name := range []string{"family", "go_symbol", "status", "milestone"} {
+		if _, ok := columns[name]; !ok {
+			t.Fatalf("manifest has no %q column", name)
+		}
+	}
+	if columns["milestone"] != columns["status"]+1 {
+		t.Fatalf("milestone column index = %d, want immediately after status at %d", columns["milestone"], columns["status"]+1)
+	}
+
+	statusCounts := make(map[string]int)
+	milestoneCounts := make(map[string]int)
+	familyCounts := make(map[string]int)
+	var currentSymbols []string
+	for rowIndex, row := range rows[1:] {
+		if len(row) != len(rows[0]) {
+			t.Fatalf("manifest row %d has %d columns, want %d", rowIndex+2, len(row), len(rows[0]))
+		}
+		status := row[columns["status"]]
+		milestone := row[columns["milestone"]]
+		wantMilestone := map[string]string{
+			"implemented": "611becc-current-api",
+			"planned":     "future-upstream-api",
+			"excluded":    "upstream-excluded",
+		}[status]
+		if wantMilestone == "" {
+			t.Fatalf("manifest row %d has unknown status %q", rowIndex+2, status)
+		}
+		if milestone != wantMilestone {
+			t.Fatalf("manifest row %d milestone = %q, want %q for status %q", rowIndex+2, milestone, wantMilestone, status)
+		}
+		statusCounts[status]++
+		milestoneCounts[milestone]++
+		familyCounts[row[columns["family"]]]++
+		if milestone == "611becc-current-api" {
+			currentSymbols = append(currentSymbols, row[columns["go_symbol"]])
+		}
+	}
+
+	assertStringIntMap(t, "status counts", statusCounts, map[string]int{
+		"excluded":    9,
+		"implemented": 30,
+		"planned":     125,
+	})
+	assertStringIntMap(t, "milestone counts", milestoneCounts, map[string]int{
+		"611becc-current-api": 30,
+		"future-upstream-api": 125,
+		"upstream-excluded":   9,
+	})
+	assertStringIntMap(t, "family counts", familyCounts, map[string]int{
+		"ASCII":              5,
+		"Base64":             29,
+		"C++ mechanics":      3,
+		"Encoding detection": 9,
+		"Find":               2,
+		"Result/error":       7,
+		"Shared helper":      1,
+		"Transcoding/length": 86,
+		"UTF-16":             16,
+		"UTF-32":             2,
+		"UTF-8":              4,
+	})
+
+	slices.Sort(currentSymbols)
+	wantCurrentSymbols := []string{
+		"BOMByteSize",
+		"Base64Options",
+		"Base64OptionsString",
+		"Base64ReversePadding",
+		"CheckBOM",
+		"CountUTF8",
+		"DefaultLineLength",
+		"Encoding",
+		"EncodingString",
+		"ErrorCode",
+		"ErrorToString",
+		"FullResult",
+		"FullResult.Result",
+		"IsPartial",
+		"LastChunkHandlingOptions",
+		"LastChunkHandlingOptionsString",
+		"Latin1LengthFromUTF8",
+		"Result",
+		"Result.IsErr",
+		"Result.IsOK",
+		"TrimPartialUTF8",
+		"UTF16LengthFromUTF8",
+		"UTF32LengthFromUTF8",
+		"ValidateASCII",
+		"ValidateASCIIWithErrors",
+		"ValidateUTF16AsASCII",
+		"ValidateUTF16BEAsASCII",
+		"ValidateUTF16LEAsASCII",
+		"ValidateUTF8",
+		"ValidateUTF8WithErrors",
+	}
+	if !slices.Equal(currentSymbols, wantCurrentSymbols) {
+		t.Fatalf("current manifest symbols = %v, want %v", currentSymbols, wantCurrentSymbols)
+	}
+}
+
+func assertStringIntMap(t *testing.T, name string, got, want map[string]int) {
+	t.Helper()
+	if !maps.Equal(got, want) {
+		t.Fatalf("%s = %v, want %v", name, got, want)
+	}
+}
+
+func lineDiff(want, got string) string {
+	wantLines := strings.Split(strings.TrimSuffix(want, "\n"), "\n")
+	gotLines := strings.Split(strings.TrimSuffix(got, "\n"), "\n")
+	var diff strings.Builder
+	for index := range max(len(wantLines), len(gotLines)) {
+		if index < len(wantLines) && index < len(gotLines) && wantLines[index] == gotLines[index] {
+			continue
+		}
+		if index < len(wantLines) {
+			fmt.Fprintf(&diff, "-%s\n", wantLines[index])
+		}
+		if index < len(gotLines) {
+			fmt.Fprintf(&diff, "+%s\n", gotLines[index])
+		}
+	}
+	return diff.String()
+}
