@@ -34,101 +34,103 @@ GLOBL ·countUTF8Minus65<>(SB), RODATA|NOPTR, $32
 
 // func countUTF8BlocksWestmere(input []byte) int
 TEXT ·countUTF8BlocksWestmere(SB), NOSPLIT|NOFRAME, $0-32
-	MOVQ input_base+0(FP), SI
-	MOVQ input_len+8(FP), CX
-	ANDQ $-64, CX
-	PXOR X0, X0 // local byte counters
-	PXOR X4, X4 // widened 64-bit counters
-	XORQ R8, R8 // iterations since the last widening
+	MOVQ  input_base+0(FP), SI
+	MOVQ  input_len+8(FP), CX
+	ANDQ  $-64, CX
+	PXOR  X0, X0                      // local byte counters
+	PXOR  X4, X4                      // widened 64-bit counters
+	XORQ  R8, R8                      // iterations since the last widening
 	TESTQ CX, CX
-	JE count_utf8_westmere_finish
+	JE    count_utf8_westmere_finish
 	MOVOU ·countUTF8Minus65<>(SB), X2
 
 count_utf8_westmere_loop:
-	MOVOU 0(SI), X3
+	MOVOU   0(SI), X3
 	PCMPGTB X2, X3
-	PSUBB X3, X0
-	MOVOU 16(SI), X3
+	PSUBB   X3, X0
+	MOVOU   16(SI), X3
 	PCMPGTB X2, X3
-	PSUBB X3, X0
-	MOVOU 32(SI), X3
+	PSUBB   X3, X0
+	MOVOU   32(SI), X3
 	PCMPGTB X2, X3
-	PSUBB X3, X0
-	MOVOU 48(SI), X3
+	PSUBB   X3, X0
+	MOVOU   48(SI), X3
 	PCMPGTB X2, X3
-	PSUBB X3, X0
-	ADDQ $64, SI
-	SUBQ $64, CX
-	INCQ R8
-	CMPQ R8, $63
-	JNE count_utf8_westmere_continue
-	PXOR X1, X1
-	PSADBW X1, X0
-	PADDQ X0, X4
-	PXOR X0, X0
-	XORQ R8, R8
+	PSUBB   X3, X0
+	ADDQ    $64, SI
+	SUBQ    $64, CX
+	INCQ    R8
+	CMPQ    R8, $63
+	JNE     count_utf8_westmere_continue
+	PXOR    X1, X1
+	PSADBW  X1, X0
+	PADDQ   X0, X4
+	PXOR    X0, X0
+	XORQ    R8, R8
+
 count_utf8_westmere_continue:
 	TESTQ CX, CX
-	JNE count_utf8_westmere_loop
+	JNE   count_utf8_westmere_loop
 
 count_utf8_westmere_finish:
-	PXOR X1, X1
+	PXOR   X1, X1
 	PSADBW X1, X0
-	PADDQ X0, X4
+	PADDQ  X0, X4
 	PSHUFD $0x4e, X4, X5
-	PADDQ X5, X4
-	MOVQ X4, AX
-	MOVQ AX, count+24(FP)
+	PADDQ  X5, X4
+	MOVQ   X4, AX
+	MOVQ   AX, count+24(FP)
 	RET
 
 // func countUTF8BlocksHaswell(input []byte) int
 TEXT ·countUTF8BlocksHaswell(SB), NOSPLIT|NOFRAME, $0-32
-	MOVQ input_base+0(FP), SI
-	MOVQ input_len+8(FP), CX
-	ANDQ $-128, CX
-	VPXOR Y0, Y0, Y0 // local byte counters
-	VPXOR Y4, Y4, Y4 // widened 64-bit counters
-	XORQ R8, R8      // iterations since the last widening
-	TESTQ CX, CX
-	JE count_utf8_haswell_finish
+	MOVQ    input_base+0(FP), SI
+	MOVQ    input_len+8(FP), CX
+	ANDQ    $-128, CX
+	VPXOR   Y0, Y0, Y0                  // local byte counters
+	VPXOR   Y4, Y4, Y4                  // widened 64-bit counters
+	XORQ    R8, R8                      // iterations since the last widening
+	TESTQ   CX, CX
+	JE      count_utf8_haswell_finish
 	VMOVDQU ·countUTF8Minus65<>(SB), Y2
 
 count_utf8_haswell_loop:
-	VMOVDQU 0(SI), Y3
+	VMOVDQU  0(SI), Y3
 	VPCMPGTB Y2, Y3, Y3
-	VPSUBB Y3, Y0, Y0
-	VMOVDQU 32(SI), Y3
+	VPSUBB   Y3, Y0, Y0
+	VMOVDQU  32(SI), Y3
 	VPCMPGTB Y2, Y3, Y3
-	VPSUBB Y3, Y0, Y0
-	VMOVDQU 64(SI), Y3
+	VPSUBB   Y3, Y0, Y0
+	VMOVDQU  64(SI), Y3
 	VPCMPGTB Y2, Y3, Y3
-	VPSUBB Y3, Y0, Y0
-	VMOVDQU 96(SI), Y3
+	VPSUBB   Y3, Y0, Y0
+	VMOVDQU  96(SI), Y3
 	VPCMPGTB Y2, Y3, Y3
-	VPSUBB Y3, Y0, Y0
-	ADDQ $128, SI
-	SUBQ $128, CX
-	INCQ R8
-	CMPQ R8, $63
-	JNE count_utf8_haswell_continue
-	VPXOR Y1, Y1, Y1
-	VPSADBW Y1, Y0, Y3
-	VPADDQ Y3, Y4, Y4
-	VPXOR Y0, Y0, Y0
-	XORQ R8, R8
+	VPSUBB   Y3, Y0, Y0
+	ADDQ     $128, SI
+	SUBQ     $128, CX
+	INCQ     R8
+	CMPQ     R8, $63
+	JNE      count_utf8_haswell_continue
+	VPXOR    Y1, Y1, Y1
+	VPSADBW  Y1, Y0, Y3
+	VPADDQ   Y3, Y4, Y4
+	VPXOR    Y0, Y0, Y0
+	XORQ     R8, R8
+
 count_utf8_haswell_continue:
 	TESTQ CX, CX
-	JNE count_utf8_haswell_loop
+	JNE   count_utf8_haswell_loop
 
 count_utf8_haswell_finish:
-	VPXOR Y1, Y1, Y1
-	VPSADBW Y1, Y0, Y3
-	VPADDQ Y3, Y4, Y4
+	VPXOR        Y1, Y1, Y1
+	VPSADBW      Y1, Y0, Y3
+	VPADDQ       Y3, Y4, Y4
 	VEXTRACTI128 $1, Y4, X5
-	VPADDQ X5, X4, X4
-	VPSHUFD $0x4e, X4, X5
-	VPADDQ X5, X4, X4
-	MOVQ X4, AX
+	VPADDQ       X5, X4, X4
+	VPSHUFD      $0x4e, X4, X5
+	VPADDQ       X5, X4, X4
+	MOVQ         X4, AX
 	VZEROUPPER
-	MOVQ AX, count+24(FP)
+	MOVQ         AX, count+24(FP)
 	RET

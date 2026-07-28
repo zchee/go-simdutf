@@ -41,21 +41,23 @@ TEXT ·validateASCIIPrefixWestmere(SB), NOSPLIT, $0-32
 	MOVQ input_len+8(FP), CX
 	ANDQ $-64, CX
 	XORQ AX, AX
+
 ascii_westmere_loop:
-	CMPQ AX, CX
-	JAE ascii_westmere_return
-	MOVOU 0(SI)(AX*1), X0
-	MOVOU 16(SI)(AX*1), X1
-	MOVOU 32(SI)(AX*1), X2
-	MOVOU 48(SI)(AX*1), X3
-	POR X1, X0
-	POR X2, X0
-	POR X3, X0
+	CMPQ     AX, CX
+	JAE      ascii_westmere_return
+	MOVOU    0(SI)(AX*1), X0
+	MOVOU    16(SI)(AX*1), X1
+	MOVOU    32(SI)(AX*1), X2
+	MOVOU    48(SI)(AX*1), X3
+	POR      X1, X0
+	POR      X2, X0
+	POR      X3, X0
 	PMOVMSKB X0, DX
-	TESTL DX, DX
-	JNE ascii_westmere_return
-	ADDQ $64, AX
-	JMP ascii_westmere_loop
+	TESTL    DX, DX
+	JNE      ascii_westmere_return
+	ADDQ     $64, AX
+	JMP      ascii_westmere_loop
+
 ascii_westmere_return:
 	MOVQ AX, ret+24(FP)
 	RET
@@ -66,17 +68,19 @@ TEXT ·validateASCIIPrefixHaswell(SB), NOSPLIT, $0-32
 	MOVQ input_len+8(FP), CX
 	ANDQ $-64, CX
 	XORQ AX, AX
+
 ascii_haswell_loop:
-	CMPQ AX, CX
-	JAE ascii_haswell_return
-	VMOVDQU 0(SI)(AX*1), Y0
-	VMOVDQU 32(SI)(AX*1), Y1
-	VPOR Y1, Y0, Y0
+	CMPQ      AX, CX
+	JAE       ascii_haswell_return
+	VMOVDQU   0(SI)(AX*1), Y0
+	VMOVDQU   32(SI)(AX*1), Y1
+	VPOR      Y1, Y0, Y0
 	VPMOVMSKB Y0, DX
-	TESTL DX, DX
-	JNE ascii_haswell_return
-	ADDQ $64, AX
-	JMP ascii_haswell_loop
+	TESTL     DX, DX
+	JNE       ascii_haswell_return
+	ADDQ      $64, AX
+	JMP       ascii_haswell_loop
+
 ascii_haswell_return:
 	VZEROUPPER
 	MOVQ AX, ret+24(FP)
@@ -89,24 +93,26 @@ TEXT ·validateUTF16LEASCIIPrefixWestmere(SB), NOSPLIT, $0-32
 	MOVQ input_len+8(FP), CX
 	ANDQ $-32, CX
 	XORQ AX, AX
+
 utf16le_ascii_westmere_loop:
-	CMPQ AX, CX
-	JAE utf16le_ascii_westmere_return
-	MOVOU 0(SI)(AX*2), X0
-	MOVOU 16(SI)(AX*2), X1
-	MOVOU 32(SI)(AX*2), X2
-	MOVOU 48(SI)(AX*2), X3
-	POR X1, X0
-	POR X2, X0
-	POR X3, X0
-	PAND (DI), X0
-	PXOR X1, X1
-	PCMPEQW X1, X0
+	CMPQ     AX, CX
+	JAE      utf16le_ascii_westmere_return
+	MOVOU    0(SI)(AX*2), X0
+	MOVOU    16(SI)(AX*2), X1
+	MOVOU    32(SI)(AX*2), X2
+	MOVOU    48(SI)(AX*2), X3
+	POR      X1, X0
+	POR      X2, X0
+	POR      X3, X0
+	PAND     (DI), X0
+	PXOR     X1, X1
+	PCMPEQW  X1, X0
 	PMOVMSKB X0, DX
-	CMPL DX, $0xffff
-	JNE utf16le_ascii_westmere_return
-	ADDQ $32, AX
-	JMP utf16le_ascii_westmere_loop
+	CMPL     DX, $0xffff
+	JNE      utf16le_ascii_westmere_return
+	ADDQ     $32, AX
+	JMP      utf16le_ascii_westmere_loop
+
 utf16le_ascii_westmere_return:
 	MOVQ AX, ret+24(FP)
 	RET
@@ -118,24 +124,26 @@ TEXT ·validateUTF16BEASCIIPrefixWestmere(SB), NOSPLIT, $0-32
 	MOVQ input_len+8(FP), CX
 	ANDQ $-32, CX
 	XORQ AX, AX
+
 utf16_ascii_westmere_loop:
-	CMPQ AX, CX
-	JAE utf16_ascii_westmere_return
-	MOVOU 0(SI)(AX*2), X0
-	MOVOU 16(SI)(AX*2), X1
-	MOVOU 32(SI)(AX*2), X2
-	MOVOU 48(SI)(AX*2), X3
-	POR X1, X0
-	POR X2, X0
-	POR X3, X0
-	PAND (DI), X0
-	PXOR X1, X1
-	PCMPEQW X1, X0
+	CMPQ     AX, CX
+	JAE      utf16_ascii_westmere_return
+	MOVOU    0(SI)(AX*2), X0
+	MOVOU    16(SI)(AX*2), X1
+	MOVOU    32(SI)(AX*2), X2
+	MOVOU    48(SI)(AX*2), X3
+	POR      X1, X0
+	POR      X2, X0
+	POR      X3, X0
+	PAND     (DI), X0
+	PXOR     X1, X1
+	PCMPEQW  X1, X0
 	PMOVMSKB X0, DX
-	CMPL DX, $0xffff
-	JNE utf16_ascii_westmere_return
-	ADDQ $32, AX
-	JMP utf16_ascii_westmere_loop
+	CMPL     DX, $0xffff
+	JNE      utf16_ascii_westmere_return
+	ADDQ     $32, AX
+	JMP      utf16_ascii_westmere_loop
+
 utf16_ascii_westmere_return:
 	MOVQ AX, ret+24(FP)
 	RET
@@ -147,20 +155,22 @@ TEXT ·validateUTF16LEASCIIPrefixHaswell(SB), NOSPLIT, $0-32
 	MOVQ input_len+8(FP), CX
 	ANDQ $-32, CX
 	XORQ AX, AX
+
 utf16le_ascii_haswell_loop:
-	CMPQ AX, CX
-	JAE utf16le_ascii_haswell_return
-	VMOVDQU 0(SI)(AX*2), Y0
-	VMOVDQU 32(SI)(AX*2), Y1
-	VPOR Y1, Y0, Y0
-	VPAND (DI), Y0, Y0
-	VPXOR Y1, Y1, Y1
-	VPCMPEQW Y1, Y0, Y0
+	CMPQ      AX, CX
+	JAE       utf16le_ascii_haswell_return
+	VMOVDQU   0(SI)(AX*2), Y0
+	VMOVDQU   32(SI)(AX*2), Y1
+	VPOR      Y1, Y0, Y0
+	VPAND     (DI), Y0, Y0
+	VPXOR     Y1, Y1, Y1
+	VPCMPEQW  Y1, Y0, Y0
 	VPMOVMSKB Y0, DX
-	CMPL DX, $-1
-	JNE utf16le_ascii_haswell_return
-	ADDQ $32, AX
-	JMP utf16le_ascii_haswell_loop
+	CMPL      DX, $-1
+	JNE       utf16le_ascii_haswell_return
+	ADDQ      $32, AX
+	JMP       utf16le_ascii_haswell_loop
+
 utf16le_ascii_haswell_return:
 	VZEROUPPER
 	MOVQ AX, ret+24(FP)
@@ -173,20 +183,22 @@ TEXT ·validateUTF16BEASCIIPrefixHaswell(SB), NOSPLIT, $0-32
 	MOVQ input_len+8(FP), CX
 	ANDQ $-32, CX
 	XORQ AX, AX
+
 utf16_ascii_haswell_loop:
-	CMPQ AX, CX
-	JAE utf16_ascii_haswell_return
-	VMOVDQU 0(SI)(AX*2), Y0
-	VMOVDQU 32(SI)(AX*2), Y1
-	VPOR Y1, Y0, Y0
-	VPAND (DI), Y0, Y0
-	VPXOR Y1, Y1, Y1
-	VPCMPEQW Y1, Y0, Y0
+	CMPQ      AX, CX
+	JAE       utf16_ascii_haswell_return
+	VMOVDQU   0(SI)(AX*2), Y0
+	VMOVDQU   32(SI)(AX*2), Y1
+	VPOR      Y1, Y0, Y0
+	VPAND     (DI), Y0, Y0
+	VPXOR     Y1, Y1, Y1
+	VPCMPEQW  Y1, Y0, Y0
 	VPMOVMSKB Y0, DX
-	CMPL DX, $-1
-	JNE utf16_ascii_haswell_return
-	ADDQ $32, AX
-	JMP utf16_ascii_haswell_loop
+	CMPL      DX, $-1
+	JNE       utf16_ascii_haswell_return
+	ADDQ      $32, AX
+	JMP       utf16_ascii_haswell_loop
+
 utf16_ascii_haswell_return:
 	VZEROUPPER
 	MOVQ AX, ret+24(FP)

@@ -27,11 +27,11 @@
 
 // func utf16LengthFromUTF8BlocksNEON(input []byte) int
 TEXT ·utf16LengthFromUTF8BlocksNEON(SB), NOSPLIT|NOFRAME, $0-32
-	MOVD	input_base+0(FP), R0
-	MOVD	input_len+8(FP), R1
-	AND	$-64, R1, R1
-	MOVD	$0, R2
-	CBZ	R1, utf16_length_neon_done
+	MOVD input_base+0(FP), R0
+	MOVD input_len+8(FP), R1
+	AND  $-64, R1, R1
+	MOVD $0, R2
+	CBZ  R1, utf16_length_neon_done
 
 	// Plan 9 has no signed integer VCMGT mnemonic. For every byte value,
 	// (byte >> 6) == 2 is exactly the continuation class 0x80..0xbf, the
@@ -39,59 +39,59 @@ TEXT ·utf16LengthFromUTF8BlocksNEON(SB), NOSPLIT|NOFRAME, $0-32
 	// (byte >> 4) == 15 is exactly upstream's unsigned input >= 0xf0 predicate.
 	// Converting both all-ones masks to byte values of one lets each block be
 	// reduced without byte-lane accumulation across iterations.
-	MOVD	$2, R3
-	VMOV	R3, V0.B16
-	MOVD	$15, R3
-	VMOV	R3, V14.B16
-	MOVD	$1, R3
-	VMOV	R3, V15.B16
+	MOVD $2, R3
+	VMOV R3, V0.B16
+	MOVD $15, R3
+	VMOV R3, V14.B16
+	MOVD $1, R3
+	VMOV R3, V15.B16
 
 utf16_length_neon_loop:
-	VLD1.P	64(R0), [V1.B16, V2.B16, V3.B16, V4.B16]
+	VLD1.P 64(R0), [V1.B16, V2.B16, V3.B16, V4.B16]
 
-	VUSHR	$6, V1.B16, V5.B16
-	VUSHR	$6, V2.B16, V6.B16
-	VUSHR	$6, V3.B16, V7.B16
-	VUSHR	$6, V4.B16, V8.B16
-	VCMEQ	V0.B16, V5.B16, V5.B16
-	VCMEQ	V0.B16, V6.B16, V6.B16
-	VCMEQ	V0.B16, V7.B16, V7.B16
-	VCMEQ	V0.B16, V8.B16, V8.B16
-	VAND	V15.B16, V5.B16, V5.B16
-	VAND	V15.B16, V6.B16, V6.B16
-	VAND	V15.B16, V7.B16, V7.B16
-	VAND	V15.B16, V8.B16, V8.B16
-	VADDP	V6.B16, V5.B16, V9.B16
-	VADDP	V8.B16, V7.B16, V10.B16
-	VADDP	V10.B16, V9.B16, V9.B16
-	VUADDLV	V9.B16, V11
-	VMOV	V11.D[0], R3
+	VUSHR   $6, V1.B16, V5.B16
+	VUSHR   $6, V2.B16, V6.B16
+	VUSHR   $6, V3.B16, V7.B16
+	VUSHR   $6, V4.B16, V8.B16
+	VCMEQ   V0.B16, V5.B16, V5.B16
+	VCMEQ   V0.B16, V6.B16, V6.B16
+	VCMEQ   V0.B16, V7.B16, V7.B16
+	VCMEQ   V0.B16, V8.B16, V8.B16
+	VAND    V15.B16, V5.B16, V5.B16
+	VAND    V15.B16, V6.B16, V6.B16
+	VAND    V15.B16, V7.B16, V7.B16
+	VAND    V15.B16, V8.B16, V8.B16
+	VADDP   V6.B16, V5.B16, V9.B16
+	VADDP   V8.B16, V7.B16, V10.B16
+	VADDP   V10.B16, V9.B16, V9.B16
+	VUADDLV V9.B16, V11
+	VMOV    V11.D[0], R3
 
-	VUSHR	$4, V1.B16, V1.B16
-	VUSHR	$4, V2.B16, V2.B16
-	VUSHR	$4, V3.B16, V3.B16
-	VUSHR	$4, V4.B16, V4.B16
-	VCMEQ	V14.B16, V1.B16, V1.B16
-	VCMEQ	V14.B16, V2.B16, V2.B16
-	VCMEQ	V14.B16, V3.B16, V3.B16
-	VCMEQ	V14.B16, V4.B16, V4.B16
-	VAND	V15.B16, V1.B16, V1.B16
-	VAND	V15.B16, V2.B16, V2.B16
-	VAND	V15.B16, V3.B16, V3.B16
-	VAND	V15.B16, V4.B16, V4.B16
-	VADDP	V2.B16, V1.B16, V9.B16
-	VADDP	V4.B16, V3.B16, V10.B16
-	VADDP	V10.B16, V9.B16, V9.B16
-	VUADDLV	V9.B16, V11
-	VMOV	V11.D[0], R4
+	VUSHR   $4, V1.B16, V1.B16
+	VUSHR   $4, V2.B16, V2.B16
+	VUSHR   $4, V3.B16, V3.B16
+	VUSHR   $4, V4.B16, V4.B16
+	VCMEQ   V14.B16, V1.B16, V1.B16
+	VCMEQ   V14.B16, V2.B16, V2.B16
+	VCMEQ   V14.B16, V3.B16, V3.B16
+	VCMEQ   V14.B16, V4.B16, V4.B16
+	VAND    V15.B16, V1.B16, V1.B16
+	VAND    V15.B16, V2.B16, V2.B16
+	VAND    V15.B16, V3.B16, V3.B16
+	VAND    V15.B16, V4.B16, V4.B16
+	VADDP   V2.B16, V1.B16, V9.B16
+	VADDP   V4.B16, V3.B16, V10.B16
+	VADDP   V10.B16, V9.B16, V9.B16
+	VUADDLV V9.B16, V11
+	VMOV    V11.D[0], R4
 
-	MOVD	$64, R5
-	SUB	R3, R5, R5
-	ADD	R4, R5, R5
-	ADD	R5, R2, R2
-	SUB	$64, R1
-	CBNZ	R1, utf16_length_neon_loop
+	MOVD $64, R5
+	SUB  R3, R5, R5
+	ADD  R4, R5, R5
+	ADD  R5, R2, R2
+	SUB  $64, R1
+	CBNZ R1, utf16_length_neon_loop
 
 utf16_length_neon_done:
-	MOVD	R2, length+24(FP)
+	MOVD R2, length+24(FP)
 	RET
