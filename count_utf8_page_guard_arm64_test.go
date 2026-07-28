@@ -24,7 +24,7 @@ import (
 
 // Hand-authored Go-only guard-page coverage for the complete-block-only loads
 // in the arm64 count port pinned to
-// simdutf/simdutf@dec3aad192f47081110d9c766d4917bad243906f:
+// simdutf/simdutf@c7bef0ff14a13fd6ea52e3347da2c659383392de:
 // src/generic/utf8.h:8-17 and src/arm64/implementation.cpp:1113-1117.
 
 const countUTF8NEONPageGuardEnv = "SIMDUTF_COUNT_UTF8_NEON_GUARD"

@@ -23,7 +23,7 @@ import (
 )
 
 // Hand-authored Go-only benchmark scaffolding pinned to
-// simdutf/simdutf@dec3aad192f47081110d9c766d4917bad243906f,
+// simdutf/simdutf@c7bef0ff14a13fd6ea52e3347da2c659383392de,
 // benchmarks/shortbench.cpp:419-422,493-497,520-526, and
 // docs/porting/benchmark-contract.md. This file defines corpus and accounting
 // helpers only; it adds no product behavior, upstream algorithm vectors,
@@ -56,7 +56,7 @@ var shortbenchZero128Spec = benchmarkCorpusSpec{
 }
 
 // Frozen exact bytes from
-// simdutf/simdutf@dec3aad192f47081110d9c766d4917bad243906f:
+// simdutf/simdutf@c7bef0ff14a13fd6ea52e3347da2c659383392de:
 // benchmarks/dataset/emoji.txt. The embed and specification keep file loading
 // and integrity verification outside benchmark b.Loop bodies.
 var upstreamEmojiUTF8Spec = benchmarkCorpusSpec{

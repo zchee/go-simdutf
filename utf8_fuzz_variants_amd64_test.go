@@ -17,7 +17,7 @@
 package simdutf
 
 // Hand-authored Go-only direct fuzz registration for the amd64 lookup4
-// assembly ports pinned to simdutf/simdutf@dec3aad192f47081110d9c766d4917bad243906f.
+// assembly ports pinned to simdutf/simdutf@c7bef0ff14a13fd6ea52e3347da2c659383392de.
 // It registers test functions only and adds no product behavior.
 
 func init() {

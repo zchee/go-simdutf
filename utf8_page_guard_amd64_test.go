@@ -27,7 +27,7 @@ import (
 
 // Hand-authored Go-only deterministic no-overread coverage for the amd64
 // lookup4 assembly ports pinned to
-// simdutf/simdutf@dec3aad192f47081110d9c766d4917bad243906f. It invokes direct
+// simdutf/simdutf@c7bef0ff14a13fd6ea52e3347da2c659383392de. It invokes direct
 // test functions only and adds no product behavior.
 
 const utf8AMD64PageGuardEnv = "SIMDUTF_UTF8_AMD64_GUARD"

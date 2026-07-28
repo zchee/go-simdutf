@@ -22,8 +22,8 @@ import (
 )
 
 // Independently adapted direct differential coverage for the algorithms at
-// simdutf/simdutf@dec3aad192f47081110d9c766d4917bad243906f (tree
-// eb5429bb160dfdf1a7d208f0184d3379940e69ee):
+// simdutf/simdutf@c7bef0ff14a13fd6ea52e3347da2c659383392de (tree
+// 4cbac4c5d1ce0d7f98cc35360d53725433f12811):
 // src/generic/ascii_validation.h:6-45 and
 // src/haswell/implementation.cpp:278-307. The direct archsimd invocation guard
 // follows Go 1.26.5 src/simd/archsimd/cpu_amd64.go:7-61.

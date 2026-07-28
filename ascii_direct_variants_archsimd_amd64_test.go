@@ -17,8 +17,8 @@
 package simdutf
 
 // Hand-authored Go-only benchmark registration for the independent archsimd
-// adaptation of simdutf/simdutf@dec3aad192f47081110d9c766d4917bad243906f
-// (tree eb5429bb160dfdf1a7d208f0184d3379940e69ee),
+// adaptation of simdutf/simdutf@c7bef0ff14a13fd6ea52e3347da2c659383392de
+// (tree 4cbac4c5d1ce0d7f98cc35360d53725433f12811),
 // src/generic/ascii_validation.h:6-45. It uses the test-only registry defined
 // by ascii_direct_variants_test.go and adds no benchmark procedure or result.
 

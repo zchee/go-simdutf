@@ -14,7 +14,7 @@
 
 package simdutf
 
-// Contract cases derived from simdutf commit dec3aad192f47081110d9c766d4917bad243906f,
+// Contract cases derived from simdutf commit c7bef0ff14a13fd6ea52e3347da2c659383392de,
 // include/simdutf/error.h:7-124.
 // Narrow Go-only scaffolding covers the underlying type, unknown values, and
 // Go zero values; these are not upstream test vectors.

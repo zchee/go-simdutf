@@ -19,8 +19,8 @@
 package simdutf
 
 // Independently translated from the two separate count_utf8 families in
-// simdutf/simdutf@dec3aad192f47081110d9c766d4917bad243906f (tree
-// eb5429bb160dfdf1a7d208f0184d3379940e69ee): src/generic/utf8.h:8-68,
+// simdutf/simdutf@c7bef0ff14a13fd6ea52e3347da2c659383392de (tree
+// 4cbac4c5d1ce0d7f98cc35360d53725433f12811): src/generic/utf8.h:8-68,
 // src/westmere/implementation.cpp:1142-1146, and
 // src/haswell/implementation.cpp:1115-1119. The raw kernels read complete
 // 64-byte (Westmere) or 128-byte (Haswell) groups only; the wrappers preserve

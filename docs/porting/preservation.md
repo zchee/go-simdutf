@@ -10,11 +10,14 @@ The TSV columns are:
 path class type mode size sha256 symlink_target baseline_timestamp_utc notes
 ```
 
-`immutable` covers `.agents/**`, `.claude/**`, `AGENTS.md`, and `CLAUDE.md`.
-Every immutable entry must retain its path, lstat type, mode, lstat size, and
-SHA-256. A regular-file digest covers file bytes. A symlink digest covers the
-link-target bytes (without a newline), and `symlink_target` records that target
-literally.
+`immutable` covers `.agents/**`, `.claude/**`, `AGENTS.md`, `CLAUDE.md`, and
+the exact path `.codex/config.toml` (not `.codex/**`). Every present immutable
+entry must retain its path, lstat type, mode, lstat size, and SHA-256. A
+regular-file digest covers file bytes. A symlink digest covers the link-target
+bytes (without a newline), and `symlink_target` records that target literally.
+The inherited missing `.claude/scheduled_tasks.lock` is the sole immutable
+`absent` exception: its current metadata fields are empty, its historical
+regular-file metadata remains in `notes`, and creating it fails the gate.
 
 `mutable` covers `.omx/**` and `.omc/**`. Baseline paths must retain their lstat
 type and mode, but directory size, regular-file size/content, symlink target,
@@ -46,7 +49,11 @@ use warnings;
 
 my $timestamp = $ENV{BASELINE_TIMESTAMP_UTC};
 my $manifest = 'docs/porting/preservation-manifest.tsv';
-my @roots = qw(.agents .claude AGENTS.md CLAUDE.md .omx);
+my $lock = '.claude/scheduled_tasks.lock';
+my $config = '.codex/config.toml';
+die "$lock must remain absent\n" if -e $lock || -l $lock;
+die "$config must exist\n" unless -e $config || -l $config;
+my @roots = qw(.agents .claude AGENTS.md CLAUDE.md .omx .codex/config.toml);
 push @roots, '.omc' if -e '.omc' || -l '.omc';
 my @paths;
 find({ no_chdir => 1, wanted => sub {
@@ -55,7 +62,7 @@ find({ no_chdir => 1, wanted => sub {
 }}, @roots);
 
 for my $path (sort @paths) {
-    my $class = $path =~ m{^(?:\.agents(?:/|$)|\.claude(?:/|$)|AGENTS\.md$|CLAUDE\.md$)}
+    my $class = $path =~ m{^(?:\.agents(?:/|$)|\.claude(?:/|$)|AGENTS\.md$|CLAUDE\.md$|\.codex/config\.toml$)}
         ? 'immutable'
         : $path =~ m{^(?:\.omx|\.omc)(?:/|$)} ? 'mutable' : die "unclassified: $path\n";
     my @st = lstat $path or die "lstat $path: $!\n";
@@ -79,6 +86,9 @@ for my $path (sort @paths) {
         $target, $timestamp, $notes), "\n";
 }
 
+print join("\t", $lock, 'immutable', 'absent', '', '', '', '', $timestamp,
+    'inherited immutable absence; historical baseline regular mode 0644 size 130 sha256 ca2fdd81af2c4585b4ca6b51e01d1a39598c650f83297652cf10f74102ccfed0; creation is forbidden'), "\n";
+
 if (!-e '.omc' && !-l '.omc') {
     print join("\t", '.omc', 'mutable', 'absent', '', '', '', '', $timestamp,
         'runtime state absent at baseline; later creation is reported'), "\n";
@@ -94,9 +104,10 @@ rm -f "$preservation_tmp"
 ## Recheck the preservation gate
 
 Run from the repository root. The check is read-only. It validates the schema,
-unique paths, classifications, digest formats, complete immutable equality, and
-the mutable path/type/mode contract. It also reports mutable content/size
-changes and additions. A zero exit status means the preservation gate passes.
+unique paths, classifications, digest formats, complete present-immutable
+equality, the exact immutable-absent lock exception, and the mutable
+path/type/mode contract. It also reports mutable content/size changes and
+additions. A zero exit status means the preservation gate passes.
 
 ```sh
 perl -MDigest::SHA=sha256_hex -MFile::Find -MFcntl=:mode <<'PERL' || exit 1
@@ -116,8 +127,8 @@ while (<$fh>) {
     chomp;
     my @f = split /\t/, $_, -1;
     push @failures, "line $line: expected 9 columns" and next unless @f == 9;
-    my ($path, $class, $type, $mode, $size, $digest, $target, $timestamp) = @f;
-    my $expected_class = $path =~ m{^(?:\.agents(?:/|$)|\.claude(?:/|$)|AGENTS\.md$|CLAUDE\.md$)}
+    my ($path, $class, $type, $mode, $size, $digest, $target, $timestamp, $notes) = @f;
+    my $expected_class = $path =~ m{^(?:\.agents(?:/|$)|\.claude(?:/|$)|AGENTS\.md$|CLAUDE\.md$|\.codex/config\.toml$)}
         ? 'immutable' : $path =~ m{^(?:\.omx|\.omc)(?:/|$)} ? 'mutable' : '';
     push @failures, "line $line: duplicate path $path" if exists $rows{$path};
     push @failures, "line $line: invalid class $class" unless $class eq 'immutable' || $class eq 'mutable';
@@ -125,16 +136,37 @@ while (<$fh>) {
     push @failures, "line $line: class mismatch for $path ($class != $expected_class)"
         if length($expected_class) && $class ne $expected_class;
     push @failures, "line $line: invalid type $type" unless $type =~ /\A(?:regular|directory|symlink|absent)\z/;
-    push @failures, "line $line: absent type is valid only for mutable .omc" if $type eq 'absent' && !($class eq 'mutable' && $path eq '.omc');
+    my $allowed_absent = ($class eq 'mutable' && $path eq '.omc')
+        || ($class eq 'immutable' && $path eq '.claude/scheduled_tasks.lock');
+    push @failures, "line $line: absent type is invalid for $path"
+        if $type eq 'absent' && !$allowed_absent;
     push @failures, "line $line: invalid mode $mode" unless $type eq 'absent' ? $mode eq '' : $mode =~ /\A0[0-7]{3}\z/;
     push @failures, "line $line: invalid size $size" unless $type eq 'absent' ? $size eq '' : $size =~ /\A\d+\z/;
     push @failures, "line $line: invalid digest for $type" unless
         $type eq 'regular' || $type eq 'symlink' ? $digest =~ /\A[0-9a-f]{64}\z/ : $digest eq '';
     push @failures, "line $line: invalid symlink target field" unless $type eq 'symlink' ? length($target) : $target eq '';
     push @failures, "line $line: invalid UTC timestamp" unless $timestamp =~ /\A\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}Z\z/;
+    if ($path eq '.claude/scheduled_tasks.lock') {
+        my $expected_notes = 'inherited immutable absence; historical baseline regular mode 0644 size 130 sha256 ca2fdd81af2c4585b4ca6b51e01d1a39598c650f83297652cf10f74102ccfed0; creation is forbidden';
+        push @failures, "line $line: invalid scheduled_tasks.lock exception"
+            unless $class eq 'immutable' && $type eq 'absent'
+                && $mode eq '' && $size eq '' && $digest eq '' && $target eq ''
+                && $notes eq $expected_notes;
+    }
+    if ($path eq '.codex/config.toml') {
+        push @failures, "line $line: invalid .codex/config.toml baseline"
+            unless $class eq 'immutable' && $type eq 'regular'
+                && $mode eq '0644' && $size eq '194'
+                && $digest eq 'a05d70970acee4531f7fa91fcc3034f236f872a7f6ba26d48d79a5003a4cc39f'
+                && $target eq '';
+    }
     $rows{$path} = \@f;
     ++$counts{$class};
 }
+push @failures, 'required immutable-absent lock row is missing'
+    unless exists $rows{'.claude/scheduled_tasks.lock'};
+push @failures, 'required immutable config row is missing'
+    unless exists $rows{'.codex/config.toml'};
 
 sub current_entry {
     my ($path) = @_;
@@ -158,8 +190,9 @@ for my $path (sort keys %rows) {
     my ($base_path, $class, $type, $mode, $size, $digest, $target) = @{$rows{$path}};
     my @now = current_entry($path);
     if ($type eq 'absent') {
-        next unless @now;
-        next; # creation is counted below as a mutable addition
+        push @failures, "immutable absent path created: $path"
+            if $class eq 'immutable' && @now;
+        next; # mutable .omc creation is counted below
     }
     if (!@now) {
         push @failures, "$class baseline path missing: $path";

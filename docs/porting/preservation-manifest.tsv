@@ -5,10 +5,11 @@ path	class	type	mode	size	sha256	symlink_target	baseline_timestamp_utc	notes
 .agents/skills/bench-compare/SKILL.md	immutable	regular	0644	946	076064aad300cce88d6a27b148ebd2d0fcd53b7643ee5b647ec122c87d5418a4		2026-07-26T00:20:13Z	pre-existing user asset; immutable byte equality required
 .agents/skills/port-routine	immutable	directory	0755	96			2026-07-26T00:20:13Z	pre-existing user asset; immutable byte equality required
 .agents/skills/port-routine/SKILL.md	immutable	regular	0644	1711	644eefb615d866c1475292aafe3453eaafabd645cb9e5b45473faf856e536559		2026-07-26T00:20:13Z	pre-existing user asset; immutable byte equality required
-.claude	immutable	directory	0755	160			2026-07-26T00:20:13Z	pre-existing user asset; immutable byte equality required
-.claude/scheduled_tasks.lock	immutable	regular	0644	130	ca2fdd81af2c4585b4ca6b51e01d1a39598c650f83297652cf10f74102ccfed0		2026-07-26T00:20:13Z	pre-existing user asset; immutable byte equality required
+.claude	immutable	directory	0755	128			2026-07-28T01:03:55Z	pre-existing user asset; immutable byte equality required
+.claude/scheduled_tasks.lock	immutable	absent					2026-07-28T01:03:55Z	inherited immutable absence; historical baseline regular mode 0644 size 130 sha256 ca2fdd81af2c4585b4ca6b51e01d1a39598c650f83297652cf10f74102ccfed0; creation is forbidden
 .claude/settings.json	immutable	regular	0644	420	fba100c7fde4de98b00e1444277ac4c66e423bc6b93f230689b5955774fe0d49		2026-07-26T00:20:13Z	pre-existing user asset; immutable byte equality required
 .claude/worktrees	immutable	directory	0755	64			2026-07-26T00:20:13Z	pre-existing user asset; immutable byte equality required
+.codex/config.toml	immutable	regular	0644	194	a05d70970acee4531f7fa91fcc3034f236f872a7f6ba26d48d79a5003a4cc39f		2026-07-28T01:03:55Z	pre-existing user asset; immutable byte equality required
 .omc	mutable	directory	0755	160			2026-07-26T00:20:13Z	runtime state; content and size may change; preserve baseline path/type/mode
 .omc/project-memory.json	mutable	regular	0600	1282	58423da16b5f30c576bbb31e08d92bcc47ef04e3c1a0ae70a2fad0b5f86a6a00		2026-07-26T00:20:13Z	runtime state; content and size may change; preserve baseline path/type/mode
 .omc/sessions	mutable	directory	0755	128			2026-07-26T00:20:13Z	runtime state; content and size may change; preserve baseline path/type/mode

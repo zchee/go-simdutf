@@ -18,7 +18,7 @@ package simdutf
 
 import "encoding/binary"
 
-// Translated and adapted from simdutf/simdutf@dec3aad192f47081110d9c766d4917bad243906f:
+// Translated and adapted from simdutf/simdutf@c7bef0ff14a13fd6ea52e3347da2c659383392de:
 // include/simdutf/scalar/utf8.h:9-218,258-268 and
 // src/fallback/implementation.cpp:35-48,431-433.
 // credit: based on code from Google Fuchsia (Apache Licensed)

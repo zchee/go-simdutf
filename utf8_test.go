@@ -22,7 +22,7 @@ import (
 )
 
 // Test vectors translated and adapted from
-// simdutf/simdutf@dec3aad192f47081110d9c766d4917bad243906f:
+// simdutf/simdutf@c7bef0ff14a13fd6ea52e3347da2c659383392de:
 // tests/validate_utf8_basic_tests.cpp:7-130,
 // tests/validate_utf8_with_errors_tests.cpp:7-205, and
 // tests/validate_utf8_puzzler_tests.cpp:5-39. Named map cases preserve the

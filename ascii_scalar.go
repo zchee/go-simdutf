@@ -21,7 +21,7 @@ import (
 	"math/bits"
 )
 
-// Translated and adapted from simdutf/simdutf@dec3aad192f47081110d9c766d4917bad243906f:
+// Translated and adapted from simdutf/simdutf@c7bef0ff14a13fd6ea52e3347da2c659383392de:
 // include/simdutf/scalar/ascii.h:15-81, include/simdutf/scalar/utf16.h:8-18,
 // and src/fallback/implementation.cpp:49-73. Go uses bounds-checked loads and
 // raw []uint16 storage for explicitly named UTF-16 endianness.

@@ -24,8 +24,8 @@ import (
 )
 
 // Independently adapted from simdutf/simdutf at
-// dec3aad192f47081110d9c766d4917bad243906f (tree
-// eb5429bb160dfdf1a7d208f0184d3379940e69ee):
+// c7bef0ff14a13fd6ea52e3347da2c659383392de (tree
+// 4cbac4c5d1ce0d7f98cc35360d53725433f12811):
 // src/generic/ascii_validation.h:6-45 and
 // include/simdutf/scalar/ascii.h:15-81 and
 // src/generic/validate_utf16.h:128-158 and

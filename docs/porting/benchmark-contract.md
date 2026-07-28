@@ -1,10 +1,12 @@
 # Benchmark and corpus contract
 
 This conflict-safe contract is pinned to
-`simdutf/simdutf@dec3aad192f47081110d9c766d4917bad243906f`. Phase 0 executed
-skeleton Go build/test checks, independent one-iteration exact-upstream C++
-smoke procedures, and froze the exact method needed to compare unseeded
-random-input targets later. It produced no performance claim.
+`simdutf/simdutf@c7bef0ff14a13fd6ea52e3347da2c659383392de`. G004-A proved the
+approved benchmark paths byte-identical to the direct parent used by the
+original Phase 0 capture. The inherited skeleton Go checks, independent
+one-iteration exact-upstream C++ smoke procedures, and frozen method for later
+unseeded-input comparison remain readiness evidence only. They produced no
+performance claim.
 
 ## Required Go comparison method
 

@@ -19,8 +19,8 @@
 package simdutf
 
 // Translated and adapted from
-// simdutf/simdutf@dec3aad192f47081110d9c766d4917bad243906f (tree
-// eb5429bb160dfdf1a7d208f0184d3379940e69ee): src/generic/utf8.h:72-86,
+// simdutf/simdutf@c7bef0ff14a13fd6ea52e3347da2c659383392de (tree
+// 4cbac4c5d1ce0d7f98cc35360d53725433f12811): src/generic/utf8.h:72-86,
 // src/arm64/implementation.cpp:1121-1124,1178-1181,1292-1295, and
 // src/simdutf/arm64/simd.h:420-529. The Latin-1 and UTF-32 routes are exactly
 // the pinned count_utf8/count_code_points route. The UTF-16 assembly kernel

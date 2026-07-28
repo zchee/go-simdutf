@@ -14,7 +14,7 @@
 
 package simdutf
 
-// Ported from simdutf commit dec3aad192f47081110d9c766d4917bad243906f,
+// Ported from simdutf commit c7bef0ff14a13fd6ea52e3347da2c659383392de,
 // include/simdutf/error.h:7-124.
 
 type ErrorCode uint8

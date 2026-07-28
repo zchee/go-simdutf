@@ -25,8 +25,8 @@ import (
 )
 
 // Test vectors translated and adapted from
-// simdutf/simdutf@dec3aad192f47081110d9c766d4917bad243906f (tree
-// eb5429bb160dfdf1a7d208f0184d3379940e69ee):
+// simdutf/simdutf@c7bef0ff14a13fd6ea52e3347da2c659383392de (tree
+// 4cbac4c5d1ce0d7f98cc35360d53725433f12811):
 // tests/null_safety_tests.cpp:65-73, tests/simdutf_c_tests.cpp:254-265,
 // tests/readme_tests.cpp:122-141, and include/simdutf/scalar/utf8.h:258-325.
 

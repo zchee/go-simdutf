@@ -24,7 +24,7 @@ import (
 // Hand-authored Go-only tests for arm64 assembly slice boundaries, raw-storage
 // endian handling, exact scalar fallback errors, and input immutability. The
 // algorithm under test is independently translated from
-// simdutf/simdutf@dec3aad192f47081110d9c766d4917bad243906f:
+// simdutf/simdutf@c7bef0ff14a13fd6ea52e3347da2c659383392de:
 // src/generic/ascii_validation.h:6-45, src/arm64/implementation.cpp:13-16,
 // and src/arm64/arm_validate_utf16.cpp:71-91.
 

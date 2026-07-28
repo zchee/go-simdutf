@@ -23,7 +23,7 @@ import (
 )
 
 // Hand-authored Go-only physical guard-page coverage for the tagged CountUTF8
-// adaptation pinned to simdutf/simdutf@dec3aad192f47081110d9c766d4917bad243906f:
+// adaptation pinned to simdutf/simdutf@c7bef0ff14a13fd6ea52e3347da2c659383392de:
 // src/generic/utf8.h:21-68 and src/haswell/implementation.cpp:1115-1119.
 
 const countUTF8ArchsimdPageGuardEnv = "SIMDUTF_COUNT_UTF8_ARCHSIMD_GUARD"

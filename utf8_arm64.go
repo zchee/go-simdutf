@@ -18,7 +18,7 @@
 
 package simdutf
 
-// Translated and adapted from simdutf/simdutf@dec3aad192f47081110d9c766d4917bad243906f:
+// Translated and adapted from simdutf/simdutf@c7bef0ff14a13fd6ea52e3347da2c659383392de:
 // src/arm64/implementation.cpp:13-28,
 // src/generic/utf8_validation/utf8_lookup4_algorithm.h:12-216, and
 // src/generic/utf8_validation/utf8_validator.h:10-80, and

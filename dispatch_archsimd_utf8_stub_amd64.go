@@ -17,7 +17,7 @@
 package simdutf
 
 // Go-only dispatch stubs based on the provider-availability semantics in
-// simdutf/simdutf@dec3aad192f47081110d9c766d4917bad243906f:src/implementation.cpp.
+// simdutf/simdutf@c7bef0ff14a13fd6ea52e3347da2c659383392de:src/implementation.cpp.
 // The UTF-8 archsimd implementation exists only in amd64 experiment builds;
 // this is not an algorithm translation.
 

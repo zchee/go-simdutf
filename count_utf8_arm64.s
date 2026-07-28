@@ -17,7 +17,7 @@
 //go:build arm64
 
 // Independent Go arm64 assembly translation of count_code_points in
-// simdutf/simdutf@dec3aad192f47081110d9c766d4917bad243906f:
+// simdutf/simdutf@c7bef0ff14a13fd6ea52e3347da2c659383392de:
 // src/generic/utf8.h:8-17, src/arm64/implementation.cpp:1113-1117, and
 // src/simdutf/arm64/simd.h:420-529. Each iteration loads exactly one complete
 // 64-byte block and counts its UTF-8 continuation-byte masks with NEON.

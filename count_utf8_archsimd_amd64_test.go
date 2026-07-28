@@ -27,8 +27,8 @@ import (
 
 // Hand-authored Go-only direct scalar-differential coverage for the archsimd
 // Haswell count_code_points_bytemask adaptation pinned to
-// simdutf/simdutf@dec3aad192f47081110d9c766d4917bad243906f (tree
-// eb5429bb160dfdf1a7d208f0184d3379940e69ee): src/generic/utf8.h:21-68 and
+// simdutf/simdutf@c7bef0ff14a13fd6ea52e3347da2c659383392de (tree
+// 4cbac4c5d1ce0d7f98cc35360d53725433f12811): src/generic/utf8.h:21-68 and
 // src/haswell/implementation.cpp:1115-1119.
 
 func TestCountUTF8ArchsimdScalarParity(t *testing.T) {

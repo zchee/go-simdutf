@@ -22,7 +22,7 @@ import (
 	"testing"
 )
 
-// Translated from simdutf/simdutf@dec3aad192f47081110d9c766d4917bad243906f:
+// Translated from simdutf/simdutf@c7bef0ff14a13fd6ea52e3347da2c659383392de:
 // tests/reference/validate_utf8.cpp:7-78 and validate_utf8.h:3-8.
 // credit: based on code from Google Fuchsia (Apache Licensed)
 func validateUTF8PinnedReference(input []byte) bool {

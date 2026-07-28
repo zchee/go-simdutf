@@ -24,7 +24,7 @@ import (
 )
 
 // Hand-authored Go-only deterministic no-overread coverage for the archsimd
-// adaptation pinned to simdutf/simdutf@dec3aad192f47081110d9c766d4917bad243906f:
+// adaptation pinned to simdutf/simdutf@c7bef0ff14a13fd6ea52e3347da2c659383392de:
 // src/generic/ascii_validation.h:6-45 and src/generic/validate_utf16.h:128-158.
 // It invokes direct test functions only and adds no product behavior.
 

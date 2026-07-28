@@ -21,7 +21,7 @@ import (
 )
 
 // Hand-authored Go-only test scaffolding for the port pinned to
-// simdutf/simdutf@dec3aad192f47081110d9c766d4917bad243906f. This file defines
+// simdutf/simdutf@c7bef0ff14a13fd6ea52e3347da2c659383392de. This file defines
 // test guards, direct-variant invocation, and provenance enforcement only; it
 // does not define product behavior or port upstream algorithm vectors.
 

@@ -28,12 +28,12 @@ import (
 )
 
 // Hand-authored Go-only direct differential coverage for the lookup4 assembly
-// port pinned to simdutf/simdutf@dec3aad192f47081110d9c766d4917bad243906f:
+// port pinned to simdutf/simdutf@c7bef0ff14a13fd6ea52e3347da2c659383392de:
 // src/generic/utf8_validation/utf8_lookup4_algorithm.h:12-216 and
 // src/generic/utf8_validation/utf8_validator.h:10-80.
 
 func TestValidateUTF8NEONLookupTablesMatchPinnedUpstream(t *testing.T) {
-	// Pinned table bytes from simdutf/simdutf@dec3aad192f47081110d9c766d4917bad243906f:
+	// Pinned table bytes from simdutf/simdutf@c7bef0ff14a13fd6ea52e3347da2c659383392de:
 	// src/generic/utf8_validation/utf8_lookup4_algorithm.h:37-153.
 	tables := []struct {
 		name string

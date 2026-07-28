@@ -19,7 +19,7 @@ package simdutf
 import "simd/archsimd"
 
 // Go-only dispatch glue based on the first-supported priority semantics in
-// simdutf/simdutf@dec3aad192f47081110d9c766d4917bad243906f:src/implementation.cpp
+// simdutf/simdutf@c7bef0ff14a13fd6ea52e3347da2c659383392de:src/implementation.cpp
 // and .omx/plans/port-simdutf-dec3aad192f4-go.md section 5.5; this is not an
 // algorithm translation.
 

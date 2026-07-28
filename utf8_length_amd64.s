@@ -18,8 +18,8 @@
 
 // Independent Go assembly translations of the pinned Westmere and Haswell
 // UTF-8 length algorithms in
-// simdutf/simdutf@dec3aad192f47081110d9c766d4917bad243906f (tree
-// eb5429bb160dfdf1a7d208f0184d3379940e69ee):
+// simdutf/simdutf@c7bef0ff14a13fd6ea52e3347da2c659383392de (tree
+// 4cbac4c5d1ce0d7f98cc35360d53725433f12811):
 // src/generic/utf8/utf16_length_from_utf8_bytemask.h, src/generic/utf8.h:8-20,
 // src/simdutf/westmere/simd.h:150-358, and
 // src/simdutf/haswell/simd.h:150-345. UTF-16 subtracts the two all-ones byte

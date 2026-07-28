@@ -17,7 +17,7 @@ package simdutf
 import "testing"
 
 // Hand-authored Go-only direct CountUTF8 benchmark registry scaffolding for
-// simdutf/simdutf@dec3aad192f47081110d9c766d4917bad243906f. It defines
+// simdutf/simdutf@c7bef0ff14a13fd6ea52e3347da2c659383392de. It defines
 // test-only variant slots and adds no product behavior.
 
 type countUTF8DirectVariant struct {

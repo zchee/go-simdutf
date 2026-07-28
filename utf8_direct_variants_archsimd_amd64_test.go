@@ -18,7 +18,7 @@ package simdutf
 
 // Go-only direct benchmark and scalar-differential fuzz registration for the
 // tagged lookup4 adaptation pinned to
-// simdutf/simdutf@dec3aad192f47081110d9c766d4917bad243906f.
+// simdutf/simdutf@c7bef0ff14a13fd6ea52e3347da2c659383392de.
 
 func init() {
 	validate := variant[func([]byte) bool]{value: validateUTF8Archsimd, kind: implementationArchsimd, required: cpuAVX2, available: true}

@@ -14,7 +14,7 @@
 
 package simdutf
 
-// Contract cases derived from simdutf commit dec3aad192f47081110d9c766d4917bad243906f,
+// Contract cases derived from simdutf commit c7bef0ff14a13fd6ea52e3347da2c659383392de,
 // include/simdutf/encoding_types.h:15-24 and src/encoding_types.cpp:3-64.
 // Narrow Go-only scaffolding covers the underlying type, unknown values,
 // truncated inputs, and non-prefix BOMs; these are not upstream test vectors.

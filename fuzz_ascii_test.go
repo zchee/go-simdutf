@@ -20,7 +20,7 @@ import (
 )
 
 // Hand-authored Go-only family differential fuzz coverage for the port pinned
-// to simdutf/simdutf@dec3aad192f47081110d9c766d4917bad243906f:
+// to simdutf/simdutf@c7bef0ff14a13fd6ea52e3347da2c659383392de:
 // src/generic/ascii_validation.h:6-45 and src/generic/validate_utf16.h:128-158.
 // Scalar functions remain the explicit oracle; this adds no product behavior.
 

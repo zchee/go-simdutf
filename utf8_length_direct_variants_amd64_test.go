@@ -21,8 +21,8 @@ import "testing"
 // Go-only direct benchmark registration for the pinned amd64 UTF-8 length
 // families. It changes no frozen benchmark name, corpus, setup, or product
 // dispatch. Source authority is
-// simdutf/simdutf@dec3aad192f47081110d9c766d4917bad243906f (tree
-// eb5429bb160dfdf1a7d208f0184d3379940e69ee): src/westmere/implementation.cpp
+// simdutf/simdutf@c7bef0ff14a13fd6ea52e3347da2c659383392de (tree
+// 4cbac4c5d1ce0d7f98cc35360d53725433f12811): src/westmere/implementation.cpp
 // and src/haswell/implementation.cpp length routes.
 
 func init() {

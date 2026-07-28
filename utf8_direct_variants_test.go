@@ -15,7 +15,7 @@
 package simdutf
 
 // Hand-authored Go-only direct UTF-8 benchmark registry scaffolding for the
-// port pinned to simdutf/simdutf@dec3aad192f47081110d9c766d4917bad243906f.
+// port pinned to simdutf/simdutf@c7bef0ff14a13fd6ea52e3347da2c659383392de.
 // It defines test-only variant slots and adds no product behavior.
 
 type utf8DirectVariant struct {

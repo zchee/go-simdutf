@@ -15,7 +15,7 @@
 // Portions Copyright 2021 The simdutf Authors.
 
 // Independent Go arm64 assembly translation of the 64-byte ASCII reduction in
-// simdutf/simdutf@dec3aad192f47081110d9c766d4917bad243906f:
+// simdutf/simdutf@c7bef0ff14a13fd6ea52e3347da2c659383392de:
 // src/generic/ascii_validation.h:6-45 and src/arm64/implementation.cpp:13-16,
 // and the 16-code-unit kernels in src/arm64/arm_validate_utf16.cpp:71-91.
 // The ABI0 wrappers return the start of the first failing complete block, or

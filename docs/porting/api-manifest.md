@@ -1,6 +1,12 @@
-# Public API manifest for simdutf `dec3aad192f4`
+# Public API manifest for simdutf `c7bef0ff14a1`
 
-This manifest freezes the Go-observable semantic surface before product implementation. Its sole upstream authority is commit `dec3aad192f47081110d9c766d4917bad243906f` (tree `eb5429bb160dfdf1a7d208f0184d3379940e69ee`), using the detached checkout's `include/simdutf/implementation.h`, `include/simdutf/error.h`, and `include/simdutf/encoding_types.h`. C++ span/template mechanics are collapsed; character-width and enum-type overloads that Go observes remain separate.
+This manifest records the Go-observable semantic surface and its live
+implementation status. Its sole upstream authority is commit
+`c7bef0ff14a13fd6ea52e3347da2c659383392de` (tree
+`4cbac4c5d1ce0d7f98cc35360d53725433f12811`), using the detached checkout's
+`include/simdutf/implementation.h`, `include/simdutf/error.h`, and
+`include/simdutf/encoding_types.h`. C++ span/template mechanics are collapsed;
+character-width and enum-type overloads that Go observes remain separate.
 
 ## Schema
 
@@ -28,7 +34,7 @@ the byte overload is not evidence for a `const char16_t *` procedure.
 - In-scope public type rows: **6**
 - In-scope public constant rows: **2**
 - Evidence-backed exclusions: **9**
-- Implementation status: **5 implemented**, **150 planned**, **9 excluded**
+- Implementation status: **19 implemented**, **136 planned**, **9 excluded**
 - Candidate-ledger symbols reconciled: **133 / 133**
 - Additional public semantic/type/overload/exclusion rows found independently:
   **24**
@@ -156,7 +162,7 @@ for n,r in enumerate(rows[1:], 2):
     if r[idx['status']] == "excluded": assert r[idx['exclusion_reason']] != "not_applicable", n
 statuses = {status: 0 for status in ("implemented", "planned", "excluded")}
 for r in rows[1:]: statuses[r[idx['status']]] += 1
-assert statuses == {"implemented": 5, "planned": 150, "excluded": 9}, statuses
+assert statuses == {"implemented": 19, "planned": 136, "excluded": 9}, statuses
 print(f"{len(rows)-1} rows, {len(rows[0])} columns; {statuses}")
 PY
 ```
