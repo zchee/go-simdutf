@@ -661,6 +661,14 @@ func TestSourcesRecordPinnedProvenance(t *testing.T) {
 			"adds no product behavior, upstream algorithm vectors",
 			"Benchmark function, or benchmark result",
 		}},
+		{"dispatch_qualification_benchmark_test.go", []string{
+			upstreamSHA,
+			"docs/porting/benchmark-contract.md",
+			"Hand-authored Go-only public-dispatch qualification harness",
+			"adds no product behavior or upstream",
+			"Corpus setup, integrity checks, and dispatch-provider",
+			"outside timed b.Loop bodies",
+		}},
 		{"ascii_direct_variants_test.go", []string{
 			upstreamSHA,
 			"docs/porting/benchmark-contract.md",

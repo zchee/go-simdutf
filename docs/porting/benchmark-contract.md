@@ -8,6 +8,48 @@ predecessor, and frozen method for later unseeded-input comparison remain
 historical readiness evidence only; they are not relabelled as runs of the new
 authority and produced no performance claim.
 
+## Phase D public-dispatch qualification surface
+
+`BenchmarkDispatchQualification` is the only qualification entry point. Its
+169 stable rows have the exact name grammar
+`BenchmarkDispatchQualification/<Operation>/<Corpus>/<Class>/<size>`; `size`
+is zero-padded to four decimal digits, is bytes for byte corpora, and is code
+units for `Q-u16-zero`. Provider names are never appended.
+
+| Operations | Corpus and classes | Exact sizes | Rows |
+| --- | --- | --- | ---: |
+| `ValidateASCII`, `ValidateASCIIWithErrors` | `Q-byte-zero`: `short`, `boundary`, `bulk` | short `1,15,16,17,31,32,33`; boundary `63,64,65,127,128,129`; bulk `4096` bytes | 28 |
+| `ValidateUTF16LEAsASCII`, `ValidateUTF16BEAsASCII`, `ValidateUTF16AsASCII` | `Q-u16-zero`: `short`, `boundary`, `bulk` | short `1,7,8,9,15,16,17`; boundary `31,32,33,63,64,65,127,128,129`; bulk `2048` code units | 51 |
+| `ValidateUTF8`, `ValidateUTF8WithErrors`, `CountUTF8`, `Latin1LengthFromUTF8`, `UTF16LengthFromUTF8`, `UTF32LengthFromUTF8` | all 14 `Q-byte-zero` rows above, then `Q-emoji/bulk/3150` | zero sizes above; emoji `3150` bytes | 90 |
+
+`Q-byte-zero` is exactly 4096 zero bytes and `Q-u16-zero` is derived outside
+the timed loop from an identical 4096-byte zero blob with
+`encoding/binary.NativeEndian`, never `unsafe`. Both raw blobs have SHA-256
+`ad7facb2586fc6e966c004d7d1d16b024f5805ff7cb47c7a85dabd8b48892ca7`.
+`Q-emoji` is the existing byte-identical embedded 3150-byte upstream blob with
+SHA-256
+`d6484d359bff183e4d6a4d20b3cc7056c55f372011f28b21b06462ba4d643523`.
+The baseline and candidate must use an identical benchmark source blob, names,
+corpus bytes, order, setup, sinks, timing boundary, and byte denominators.
+
+Every timed iteration contains the literal exported Go wrapper call. Provider
+selection is inspected only before `b.Loop()` with
+`runtime.FuncForPC(reflect.ValueOf(fn).Pointer())`. A run fails closed unless
+both `SIMDUTF_BENCH_EXPECT_OPERATION` and `SIMDUTF_BENCH_EXPECT_TIER` are
+present and exactly match the row operation and the operation-specific final
+identifier allowlist. `ValidateUTF16AsASCII` inspects the native LE or BE
+dispatch field. The side-reference invariant is mandatory: correctness or
+diagnostic direct-provider calls stay outside the timed public-dispatch row and
+cannot replace it.
+
+Qualification uses exactly 10 old samples followed by exactly 10 new samples
+on one fixed host, toolchain, explicit experiment, affinity policy, and quiet
+CPU. Each row must report `0 allocs/op`. An intended bulk win is at least 3%
+with `p <= 0.05`; there must be no statistically significant slowdown, and no
+protected short or boundary row may have a slowdown point estimate above 2%.
+Any missing row, skipped row, inconclusive comparison, guard failure, provider
+mismatch, allocation, or threshold failure leaves that provider direct-only.
+
 ## Required Go comparison method
 
 1. Commit the final `b.Loop()` benchmark harness while public dispatch selects
