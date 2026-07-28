@@ -1,0 +1,26 @@
+{
+  "$schema":"https://json-schema.org/draft/2020-12/schema",
+  "$id":"campaign-command-schema-v1.json",
+  "$comment":"Runtime validation is authoritative: canonical manifest equality, exact executable profiles, required topology, typed proof outputs, and command-bound staging paths are fail-closed.",
+  "type":"array",
+  "minItems":1,
+  "items":{"type":"object","additionalProperties":false,"required":["ordinal","id","action","role","argv","cwd","env","timeout_seconds","expected_exit","outputs","operation_id","batch_id","row_id","cell_id","provider"],"properties":{
+    "ordinal":{"type":"integer","minimum":1},"id":{"$ref":"#/$defs/part"},
+    "action":{"enum":["source_commit","source_tree","source_parent","source_status","host_uname","host_cpu","go_version","file_digest","go_test_focused","go_test_full","go_test_race","go_fuzz_replay","go_fuzz","go_benchmark","benchstat","provider_guard","selector_test","final_selector_test","go_object_build","go_objdump","quiet_affinity_recheck","state_transition","not_applicable","return_index"]},
+    "role":{"enum":["host","old","new","direct","selector","object"]},
+    "argv":{"type":"array","minItems":1,"items":{"type":"string","minLength":1,"pattern":"^[^\\u0000\\r\\n|&;<>()`*?\\[\\]\\\\]+$"}},
+    "cwd":{"enum":["host","source/old","source/new"]},
+    "env":{"type":"object","additionalProperties":false,"required":["LC_ALL","GOMAXPROCS","GOEXPERIMENT","GOCACHE","GOMODCACHE","CGO_ENABLED","GOOS","GOARCH"],"properties":{"LC_ALL":{"const":"C"},"GOMAXPROCS":{"const":"1"},"GOEXPERIMENT":{"enum":["nosimd,runtimesecret","simd,runtimesecret","none","simd"]},"GOAMD64":{"const":"v1"},"GOCACHE":{"type":"string","pattern":"^/(home|Users)/zchee/\\.cache/gjc/simdutf-port/v1/"},"GOMODCACHE":{"type":"string","pattern":"^/(home|Users)/zchee/\\.cache/gjc/simdutf-port/v1/"},"CGO_ENABLED":{"enum":["0","1"]},"GOOS":{"enum":["darwin","linux"]},"GOARCH":{"enum":["arm64","amd64","riscv64","s390x"]},"SIMDUTF_PROVIDER":{"enum":["westmere","haswell","archsimd","neon"]},"SIMDUTF_OPERATION":{"pattern":"^op-v1-[0-9a-f]{64}$"},"SIMDUTF_BENCH_EXPECT_OPERATION":{"pattern":"^op-v1-[0-9a-f]{64}$"},"SIMDUTF_BENCH_EXPECT_TIER":{"enum":["scalar","westmere","haswell","archsimd","neon"]},"SIMDUTF_CPU":{"pattern":"^[0-9][0-9,-]*$"},"SIMDUTF_AFFINITY":{"pattern":"^(none|taskset:[0-9][0-9,-]*)$"}}},
+    "timeout_seconds":{"type":"integer","minimum":1},"expected_exit":{"const":0},
+    "outputs":{"type":"array","minItems":4,"items":{"type":"object","additionalProperties":false,"required":["id","kind","path","media_type","required"],"properties":{"id":{"enum":["stdout","stderr","exit","argv-env","identity","test","race","fuzz","object","disassembly","incumbent-benchmark","candidate-benchmark","benchstat","provider-guard","selector","final-selector","quiet-affinity","state-transition","not-applicable","index"]},"kind":{"enum":["stdout","stderr","exit","argv-env","identity","test","race","fuzz","object","disassembly","incumbent-benchmark","candidate-benchmark","benchstat","provider-guard","selector","final-selector","quiet-affinity","state-transition","not-applicable","index"]},"path":{"type":"string","pattern":"^staging/[a-z0-9][a-z0-9._-]*/[a-z0-9-]+\\.(txt|json)$"},"media_type":{"enum":["text/plain","application/json"]},"required":{"const":true}}}},
+    "operation_id":{"pattern":"^op-v1-[0-9a-f]{64}$"},"batch_id":{"pattern":"^batch-v1-[0-9a-f]{64}$"},"row_id":{"pattern":"^rk-v1-[0-9a-f]{64}$"},"cell_id":{"pattern":"^cell-v1-[0-9a-f]{64}$"},"provider":{"enum":["westmere","haswell","archsimd","neon"]}
+  },"allOf":[
+    {"if":{"properties":{"role":{"const":"host"}}},"then":{"properties":{"action":{"enum":["host_uname","host_cpu","go_version","file_digest"]},"cwd":{"const":"host"}}}},
+    {"if":{"properties":{"role":{"const":"old"}}},"then":{"properties":{"action":{"enum":["source_commit","source_tree","source_parent","source_status","go_test_focused","go_test_full","go_test_race","go_benchmark"]},"cwd":{"const":"source/old"}}}},
+    {"if":{"properties":{"role":{"const":"new"}}},"then":{"properties":{"action":{"enum":["source_commit","source_tree","source_parent","source_status","go_test_focused","go_test_full","go_test_race","go_benchmark","benchstat"]},"cwd":{"const":"source/new"}}}},
+    {"if":{"properties":{"role":{"const":"direct"}}},"then":{"properties":{"action":{"enum":["go_test_focused","go_test_full","go_test_race","go_fuzz_replay","go_fuzz","provider_guard","quiet_affinity_recheck","state_transition","not_applicable","return_index"]},"cwd":{"const":"source/new"}}}},
+    {"if":{"properties":{"role":{"const":"selector"}}},"then":{"properties":{"action":{"enum":["selector_test","final_selector_test"]},"cwd":{"const":"source/new"}}}},
+    {"if":{"properties":{"role":{"const":"object"}}},"then":{"properties":{"action":{"enum":["go_object_build","go_objdump"]},"cwd":{"const":"source/new"}}}}
+  ]},
+  "$defs":{"part":{"type":"string","pattern":"^[a-z0-9][a-z0-9._-]*$"}}
+}

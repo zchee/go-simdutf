@@ -1,0 +1,2 @@
+schema_version	repository	commit	tree	parent	clean	archive_format	archive_sha256	archive_recipe	evidence_anchor
+v1	https://github.com/zchee/go-simdutf.git	083f5bc47a010626612e05378ae31a3359f904ad	b142a6d7eb3da840a805b2b316e7f085fba062ba	b813f7ab4c4974b8188afa691c1d81d14f3ae8a1	true	git-tar	deab8255169241cac1fe3f589faa5c20f4f238c742320f4f8c0e8096a8f8f965	git archive --format=tar 083f5bc47a010626612e05378ae31a3359f904ad	git:083f5bc47a010626612e05378ae31a3359f904ad

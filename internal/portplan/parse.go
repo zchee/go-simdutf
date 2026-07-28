@@ -50,8 +50,8 @@ func ParseManifestV1(data []byte) ([]ManifestRowV1, error) {
 	}
 
 	rows := make([]ManifestRowV1, 0, len(lines)-1)
-	plannedComposites := make(map[[6]string]struct{})
-	plannedKeys := make(map[string]struct{})
+	rowComposites := make(map[[6]string]struct{})
+	rowKeys := make(map[string]struct{})
 	plannedOrdinal := 0
 	for index, line := range lines[1:] {
 		fields, err := parseRecord(line, len(manifestHeaderV1), index+2, "API manifest")
@@ -64,17 +64,17 @@ func ParseManifestV1(data []byte) ([]ManifestRowV1, error) {
 		var row ManifestRowV1
 		copy(row.Cells[:], fields)
 		row.SourceLine = index + 2
+		composite := manifestComposite(row.Cells)
+		row.RowKeyV1 = RowKeyV1(composite)
+		if _, duplicate := rowComposites[composite]; duplicate {
+			return nil, fmt.Errorf("API manifest line %d: duplicate row composite", row.SourceLine)
+		}
+		if _, duplicate := rowKeys[row.RowKeyV1]; duplicate {
+			return nil, fmt.Errorf("API manifest line %d: duplicate row key", row.SourceLine)
+		}
+		rowComposites[composite] = struct{}{}
+		rowKeys[row.RowKeyV1] = struct{}{}
 		if fields[manifestStatusIndex] == "planned" && fields[manifestMilestoneIndex] == "future-upstream-api" {
-			composite := manifestComposite(row.Cells)
-			row.RowKeyV1 = RowKeyV1(composite)
-			if _, duplicate := plannedComposites[composite]; duplicate {
-				return nil, fmt.Errorf("API manifest line %d: duplicate planned row composite", row.SourceLine)
-			}
-			if _, duplicate := plannedKeys[row.RowKeyV1]; duplicate {
-				return nil, fmt.Errorf("API manifest line %d: duplicate planned row key", row.SourceLine)
-			}
-			plannedComposites[composite] = struct{}{}
-			plannedKeys[row.RowKeyV1] = struct{}{}
 			plannedOrdinal++
 			row.PlannedOrdinal = plannedOrdinal
 		}

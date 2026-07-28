@@ -1,0 +1,2 @@
+schema_version	remote_url	commit	tree	parent	clean	archive_format	archive_sha256	archive_recipe	evidence_anchor
+v1	https://github.com/simdutf/simdutf.git	611becc2a08c27a4edc77d9a45ff74c97130129b	c8292790d793212ca0a1faf6ae42e7f8e7b70d4f	c7bef0ff14a13fd6ea52e3347da2c659383392de	true	git-tar	aab5aabfbe2da400047b06626210853c1396a989bc412a5a58d95c4df68a4e7d	git archive --format=tar 611becc2a08c27a4edc77d9a45ff74c97130129b	/tmp/gjc-simdutf-611becc clean detached checkout; exact git rev-parse HEAD,HEAD^{tree},HEAD^ and remote.origin.url

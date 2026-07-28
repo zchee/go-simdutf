@@ -1,0 +1,17 @@
+schema_version	go_toolchain	goos	goarch	ordinal	relative_path	sha256
+v1	go1.26.5	linux	amd64	1	compare_gen_amd64.go	9dda9ed74c3d03be1de0add9f360ec0b1c5b57fe324edfbc786007a101059cfd
+v1	go1.26.5	linux	amd64	2	cpu.go	a25bcc14c4163499a5bae7feae34123f2a3e423fcaf09fd8c45594fc96e7b03c
+v1	go1.26.5	linux	amd64	3	doc.go	b904d62345395ed633865b172086205b26f3282cec052da58b338678eeb493e7
+v1	go1.26.5	linux	amd64	4	dummy.s	d6f8656896bc73fb35a99ebdef20abdeff42cd3e8f4a4111eda607566d48e456
+v1	go1.26.5	linux	amd64	5	extra_amd64.go	078c5afd9f237b88d69434faae99de94b58a021569b82fdb73ff21a578169bb8
+v1	go1.26.5	linux	amd64	6	generate.go	398438244860aee6f007f3ff38864c4698d45d88544054494601edbbac96d509
+v1	go1.26.5	linux	amd64	7	maskmerge_gen_amd64.go	a03d2b8de28ff6629f8b977845e6db9c9280ddc04d9bf59c30126e4f9f02df54
+v1	go1.26.5	linux	amd64	8	ops_amd64.go	8bb666dea5a388612f73c1caef0c93bdf4c54e026dc9c80c5331e3fb8cbfcb16
+v1	go1.26.5	linux	amd64	9	ops_internal_amd64.go	203eba73a8388924e68788083d69cbe35b0e279eed42f1c17a40b1645aa20f96
+v1	go1.26.5	linux	amd64	10	other_gen_amd64.go	7ccd4e923fbc20abfdd93b0b7bd82e1ba6941584b4ac40095afe8ce0d813bafc
+v1	go1.26.5	linux	amd64	11	shuffles_amd64.go	27fb7fd65a10bc4b0bcacbc11349ff283c8a872bc67860af912b408e2b80ddb9
+v1	go1.26.5	linux	amd64	12	slice_gen_amd64.go	22a3969fb9c614ff311f001ee5d72772449b62d387c566371f74b12db56e1b03
+v1	go1.26.5	linux	amd64	13	slicepart_amd64.go	e7c40b62698652b649012985fe207a058ce93b10142533b3059eef0c0af26558
+v1	go1.26.5	linux	amd64	14	string.go	72093d4e834e3c068a696661b7dd35c5cac791b086bd53d5d76b413c2b1c7366
+v1	go1.26.5	linux	amd64	15	types_amd64.go	5cd34437b5b6fc3c8d2aff8328c4e4f9848cd5971688abe4490881e55391babc
+v1	go1.26.5	linux	amd64	16	unsafe_helpers.go	2834a220c9464be8ea55a87b48eb802db5235327af91866776d18493356d6ace

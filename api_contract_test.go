@@ -375,6 +375,165 @@ func TestPortPhase0FrozenInputs(t *testing.T) {
 	}
 }
 
+func TestPortPhase0ReviewedMembership(t *testing.T) {
+	read := func(parts ...string) []byte {
+		t.Helper()
+		path := filepath.Join(parts...)
+		data, err := os.ReadFile(path)
+		if err != nil {
+			t.Fatal(err)
+		}
+		return data
+	}
+
+	manifest := read("docs", "porting", "api-manifest.tsv")
+	allRows, err := portplan.ParseManifestV1(manifest)
+	if err != nil {
+		t.Fatal(err)
+	}
+	_, plannedRows, err := portplan.FreezePlannedRowsV1(manifest)
+	if err != nil {
+		t.Fatal(err)
+	}
+	ledger, err := portplan.ParseISALedgerV1(read("docs", "porting", "isa-eligibility.tsv"))
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	var reviewed bytes.Buffer
+	for index, name := range []string{
+		"rows-001-020.tsv",
+		"rows-021-055.tsv",
+		"rows-056-105.tsv",
+		"rows-106-125.tsv",
+	} {
+		data := read("docs", "porting", "simdutf-port-v1", "inputs", "review-fragments", name)
+		if index != 0 {
+			newline := bytes.IndexByte(data, '\n')
+			if newline < 0 {
+				t.Fatalf("%s has no header terminator", name)
+			}
+			data = data[newline+1:]
+		}
+		reviewed.Write(data)
+	}
+	mappings, err := portplan.ParseReviewedMappingsV1(reviewed.Bytes(), plannedRows, ledger)
+	if err != nil {
+		t.Fatal(err)
+	}
+	existing, err := portplan.ParseReviewedExistingMembersV1(
+		read("docs", "porting", "simdutf-port-v1", "inputs", "review-fragments", "existing-members-v1.tsv"),
+		allRows,
+		ledger,
+	)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if got, want := len(existing), 30; got != want {
+		t.Fatalf("existing membership rows = %d, want %d", got, want)
+	}
+
+	wantFamilies := map[string]int{
+		"FC-v1-helper-validation": 11,
+		"FC-v1-latin1-source":     9,
+		"FC-v1-utf8-source":       15,
+		"FC-v1-utf16-source":      48,
+		"FC-v1-utf32-source":      18,
+		"FC-v1-detection":         2,
+		"FC-v1-find":              2,
+		"FC-v1-base64":            20,
+	}
+	families := make(map[string]int, len(wantFamilies))
+	eligible := map[string]int{"westmere": 0, "haswell": 0, "archsimd": 0, "neon": 0}
+	directSymbols := map[string]map[string]struct{}{
+		"westmere": {}, "haswell": {}, "archsimd": {}, "neon": {},
+	}
+	scalarRows := 0
+	for _, mapping := range mappings {
+		families[mapping.FamilyContractDisplayID]++
+		if mapping.ISAOrdinalOrScalar == "scalar" {
+			scalarRows++
+		}
+		for index, backend := range []string{"westmere", "haswell", "archsimd", "neon"} {
+			cell := mapping.Backends[index]
+			if cell.Outcome != "eligible" {
+				continue
+			}
+			eligible[backend]++
+			if _, duplicate := directSymbols[backend][cell.DirectSymbol]; duplicate {
+				t.Fatalf("duplicate %s direct symbol %q", backend, cell.DirectSymbol)
+			}
+			directSymbols[backend][cell.DirectSymbol] = struct{}{}
+		}
+	}
+	assertStringIntMap(t, "reviewed family counts", families, wantFamilies)
+	assertStringIntMap(t, "reviewed eligible backend counts", eligible, map[string]int{
+		"westmere": 79,
+		"haswell":  79,
+		"archsimd": 79,
+		"neon":     79,
+	})
+	if scalarRows != 18 {
+		t.Fatalf("reviewed scalar rows = %d, want 18", scalarRows)
+	}
+	dependencies, err := portplan.ParseDependencyMapV1(
+		read("docs", "porting", "simdutf-port-v1", "inputs", "dependency-map-v1.tsv"),
+		plannedRows,
+		mappings,
+	)
+	if err != nil {
+		t.Fatal(err)
+	}
+	lockedSets, err := portplan.ParseLockedSetsV1(
+		read("docs", "porting", "simdutf-port-v1", "inputs", "locked-sets-v1.tsv"),
+		read("testdata", "public-api.golden"),
+		plannedRows,
+	)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if got, want := len(lockedSets), 8; got != want {
+		t.Fatalf("locked sets = %d, want %d", got, want)
+	}
+	ranks, err := portplan.BuildCanonicalRowRanksV1(plannedRows, mappings, ledger, dependencies)
+	if err != nil {
+		t.Fatal(err)
+	}
+	membership, err := portplan.BuildMembershipV1(mappings, allRows, plannedRows, ledger, existing, ranks)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if got, want := len(membership.Operations), 23; got != want {
+		t.Fatalf("membership operations = %d, want %d", got, want)
+	}
+	if got, want := len(membership.Cells), 500; got != want {
+		t.Fatalf("membership cells = %d, want %d", got, want)
+	}
+	classification, err := portplan.BuildClassificationV1(plannedRows, mappings, dependencies, ranks, membership)
+	if err != nil {
+		t.Fatal(err)
+	}
+	secondMembership, err := portplan.BuildMembershipV1(mappings, allRows, plannedRows, ledger, existing, ranks)
+	if err != nil {
+		t.Fatal(err)
+	}
+	secondClassification, err := portplan.BuildClassificationV1(plannedRows, mappings, dependencies, ranks, secondMembership)
+	if err != nil {
+		t.Fatal(err)
+	}
+	for name, pair := range map[string][2][]byte{
+		"operations":     {portplan.RenderOperationsV1(membership.Operations), portplan.RenderOperationsV1(secondMembership.Operations)},
+		"cells":          {portplan.RenderCellsV1(classification.Cells), portplan.RenderCellsV1(secondClassification.Cells)},
+		"kernels":        {portplan.RenderKernelsV1(membership.Kernels), portplan.RenderKernelsV1(secondMembership.Kernels)},
+		"classification": {portplan.RenderClassificationV1(classification.Rows), portplan.RenderClassificationV1(secondClassification.Rows)},
+		"batches":        {portplan.RenderBatchesV1(classification.Batches), portplan.RenderBatchesV1(secondClassification.Batches)},
+	} {
+		if !bytes.Equal(pair[0], pair[1]) {
+			t.Fatalf("%s generation is not byte-identical", name)
+		}
+	}
+}
+
 func assertStringIntMap(t *testing.T, name string, got, want map[string]int) {
 	t.Helper()
 	if !maps.Equal(got, want) {

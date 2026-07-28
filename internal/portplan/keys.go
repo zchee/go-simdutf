@@ -257,7 +257,7 @@ func validBackend(backend string) bool {
 }
 
 func validStorageID(id string) bool {
-	for _, tag := range []string{"family", "cell", "symbol", "batch", "campaign", "transaction"} {
+	for _, tag := range []string{"rk", "family", "cell", "symbol", "batch", "campaign", "transaction"} {
 		if validID(id, tag+"-v1-") {
 			return true
 		}
