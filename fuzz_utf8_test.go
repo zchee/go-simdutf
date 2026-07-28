@@ -21,7 +21,7 @@ import (
 
 // Go-only public-versus-scalar differential fuzz scaffold. The pinned upstream
 // fuzz target exercises both validation entry points at
-// simdutf/simdutf@c7bef0ff14a13fd6ea52e3347da2c659383392de:
+// simdutf/simdutf@611becc2a08c27a4edc77d9a45ff74c97130129b:
 // fuzz/conversion.cpp:68-74. Scalar functions are the explicit oracle for the
 // public entry points and every registered direct accelerated implementation.
 

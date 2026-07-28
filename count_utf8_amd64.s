@@ -16,8 +16,8 @@
 
 // Independent Go assembly translations of the Westmere and Haswell
 // count_code_points_bytemask loops in
-// simdutf/simdutf@c7bef0ff14a13fd6ea52e3347da2c659383392de (tree
-// 4cbac4c5d1ce0d7f98cc35360d53725433f12811): src/generic/utf8.h:21-68,
+// simdutf/simdutf@611becc2a08c27a4edc77d9a45ff74c97130129b (tree
+// c8292790d793212ca0a1faf6ae42e7f8e7b70d4f): src/generic/utf8.h:21-68,
 // src/westmere/implementation.cpp:1142-1146, and
 // src/haswell/implementation.cpp:1115-1119. PCMPGTB/VPCMPGTB implement the
 // pinned signed int8 predicate input > -65. Four masks are subtracted into

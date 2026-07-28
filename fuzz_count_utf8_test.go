@@ -20,7 +20,7 @@ import (
 )
 
 // Go-only public-versus-scalar differential fuzz scaffold for the count_utf8
-// port pinned to simdutf/simdutf@c7bef0ff14a13fd6ea52e3347da2c659383392de:
+// port pinned to simdutf/simdutf@611becc2a08c27a4edc77d9a45ff74c97130129b:
 // fuzz/conversion.cpp and tests/count_utf8.cpp:11-84. The scalar function is
 // the explicit oracle for the public entry point and every registered direct
 // accelerated implementation.

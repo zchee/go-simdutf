@@ -1,9 +1,9 @@
-# Public API manifest for simdutf `c7bef0ff14a1`
+# Public API manifest for simdutf `611becc2a08c`
 
 This manifest records the Go-observable semantic surface and its live
 implementation status. Its sole upstream authority is commit
-`c7bef0ff14a13fd6ea52e3347da2c659383392de` (tree
-`4cbac4c5d1ce0d7f98cc35360d53725433f12811`), using the detached checkout's
+`611becc2a08c27a4edc77d9a45ff74c97130129b` (tree
+`c8292790d793212ca0a1faf6ae42e7f8e7b70d4f`), using the detached checkout's
 `include/simdutf/implementation.h`, `include/simdutf/error.h`, and
 `include/simdutf/encoding_types.h`. C++ span/template mechanics are collapsed;
 character-width and enum-type overloads that Go observes remain separate.

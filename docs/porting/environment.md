@@ -4,12 +4,13 @@ This conflict-safe evidence copy was captured for the Go repository skeleton at
 `4f0094b43eca35e24bedc85a7a19702cbd5cbafe` (tree
 `45b57f78581cb85859aa24aef76984fec0ba92e5`). Its current upstream semantic
 authority is simdutf commit
-`c7bef0ff14a13fd6ea52e3347da2c659383392de` (tree
-`4cbac4c5d1ce0d7f98cc35360d53725433f12811`). G004-A proved the approved
-upstream paths byte-identical to the direct parent used for the original
-Phase 0 capture, so the host and toolchain facts remain inherited environment
-evidence rather than current product acceptance. Sensitive configuration
-values are not recorded.
+`611becc2a08c27a4edc77d9a45ff74c97130129b` (tree
+`c8292790d793212ca0a1faf6ae42e7f8e7b70d4f`). Phase B proved that the authority
+change from direct parent `c7bef0ff14a13fd6ea52e3347da2c659383392de`
+touches only eight ARM64 product files and changes no tests, fuzz targets, or
+benchmarks. It did not rerun the original Phase 0 capture, so the host and
+toolchain facts remain inherited environment evidence rather than current
+product acceptance. Sensitive configuration values are not recorded.
 
 ## Evidence sources
 

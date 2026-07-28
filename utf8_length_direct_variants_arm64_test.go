@@ -19,8 +19,8 @@ package simdutf
 import "testing"
 
 // Go-only direct benchmark registration for the arm64 UTF-8 length ports
-// pinned to simdutf/simdutf@c7bef0ff14a13fd6ea52e3347da2c659383392de (tree
-// 4cbac4c5d1ce0d7f98cc35360d53725433f12811):
+// pinned to simdutf/simdutf@611becc2a08c27a4edc77d9a45ff74c97130129b (tree
+// c8292790d793212ca0a1faf6ae42e7f8e7b70d4f):
 // src/arm64/implementation.cpp:1121-1124,1178-1181,1292-1295. It changes no
 // frozen benchmark name, corpus, setup, or product dispatch.
 func init() {

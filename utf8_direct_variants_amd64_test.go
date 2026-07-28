@@ -17,7 +17,7 @@
 package simdutf
 
 // Go-only registration of the direct amd64 lookup4 implementations pinned to
-// simdutf/simdutf@c7bef0ff14a13fd6ea52e3347da2c659383392de. It defines no
+// simdutf/simdutf@611becc2a08c27a4edc77d9a45ff74c97130129b. It defines no
 // additional product behavior and translates no additional upstream algorithm.
 
 func init() {

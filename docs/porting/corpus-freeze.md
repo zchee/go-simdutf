@@ -2,10 +2,11 @@
 
 This document closes the Phase 0 external-corpus identification work for the
 fixed semantic authority
-[`simdutf/simdutf@c7bef0ff14a13fd6ea52e3347da2c659383392de`](https://github.com/simdutf/simdutf/tree/c7bef0ff14a13fd6ea52e3347da2c659383392de).
-G004-A proved the referenced README and benchmark paths byte-identical to the
-direct parent used for the original capture, so the retained corpus hashes and
-method remain valid inherited evidence.
+[`simdutf/simdutf@611becc2a08c27a4edc77d9a45ff74c97130129b`](https://github.com/simdutf/simdutf/tree/611becc2a08c27a4edc77d9a45ff74c97130129b).
+Phase B proved that the referenced README and benchmark paths are unchanged from
+direct parent `c7bef0ff14a13fd6ea52e3347da2c659383392de`, which was used for
+the original capture. The retained corpus identities, sizes, hashes, and method
+therefore remain valid inherited evidence; they are not new retrievals.
 It is intentionally limited to the two files copied under
 `.omx/artifacts/phase0/benchmark-corpora/corpus/`; those ignored artifacts and
 their [provenance](../../.omx/artifacts/phase0/benchmark-corpora/provenance.md)
@@ -15,9 +16,9 @@ are the canonical byte evidence.
 
 The pinned README explicitly recommends the Unicode dataset and gives
 `lipsum/Arabic-Lipsum.utf8.txt` as its example
-([README lines 2838--2853](https://github.com/simdutf/simdutf/blob/c7bef0ff14a13fd6ea52e3347da2c659383392de/README.md#L2838-L2853)).
+([README lines 2838--2853](https://github.com/simdutf/simdutf/blob/611becc2a08c27a4edc77d9a45ff74c97130129b/README.md#L2838-L2853)).
 It also demonstrates Base64 DNS input using `base64data/dns/*.txt`
-([README lines 2868--2874](https://github.com/simdutf/simdutf/blob/c7bef0ff14a13fd6ea52e3347da2c659383392de/README.md#L2868-L2874)).
+([README lines 2868--2874](https://github.com/simdutf/simdutf/blob/611becc2a08c27a4edc77d9a45ff74c97130129b/README.md#L2868-L2874)).
 
 | ID | Immutable source | Exact selected upstream path/blob | Bytes | SHA-256 |
 | --- | --- | --- | ---: | --- |
@@ -55,10 +56,10 @@ redistribution or shipping of either external payload.
 
 The pinned `findbenchmark` creates 10,000 alphanumeric bytes from a fresh
 `std::random_device`-seeded `std::mt19937`, appends `=`, and accepts no
-input/seed option ([source lines 24--62](https://github.com/simdutf/simdutf/blob/c7bef0ff14a13fd6ea52e3347da2c659383392de/benchmarks/find/findbenchmark.cpp#L24-L62)).
+input/seed option ([source lines 24--62](https://github.com/simdutf/simdutf/blob/611becc2a08c27a4edc77d9a45ff74c97130129b/benchmarks/find/findbenchmark.cpp#L24-L62)).
 The pinned UTF-16 target similarly seeds `std::mt19937` from
 `std::random_device`; its generator uses the documented basic, high-surrogate,
-low-surrogate, and percent distributions ([lines 23--77](https://github.com/simdutf/simdutf/blob/c7bef0ff14a13fd6ea52e3347da2c659383392de/benchmarks/benchmark_to_well_formed_utf16.cpp#L23-L77)).
+low-surrogate, and percent distributions ([lines 23--77](https://github.com/simdutf/simdutf/blob/611becc2a08c27a4edc77d9a45ff74c97130129b/benchmarks/benchmark_to_well_formed_utf16.cpp#L23-L77)).
 Neither stock target can establish identical Go/C++ bytes. Its fresh random
 output remains an exact-upstream diagnostic and is not comparable to a Go run.
 
@@ -82,7 +83,7 @@ stock upstream executable.
    exact `get_chunk_range_simple` sequence, and the pinned prefix behavior. The
    source times `data[0:start+length]`; its constructed `input_data` subvector is
    not passed to `bench`
-   ([lines 258--280](https://github.com/simdutf/simdutf/blob/c7bef0ff14a13fd6ea52e3347da2c659383392de/benchmarks/benchmark_to_well_formed_utf16.cpp#L258-L280)).
+   ([lines 258--280](https://github.com/simdutf/simdutf/blob/611becc2a08c27a4edc77d9a45ff74c97130129b/benchmarks/benchmark_to_well_formed_utf16.cpp#L258-L280)).
 5. Reports are labelled `Phase 13 companion comparability harness`, not stock
    upstream timing, and are never fed to Go `benchstat`.
 

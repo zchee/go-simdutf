@@ -17,7 +17,7 @@
 package simdutf
 
 // Hand-authored Go-only direct fuzz registration for the arm64 assembly port
-// pinned to simdutf/simdutf@c7bef0ff14a13fd6ea52e3347da2c659383392de:
+// pinned to simdutf/simdutf@611becc2a08c27a4edc77d9a45ff74c97130129b:
 // src/generic/utf8.h:8-17 and src/arm64/implementation.cpp:1113-1117.
 func init() {
 	registerCountUTF8FuzzVariant(countUTF8FuzzVariant{

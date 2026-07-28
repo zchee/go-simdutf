@@ -14,7 +14,7 @@
 
 package simdutf
 
-// Ported from simdutf commit c7bef0ff14a13fd6ea52e3347da2c659383392de,
+// Ported from simdutf commit 611becc2a08c27a4edc77d9a45ff74c97130129b,
 // include/simdutf/encoding_types.h:15-24 and src/encoding_types.cpp:3-64.
 
 type Encoding uint8

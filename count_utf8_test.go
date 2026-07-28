@@ -21,7 +21,7 @@ import (
 )
 
 // Test vectors translated and adapted from
-// simdutf/simdutf@c7bef0ff14a13fd6ea52e3347da2c659383392de:
+// simdutf/simdutf@611becc2a08c27a4edc77d9a45ff74c97130129b:
 // tests/count_utf8.cpp:11-84. The deterministic Go generator preserves the
 // upstream byte sizes and ASCII/one-to-four-byte mixture categories; it does
 // not claim byte-identical output to the upstream C++ random_utf8 fixtures.

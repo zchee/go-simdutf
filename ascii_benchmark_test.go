@@ -20,7 +20,7 @@ import (
 )
 
 // Hand-authored Go-only benchmarks pinned to
-// simdutf/simdutf@c7bef0ff14a13fd6ea52e3347da2c659383392de:
+// simdutf/simdutf@611becc2a08c27a4edc77d9a45ff74c97130129b:
 // benchmarks/shortbench.cpp:29-35,419-422,493-497,520-526;
 // benchmarks/src/benchmark.cpp:120-127,697-715; and
 // docs/porting/benchmark-contract.md. The ValidateASCII benchmark maps the

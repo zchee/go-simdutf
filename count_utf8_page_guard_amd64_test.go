@@ -24,7 +24,7 @@ import (
 
 // Hand-authored Go-only guard-page coverage for the complete-group-only loads
 // in the Westmere and Haswell count_code_points_bytemask ports pinned to
-// simdutf/simdutf@c7bef0ff14a13fd6ea52e3347da2c659383392de.
+// simdutf/simdutf@611becc2a08c27a4edc77d9a45ff74c97130129b.
 
 const countUTF8AMD64PageGuardEnv = "SIMDUTF_COUNT_UTF8_AMD64_GUARD"
 

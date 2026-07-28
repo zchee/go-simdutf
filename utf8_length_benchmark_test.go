@@ -20,8 +20,8 @@ import (
 )
 
 // Benchmarks mapped from
-// simdutf/simdutf@c7bef0ff14a13fd6ea52e3347da2c659383392de (tree
-// 4cbac4c5d1ce0d7f98cc35360d53725433f12811):
+// simdutf/simdutf@611becc2a08c27a4edc77d9a45ff74c97130129b (tree
+// c8292790d793212ca0a1faf6ae42e7f8e7b70d4f):
 // benchmarks/shortbench.cpp:29-65,419-422,493-497,520-526 and
 // benchmarks/src/benchmark.cpp:167-169,999-1011. Pinned shortbench registers
 // UTF16LengthFromUTF8 and UTF32LengthFromUTF8; the main benchmark registers

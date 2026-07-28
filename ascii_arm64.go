@@ -16,7 +16,7 @@
 
 package simdutf
 
-// Translated and adapted from simdutf/simdutf@c7bef0ff14a13fd6ea52e3347da2c659383392de:
+// Translated and adapted from simdutf/simdutf@611becc2a08c27a4edc77d9a45ff74c97130129b:
 // src/generic/ascii_validation.h:6-45, src/arm64/implementation.cpp:13-16,
 // src/arm64/implementation.cpp:253-298, and
 // src/arm64/arm_validate_utf16.cpp:71-91. The assembly routines inspect only

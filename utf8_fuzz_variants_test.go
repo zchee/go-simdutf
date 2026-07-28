@@ -15,7 +15,7 @@
 package simdutf
 
 // Hand-authored Go-only direct UTF-8 differential fuzz registry scaffolding
-// for simdutf/simdutf@c7bef0ff14a13fd6ea52e3347da2c659383392de. It defines
+// for simdutf/simdutf@611becc2a08c27a4edc77d9a45ff74c97130129b. It defines
 // test metadata only and adds no product behavior.
 
 type utf8FuzzVariant struct {

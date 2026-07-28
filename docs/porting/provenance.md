@@ -7,8 +7,8 @@ and ISA authority is the following **post-release development snapshot**. Its
 headers report `9.0.0`, but it must never be called the released `v9.0.0`.
 
 - repository: [`simdutf/simdutf`](https://github.com/simdutf/simdutf)
-- commit: [`c7bef0ff14a13fd6ea52e3347da2c659383392de`](https://github.com/simdutf/simdutf/tree/c7bef0ff14a13fd6ea52e3347da2c659383392de)
-- tree: `4cbac4c5d1ce0d7f98cc35360d53725433f12811`
+- commit: [`611becc2a08c27a4edc77d9a45ff74c97130129b`](https://github.com/simdutf/simdutf/tree/611becc2a08c27a4edc77d9a45ff74c97130129b)
+- tree: `c8292790d793212ca0a1faf6ae42e7f8e7b70d4f`
 - checkout: a task-owned, detached, clean temporary checkout
 
 Before using an upstream source, run and record these exact commands:
@@ -22,16 +22,34 @@ test -z "$(git -C "$UP" status --porcelain=v1 --untracked-files=all)"
 git -C "$UP" remote get-url origin
 ```
 
-G004-A evidence recorded on 2026-07-28 UTC: the identity commands printed
-`c7bef0ff14a13fd6ea52e3347da2c659383392de` and
-`4cbac4c5d1ce0d7f98cc35360d53725433f12811`; every cleanliness check exited
-zero; the sole direct-parent delta was
-`src/icelake/icelake_base64.inl.cpp`; and the approved source, test, fuzz, and
-benchmark paths were byte-identical to the direct parent. Phase 0 archive and
-smoke artifacts remain inherited historical evidence only. A failure is a hard
-blocker: recreate or repair the pinned checkout and repeat the commands. No
-moving branch, later tag, later commit, blog post, competing implementation, or
-generated output can fill a semantic or algorithm gap.
+G004-A evidence recorded on 2026-07-28 UTC validated the predecessor
+`c7bef0ff14a13fd6ea52e3347da2c659383392de` (tree
+`4cbac4c5d1ce0d7f98cc35360d53725433f12811`) against its direct parent. That
+record, the Phase 0 archive, and the Phase 0 smoke artifacts remain inherited
+historical evidence only; none is relabelled as validation of the new authority.
+
+Phase B authority-migration evidence recorded on 2026-07-28 UTC: the identity
+commands printed `611becc2a08c27a4edc77d9a45ff74c97130129b` and
+`c8292790d793212ca0a1faf6ae42e7f8e7b70d4f`; every cleanliness check exited
+zero; and the direct parent is
+`c7bef0ff14a13fd6ea52e3347da2c659383392de` (tree
+`4cbac4c5d1ce0d7f98cc35360d53725433f12811`). The exact parent delta is eight
+ARM64 files, 59 insertions and 37 deletions: six `src/arm64/*.cpp` files plus
+`src/simdutf/arm64/simd.h` and `src/simdutf/arm64/simd32-inl.h`. Public headers,
+fallback, generic, Westmere, Haswell, tests, fuzz, and benchmarks are unchanged;
+no algorithm in the current 30-row API is affected.
+
+The audited `src/simdutf/arm64/simd.h` source slice moved from lines 420--529 to
+446--555 and remains byte-identical: both slices have SHA-256
+`1678bf1b61cbd1552cfd9d95c51a6ef0df83c962feb8c1dbd2e565133e9336a9`.
+Upstream `any_lane_set` requires lane-wise comparison masks; lookup4 carries
+arbitrary error bits, so that helper is unsafe for lookup4. This authority
+migration therefore authorizes no `anyLaneSetNEON` or SHRN+FCMP product change.
+
+A validation failure is a hard blocker: recreate or repair the pinned checkout
+and repeat the commands. No moving branch, later tag, later commit, blog post,
+competing implementation, or generated output can fill a semantic or algorithm
+gap.
 
 The initial acceleration inventory is in
 [`isa-eligibility.tsv`](isa-eligibility.tsv). It is an evidence
@@ -43,9 +61,9 @@ claim; eligibility or a `required` phase value alone does not.
 
 Select the Apache-2.0 side of upstream’s dual Apache/MIT license, matching this
 repository. Evidence: pinned
-[`LICENSE-APACHE`](https://github.com/simdutf/simdutf/blob/c7bef0ff14a13fd6ea52e3347da2c659383392de/LICENSE-APACHE),
-[`LICENSE-MIT`](https://github.com/simdutf/simdutf/blob/c7bef0ff14a13fd6ea52e3347da2c659383392de/LICENSE-MIT),
-and [README license statement](https://github.com/simdutf/simdutf/blob/c7bef0ff14a13fd6ea52e3347da2c659383392de/README.md#L3020-L3024).
+[`LICENSE-APACHE`](https://github.com/simdutf/simdutf/blob/611becc2a08c27a4edc77d9a45ff74c97130129b/LICENSE-APACHE),
+[`LICENSE-MIT`](https://github.com/simdutf/simdutf/blob/611becc2a08c27a4edc77d9a45ff74c97130129b/LICENSE-MIT),
+and [README license statement](https://github.com/simdutf/simdutf/blob/611becc2a08c27a4edc77d9a45ff74c97130129b/README.md#L3020-L3024).
 This choice does not erase any embedded third-party notice or Apache-2.0
 attribution obligation.
 
@@ -72,7 +90,7 @@ regeneration test.
 | --- | --- |
 | Fuchsia scalar/reference | `include/simdutf/scalar/utf8.h`, `tests/reference/validate_utf8.cpp`, and `tests/reference/validate_utf8_to_latin1.cpp` expressly credit Google Fuchsia under Apache. If their control flow or vectors are adapted, retain that credit in the target file/test in addition to simdutf provenance. |
 | PyTorch ISA detector | `include/simdutf/internal/isadetection.h` says it is highly modified from PyTorch and carries a separate BSD-style notice. **Do not copy, translate, or structurally reproduce it.** Independently write the minimum CPUID/XGETBV probe from the CPU contract. Any exception requires the complete PyTorch notice and a separate license review before merge. |
-| Competition tree | **Never port `benchmarks/competition/**`** into product code, tests, fuzz seeds, tables, or algorithm sources. Pinned [`benchmarks/competition/README.md`](https://github.com/simdutf/simdutf/blob/c7bef0ff14a13fd6ea52e3347da2c659383392de/benchmarks/competition/README.md) says it is research/benchmark-only, separately licensed, and not part of simdutf. It includes mixed licensing (for example LLVM-with-exception and OSL-3.0). `competition/inoue2008/inoue_utf8_to_utf16.h`’s `pclmul` target is specifically not ISA evidence. |
+| Competition tree | **Never port `benchmarks/competition/**`** into product code, tests, fuzz seeds, tables, or algorithm sources. Pinned [`benchmarks/competition/README.md`](https://github.com/simdutf/simdutf/blob/611becc2a08c27a4edc77d9a45ff74c97130129b/benchmarks/competition/README.md) says it is research/benchmark-only, separately licensed, and not part of simdutf. It includes mixed licensing (for example LLVM-with-exception and OSL-3.0). `competition/inoue2008/inoue_utf8_to_utf16.h`’s `pclmul` target is specifically not ISA evidence. |
 | Other separately noticed material | Do not import `fuzz/helpers/nameof.hpp` or another third-party helper merely because the parent repository is dual licensed. Review and retain its own notice first. |
 | External corpus / later source | Pinned tracking alone does not prove corpus redistribution rights. Only use tracked data or explicitly approved upstream-recommended data with complete metadata. Later simdutf, other bindings, production cgo, Go dependencies, compiler-generated assembly, and unreviewed snippets are forbidden semantic sources. |
 
@@ -83,8 +101,8 @@ not executable Go predicates. The selector for every Go symbol is a tested
 superset of the non-baseline opcodes actually present in its source and final
 object code.
 
-1. Pinned [`src/simdutf/westmere.h`](https://github.com/simdutf/simdutf/blob/c7bef0ff14a13fd6ea52e3347da2c659383392de/src/simdutf/westmere.h) declares `sse4.2,popcnt`. A Westmere-derived Go symbol must separately prove SSE4.2 and POPCNT when emitted; it may omit either only after source plus object audit prove absence.
-2. Pinned [`src/simdutf/haswell.h`](https://github.com/simdutf/simdutf/blob/c7bef0ff14a13fd6ea52e3347da2c659383392de/src/simdutf/haswell.h) declares `avx2,bmi,lzcnt,popcnt`. `bmi` is not one final predicate: audit BMI1 and BMI2 independently, as well as LZCNT and POPCNT. Do not dispatch merely because the source family is named Haswell.
+1. Pinned [`src/simdutf/westmere.h`](https://github.com/simdutf/simdutf/blob/611becc2a08c27a4edc77d9a45ff74c97130129b/src/simdutf/westmere.h) declares `sse4.2,popcnt`. A Westmere-derived Go symbol must separately prove SSE4.2 and POPCNT when emitted; it may omit either only after source plus object audit prove absence.
+2. Pinned [`src/simdutf/haswell.h`](https://github.com/simdutf/simdutf/blob/611becc2a08c27a4edc77d9a45ff74c97130129b/src/simdutf/haswell.h) declares `avx2,bmi,lzcnt,popcnt`. `bmi` is not one final predicate: audit BMI1 and BMI2 independently, as well as LZCNT and POPCNT. Do not dispatch merely because the source family is named Haswell.
 3. Every AVX/YMM symbol requires CPUID AVX, OSXSAVE, `XCR0[1]` and `XCR0[2]` (XMM/YMM state), and CPUID AVX2 before execution. The direct upstream detector is semantic evidence only; it is not approved source for copy because of the PyTorch notice.
 4. PCLMULQDQ is detected by upstream but does not occur in the pinned product `src/westmere/**`, `src/haswell/**`, or `src/arm64/**` source trees. Do not make it a blanket predicate. Probe PCLMUL only if a specific Go assembly object audit proves its instruction is emitted.
 5. Audit POPCNT, LZCNT/TZCNT, BMI1, BMI2, PCLMULQDQ, and every other non-baseline instruction per symbol. `_popcnt64` occurs in pinned Westmere/Haswell bit-manipulation headers; that is a trigger to audit the affected symbol, not evidence that every family symbol needs POPCNT.

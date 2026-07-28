@@ -25,8 +25,8 @@ import (
 
 // Hand-authored Go-only direct differential coverage for the separate
 // Westmere and Haswell count_code_points_bytemask ports pinned to
-// simdutf/simdutf@c7bef0ff14a13fd6ea52e3347da2c659383392de (tree
-// 4cbac4c5d1ce0d7f98cc35360d53725433f12811): src/generic/utf8.h:21-68.
+// simdutf/simdutf@611becc2a08c27a4edc77d9a45ff74c97130129b (tree
+// c8292790d793212ca0a1faf6ae42e7f8e7b70d4f): src/generic/utf8.h:21-68.
 
 func TestCountUTF8AMD64ScalarParity(t *testing.T) {
 	lengths := []int{0, 1, 15, 16, 17, 31, 32, 33, 63, 64, 65, 127, 128, 129, 4031, 4032, 4033, 4095, 4096, 4097, 8063, 8064, 8065, 8191, 8192, 8193, 16128, 65536}

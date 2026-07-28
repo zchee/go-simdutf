@@ -18,9 +18,9 @@
 
 package simdutf
 
-// Translated and adapted from simdutf/simdutf@c7bef0ff14a13fd6ea52e3347da2c659383392de:
+// Translated and adapted from simdutf/simdutf@611becc2a08c27a4edc77d9a45ff74c97130129b:
 // src/generic/utf8.h:8-17, src/arm64/implementation.cpp:1113-1117, and
-// src/simdutf/arm64/simd.h:420-529. The assembly kernel reads complete
+// src/simdutf/arm64/simd.h:446-555. The assembly kernel reads complete
 // 64-byte blocks only; the Go wrapper preserves the pinned scalar tail.
 
 //go:noescape

@@ -16,7 +16,7 @@ package simdutf
 
 import "encoding/binary"
 
-// Public API adapted from simdutf/simdutf@c7bef0ff14a13fd6ea52e3347da2c659383392de:
+// Public API adapted from simdutf/simdutf@611becc2a08c27a4edc77d9a45ff74c97130129b:
 // include/simdutf/implementation.h:315-455. Go slices replace C++ pointer/length
 // pairs, and UTF-16 endian names describe the raw []uint16 storage encoding.
 

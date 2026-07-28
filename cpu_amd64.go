@@ -17,7 +17,7 @@
 package simdutf
 
 // The feature contract follows the target declarations at
-// simdutf/simdutf@c7bef0ff14a13fd6ea52e3347da2c659383392de:
+// simdutf/simdutf@611becc2a08c27a4edc77d9a45ff74c97130129b:
 // src/simdutf/westmere.h and src/simdutf/haswell.h. This probe is an
 // independent implementation of the architectural CPUID/XGETBV contract; it
 // is not translated or structurally copied from

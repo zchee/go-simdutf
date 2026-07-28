@@ -24,7 +24,7 @@ import (
 )
 
 // Hand-authored Go-only deterministic no-overread coverage for the lookup4
-// assembly port pinned to simdutf/simdutf@c7bef0ff14a13fd6ea52e3347da2c659383392de.
+// assembly port pinned to simdutf/simdutf@611becc2a08c27a4edc77d9a45ff74c97130129b.
 // It invokes direct test functions only and adds no product behavior.
 
 const utf8NEONPageGuardEnv = "SIMDUTF_UTF8_NEON_GUARD"

@@ -29,7 +29,7 @@ import (
 
 // Hand-authored Go-only direct differential and complete-block contract
 // coverage for the lookup4 assembly ports pinned to
-// simdutf/simdutf@c7bef0ff14a13fd6ea52e3347da2c659383392de:
+// simdutf/simdutf@611becc2a08c27a4edc77d9a45ff74c97130129b:
 // src/generic/utf8_validation/utf8_lookup4_algorithm.h:12-216 and
 // src/generic/utf8_validation/utf8_validator.h:10-80.
 

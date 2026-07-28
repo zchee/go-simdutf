@@ -27,7 +27,7 @@ import (
 )
 
 // Upstream-derived vectors and semantics come from
-// simdutf/simdutf@c7bef0ff14a13fd6ea52e3347da2c659383392de:
+// simdutf/simdutf@611becc2a08c27a4edc77d9a45ff74c97130129b:
 // tests/validate_ascii_basic_tests.cpp:8-125,
 // tests/validate_ascii_with_errors_tests.cpp:7-38,
 // tests/validate_utf16be_basic_tests.cpp:12-20,158-174, and

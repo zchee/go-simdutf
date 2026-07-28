@@ -19,7 +19,7 @@ import (
 	"testing"
 )
 
-// Benchmarks mapped from simdutf/simdutf@c7bef0ff14a13fd6ea52e3347da2c659383392de:
+// Benchmarks mapped from simdutf/simdutf@611becc2a08c27a4edc77d9a45ff74c97130129b:
 // benchmarks/shortbench.cpp:29-40,419-422,493-497,520-526 and
 // benchmarks/src/benchmark.cpp:611-645. ValidateUTF8 keeps shortbench's frozen
 // zero prefixes; ValidateUTF8WithErrors uses the exact pinned

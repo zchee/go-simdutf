@@ -17,7 +17,7 @@ package simdutf
 import "testing"
 
 // Hand-authored Go-only benchmark registry scaffolding for the port pinned to
-// simdutf/simdutf@c7bef0ff14a13fd6ea52e3347da2c659383392de and
+// simdutf/simdutf@611becc2a08c27a4edc77d9a45ff74c97130129b and
 // docs/porting/benchmark-contract.md. This file provides test-only direct
 // variant slots; it defines no product behavior and translates no upstream
 // algorithm.

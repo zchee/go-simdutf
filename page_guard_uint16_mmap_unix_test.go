@@ -23,7 +23,7 @@ import (
 )
 
 // Hand-authored Go-only uint16 PROT_NONE mmap adapter for the port pinned to
-// simdutf/simdutf@c7bef0ff14a13fd6ea52e3347da2c659383392de:
+// simdutf/simdutf@611becc2a08c27a4edc77d9a45ff74c97130129b:
 // src/generic/ascii_validation.h:6-45 and src/generic/validate_utf16.h:128-158.
 // Test-only unsafe is confined to an accessible mmap page; this adds no
 // product behavior.

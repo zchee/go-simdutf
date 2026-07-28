@@ -24,9 +24,9 @@ import (
 )
 
 // Hand-authored Go-only direct scalar-differential coverage for the count port
-// pinned to simdutf/simdutf@c7bef0ff14a13fd6ea52e3347da2c659383392de:
+// pinned to simdutf/simdutf@611becc2a08c27a4edc77d9a45ff74c97130129b:
 // src/generic/utf8.h:8-17, src/arm64/implementation.cpp:1113-1117, and
-// src/simdutf/arm64/simd.h:420-529.
+// src/simdutf/arm64/simd.h:446-555.
 
 func TestCountUTF8NEONScalarParity(t *testing.T) {
 	checkCountUTF8NEON(t, nil)

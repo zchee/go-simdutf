@@ -14,7 +14,7 @@
 
 // These are Go ABI shims for an independently written amd64 feature probe.
 // The required feature contract is pinned to
-// simdutf/simdutf@c7bef0ff14a13fd6ea52e3347da2c659383392de:
+// simdutf/simdutf@611becc2a08c27a4edc77d9a45ff74c97130129b:
 // src/simdutf/westmere.h and src/simdutf/haswell.h. No policy or code from
 // include/simdutf/internal/isadetection.h is reproduced here.
 

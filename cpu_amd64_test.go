@@ -20,7 +20,7 @@ import "testing"
 
 // These are hand-authored Go-only dispatch-safety tests. They exercise an
 // independent probe implementing the feature contract pinned to
-// simdutf/simdutf@c7bef0ff14a13fd6ea52e3347da2c659383392de:
+// simdutf/simdutf@611becc2a08c27a4edc77d9a45ff74c97130129b:
 // src/simdutf/westmere.h and src/simdutf/haswell.h. They are not upstream test
 // vectors and do not reproduce include/simdutf/internal/isadetection.h.
 

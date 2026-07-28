@@ -18,7 +18,7 @@ package simdutf
 
 // Hand-authored Go-only direct fuzz registration for the separate Westmere
 // and Haswell count_code_points_bytemask assembly ports pinned to
-// simdutf/simdutf@c7bef0ff14a13fd6ea52e3347da2c659383392de.
+// simdutf/simdutf@611becc2a08c27a4edc77d9a45ff74c97130129b.
 func init() {
 	registerCountUTF8FuzzVariant(countUTF8FuzzVariant{
 		name: "westmere",

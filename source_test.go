@@ -84,7 +84,7 @@ func TestAssemblySourcesBeginWithApacheLicenseHeader(t *testing.T) {
 // TestSourcesRecordPinnedProvenance is hand-authored Go-only provenance
 // enforcement, not an upstream test vector.
 func TestSourcesRecordPinnedProvenance(t *testing.T) {
-	const upstreamSHA = "c7bef0ff14a13fd6ea52e3347da2c659383392de"
+	const upstreamSHA = "611becc2a08c27a4edc77d9a45ff74c97130129b"
 	expectations := []provenanceExpectation{
 		{"utf8.go", []string{
 			upstreamSHA,
@@ -113,20 +113,20 @@ func TestSourcesRecordPinnedProvenance(t *testing.T) {
 		}},
 		{"utf8_length.go", []string{
 			upstreamSHA,
-			"4cbac4c5d1ce0d7f98cc35360d53725433f12811",
+			"c8292790d793212ca0a1faf6ae42e7f8e7b70d4f",
 			"include/simdutf/implementation.h:1673-1778,3954-3983",
 			"Go slices replace C++\n// pointer/length pairs",
 		}},
 		{"utf8_length_scalar.go", []string{
 			upstreamSHA,
-			"4cbac4c5d1ce0d7f98cc35360d53725433f12811",
+			"c8292790d793212ca0a1faf6ae42e7f8e7b70d4f",
 			"Portions Copyright 2021 The simdutf Authors",
 			"include/simdutf/scalar/utf8.h:258-325",
 			"src/fallback/implementation.cpp:436-440,476-480,525-529",
 		}},
 		{"utf8_length_test.go", []string{
 			upstreamSHA,
-			"4cbac4c5d1ce0d7f98cc35360d53725433f12811",
+			"c8292790d793212ca0a1faf6ae42e7f8e7b70d4f",
 			"tests/null_safety_tests.cpp:65-73",
 			"tests/simdutf_c_tests.cpp:254-265",
 			"tests/readme_tests.cpp:122-141",
@@ -134,7 +134,7 @@ func TestSourcesRecordPinnedProvenance(t *testing.T) {
 		}},
 		{"fuzz_utf8_length_test.go", []string{
 			upstreamSHA,
-			"4cbac4c5d1ce0d7f98cc35360d53725433f12811",
+			"c8292790d793212ca0a1faf6ae42e7f8e7b70d4f",
 			"Go-only public/direct-dispatch-versus-scalar differential fuzz scaffold",
 			"fuzz/conversion.cpp",
 			"fuzz/roundtrip.cpp",
@@ -144,14 +144,14 @@ func TestSourcesRecordPinnedProvenance(t *testing.T) {
 		}},
 		{"utf8_length_direct_variants_test.go", []string{
 			upstreamSHA,
-			"4cbac4c5d1ce0d7f98cc35360d53725433f12811",
+			"c8292790d793212ca0a1faf6ae42e7f8e7b70d4f",
 			"Hand-authored Go-only direct UTF-8 length benchmark registry scaffolding",
 			"benchmarks/shortbench.cpp:29-65,419-422,493-497,520-526",
 			"test-only named\n// variant slots and adds no product behavior or mutable dispatch override",
 		}},
 		{"utf8_length_fuzz_variants_test.go", []string{
 			upstreamSHA,
-			"4cbac4c5d1ce0d7f98cc35360d53725433f12811",
+			"c8292790d793212ca0a1faf6ae42e7f8e7b70d4f",
 			"Hand-authored Go-only direct UTF-8 length differential fuzz registry",
 			"fuzz/conversion.cpp",
 			"include/simdutf/scalar/utf8.h:258-325",
@@ -159,7 +159,7 @@ func TestSourcesRecordPinnedProvenance(t *testing.T) {
 		}},
 		{"utf8_length_benchmark_test.go", []string{
 			upstreamSHA,
-			"4cbac4c5d1ce0d7f98cc35360d53725433f12811",
+			"c8292790d793212ca0a1faf6ae42e7f8e7b70d4f",
 			"benchmarks/shortbench.cpp:29-65,419-422,493-497,520-526",
 			"benchmarks/src/benchmark.cpp:167-169,999-1011",
 			"processes input_data.size()/4 input bytes",
@@ -189,7 +189,7 @@ func TestSourcesRecordPinnedProvenance(t *testing.T) {
 			"Portions Copyright 2021 The simdutf Authors",
 			"src/generic/utf8.h:8-17",
 			"src/arm64/implementation.cpp:1113-1117",
-			"src/simdutf/arm64/simd.h:420-529",
+			"src/simdutf/arm64/simd.h:446-555",
 			"complete\n// 64-byte blocks only",
 			"pinned scalar tail",
 		}},
@@ -199,7 +199,7 @@ func TestSourcesRecordPinnedProvenance(t *testing.T) {
 			"Independent Go arm64 assembly translation",
 			"src/generic/utf8.h:8-17",
 			"src/arm64/implementation.cpp:1113-1117",
-			"src/simdutf/arm64/simd.h:420-529",
+			"src/simdutf/arm64/simd.h:446-555",
 			"64-byte block",
 			"Go 1.26's Plan 9 arm64 assembler exposes VCMEQ but no signed integer",
 			"byte lanes therefore cannot overflow across iterations",
@@ -210,7 +210,7 @@ func TestSourcesRecordPinnedProvenance(t *testing.T) {
 			"Hand-authored Go-only direct scalar-differential coverage",
 			"src/generic/utf8.h:8-17",
 			"src/arm64/implementation.cpp:1113-1117",
-			"src/simdutf/arm64/simd.h:420-529",
+			"src/simdutf/arm64/simd.h:446-555",
 			"Go 1.26's Plan 9 arm64 assembler has VCMEQ but no signed integer",
 		}},
 		{"count_utf8_direct_variants_arm64_test.go", []string{
@@ -233,7 +233,7 @@ func TestSourcesRecordPinnedProvenance(t *testing.T) {
 		}},
 		{"count_utf8_amd64.go", []string{
 			upstreamSHA,
-			"4cbac4c5d1ce0d7f98cc35360d53725433f12811",
+			"c8292790d793212ca0a1faf6ae42e7f8e7b70d4f",
 			"Portions Copyright 2021 The simdutf Authors",
 			"src/generic/utf8.h:8-68",
 			"src/westmere/implementation.cpp:1142-1146",
@@ -243,7 +243,7 @@ func TestSourcesRecordPinnedProvenance(t *testing.T) {
 		}},
 		{"count_utf8_amd64.s", []string{
 			upstreamSHA,
-			"4cbac4c5d1ce0d7f98cc35360d53725433f12811",
+			"c8292790d793212ca0a1faf6ae42e7f8e7b70d4f",
 			"Portions Copyright 2021 The simdutf Authors",
 			"Independent Go assembly translations",
 			"src/generic/utf8.h:21-68",
@@ -254,7 +254,7 @@ func TestSourcesRecordPinnedProvenance(t *testing.T) {
 		}},
 		{"count_utf8_amd64_test.go", []string{
 			upstreamSHA,
-			"4cbac4c5d1ce0d7f98cc35360d53725433f12811",
+			"c8292790d793212ca0a1faf6ae42e7f8e7b70d4f",
 			"Hand-authored Go-only direct differential coverage",
 			"Westmere and Haswell count_code_points_bytemask ports",
 			"src/generic/utf8.h:21-68",
@@ -277,7 +277,7 @@ func TestSourcesRecordPinnedProvenance(t *testing.T) {
 		}},
 		{"count_utf8_archsimd_amd64.go", []string{
 			upstreamSHA,
-			"4cbac4c5d1ce0d7f98cc35360d53725433f12811",
+			"c8292790d793212ca0a1faf6ae42e7f8e7b70d4f",
 			"Portions Copyright 2021 The simdutf Authors",
 			"Independently adapted from the Haswell count_code_points_bytemask family",
 			"src/generic/utf8.h:21-68",
@@ -291,7 +291,7 @@ func TestSourcesRecordPinnedProvenance(t *testing.T) {
 		}},
 		{"count_utf8_archsimd_amd64_test.go", []string{
 			upstreamSHA,
-			"4cbac4c5d1ce0d7f98cc35360d53725433f12811",
+			"c8292790d793212ca0a1faf6ae42e7f8e7b70d4f",
 			"Hand-authored Go-only direct scalar-differential coverage",
 			"archsimd\n// Haswell count_code_points_bytemask adaptation",
 			"src/generic/utf8.h:21-68",

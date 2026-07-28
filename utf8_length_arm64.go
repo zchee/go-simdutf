@@ -19,10 +19,10 @@
 package simdutf
 
 // Translated and adapted from
-// simdutf/simdutf@c7bef0ff14a13fd6ea52e3347da2c659383392de (tree
-// 4cbac4c5d1ce0d7f98cc35360d53725433f12811): src/generic/utf8.h:72-86,
+// simdutf/simdutf@611becc2a08c27a4edc77d9a45ff74c97130129b (tree
+// c8292790d793212ca0a1faf6ae42e7f8e7b70d4f): src/generic/utf8.h:72-86,
 // src/arm64/implementation.cpp:1121-1124,1178-1181,1292-1295, and
-// src/simdutf/arm64/simd.h:420-529. The Latin-1 and UTF-32 routes are exactly
+// src/simdutf/arm64/simd.h:446-555. The Latin-1 and UTF-32 routes are exactly
 // the pinned count_utf8/count_code_points route. The UTF-16 assembly kernel
 // reads complete 64-byte blocks only, and the Go wrapper uses the pinned
 // scalar oracle for the tail.

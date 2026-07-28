@@ -17,7 +17,7 @@
 package simdutf
 
 // Go-only dispatch stub based on the provider-availability semantics in
-// simdutf/simdutf@c7bef0ff14a13fd6ea52e3347da2c659383392de:src/implementation.cpp.
+// simdutf/simdutf@611becc2a08c27a4edc77d9a45ff74c97130129b:src/implementation.cpp.
 // The independently optional CountUTF8 backend exists only in amd64 experiment
 // builds; this is not an algorithm translation.
 

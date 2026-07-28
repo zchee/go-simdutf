@@ -20,8 +20,9 @@ import "testing"
 
 // Hand-authored Go-only tests for generic-target scalar dispatch under live
 // and synthetic feature inputs. The dispatch contract is pinned to
-// simdutf/simdutf@c7bef0ff14a13fd6ea52e3347da2c659383392de:src/implementation.cpp
-// and .omx/plans/port-simdutf-dec3aad192f4-go.md section 5.5; these are not
+// simdutf/simdutf@611becc2a08c27a4edc77d9a45ff74c97130129b:src/implementation.cpp
+// and the per-symbol ISA/object-proof policy in
+// docs/porting/provenance.md; these are not
 // upstream test vectors.
 
 func TestMakeImplementationGenericSyntheticAndLive(t *testing.T) {

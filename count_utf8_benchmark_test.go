@@ -20,7 +20,7 @@ import (
 )
 
 // Benchmark mapped from
-// simdutf/simdutf@c7bef0ff14a13fd6ea52e3347da2c659383392de:
+// simdutf/simdutf@611becc2a08c27a4edc77d9a45ff74c97130129b:
 // benchmarks/shortbench.cpp:29-40,66-72,419-422,493-497,520-526 and
 // benchmarks/src/benchmark.cpp:3428-3443. CountUTF8 keeps shortbench's frozen
 // zero prefixes and the pinned benchmarks/dataset/emoji.txt main corpus.
