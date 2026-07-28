@@ -18,6 +18,7 @@ import (
 	"bytes"
 	"encoding/csv"
 	"fmt"
+	"github.com/zchee/go-simdutf/internal/portplan"
 	"go/ast"
 	"go/build"
 	"go/importer"
@@ -314,6 +315,63 @@ func TestAPIManifestMilestones(t *testing.T) {
 	}
 	if !slices.Equal(currentSymbols, wantCurrentSymbols) {
 		t.Fatalf("current manifest symbols = %v, want %v", currentSymbols, wantCurrentSymbols)
+	}
+}
+
+func TestPortPhase0FrozenInputs(t *testing.T) {
+	manifestPath := filepath.Join("docs", "porting", "api-manifest.tsv")
+	manifest, err := os.ReadFile(manifestPath)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if got, want := portplan.SHA256Hex(manifest), "c0c4d87fc775b5fbd9c8295d60ddeb1de601e4be0120da1fa2775df0b8c743ad"; got != want {
+		t.Fatalf("%s SHA-256 = %s, want %s", manifestPath, got, want)
+	}
+	allRows, err := portplan.ParseManifestV1(manifest)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if got, want := len(allRows), 164; got != want {
+		t.Fatalf("manifest data rows = %d, want %d", got, want)
+	}
+	frozen, plannedRows, err := portplan.FreezePlannedRowsV1(manifest)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if got, want := len(plannedRows), 125; got != want {
+		t.Fatalf("planned snapshot rows = %d, want %d", got, want)
+	}
+	frozenPath := filepath.Join("docs", "porting", "simdutf-port-v1", "inputs", "planned-rows-v1.tsv")
+	wantFrozen, err := os.ReadFile(frozenPath)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if !bytes.Equal(frozen, wantFrozen) {
+		t.Fatalf("%s is stale:\n%s", frozenPath, lineDiff(string(wantFrozen), string(frozen)))
+	}
+
+	isaPath := filepath.Join("docs", "porting", "isa-eligibility.tsv")
+	isaLedger, err := os.ReadFile(isaPath)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if got, want := portplan.SHA256Hex(isaLedger), "d73b6bc48466dba23d28c2d06c877ccbeaa10ab5049d8fb6b314d651a46549cb"; got != want {
+		t.Fatalf("%s SHA-256 = %s, want %s", isaPath, got, want)
+	}
+	isaRows, err := portplan.ParseISALedgerV1(isaLedger)
+	if err != nil {
+		t.Fatal(err)
+	}
+	operationIDs := make(map[string]struct{}, len(isaRows))
+	for _, row := range isaRows {
+		id, err := portplan.LedgerOperationIDV1(row.LedgerOrdinal, row.SemanticOperation)
+		if err != nil {
+			t.Fatal(err)
+		}
+		if _, exists := operationIDs[id]; exists {
+			t.Fatalf("duplicate ISA semantic operation ID %s", id)
+		}
+		operationIDs[id] = struct{}{}
 	}
 }
 
