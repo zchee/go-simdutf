@@ -16,15 +16,17 @@
 
 //go:build amd64
 
-// Independent Go assembly translations of Westmere/Haswell Base64 length and
-// encode kernels from simdutf/simdutf@611becc2a08c27a4edc77d9a45ff74c97130129b
+// Independent Go assembly translations of Westmere/Haswell Base64 length,
+// encode, and decode-block kernels from
+// simdutf/simdutf@611becc2a08c27a4edc77d9a45ff74c97130129b
 // (tree c8292790d793212ca0a1faf6ae42e7f8e7b70d4f):
 //   src/generic/base64lengths.h
-//   src/westmere/sse_base64.cpp (encode 12→16 SSSE3 lane)
-//   src/haswell/avx2_base64.cpp (encode 24→32 AVX2 lane)
+//   src/westmere/sse_base64.cpp (encode 12→16; aqrit decode 16→12 SSSE3)
+//   src/haswell/avx2_base64.cpp (encode 24→32; aqrit decode 32→24 AVX2)
 // Length counts bytes/code units > 0x20 via unsigned compare + POPCNT.
-// Encode owns complete vector groups only; Go wrappers retain scalar tails,
-// padding, and line-break insertion.
+// Encode/decode own complete vector groups only; Go wrappers retain scalar
+// tails, padding, whitespace/garbage paths, and line-break insertion.
+// Decode blocks expect already table-mapped 6-bit values (0..63).
 
 #include "textflag.h"
 
@@ -154,6 +156,38 @@ DATA ·base64SpaceWY<>+8(SB)/8, $0x0020002000200020
 DATA ·base64SpaceWY<>+16(SB)/8, $0x0020002000200020
 DATA ·base64SpaceWY<>+24(SB)/8, $0x0020002000200020
 GLOBL ·base64SpaceWY<>(SB), RODATA|NOPTR, $32
+
+// Decode (aqrit): maddubs const 0x01400140, maddwd const 0x00011000,
+// pack shuffle setr_epi8(2,1,0,6,5,4,10,9,8,14,13,12,-1,-1,-1,-1).
+DATA ·base64DecMul0<>+0(SB)/8, $0x0140014001400140
+DATA ·base64DecMul0<>+8(SB)/8, $0x0140014001400140
+GLOBL ·base64DecMul0<>(SB), RODATA|NOPTR, $16
+
+DATA ·base64DecMul1<>+0(SB)/8, $0x0001100000011000
+DATA ·base64DecMul1<>+8(SB)/8, $0x0001100000011000
+GLOBL ·base64DecMul1<>(SB), RODATA|NOPTR, $16
+
+DATA ·base64DecPack<>+0(SB)/8, $0x090a040506000102
+DATA ·base64DecPack<>+8(SB)/8, $0xffffffff0c0d0e08
+GLOBL ·base64DecPack<>(SB), RODATA|NOPTR, $16
+
+DATA ·base64DecMul0Y<>+0(SB)/8, $0x0140014001400140
+DATA ·base64DecMul0Y<>+8(SB)/8, $0x0140014001400140
+DATA ·base64DecMul0Y<>+16(SB)/8, $0x0140014001400140
+DATA ·base64DecMul0Y<>+24(SB)/8, $0x0140014001400140
+GLOBL ·base64DecMul0Y<>(SB), RODATA|NOPTR, $32
+
+DATA ·base64DecMul1Y<>+0(SB)/8, $0x0001100000011000
+DATA ·base64DecMul1Y<>+8(SB)/8, $0x0001100000011000
+DATA ·base64DecMul1Y<>+16(SB)/8, $0x0001100000011000
+DATA ·base64DecMul1Y<>+24(SB)/8, $0x0001100000011000
+GLOBL ·base64DecMul1Y<>(SB), RODATA|NOPTR, $32
+
+DATA ·base64DecPackY<>+0(SB)/8, $0x090a040506000102
+DATA ·base64DecPackY<>+8(SB)/8, $0xffffffff0c0d0e08
+DATA ·base64DecPackY<>+16(SB)/8, $0x090a040506000102
+DATA ·base64DecPackY<>+24(SB)/8, $0xffffffff0c0d0e08
+GLOBL ·base64DecPackY<>(SB), RODATA|NOPTR, $32
 
 // --- length: bytes ---------------------------------------------------------
 
@@ -510,4 +544,107 @@ b64_enc_h_done:
 	VZEROUPPER
 	MOVQ AX, consumed+56(FP)
 	MOVQ BX, written+64(FP)
+	RET
+
+// --- decode: Westmere 64→48 -----------------------------------------------
+
+// func base64DecodeBlocksWestmere(input, dst []byte)
+// Caller must pass input_len as a multiple of 64 and dst large enough for
+// input_len/4*3 bytes. Input bytes are pre-mapped 6-bit values (0..63).
+// The final 12-byte store of each 48-byte group is width-safe (no +4 overrun).
+TEXT ·base64DecodeBlocksWestmere(SB), NOSPLIT|NOFRAME, $0-48
+	MOVQ input_base+0(FP), SI
+	MOVQ input_len+8(FP), CX
+	MOVQ dst_base+24(FP), DI
+	ANDQ $-64, CX
+	JZ   b64_dec_w_done
+
+	MOVOU ·base64DecMul0<>(SB), X8
+	MOVOU ·base64DecMul1<>(SB), X9
+	MOVOU ·base64DecPack<>(SB), X10
+
+b64_dec_w_loop:
+	// lane 0 -> dst+0 (store 16, keep 12; overlapped by next store)
+	MOVOU     0(SI), X0
+	PMADDUBSW X8, X0
+	PMADDWL   X9, X0
+	PSHUFB    X10, X0
+	MOVOU     X0, 0(DI)
+
+	// lane 1 -> dst+12
+	MOVOU     16(SI), X0
+	PMADDUBSW X8, X0
+	PMADDWL   X9, X0
+	PSHUFB    X10, X0
+	MOVOU     X0, 12(DI)
+
+	// lane 2 -> dst+24
+	MOVOU     32(SI), X0
+	PMADDUBSW X8, X0
+	PMADDWL   X9, X0
+	PSHUFB    X10, X0
+	MOVOU     X0, 24(DI)
+
+	// lane 3 -> dst+36 (exact 12-byte store)
+	MOVOU     48(SI), X0
+	PMADDUBSW X8, X0
+	PMADDWL   X9, X0
+	PSHUFB    X10, X0
+	MOVQ      X0, 36(DI)
+	PEXTRD    $2, X0, AX
+	MOVL      AX, 44(DI)
+
+	ADDQ $64, SI
+	ADDQ $48, DI
+	SUBQ $64, CX
+	JNZ  b64_dec_w_loop
+
+b64_dec_w_done:
+	RET
+
+// --- decode: Haswell 64→48 ------------------------------------------------
+
+// func base64DecodeBlocksHaswell(input, dst []byte)
+// Caller must pass input_len as a multiple of 64 and dst large enough for
+// input_len/4*3 bytes. Input bytes are pre-mapped 6-bit values (0..63).
+// The final 12-byte store of each 48-byte group is width-safe (no +4 overrun).
+TEXT ·base64DecodeBlocksHaswell(SB), NOSPLIT|NOFRAME, $0-48
+	MOVQ input_base+0(FP), SI
+	MOVQ input_len+8(FP), CX
+	MOVQ dst_base+24(FP), DI
+	ANDQ $-64, CX
+	JZ   b64_dec_h_done
+
+	VMOVDQU ·base64DecMul0Y<>(SB), Y8
+	VMOVDQU ·base64DecMul1Y<>(SB), Y9
+	VMOVDQU ·base64DecPackY<>(SB), Y10
+
+b64_dec_h_loop:
+	// first 32 -> 24 at dst+0 (second 16-byte store overlaps +4 garbage)
+	VMOVDQU    0(SI), Y0
+	VPMADDUBSW Y8, Y0, Y0
+	VPMADDWD   Y9, Y0, Y0
+	VPSHUFB    Y10, Y0, Y0
+	VMOVDQU    X0, 0(DI)
+	VEXTRACTI128 $1, Y0, X1
+	VMOVDQU    X1, 12(DI)
+
+	// second 32 -> 24 at dst+24; final 12-byte store is width-safe
+	VMOVDQU    32(SI), Y0
+	VPMADDUBSW Y8, Y0, Y0
+	VPMADDWD   Y9, Y0, Y0
+	VPSHUFB    Y10, Y0, Y0
+	VMOVDQU    X0, 24(DI)
+	VEXTRACTI128 $1, Y0, X1
+	MOVQ       X1, 36(DI)
+	PEXTRD     $2, X1, AX
+	MOVL       AX, 44(DI)
+
+	ADDQ $64, SI
+	ADDQ $48, DI
+	SUBQ $64, CX
+	JNZ  b64_dec_h_loop
+
+b64_dec_h_done:
+	VZEROUPPER
 	RET
