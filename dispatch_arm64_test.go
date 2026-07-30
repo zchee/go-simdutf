@@ -131,7 +131,7 @@ func TestMakeImplementationARM64Latin1QualificationSelection(t *testing.T) {
 }
 
 func TestMakeImplementationARM64UTF8QualificationSelection(t *testing.T) {
-	// Until FC-v1-utf8-source dispositions promote any provider, public UTF-8
+	// FC-v1-utf8-source qualification dispositions are all direct_only; public UTF-8
 	// convert selection stays scalar-first; NEON remains forceable/direct-only.
 	got := makeImplementation(selectionInput{features: cpuNEON})
 	if !sameFunction(got.convertUTF8ToLatin1, convertUTF8ToLatin1Scalar) ||

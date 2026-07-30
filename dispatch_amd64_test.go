@@ -217,7 +217,7 @@ func TestMakeImplementationAMD64Latin1QualificationSelection(t *testing.T) {
 }
 
 func TestMakeImplementationAMD64UTF8QualificationSelection(t *testing.T) {
-	// Until FC-v1-utf8-source dispositions promote any provider, public UTF-8
+	// FC-v1-utf8-source qualification dispositions are all direct_only; public UTF-8
 	// convert selection stays scalar-first across westmere/haswell/archsimd.
 	for _, input := range []selectionInput{
 		{},
