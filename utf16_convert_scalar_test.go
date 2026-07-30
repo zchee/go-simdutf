@@ -429,3 +429,118 @@ func TestUTF16HelpersPublicAPI(t *testing.T) {
 		t.Fatalf("paired surrogate flag = %+v", got)
 	}
 }
+
+func TestUTF16HostEndianWrappers(t *testing.T) {
+	if !nativeLittleEndian() {
+		t.Skip("host-endian wrapper LE-path coverage requires little-endian host")
+	}
+
+	native := []uint16{'A', 0x00e9, 0x20ac, 0xd83d, 0xde00} // A é € 😀
+	le := rawUTF16Words(native, true)
+
+	latin1Input := []uint16{'A', 0x00e9}
+	latin1Dst := make([]byte, len(latin1Input))
+	if got := ConvertUTF16ToLatin1(latin1Input, latin1Dst); got != 2 || !bytes.Equal(latin1Dst, []byte{'A', 0xe9}) {
+		t.Fatalf("ConvertUTF16ToLatin1 = %d %x", got, latin1Dst)
+	}
+	if got := ConvertUTF16ToLatin1(latin1Input, latin1Dst); got != ConvertUTF16LEToLatin1(le[:2], make([]byte, 2)) {
+		t.Fatalf("ConvertUTF16ToLatin1 LE mismatch = %d", got)
+	}
+	if got := ConvertUTF16ToLatin1WithErrors(latin1Input, make([]byte, 2)); got != ConvertUTF16LEToLatin1WithErrors(le[:2], make([]byte, 2)) {
+		t.Fatalf("ConvertUTF16ToLatin1WithErrors = %+v", got)
+	}
+	if got := ConvertValidUTF16ToLatin1(latin1Input, make([]byte, 2)); got != ConvertValidUTF16LEToLatin1(le[:2], make([]byte, 2)) {
+		t.Fatalf("ConvertValidUTF16ToLatin1 = %d", got)
+	}
+
+	utf8Len := UTF8LengthFromUTF16(native)
+	utf8Dst := make([]byte, utf8Len)
+	if got := ConvertUTF16ToUTF8(native, utf8Dst); got != ConvertUTF16LEToUTF8(le, make([]byte, utf8Len)) {
+		t.Fatalf("ConvertUTF16ToUTF8 = %d", got)
+	}
+	if got := ConvertUTF16ToUTF8WithErrors(native, make([]byte, utf8Len)); got != ConvertUTF16LEToUTF8WithErrors(le, make([]byte, utf8Len)) {
+		t.Fatalf("ConvertUTF16ToUTF8WithErrors = %+v", got)
+	}
+	replLen := UTF8LengthFromUTF16WithReplacement(native).Count
+	if got := ConvertUTF16ToUTF8WithReplacement(native, make([]byte, replLen)); got != ConvertUTF16LEToUTF8WithReplacement(le, make([]byte, replLen)) {
+		t.Fatalf("ConvertUTF16ToUTF8WithReplacement = %d", got)
+	}
+
+	utf32Len := UTF32LengthFromUTF16(native)
+	if got := ConvertUTF16ToUTF32(native, make([]uint32, utf32Len)); got != ConvertUTF16LEToUTF32(le, make([]uint32, utf32Len)) {
+		t.Fatalf("ConvertUTF16ToUTF32 = %d", got)
+	}
+	if got := ConvertUTF16ToUTF32WithErrors(native, make([]uint32, utf32Len)); got != ConvertUTF16LEToUTF32WithErrors(le, make([]uint32, utf32Len)) {
+		t.Fatalf("ConvertUTF16ToUTF32WithErrors = %+v", got)
+	}
+	if got := ConvertValidUTF16ToUTF32(native, make([]uint32, utf32Len)); got != ConvertValidUTF16LEToUTF32(le, make([]uint32, utf32Len)) {
+		t.Fatalf("ConvertValidUTF16ToUTF32 = %d", got)
+	}
+
+	if got := CountUTF16(native); got != CountUTF16LE(le) || got != 4 {
+		t.Fatalf("CountUTF16 = %d", got)
+	}
+	if got := UTF8LengthFromUTF16WithReplacement(native); got != UTF8LengthFromUTF16LEWithReplacement(le) {
+		t.Fatalf("UTF8LengthFromUTF16WithReplacement = %+v", got)
+	}
+}
+
+func TestConvertUTF16ToUTF8Safe(t *testing.T) {
+	if got := ConvertUTF16ToUTF8Safe(nil, nil); got != 0 {
+		t.Fatalf("empty = %d", got)
+	}
+	if got := ConvertUTF16ToUTF8Safe([]uint16{}, []byte{}); got != 0 {
+		t.Fatalf("empty slices = %d", got)
+	}
+
+	// BMP: "A€" => 1 + 3 bytes
+	bmp := []uint16{'A', 0x20ac}
+	wantBMP := []byte{'A', 0xe2, 0x82, 0xac}
+	full := make([]byte, 4)
+	if got := ConvertUTF16ToUTF8Safe(bmp, full); got != 4 || !bytes.Equal(full, wantBMP) {
+		t.Fatalf("BMP full = %d %x", got, full)
+	}
+	// Short dst: fits 'A' only
+	short := []byte{0xa5, 0xa5}
+	if got := ConvertUTF16ToUTF8Safe(bmp, short[:1]); got != 1 || short[0] != 'A' || short[1] != 0xa5 {
+		t.Fatalf("BMP short = %d %x", got, short)
+	}
+	// Capacity 2: still only 'A' (euro needs 3)
+	short2 := []byte{0xa5, 0xa5, 0xa5}
+	if got := ConvertUTF16ToUTF8Safe(bmp, short2[:2]); got != 1 || short2[0] != 'A' || short2[1] != 0xa5 || short2[2] != 0xa5 {
+		t.Fatalf("BMP capacity2 = %d %x", got, short2)
+	}
+
+	// Surrogate pair fits in 4 bytes
+	pair := []uint16{0xd83d, 0xde00}
+	wantPair := []byte{0xf0, 0x9f, 0x98, 0x80}
+	pairDst := make([]byte, 4)
+	if got := ConvertUTF16ToUTF8Safe(pair, pairDst); got != 4 || !bytes.Equal(pairDst, wantPair) {
+		t.Fatalf("pair full = %d %x", got, pairDst)
+	}
+	// Short dst for pair: no write
+	pairShort := []byte{0xa5, 0xa5, 0xa5}
+	if got := ConvertUTF16ToUTF8Safe(pair, pairShort); got != 0 || pairShort[0] != 0xa5 {
+		t.Fatalf("pair short = %d %x", got, pairShort)
+	}
+
+	// Invalid surrogate -> 0
+	invalid := []uint16{'A', 0xd800}
+	if got := ConvertUTF16ToUTF8Safe(invalid, make([]byte, 8)); got != 0 {
+		t.Fatalf("invalid surrogate = %d", got)
+	}
+	if got := ConvertUTF16ToUTF8Safe([]uint16{0xdc00}, make([]byte, 4)); got != 0 {
+		t.Fatalf("lone low = %d", got)
+	}
+
+	// Mixed: write A+euro, stop before pair when capacity insufficient
+	mixed := []uint16{'A', 0x20ac, 0xd83d, 0xde00}
+	mixedDst := make([]byte, 4) // fits A and euro, not pair
+	if got := ConvertUTF16ToUTF8Safe(mixed, mixedDst); got != 4 || !bytes.Equal(mixedDst, wantBMP) {
+		t.Fatalf("mixed partial = %d %x", got, mixedDst)
+	}
+	mixedShort := make([]byte, 7) // not enough for final 4-byte pair
+	if got := ConvertUTF16ToUTF8Safe(mixed, mixedShort); got != 4 {
+		t.Fatalf("mixed stop before pair = %d", got)
+	}
+}

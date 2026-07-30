@@ -157,6 +157,12 @@ func ConvertUTF16BEToUTF8WithReplacement(input []uint16, dst []byte) int {
 	return activeImplementation.convertUTF16BEToUTF8WithReplacement(input, dst)
 }
 
+// ConvertUTF16ToUTF8Safe converts complete UTF-16 code points which fit in
+// dst and returns the number of bytes written.
+func ConvertUTF16ToUTF8Safe(input []uint16, dst []byte) int {
+	return convertUTF16ToUTF8SafeScalar(input, dst)
+}
+
 // ConvertValidUTF16LEToUTF8 converts valid little-endian raw UTF-16 storage to
 // UTF-8. It panics before writing when dst is shorter than the UTF-8 length
 // required for input.

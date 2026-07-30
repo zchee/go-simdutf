@@ -338,6 +338,68 @@ func convertUTF16ToUTF8WithErrorsScalar(input []uint16, dst []byte, storageIsNat
 	return Result{Error: Success, Count: out}
 }
 
+func convertUTF16ToUTF8SafeScalar(input []uint16, dst []byte) int {
+	storageIsNative := nativeLittleEndian()
+	pos := 0
+	out := 0
+	for pos < len(input) {
+		word := utf16ScalarWord(input[pos], storageIsNative)
+		if word&0xff80 == 0 {
+			if len(dst)-out < 1 {
+				return out
+			}
+			dst[out] = byte(word)
+			out++
+			pos++
+			continue
+		}
+		if word&0xf800 == 0 {
+			if len(dst)-out < 2 {
+				return out
+			}
+			dst[out] = byte((word >> 6) | 0xc0)
+			dst[out+1] = byte((word & 0x3f) | 0x80)
+			out += 2
+			pos++
+			continue
+		}
+		if word&0xf800 != 0xd800 {
+			if len(dst)-out < 3 {
+				return out
+			}
+			dst[out] = byte((word >> 12) | 0xe0)
+			dst[out+1] = byte(((word >> 6) & 0x3f) | 0x80)
+			dst[out+2] = byte((word & 0x3f) | 0x80)
+			out += 3
+			pos++
+			continue
+		}
+		if len(dst)-out < 4 {
+			return out
+		}
+		diff := word - 0xd800
+		if diff > 0x3ff {
+			return 0
+		}
+		if pos+1 >= len(input) {
+			return 0
+		}
+		next := utf16ScalarWord(input[pos+1], storageIsNative)
+		diff2 := next - 0xdc00
+		if diff2 > 0x3ff {
+			return 0
+		}
+		value := (uint32(diff) << 10) + uint32(diff2) + 0x10000
+		dst[out] = byte((value >> 18) | 0xf0)
+		dst[out+1] = byte(((value >> 12) & 0x3f) | 0x80)
+		dst[out+2] = byte(((value >> 6) & 0x3f) | 0x80)
+		dst[out+3] = byte((value & 0x3f) | 0x80)
+		out += 4
+		pos += 2
+	}
+	return out
+}
+
 func convertUTF16LEToUTF8WithReplacementScalar(input []uint16, dst []byte) int {
 	return convertUTF16ToUTF8WithReplacementScalar(input, dst, nativeLittleEndian())
 }

@@ -118,3 +118,114 @@ func UTF8LengthFromUTF16(input []uint16) int {
 	}
 	return UTF8LengthFromUTF16BE(input)
 }
+
+// ConvertUTF16ToLatin1 converts host-native UTF-16 storage to Latin-1.
+// It returns 0 when a code unit is outside the Latin-1 range. It panics before
+// writing when dst is shorter than len(input).
+func ConvertUTF16ToLatin1(input []uint16, dst []byte) int {
+	if nativeLittleEndian() {
+		return ConvertUTF16LEToLatin1(input, dst)
+	}
+	return ConvertUTF16BEToLatin1(input, dst)
+}
+
+// ConvertUTF16ToLatin1WithErrors converts host-native UTF-16 storage to
+// Latin-1. On success Count is the number of Latin-1 bytes written; on failure
+// Count is the input error position. It panics before writing when dst is
+// shorter than len(input).
+func ConvertUTF16ToLatin1WithErrors(input []uint16, dst []byte) Result {
+	if nativeLittleEndian() {
+		return ConvertUTF16LEToLatin1WithErrors(input, dst)
+	}
+	return ConvertUTF16BEToLatin1WithErrors(input, dst)
+}
+
+// ConvertValidUTF16ToLatin1 converts valid host-native UTF-16 storage that is
+// representable as Latin-1. It panics before writing when dst is shorter than
+// len(input).
+func ConvertValidUTF16ToLatin1(input []uint16, dst []byte) int {
+	if nativeLittleEndian() {
+		return ConvertValidUTF16LEToLatin1(input, dst)
+	}
+	return ConvertValidUTF16BEToLatin1(input, dst)
+}
+
+// ConvertUTF16ToUTF8 converts host-native UTF-16 storage to UTF-8.
+// It returns 0 on unpaired surrogates. It panics before writing when dst is
+// shorter than the UTF-8 length required for input.
+func ConvertUTF16ToUTF8(input []uint16, dst []byte) int {
+	if nativeLittleEndian() {
+		return ConvertUTF16LEToUTF8(input, dst)
+	}
+	return ConvertUTF16BEToUTF8(input, dst)
+}
+
+// ConvertUTF16ToUTF8WithErrors converts host-native UTF-16 storage to UTF-8.
+// On success Count is the number of UTF-8 bytes written; on failure Count is
+// the input error position.
+func ConvertUTF16ToUTF8WithErrors(input []uint16, dst []byte) Result {
+	if nativeLittleEndian() {
+		return ConvertUTF16LEToUTF8WithErrors(input, dst)
+	}
+	return ConvertUTF16BEToUTF8WithErrors(input, dst)
+}
+
+// ConvertUTF16ToUTF8WithReplacement converts host-native UTF-16 storage to
+// UTF-8, writing U+FFFD for unpaired surrogates. It panics before writing when
+// dst is shorter than the replacement UTF-8 length required for input.
+func ConvertUTF16ToUTF8WithReplacement(input []uint16, dst []byte) int {
+	if nativeLittleEndian() {
+		return ConvertUTF16LEToUTF8WithReplacement(input, dst)
+	}
+	return ConvertUTF16BEToUTF8WithReplacement(input, dst)
+}
+
+// ConvertUTF16ToUTF32 converts host-native UTF-16 storage to UTF-32.
+// It returns 0 on unpaired surrogates. It panics before writing when dst is
+// shorter than the UTF-32 length required for input.
+func ConvertUTF16ToUTF32(input []uint16, dst []uint32) int {
+	if nativeLittleEndian() {
+		return ConvertUTF16LEToUTF32(input, dst)
+	}
+	return ConvertUTF16BEToUTF32(input, dst)
+}
+
+// ConvertUTF16ToUTF32WithErrors converts host-native UTF-16 storage to UTF-32.
+// On success Count is the number of UTF-32 code units written; on failure Count
+// is the input error position.
+func ConvertUTF16ToUTF32WithErrors(input []uint16, dst []uint32) Result {
+	if nativeLittleEndian() {
+		return ConvertUTF16LEToUTF32WithErrors(input, dst)
+	}
+	return ConvertUTF16BEToUTF32WithErrors(input, dst)
+}
+
+// ConvertValidUTF16ToUTF32 converts valid host-native UTF-16 storage to UTF-32.
+// It panics before writing when dst is shorter than the UTF-32 length required
+// for input.
+func ConvertValidUTF16ToUTF32(input []uint16, dst []uint32) int {
+	if nativeLittleEndian() {
+		return ConvertValidUTF16LEToUTF32(input, dst)
+	}
+	return ConvertValidUTF16BEToUTF32(input, dst)
+}
+
+// CountUTF16 returns the number of Unicode code points in host-native UTF-16
+// storage. Low surrogates are not counted independently.
+func CountUTF16(input []uint16) int {
+	if nativeLittleEndian() {
+		return CountUTF16LE(input)
+	}
+	return CountUTF16BE(input)
+}
+
+// UTF8LengthFromUTF16WithReplacement returns the UTF-8 byte length required for
+// host-native UTF-16 storage when unpaired surrogates are replaced by U+FFFD.
+// Count is always that length; Error is Surrogate when any surrogate is
+// present, otherwise Success.
+func UTF8LengthFromUTF16WithReplacement(input []uint16) Result {
+	if nativeLittleEndian() {
+		return UTF8LengthFromUTF16LEWithReplacement(input)
+	}
+	return UTF8LengthFromUTF16BEWithReplacement(input)
+}
