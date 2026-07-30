@@ -18,7 +18,6 @@ import (
 	"bytes"
 	"encoding/csv"
 	"fmt"
-	"github.com/zchee/go-simdutf/internal/portplan"
 	"go/ast"
 	"go/build"
 	"go/importer"
@@ -31,6 +30,8 @@ import (
 	"slices"
 	"strings"
 	"testing"
+
+	"github.com/zchee/go-simdutf/internal/portplan"
 )
 
 func TestPublicAPIContract(t *testing.T) {
@@ -48,15 +49,15 @@ func TestPublicAPIContract(t *testing.T) {
 		"const":      2,
 		"enum-const": 31,
 		"field":      6,
-		"func":       78,
+		"func":       90,
 		"method":     3,
 		"type":       6,
 	}
 	if !maps.Equal(counts, wantCounts) {
 		t.Fatalf("API leaf counts = %v, want %v", counts, wantCounts)
 	}
-	if len(got) != 126 {
-		t.Fatalf("API leaf record count = %d, want 126", len(got))
+	if len(got) != 138 {
+		t.Fatalf("API leaf record count = %d, want 138", len(got))
 	}
 
 	want, err := os.ReadFile(filepath.Join("testdata", "public-api.golden"))

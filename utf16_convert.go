@@ -182,3 +182,53 @@ func UTF8LengthFromUTF16LE(input []uint16) int {
 func UTF8LengthFromUTF16BE(input []uint16) int {
 	return activeImplementation.utf8LengthFromUTF16BE(input)
 }
+
+// CountUTF16LE returns the number of Unicode code points in little-endian raw
+// UTF-16 storage. Low surrogates are not counted independently.
+func CountUTF16LE(input []uint16) int {
+	return activeImplementation.countUTF16LE(input)
+}
+
+// CountUTF16BE returns the number of Unicode code points in big-endian raw
+// UTF-16 storage. Low surrogates are not counted independently.
+func CountUTF16BE(input []uint16) int {
+	return activeImplementation.countUTF16BE(input)
+}
+
+// ChangeEndiannessUTF16 reverses the byte order of each UTF-16 code unit from
+// input into dst. Input and dst may be identical. It panics before writing when
+// dst is shorter than input; other overlap is not supported.
+func ChangeEndiannessUTF16(input, dst []uint16) {
+	if len(dst) < len(input) {
+		panic("simdutf: UTF-16 destination too short")
+	}
+	activeImplementation.changeEndiannessUTF16(input, dst)
+}
+
+// TrimPartialUTF16LE returns the length of the longest little-endian UTF-16
+// prefix that excludes a final truncated high surrogate.
+func TrimPartialUTF16LE(input []uint16) int {
+	return trimPartialUTF16LEScalar(input)
+}
+
+// TrimPartialUTF16BE returns the length of the longest big-endian UTF-16
+// prefix that excludes a final truncated high surrogate.
+func TrimPartialUTF16BE(input []uint16) int {
+	return trimPartialUTF16BEScalar(input)
+}
+
+// UTF8LengthFromUTF16LEWithReplacement returns the UTF-8 byte length required
+// for little-endian raw UTF-16 storage when unpaired surrogates are replaced by
+// U+FFFD. Count is always that length; Error is Surrogate when any surrogate is
+// present, otherwise Success.
+func UTF8LengthFromUTF16LEWithReplacement(input []uint16) Result {
+	return activeImplementation.utf8LengthFromUTF16LEWithReplacement(input)
+}
+
+// UTF8LengthFromUTF16BEWithReplacement returns the UTF-8 byte length required
+// for big-endian raw UTF-16 storage when unpaired surrogates are replaced by
+// U+FFFD. Count is always that length; Error is Surrogate when any surrogate is
+// present, otherwise Success.
+func UTF8LengthFromUTF16BEWithReplacement(input []uint16) Result {
+	return activeImplementation.utf8LengthFromUTF16BEWithReplacement(input)
+}

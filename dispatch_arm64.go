@@ -269,5 +269,25 @@ func makeImplementation(input selectionInput) implementation {
 			input,
 			variant[func([]uint16) int]{value: utf8LengthFromUTF16BEScalar, kind: implementationScalar, available: true},
 		),
+		countUTF16LE: selectVariant(
+			input,
+			variant[func([]uint16) int]{value: countUTF16LEScalar, kind: implementationScalar, available: true},
+		),
+		countUTF16BE: selectVariant(
+			input,
+			variant[func([]uint16) int]{value: countUTF16BEScalar, kind: implementationScalar, available: true},
+		),
+		changeEndiannessUTF16: selectVariant(
+			input,
+			variant[func([]uint16, []uint16)]{value: changeEndiannessUTF16Scalar, kind: implementationScalar, available: true},
+		),
+		utf8LengthFromUTF16LEWithReplacement: selectVariant(
+			input,
+			variant[func([]uint16) Result]{value: utf8LengthFromUTF16LEWithReplacementScalar, kind: implementationScalar, available: true},
+		),
+		utf8LengthFromUTF16BEWithReplacement: selectVariant(
+			input,
+			variant[func([]uint16) Result]{value: utf8LengthFromUTF16BEWithReplacementScalar, kind: implementationScalar, available: true},
+		),
 	}
 }

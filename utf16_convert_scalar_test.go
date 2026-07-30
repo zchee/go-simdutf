@@ -290,3 +290,142 @@ func TestUTF16ConvertToUTF8(t *testing.T) {
 		})
 	}
 }
+
+func TestUTF16HelpersScalar(t *testing.T) {
+	cases := []struct {
+		name        string
+		native      []uint16
+		count       int
+		trim        int
+		utf8Replace Result
+	}{
+		{"empty", nil, 0, 0, Result{Error: Success, Count: 0}},
+		{"bmp", []uint16{'A', 0x20ac}, 2, 2, Result{Error: Success, Count: 1 + 3}},
+		{"pair", []uint16{0xd83d, 0xde00}, 1, 2, Result{Error: Surrogate, Count: 4}},
+		{"high_only", []uint16{0xd800}, 1, 0, Result{Error: Surrogate, Count: 3}},
+		{"low_only", []uint16{0xdc00}, 0, 1, Result{Error: Surrogate, Count: 3}},
+		{"trim_lead", []uint16{'A', 0xd83d}, 2, 1, Result{Error: Surrogate, Count: 1 + 3}},
+		{"unpaired_high_ascii", []uint16{0xd800, 'A'}, 2, 2, Result{Error: Surrogate, Count: 3 + 1}},
+	}
+	for _, tc := range cases {
+		t.Run(tc.name, func(t *testing.T) {
+			for _, little := range []bool{true, false} {
+				input := rawUTF16Words(tc.native, little)
+				var count, trim int
+				var replace Result
+				if little {
+					count = countUTF16LEScalar(input)
+					trim = trimPartialUTF16LEScalar(input)
+					replace = utf8LengthFromUTF16LEWithReplacementScalar(input)
+				} else {
+					count = countUTF16BEScalar(input)
+					trim = trimPartialUTF16BEScalar(input)
+					replace = utf8LengthFromUTF16BEWithReplacementScalar(input)
+				}
+				if count != tc.count {
+					t.Fatalf("little=%v count = %d, want %d", little, count, tc.count)
+				}
+				if trim != tc.trim {
+					t.Fatalf("little=%v trim = %d, want %d", little, trim, tc.trim)
+				}
+				if replace != tc.utf8Replace {
+					t.Fatalf("little=%v utf8Replace = %+v, want %+v", little, replace, tc.utf8Replace)
+				}
+			}
+		})
+	}
+}
+
+func TestChangeEndiannessUTF16Scalar(t *testing.T) {
+	input := []uint16{0x1234, 0xd83d, 0xde00}
+	want := []uint16{0x3412, 0x3dd8, 0x00de}
+
+	dst := make([]uint16, len(input)+1)
+	dst[len(input)] = 0x5a5a
+	changeEndiannessUTF16Scalar(input, dst[:len(input)])
+	for i := range want {
+		if dst[i] != want[i] {
+			t.Fatalf("out-of-place dst[%d]=%#x, want %#x", i, dst[i], want[i])
+		}
+	}
+	if dst[len(input)] != 0x5a5a {
+		t.Fatal("canary overwritten")
+	}
+
+	inPlace := append([]uint16(nil), input...)
+	changeEndiannessUTF16Scalar(inPlace, inPlace)
+	for i := range want {
+		if inPlace[i] != want[i] {
+			t.Fatalf("in-place dst[%d]=%#x, want %#x", i, inPlace[i], want[i])
+		}
+	}
+
+	defer func() {
+		if recover() == nil {
+			t.Fatal("short destination did not panic")
+		}
+	}()
+	changeEndiannessUTF16Scalar(input, make([]uint16, len(input)-1))
+}
+
+func TestUTF16HelpersPublicAPI(t *testing.T) {
+	if got := Latin1LengthFromUTF16(7); got != 7 {
+		t.Fatalf("Latin1LengthFromUTF16 = %d", got)
+	}
+
+	native := []uint16{'A', 0x20ac, 0xd83d, 0xde00}
+	le := rawUTF16Words(native, true)
+	be := rawUTF16Words(native, false)
+
+	if got := CountUTF16LE(le); got != 3 {
+		t.Fatalf("CountUTF16LE = %d", got)
+	}
+	if got := CountUTF16BE(be); got != 3 {
+		t.Fatalf("CountUTF16BE = %d", got)
+	}
+	if got := UTF32LengthFromUTF16(native); got != 3 {
+		t.Fatalf("UTF32LengthFromUTF16 = %d", got)
+	}
+	if got := UTF8LengthFromUTF16(native); got != 1+3+4 {
+		t.Fatalf("UTF8LengthFromUTF16 = %d", got)
+	}
+
+	dst := make([]byte, UTF8LengthFromUTF16(native))
+	if got := ConvertValidUTF16ToUTF8(native, dst); got != len(dst) || string(dst) != "A\xe2\x82\xac\xf0\x9f\x98\x80" {
+		t.Fatalf("ConvertValidUTF16ToUTF8 = %d %q", got, dst)
+	}
+
+	if got := TrimPartialUTF16LE(rawUTF16Words([]uint16{'A', 0xd83d}, true)); got != 1 {
+		t.Fatalf("TrimPartialUTF16LE = %d", got)
+	}
+	if got := TrimPartialUTF16BE(rawUTF16Words([]uint16{'A', 0xd83d}, false)); got != 1 {
+		t.Fatalf("TrimPartialUTF16BE = %d", got)
+	}
+	if got := TrimPartialUTF16([]uint16{'A', 0xd83d}); got != 1 {
+		t.Fatalf("TrimPartialUTF16 = %d", got)
+	}
+
+	swapped := make([]uint16, len(le))
+	ChangeEndiannessUTF16(le, swapped)
+	for i := range le {
+		if swapped[i] != bits.ReverseBytes16(le[i]) {
+			t.Fatalf("ChangeEndiannessUTF16[%d]=%#x, want %#x", i, swapped[i], bits.ReverseBytes16(le[i]))
+		}
+	}
+	ChangeEndiannessUTF16(swapped, swapped)
+	for i := range le {
+		if swapped[i] != le[i] {
+			t.Fatalf("round-trip ChangeEndiannessUTF16[%d]=%#x, want %#x", i, swapped[i], le[i])
+		}
+	}
+
+	if got := UTF8LengthFromUTF16LEWithReplacement(rawUTF16Words([]uint16{0xd800}, true)); got != (Result{Error: Surrogate, Count: 3}) {
+		t.Fatalf("UTF8LengthFromUTF16LEWithReplacement = %+v", got)
+	}
+	if got := UTF8LengthFromUTF16BEWithReplacement(rawUTF16Words([]uint16{'A'}, false)); got != (Result{Error: Success, Count: 1}) {
+		t.Fatalf("UTF8LengthFromUTF16BEWithReplacement = %+v", got)
+	}
+	if got := UTF8LengthFromUTF16LEWithReplacement(rawUTF16Words([]uint16{0xd83d, 0xde00}, true)); got != (Result{Error: Surrogate, Count: 4}) {
+		t.Fatalf("paired surrogate flag = %+v", got)
+	}
+}

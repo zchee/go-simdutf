@@ -62,6 +62,12 @@ func ConvertLatin1ToUTF16(input []byte, dst []uint16) int {
 	return ConvertLatin1ToUTF16BE(input, dst)
 }
 
+// Latin1LengthFromUTF16 returns the number of Latin-1 bytes needed for a
+// UTF-16 input of length code units. It is an identity mapping.
+func Latin1LengthFromUTF16(length int) int {
+	return latin1LengthFromUTF16Scalar(length)
+}
+
 // UTF16LengthFromLatin1 returns the number of UTF-16 code units needed for a
 // Latin-1 input of length bytes.
 func UTF16LengthFromLatin1(length int) int {

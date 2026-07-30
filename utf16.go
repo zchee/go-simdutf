@@ -81,3 +81,40 @@ func ToWellFormedUTF16BE(input, dst []uint16) {
 	}
 	activeImplementation.toWellFormedUTF16BE(input, dst)
 }
+
+// TrimPartialUTF16 returns the length of the longest host-native UTF-16 prefix
+// that excludes a final truncated high surrogate.
+func TrimPartialUTF16(input []uint16) int {
+	if nativeLittleEndian() {
+		return TrimPartialUTF16LE(input)
+	}
+	return TrimPartialUTF16BE(input)
+}
+
+// ConvertValidUTF16ToUTF8 converts valid host-native UTF-16 storage to UTF-8.
+// It panics before writing when dst is shorter than the UTF-8 length required
+// for input.
+func ConvertValidUTF16ToUTF8(input []uint16, dst []byte) int {
+	if nativeLittleEndian() {
+		return ConvertValidUTF16LEToUTF8(input, dst)
+	}
+	return ConvertValidUTF16BEToUTF8(input, dst)
+}
+
+// UTF32LengthFromUTF16 returns the number of UTF-32 code units required to
+// encode host-native UTF-16 storage.
+func UTF32LengthFromUTF16(input []uint16) int {
+	if nativeLittleEndian() {
+		return UTF32LengthFromUTF16LE(input)
+	}
+	return UTF32LengthFromUTF16BE(input)
+}
+
+// UTF8LengthFromUTF16 returns the number of UTF-8 bytes required to encode
+// host-native UTF-16 storage.
+func UTF8LengthFromUTF16(input []uint16) int {
+	if nativeLittleEndian() {
+		return UTF8LengthFromUTF16LE(input)
+	}
+	return UTF8LengthFromUTF16BE(input)
+}

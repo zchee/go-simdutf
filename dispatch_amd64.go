@@ -80,11 +80,13 @@ func makeImplementation(input selectionInput) implementation {
 		),
 		countUTF8:            countUTF8,
 		latin1LengthFromUTF8: countUTF8,
-		utf16LengthFromUTF8: selectVariant(input,
+		utf16LengthFromUTF8: selectVariant(
+			input,
 			variant[func([]byte) int]{value: utf16LengthFromUTF8Westmere, kind: implementationWestmere, available: true},
 			variant[func([]byte) int]{value: utf16LengthFromUTF8Scalar, kind: implementationScalar, available: true},
 		),
-		utf32LengthFromUTF8: selectVariant(input,
+		utf32LengthFromUTF8: selectVariant(
+			input,
 			variant[func([]byte) int]{value: utf32LengthFromUTF8Westmere, kind: implementationWestmere, required: cpuPOPCNT, available: true},
 			variant[func([]byte) int]{value: utf32LengthFromUTF8Scalar, kind: implementationScalar, available: true},
 		),
@@ -354,6 +356,26 @@ func makeImplementation(input selectionInput) implementation {
 		utf8LengthFromUTF16BE: selectVariant(
 			input,
 			variant[func([]uint16) int]{value: utf8LengthFromUTF16BEScalar, kind: implementationScalar, available: true},
+		),
+		countUTF16LE: selectVariant(
+			input,
+			variant[func([]uint16) int]{value: countUTF16LEScalar, kind: implementationScalar, available: true},
+		),
+		countUTF16BE: selectVariant(
+			input,
+			variant[func([]uint16) int]{value: countUTF16BEScalar, kind: implementationScalar, available: true},
+		),
+		changeEndiannessUTF16: selectVariant(
+			input,
+			variant[func([]uint16, []uint16)]{value: changeEndiannessUTF16Scalar, kind: implementationScalar, available: true},
+		),
+		utf8LengthFromUTF16LEWithReplacement: selectVariant(
+			input,
+			variant[func([]uint16) Result]{value: utf8LengthFromUTF16LEWithReplacementScalar, kind: implementationScalar, available: true},
+		),
+		utf8LengthFromUTF16BEWithReplacement: selectVariant(
+			input,
+			variant[func([]uint16) Result]{value: utf8LengthFromUTF16BEWithReplacementScalar, kind: implementationScalar, available: true},
 		),
 	}
 }

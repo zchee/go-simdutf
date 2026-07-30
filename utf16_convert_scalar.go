@@ -20,8 +20,9 @@ package simdutf
 // include/simdutf/scalar/utf16_to_latin1/{utf16_to_latin1.h,valid_utf16_to_latin1.h},
 // include/simdutf/scalar/utf16_to_utf32/{utf16_to_utf32.h,valid_utf16_to_utf32.h},
 // include/simdutf/scalar/utf16_to_utf8/{utf16_to_utf8.h,valid_utf16_to_utf8.h},
-// include/simdutf/scalar/utf16.h (utf32_length_from_utf16, utf8_length_from_utf16,
-// utf8_length_from_utf16_with_replacement), and
+// include/simdutf/scalar/utf16.h (count_code_points, utf32_length_from_utf16,
+// utf8_length_from_utf16, utf8_length_from_utf16_with_replacement,
+// change_endianness_utf16, trim_partial_utf16), and
 // src/fallback/implementation.cpp. Go slices make destination bounds explicit
 // and require an all-or-nothing preflight for conversion APIs.
 
@@ -450,4 +451,64 @@ func convertValidUTF16ToUTF8Scalar(input []uint16, dst []byte, storageIsNative b
 		pos += 2
 	}
 	return out
+}
+
+func countUTF16LEScalar(input []uint16) int {
+	return countUTF16Scalar(input, nativeLittleEndian())
+}
+
+func countUTF16BEScalar(input []uint16) int {
+	return countUTF16Scalar(input, !nativeLittleEndian())
+}
+
+func countUTF16Scalar(input []uint16, storageIsNative bool) int {
+	return utf32LengthFromUTF16Scalar(input, storageIsNative)
+}
+
+func trimPartialUTF16LEScalar(input []uint16) int {
+	return trimPartialUTF16Scalar(input, nativeLittleEndian())
+}
+
+func trimPartialUTF16BEScalar(input []uint16) int {
+	return trimPartialUTF16Scalar(input, !nativeLittleEndian())
+}
+
+func trimPartialUTF16Scalar(input []uint16, storageIsNative bool) int {
+	length := len(input)
+	if length == 0 {
+		return 0
+	}
+	last := utf16ScalarWord(input[length-1], storageIsNative)
+	if last&0xfc00 == 0xd800 {
+		return length - 1
+	}
+	return length
+}
+
+func changeEndiannessUTF16Scalar(input, dst []uint16) {
+	if len(dst) < len(input) {
+		panic("simdutf: UTF-16 destination too short")
+	}
+	for i, word := range input {
+		dst[i] = word>>8 | word<<8
+	}
+}
+
+func utf8LengthFromUTF16LEWithReplacementScalar(input []uint16) Result {
+	return utf8LengthFromUTF16WithReplacementResultScalar(input, nativeLittleEndian())
+}
+
+func utf8LengthFromUTF16BEWithReplacementScalar(input []uint16) Result {
+	return utf8LengthFromUTF16WithReplacementResultScalar(input, !nativeLittleEndian())
+}
+
+func utf8LengthFromUTF16WithReplacementResultScalar(input []uint16, storageIsNative bool) Result {
+	count := utf8LengthFromUTF16WithReplacementScalar(input, storageIsNative)
+	for _, raw := range input {
+		word := utf16ScalarWord(raw, storageIsNative)
+		if word >= 0xd800 && word <= 0xdfff {
+			return Result{Error: Surrogate, Count: count}
+		}
+	}
+	return Result{Error: Success, Count: count}
 }
