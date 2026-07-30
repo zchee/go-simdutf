@@ -6,11 +6,11 @@ v1	docs/porting/isa-eligibility.tsv	18810	d73b6bc48466dba23d28c2d06c877ccbeaa10a
 v1	docs/porting/provenance.md	11204	6d713770ed8f3ab1d375d4865b79036ecc6bfe33d4d2058315466a77acfacf44
 v1	docs/porting/simdutf-port-v1/inputs/archsimd-primitives-v1.tsv	4799	c9b3046c3ff229e4ae691c2250f2a290a21b054b09f4a747ab0abbdee191e318
 v1	docs/porting/simdutf-port-v1/inputs/archsimd-source-files-v1.tsv	1778	8b28d6c4bc030fbe7e88074e1456e0818e3edbccfa8ac04d397434f8dc9666d1
-v1	docs/porting/simdutf-port-v1/inputs/campaign-command-schema-v1.json	4958	622a8cfd401c6c58f5446312421b76b1b6c5488696be289dafc8b38a6f5abc95
+v1	docs/porting/simdutf-port-v1/inputs/campaign-command-schema-v1.json	4957	bd68a966b4fb63c6a818245d717acf438def1d425f2d0a47140135428b334133
 v1	docs/porting/simdutf-port-v1/inputs/completion-schema-v1.json	5484	1c916b1a1dd9808428c8f22c509d1378a15ca0aad6ff437e045b9a9fbba33660
 v1	docs/porting/simdutf-port-v1/inputs/corpus-contract-v1.tsv	5096	10212cb3445bc2f7c4cb43d7f57eacf36871b31e34710d70c0d3a672f92d3250
 v1	docs/porting/simdutf-port-v1/inputs/dependency-map-v1.tsv	61216	98ee910827b877a097f556a8368f3f8f0442ddaa48b7cc6e3294b0272255b586
-v1	docs/porting/simdutf-port-v1/inputs/evidence-schema-v1.json	5668	d997ebb7a7b3b705a48ed331f1e1117bbcbeca1f3ff02e32ae77f77e16652ce4
+v1	docs/porting/simdutf-port-v1/inputs/evidence-schema-v1.json	5685	f7d8c11f02a1237551719b3bd7b1cfd9b2c77c1b3c49b51c063c9dbdd9fef8e4
 v1	docs/porting/simdutf-port-v1/inputs/go-base-authority-v1.tsv	467	580e99c6843de6b8885953d921aaec950be44d09ea9d61dd30f3ec5e2213b834
 v1	docs/porting/simdutf-port-v1/inputs/host-authority-v1.tsv	1128	88603c13200ac4191c329aba11b9289a87f0b2dd3515a2c3c3973234e65bfd56
 v1	docs/porting/simdutf-port-v1/inputs/locked-sets-v1.tsv	48889	268c6aab89f21b3f4cc710be2930c3204cfed0766dde906bd669c698598c2360
