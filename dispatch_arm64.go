@@ -195,8 +195,8 @@ func makeImplementation(input selectionInput) implementation {
 		),
 		convertValidUTF16LEToLatin1: selectVariant(
 			input,
-			variant[func([]uint16, []byte) int]{value: convertValidUTF16LEToLatin1Scalar, kind: implementationScalar, available: true},
 			variant[func([]uint16, []byte) int]{value: convertValidUTF16LEToLatin1NEON, kind: implementationNEON, required: cpuNEON, available: true},
+			variant[func([]uint16, []byte) int]{value: convertValidUTF16LEToLatin1Scalar, kind: implementationScalar, available: true},
 		),
 		convertValidUTF16BEToLatin1: selectVariant(
 			input,
@@ -300,8 +300,8 @@ func makeImplementation(input selectionInput) implementation {
 		),
 		countUTF16BE: selectVariant(
 			input,
-			variant[func([]uint16) int]{value: countUTF16BEScalar, kind: implementationScalar, available: true},
 			variant[func([]uint16) int]{value: countUTF16BENEON, kind: implementationNEON, required: cpuNEON, available: true},
+			variant[func([]uint16) int]{value: countUTF16BEScalar, kind: implementationScalar, available: true},
 		),
 		changeEndiannessUTF16: selectVariant(
 			input,

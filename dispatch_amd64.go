@@ -477,10 +477,10 @@ func makeImplementation(input selectionInput) implementation {
 		),
 		countUTF16LE: selectVariant(
 			input,
+			variant[func([]uint16) int]{value: countUTF16LEWestmere, kind: implementationWestmere, required: cpuSSSE3, available: true},
 			variant[func([]uint16) int]{value: countUTF16LEScalar, kind: implementationScalar, available: true},
 			variant[func([]uint16) int]{value: archsimdCount16LE, kind: implementationArchsimd, required: cpuAVX2, available: archsimdCount16LE != nil},
 			variant[func([]uint16) int]{value: countUTF16LEHaswell, kind: implementationHaswell, required: cpuAVX2, available: true},
-			variant[func([]uint16) int]{value: countUTF16LEWestmere, kind: implementationWestmere, required: cpuSSSE3, available: true},
 		),
 		countUTF16BE: selectVariant(
 			input,

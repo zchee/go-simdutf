@@ -158,36 +158,46 @@ func TestMakeImplementationARM64UTF8QualificationSelection(t *testing.T) {
 }
 
 func TestMakeImplementationARM64UTF16HelpersQualificationSelection(t *testing.T) {
-	// Helper providers stay scalar-first pending qualification dispositions.
+	// Helper providers stay scalar-first except CountUTF16BE, which qualification
+	// selected as neon on darwin-arm64.
 	for _, input := range []selectionInput{
 		{},
 		{features: cpuNEON},
 	} {
 		got := makeImplementation(input)
+		wantCountBE := countUTF16BEScalar
+		if input.features&cpuNEON != 0 {
+			wantCountBE = countUTF16BENEON
+		}
 		if !sameFunction(got.changeEndiannessUTF16, changeEndiannessUTF16Scalar) ||
 			!sameFunction(got.countUTF16LE, countUTF16LEScalar) ||
-			!sameFunction(got.countUTF16BE, countUTF16BEScalar) ||
+			!sameFunction(got.countUTF16BE, wantCountBE) ||
 			!sameFunction(got.utf32LengthFromUTF16LE, utf32LengthFromUTF16LEScalar) ||
 			!sameFunction(got.utf32LengthFromUTF16BE, utf32LengthFromUTF16BEScalar) {
-			t.Fatalf("UTF-16 helper providers leaked ahead of scalar for %#v", input)
+			t.Fatalf("UTF-16 helper selection mismatch for %#v", input)
 		}
 	}
 }
 
 func TestMakeImplementationARM64UTF16Latin1QualificationSelection(t *testing.T) {
-	// UTF-16→Latin-1 NEON providers stay scalar-first pending qualification.
+	// UTF-16→Latin-1 stays scalar-first except ConvertValidUTF16LEToLatin1, which
+	// qualification selected as neon on darwin-arm64.
 	for _, input := range []selectionInput{
 		{},
 		{features: cpuNEON},
 	} {
 		got := makeImplementation(input)
+		wantValidLE := convertValidUTF16LEToLatin1Scalar
+		if input.features&cpuNEON != 0 {
+			wantValidLE = convertValidUTF16LEToLatin1NEON
+		}
 		if !sameFunction(got.convertUTF16LEToLatin1, convertUTF16LEToLatin1Scalar) ||
 			!sameFunction(got.convertUTF16BEToLatin1, convertUTF16BEToLatin1Scalar) ||
 			!sameFunction(got.convertUTF16LEToLatin1WithErrors, convertUTF16LEToLatin1WithErrorsScalar) ||
 			!sameFunction(got.convertUTF16BEToLatin1WithErrors, convertUTF16BEToLatin1WithErrorsScalar) ||
-			!sameFunction(got.convertValidUTF16LEToLatin1, convertValidUTF16LEToLatin1Scalar) ||
+			!sameFunction(got.convertValidUTF16LEToLatin1, wantValidLE) ||
 			!sameFunction(got.convertValidUTF16BEToLatin1, convertValidUTF16BEToLatin1Scalar) {
-			t.Fatalf("UTF-16→Latin-1 providers leaked ahead of scalar for %#v", input)
+			t.Fatalf("UTF-16→Latin-1 selection mismatch for %#v", input)
 		}
 	}
 }

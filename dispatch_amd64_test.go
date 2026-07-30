@@ -245,8 +245,8 @@ func TestMakeImplementationAMD64UTF8QualificationSelection(t *testing.T) {
 }
 
 func TestMakeImplementationAMD64UTF16HelpersQualificationSelection(t *testing.T) {
-	// FC-v1-utf16-source helper providers are forceable but remain scalar-first
-	// until qualification dispositions promote selected backends.
+	// FC-v1-utf16-source helper providers remain scalar-first except CountUTF16LE,
+	// which qualification selected as westmere on linux-amd64.
 	for _, input := range []selectionInput{
 		{},
 		{features: cpuSSSE3},
@@ -255,12 +255,16 @@ func TestMakeImplementationAMD64UTF16HelpersQualificationSelection(t *testing.T)
 		{features: cpuSSSE3 | cpuAVX2, archsimdAVX2: true},
 	} {
 		got := makeImplementation(input)
+		wantCountLE := countUTF16LEScalar
+		if input.features&cpuSSSE3 != 0 {
+			wantCountLE = countUTF16LEWestmere
+		}
 		if !sameFunction(got.changeEndiannessUTF16, changeEndiannessUTF16Scalar) ||
-			!sameFunction(got.countUTF16LE, countUTF16LEScalar) ||
+			!sameFunction(got.countUTF16LE, wantCountLE) ||
 			!sameFunction(got.countUTF16BE, countUTF16BEScalar) ||
 			!sameFunction(got.utf32LengthFromUTF16LE, utf32LengthFromUTF16LEScalar) ||
 			!sameFunction(got.utf32LengthFromUTF16BE, utf32LengthFromUTF16BEScalar) {
-			t.Fatalf("UTF-16 helper providers leaked ahead of scalar for %#v", input)
+			t.Fatalf("UTF-16 helper selection mismatch for %#v", input)
 		}
 	}
 }
