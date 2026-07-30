@@ -194,6 +194,9 @@ type implementation struct {
 	convertValidUTF32ToUTF16BE           func([]uint32, []uint16) int
 	utf8LengthFromUTF32                  func([]uint32) int
 	utf16LengthFromUTF32                 func([]uint32) int
+	detectEncodings                      func([]byte) Encoding
+	find                                 func([]byte, byte) int
+	findUTF16                            func([]uint16, uint16) int
 }
 
 var activeImplementation = makeImplementation(detectSelectionInput())

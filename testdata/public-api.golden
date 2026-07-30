@@ -37,6 +37,7 @@ field	FullResult.OutputCount	2	int	embedded=false	tag=""
 field	FullResult.PaddingError	3	bool	embedded=false	tag=""
 field	Result.Count	1	int	embedded=false	tag=""
 field	Result.Error	0	ErrorCode	embedded=false	tag=""
+func	AutodetectEncoding	func([]byte) Encoding
 func	BOMByteSize	func(Encoding) int
 func	Base64OptionsString	func(Base64Options) string
 func	ChangeEndiannessUTF16	func([]uint16, []uint16)
@@ -112,8 +113,11 @@ func	CountUTF16	func([]uint16) int
 func	CountUTF16BE	func([]uint16) int
 func	CountUTF16LE	func([]uint16) int
 func	CountUTF8	func([]byte) int
+func	DetectEncodings	func([]byte) Encoding
 func	EncodingString	func(Encoding) string
 func	ErrorToString	func(ErrorCode) string
+func	Find	func([]byte, byte) int
+func	FindUTF16	func([]uint16, uint16) int
 func	IsPartial	func(LastChunkHandlingOptions) bool
 func	LastChunkHandlingOptionsString	func(LastChunkHandlingOptions) string
 func	Latin1LengthFromUTF16	func(int) int

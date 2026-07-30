@@ -111,6 +111,9 @@ func TestImplementationTableExactFields(t *testing.T) {
 		{name: "convertValidUTF32ToUTF16BE", typ: reflect.TypeFor[func([]uint32, []uint16) int]()},
 		{name: "utf8LengthFromUTF32", typ: reflect.TypeFor[func([]uint32) int]()},
 		{name: "utf16LengthFromUTF32", typ: reflect.TypeFor[func([]uint32) int]()},
+		{name: "detectEncodings", typ: reflect.TypeFor[func([]byte) Encoding]()},
+		{name: "find", typ: reflect.TypeFor[func([]byte, byte) int]()},
+		{name: "findUTF16", typ: reflect.TypeFor[func([]uint16, uint16) int]()},
 	}
 	if typ.NumField() != len(want) {
 		t.Fatalf("implementation has %d fields, want exactly %d", typ.NumField(), len(want))

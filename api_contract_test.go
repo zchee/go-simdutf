@@ -49,15 +49,15 @@ func TestPublicAPIContract(t *testing.T) {
 		"const":      2,
 		"enum-const": 31,
 		"field":      6,
-		"func":       120,
+		"func":       124,
 		"method":     3,
 		"type":       6,
 	}
 	if !maps.Equal(counts, wantCounts) {
 		t.Fatalf("API leaf counts = %v, want %v", counts, wantCounts)
 	}
-	if len(got) != 168 {
-		t.Fatalf("API leaf record count = %d, want 168", len(got))
+	if len(got) != 172 {
+		t.Fatalf("API leaf record count = %d, want 172", len(got))
 	}
 
 	want, err := os.ReadFile(filepath.Join("testdata", "public-api.golden"))
@@ -259,12 +259,12 @@ func TestAPIManifestMilestones(t *testing.T) {
 
 	assertStringIntMap(t, "status counts", statusCounts, map[string]int{
 		"excluded":    9,
-		"implemented": 131,
-		"planned":     24,
+		"implemented": 135,
+		"planned":     20,
 	})
 	assertStringIntMap(t, "milestone counts", milestoneCounts, map[string]int{
-		"611becc-current-api": 131,
-		"future-upstream-api": 24,
+		"611becc-current-api": 135,
+		"future-upstream-api": 20,
 		"upstream-excluded":   9,
 	})
 	assertStringIntMap(t, "family counts", familyCounts, map[string]int{
@@ -283,6 +283,7 @@ func TestAPIManifestMilestones(t *testing.T) {
 
 	slices.Sort(currentSymbols)
 	wantCurrentSymbols := []string{
+		"AutodetectEncoding",
 		"BOMByteSize",
 		"Base64Options",
 		"Base64OptionsString",
@@ -361,10 +362,13 @@ func TestAPIManifestMilestones(t *testing.T) {
 		"CountUTF16LE",
 		"CountUTF8",
 		"DefaultLineLength",
+		"DetectEncodings",
 		"Encoding",
 		"EncodingString",
 		"ErrorCode",
 		"ErrorToString",
+		"Find",
+		"FindUTF16",
 		"FullResult",
 		"FullResult.Result",
 		"IsPartial",
@@ -426,7 +430,7 @@ func TestPortPhase0FrozenInputs(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	if got, want := portplan.SHA256Hex(manifest), "04fe5d98df8c894ad4cc340e841d597849d1abd00d417d210c5debf54d2d3f21"; got != want {
+	if got, want := portplan.SHA256Hex(manifest), "1034d848fd50268725fbf52480d2c1af46f9c118254637595d1a76aa5a2b7a2e"; got != want {
 		t.Fatalf("%s SHA-256 = %s, want %s", manifestPath, got, want)
 	}
 	allRows, err := portplan.ParseManifestV1(manifest)
@@ -440,7 +444,7 @@ func TestPortPhase0FrozenInputs(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	if got, want := len(livePlannedRows), 24; got != want {
+	if got, want := len(livePlannedRows), 20; got != want {
 		t.Fatalf("remaining planned rows = %d, want %d", got, want)
 	}
 	frozenPath := filepath.Join("docs", "porting", "simdutf-port-v1", "inputs", "planned-rows-v1.tsv")

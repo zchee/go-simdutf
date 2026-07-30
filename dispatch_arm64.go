@@ -389,5 +389,17 @@ func makeImplementation(input selectionInput) implementation {
 			variant[func([]uint32) int]{value: utf16LengthFromUTF32Scalar, kind: implementationScalar, available: true},
 			variant[func([]uint32) int]{value: utf16LengthFromUTF32NEON, kind: implementationNEON, required: cpuNEON, available: true},
 		),
+		detectEncodings: selectVariant(
+			input,
+			variant[func([]byte) Encoding]{value: detectEncodingsScalar, kind: implementationScalar, available: true},
+		),
+		find: selectVariant(
+			input,
+			variant[func([]byte, byte) int]{value: findScalar, kind: implementationScalar, available: true},
+		),
+		findUTF16: selectVariant(
+			input,
+			variant[func([]uint16, uint16) int]{value: findUTF16Scalar, kind: implementationScalar, available: true},
+		),
 	}
 }
