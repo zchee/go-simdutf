@@ -30,6 +30,9 @@ import (
 // AVX2. Direct callers must therefore satisfy the archsimd AVX2 guard.
 
 func convertLatin1ToUTF8Archsimd(input, dst []byte) int {
+	if len(input) < 32 {
+		return convertLatin1ToUTF8Scalar(input, dst)
+	}
 	required := utf8LengthFromLatin1Archsimd(input)
 	if len(dst) < required {
 		panic("simdutf: destination is too short")
@@ -70,6 +73,12 @@ func convertLatin1ToUTF16Archsimd(input []byte, dst []uint16, bigEndian bool) in
 	if len(dst) < len(input) {
 		panic("simdutf: destination is too short")
 	}
+	if len(input) < 32 {
+		if bigEndian {
+			return convertLatin1ToUTF16BEScalar(input, dst)
+		}
+		return convertLatin1ToUTF16LEScalar(input, dst)
+	}
 
 	i := 0
 	for ; i+32 <= len(input); i += 32 {
@@ -94,6 +103,9 @@ func convertLatin1ToUTF32Archsimd(input []byte, dst []uint32) int {
 	if len(dst) < len(input) {
 		panic("simdutf: destination is too short")
 	}
+	if len(input) < 32 {
+		return convertLatin1ToUTF32Scalar(input, dst)
+	}
 
 	i := 0
 	for ; i+32 <= len(input); i += 32 {
@@ -108,6 +120,9 @@ func convertLatin1ToUTF32Archsimd(input []byte, dst []uint32) int {
 }
 
 func utf8LengthFromLatin1Archsimd(input []byte) int {
+	if len(input) < 32 {
+		return utf8LengthFromLatin1Scalar(input)
+	}
 	threshold := archsimd.BroadcastUint8x32(0x7f)
 	i, high := 0, 0
 	for ; i+32 <= len(input); i += 32 {

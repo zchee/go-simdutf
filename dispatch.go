@@ -87,7 +87,12 @@ func selectVariant[T any](input selectionInput, candidates ...variant[T]) T {
 }
 
 func forcedImplementationKind() (implementationKind, bool) {
-	switch strings.ToLower(strings.TrimSpace(os.Getenv("SIMDUTF_FORCE_PROVIDER"))) {
+	// Qualification campaigns set SIMDUTF_BENCH_EXPECT_TIER; FORCE_PROVIDER is a local alias.
+	raw := strings.TrimSpace(os.Getenv("SIMDUTF_FORCE_PROVIDER"))
+	if raw == "" {
+		raw = strings.TrimSpace(os.Getenv("SIMDUTF_BENCH_EXPECT_TIER"))
+	}
+	switch strings.ToLower(raw) {
 	case "":
 		return 0, false
 	case "scalar":
@@ -101,7 +106,12 @@ func forcedImplementationKind() (implementationKind, bool) {
 	case "archsimd":
 		return implementationArchsimd, true
 	default:
-		panic("simdutf: unsupported SIMDUTF_FORCE_PROVIDER value")
+		if strings.TrimSpace(os.Getenv("SIMDUTF_FORCE_PROVIDER")) != "" {
+			panic("simdutf: unsupported SIMDUTF_FORCE_PROVIDER value")
+		}
+		// Unknown EXPECT_TIER values are ignored for selection; the qualification
+		// guard remains responsible for rejecting mismatched providers.
+		return 0, false
 	}
 }
 

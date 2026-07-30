@@ -40,11 +40,18 @@ func convertLatin1ToUTF32BlocksNEON(input []byte, dst []uint32) (consumed int)
 
 func utf8LengthFromLatin1NEON(input []byte) int {
 	const block = 64
+	if len(input) < block {
+		return utf8LengthFromLatin1Scalar(input)
+	}
 	n := len(input) &^ (block - 1)
 	return utf8LengthFromLatin1BlocksNEON(input[:n]) + utf8LengthFromLatin1Scalar(input[n:])
 }
 
 func convertLatin1ToUTF8NEON(input, dst []byte) int {
+	const block = 64
+	if len(input) < block {
+		return convertLatin1ToUTF8Scalar(input, dst)
+	}
 	needed := utf8LengthFromLatin1NEON(input)
 	if len(dst) < needed {
 		panic("simdutf: Latin-1 to UTF-8 destination too short")
@@ -61,6 +68,9 @@ func convertLatin1ToUTF16LENEON(input []byte, dst []uint16) int {
 		panic("simdutf: Latin-1 to UTF-16 destination too short")
 	}
 	const block = 32
+	if len(input) < block {
+		return convertLatin1ToUTF16LEScalar(input, dst)
+	}
 	n := len(input) &^ (block - 1)
 	consumed := convertLatin1ToUTF16LEBlocksNEON(input[:n], dst[:n])
 	return consumed + convertLatin1ToUTF16LEScalar(input[consumed:], dst[consumed:])
@@ -71,6 +81,9 @@ func convertLatin1ToUTF16BENEON(input []byte, dst []uint16) int {
 		panic("simdutf: Latin-1 to UTF-16 destination too short")
 	}
 	const block = 32
+	if len(input) < block {
+		return convertLatin1ToUTF16BEScalar(input, dst)
+	}
 	n := len(input) &^ (block - 1)
 	consumed := convertLatin1ToUTF16BEBlocksNEON(input[:n], dst[:n])
 	return consumed + convertLatin1ToUTF16BEScalar(input[consumed:], dst[consumed:])
@@ -81,6 +94,9 @@ func convertLatin1ToUTF32NEON(input []byte, dst []uint32) int {
 		panic("simdutf: Latin-1 to UTF-32 destination too short")
 	}
 	const block = 16
+	if len(input) < block {
+		return convertLatin1ToUTF32Scalar(input, dst)
+	}
 	n := len(input) &^ (block - 1)
 	consumed := convertLatin1ToUTF32BlocksNEON(input[:n], dst[:n])
 	return consumed + convertLatin1ToUTF32Scalar(input[consumed:], dst[consumed:])

@@ -32,9 +32,10 @@ import (
 // qualification stay outside timed b.Loop bodies.
 
 const (
-	dispatchQualificationZeroSHA256   = "ad7facb2586fc6e966c004d7d1d16b024f5805ff7cb47c7a85dabd8b48892ca7"
-	dispatchQualificationOperationEnv = "SIMDUTF_BENCH_EXPECT_OPERATION"
-	dispatchQualificationTierEnv      = "SIMDUTF_BENCH_EXPECT_TIER"
+	dispatchQualificationZeroSHA256       = "ad7facb2586fc6e966c004d7d1d16b024f5805ff7cb47c7a85dabd8b48892ca7"
+	dispatchQualificationLatin1RampSHA256 = "c8f5d0341d54d951a71b136e6e2afcb14d11ed8489a7ae126a8fee0df6ecf193"
+	dispatchQualificationOperationEnv     = "SIMDUTF_BENCH_EXPECT_OPERATION"
+	dispatchQualificationTierEnv          = "SIMDUTF_BENCH_EXPECT_TIER"
 )
 
 type dispatchQualificationRow struct {
@@ -95,8 +96,12 @@ var dispatchQualificationUint32Sizes = [...]struct {
 	{1024, "bulk"},
 }
 
-func materializeDispatchQualificationCorpora() ([]byte, []byte, []uint16, []byte, []uint32) {
+func materializeDispatchQualificationCorpora() ([]byte, []byte, []uint16, []byte, []uint32, []byte) {
 	byteZero := make([]byte, 4096)
+	latin1Ramp := make([]byte, 4096)
+	for i := range latin1Ramp {
+		latin1Ramp[i] = byte(i % 256)
+	}
 	uint16Raw := make([]byte, 4096)
 	uint16Zero := make([]uint16, len(uint16Raw)/2)
 	for i := range uint16Zero {
@@ -107,11 +112,11 @@ func materializeDispatchQualificationCorpora() ([]byte, []byte, []uint16, []byte
 	for i := range uint32Zero {
 		uint32Zero[i] = binary.NativeEndian.Uint32(uint32Raw[4*i:])
 	}
-	return byteZero, uint16Raw, uint16Zero, uint32Raw, uint32Zero
+	return byteZero, uint16Raw, uint16Zero, uint32Raw, uint32Zero, latin1Ramp
 }
 
 func dispatchQualificationRows() []dispatchQualificationRow {
-	byteZero, _, uint16Zero, _, uint32Zero := materializeDispatchQualificationCorpora()
+	byteZero, _, uint16Zero, _, uint32Zero, latin1Ramp := materializeDispatchQualificationCorpora()
 	rows := make([]dispatchQualificationRow, 0, 369)
 	for _, operation := range [...]string{"ValidateASCII", "ValidateASCIIWithErrors"} {
 		for _, input := range dispatchQualificationByteSizes {
@@ -206,10 +211,10 @@ func dispatchQualificationRows() []dispatchQualificationRow {
 		for _, input := range dispatchQualificationByteSizes {
 			rows = append(rows, dispatchQualificationRow{
 				operation: operation,
-				corpus:    "Q-byte-zero",
+				corpus:    "Q-latin1-ramp",
 				class:     input.class,
 				size:      input.size,
-				bytes:     byteZero[:input.size],
+				bytes:     latin1Ramp[:input.size],
 			})
 		}
 	}
@@ -915,76 +920,76 @@ ValidateUTF32WithErrors/Q-u32-zero/boundary/0031
 ValidateUTF32WithErrors/Q-u32-zero/boundary/0032
 ValidateUTF32WithErrors/Q-u32-zero/boundary/0033
 ValidateUTF32WithErrors/Q-u32-zero/bulk/1024
-UTF8LengthFromLatin1/Q-byte-zero/short/0001
-UTF8LengthFromLatin1/Q-byte-zero/short/0015
-UTF8LengthFromLatin1/Q-byte-zero/short/0016
-UTF8LengthFromLatin1/Q-byte-zero/short/0017
-UTF8LengthFromLatin1/Q-byte-zero/short/0031
-UTF8LengthFromLatin1/Q-byte-zero/short/0032
-UTF8LengthFromLatin1/Q-byte-zero/short/0033
-UTF8LengthFromLatin1/Q-byte-zero/boundary/0063
-UTF8LengthFromLatin1/Q-byte-zero/boundary/0064
-UTF8LengthFromLatin1/Q-byte-zero/boundary/0065
-UTF8LengthFromLatin1/Q-byte-zero/boundary/0127
-UTF8LengthFromLatin1/Q-byte-zero/boundary/0128
-UTF8LengthFromLatin1/Q-byte-zero/boundary/0129
-UTF8LengthFromLatin1/Q-byte-zero/bulk/4096
-ConvertLatin1ToUTF8/Q-byte-zero/short/0001
-ConvertLatin1ToUTF8/Q-byte-zero/short/0015
-ConvertLatin1ToUTF8/Q-byte-zero/short/0016
-ConvertLatin1ToUTF8/Q-byte-zero/short/0017
-ConvertLatin1ToUTF8/Q-byte-zero/short/0031
-ConvertLatin1ToUTF8/Q-byte-zero/short/0032
-ConvertLatin1ToUTF8/Q-byte-zero/short/0033
-ConvertLatin1ToUTF8/Q-byte-zero/boundary/0063
-ConvertLatin1ToUTF8/Q-byte-zero/boundary/0064
-ConvertLatin1ToUTF8/Q-byte-zero/boundary/0065
-ConvertLatin1ToUTF8/Q-byte-zero/boundary/0127
-ConvertLatin1ToUTF8/Q-byte-zero/boundary/0128
-ConvertLatin1ToUTF8/Q-byte-zero/boundary/0129
-ConvertLatin1ToUTF8/Q-byte-zero/bulk/4096
-ConvertLatin1ToUTF16LE/Q-byte-zero/short/0001
-ConvertLatin1ToUTF16LE/Q-byte-zero/short/0015
-ConvertLatin1ToUTF16LE/Q-byte-zero/short/0016
-ConvertLatin1ToUTF16LE/Q-byte-zero/short/0017
-ConvertLatin1ToUTF16LE/Q-byte-zero/short/0031
-ConvertLatin1ToUTF16LE/Q-byte-zero/short/0032
-ConvertLatin1ToUTF16LE/Q-byte-zero/short/0033
-ConvertLatin1ToUTF16LE/Q-byte-zero/boundary/0063
-ConvertLatin1ToUTF16LE/Q-byte-zero/boundary/0064
-ConvertLatin1ToUTF16LE/Q-byte-zero/boundary/0065
-ConvertLatin1ToUTF16LE/Q-byte-zero/boundary/0127
-ConvertLatin1ToUTF16LE/Q-byte-zero/boundary/0128
-ConvertLatin1ToUTF16LE/Q-byte-zero/boundary/0129
-ConvertLatin1ToUTF16LE/Q-byte-zero/bulk/4096
-ConvertLatin1ToUTF16BE/Q-byte-zero/short/0001
-ConvertLatin1ToUTF16BE/Q-byte-zero/short/0015
-ConvertLatin1ToUTF16BE/Q-byte-zero/short/0016
-ConvertLatin1ToUTF16BE/Q-byte-zero/short/0017
-ConvertLatin1ToUTF16BE/Q-byte-zero/short/0031
-ConvertLatin1ToUTF16BE/Q-byte-zero/short/0032
-ConvertLatin1ToUTF16BE/Q-byte-zero/short/0033
-ConvertLatin1ToUTF16BE/Q-byte-zero/boundary/0063
-ConvertLatin1ToUTF16BE/Q-byte-zero/boundary/0064
-ConvertLatin1ToUTF16BE/Q-byte-zero/boundary/0065
-ConvertLatin1ToUTF16BE/Q-byte-zero/boundary/0127
-ConvertLatin1ToUTF16BE/Q-byte-zero/boundary/0128
-ConvertLatin1ToUTF16BE/Q-byte-zero/boundary/0129
-ConvertLatin1ToUTF16BE/Q-byte-zero/bulk/4096
-ConvertLatin1ToUTF32/Q-byte-zero/short/0001
-ConvertLatin1ToUTF32/Q-byte-zero/short/0015
-ConvertLatin1ToUTF32/Q-byte-zero/short/0016
-ConvertLatin1ToUTF32/Q-byte-zero/short/0017
-ConvertLatin1ToUTF32/Q-byte-zero/short/0031
-ConvertLatin1ToUTF32/Q-byte-zero/short/0032
-ConvertLatin1ToUTF32/Q-byte-zero/short/0033
-ConvertLatin1ToUTF32/Q-byte-zero/boundary/0063
-ConvertLatin1ToUTF32/Q-byte-zero/boundary/0064
-ConvertLatin1ToUTF32/Q-byte-zero/boundary/0065
-ConvertLatin1ToUTF32/Q-byte-zero/boundary/0127
-ConvertLatin1ToUTF32/Q-byte-zero/boundary/0128
-ConvertLatin1ToUTF32/Q-byte-zero/boundary/0129
-ConvertLatin1ToUTF32/Q-byte-zero/bulk/4096
+UTF8LengthFromLatin1/Q-latin1-ramp/short/0001
+UTF8LengthFromLatin1/Q-latin1-ramp/short/0015
+UTF8LengthFromLatin1/Q-latin1-ramp/short/0016
+UTF8LengthFromLatin1/Q-latin1-ramp/short/0017
+UTF8LengthFromLatin1/Q-latin1-ramp/short/0031
+UTF8LengthFromLatin1/Q-latin1-ramp/short/0032
+UTF8LengthFromLatin1/Q-latin1-ramp/short/0033
+UTF8LengthFromLatin1/Q-latin1-ramp/boundary/0063
+UTF8LengthFromLatin1/Q-latin1-ramp/boundary/0064
+UTF8LengthFromLatin1/Q-latin1-ramp/boundary/0065
+UTF8LengthFromLatin1/Q-latin1-ramp/boundary/0127
+UTF8LengthFromLatin1/Q-latin1-ramp/boundary/0128
+UTF8LengthFromLatin1/Q-latin1-ramp/boundary/0129
+UTF8LengthFromLatin1/Q-latin1-ramp/bulk/4096
+ConvertLatin1ToUTF8/Q-latin1-ramp/short/0001
+ConvertLatin1ToUTF8/Q-latin1-ramp/short/0015
+ConvertLatin1ToUTF8/Q-latin1-ramp/short/0016
+ConvertLatin1ToUTF8/Q-latin1-ramp/short/0017
+ConvertLatin1ToUTF8/Q-latin1-ramp/short/0031
+ConvertLatin1ToUTF8/Q-latin1-ramp/short/0032
+ConvertLatin1ToUTF8/Q-latin1-ramp/short/0033
+ConvertLatin1ToUTF8/Q-latin1-ramp/boundary/0063
+ConvertLatin1ToUTF8/Q-latin1-ramp/boundary/0064
+ConvertLatin1ToUTF8/Q-latin1-ramp/boundary/0065
+ConvertLatin1ToUTF8/Q-latin1-ramp/boundary/0127
+ConvertLatin1ToUTF8/Q-latin1-ramp/boundary/0128
+ConvertLatin1ToUTF8/Q-latin1-ramp/boundary/0129
+ConvertLatin1ToUTF8/Q-latin1-ramp/bulk/4096
+ConvertLatin1ToUTF16LE/Q-latin1-ramp/short/0001
+ConvertLatin1ToUTF16LE/Q-latin1-ramp/short/0015
+ConvertLatin1ToUTF16LE/Q-latin1-ramp/short/0016
+ConvertLatin1ToUTF16LE/Q-latin1-ramp/short/0017
+ConvertLatin1ToUTF16LE/Q-latin1-ramp/short/0031
+ConvertLatin1ToUTF16LE/Q-latin1-ramp/short/0032
+ConvertLatin1ToUTF16LE/Q-latin1-ramp/short/0033
+ConvertLatin1ToUTF16LE/Q-latin1-ramp/boundary/0063
+ConvertLatin1ToUTF16LE/Q-latin1-ramp/boundary/0064
+ConvertLatin1ToUTF16LE/Q-latin1-ramp/boundary/0065
+ConvertLatin1ToUTF16LE/Q-latin1-ramp/boundary/0127
+ConvertLatin1ToUTF16LE/Q-latin1-ramp/boundary/0128
+ConvertLatin1ToUTF16LE/Q-latin1-ramp/boundary/0129
+ConvertLatin1ToUTF16LE/Q-latin1-ramp/bulk/4096
+ConvertLatin1ToUTF16BE/Q-latin1-ramp/short/0001
+ConvertLatin1ToUTF16BE/Q-latin1-ramp/short/0015
+ConvertLatin1ToUTF16BE/Q-latin1-ramp/short/0016
+ConvertLatin1ToUTF16BE/Q-latin1-ramp/short/0017
+ConvertLatin1ToUTF16BE/Q-latin1-ramp/short/0031
+ConvertLatin1ToUTF16BE/Q-latin1-ramp/short/0032
+ConvertLatin1ToUTF16BE/Q-latin1-ramp/short/0033
+ConvertLatin1ToUTF16BE/Q-latin1-ramp/boundary/0063
+ConvertLatin1ToUTF16BE/Q-latin1-ramp/boundary/0064
+ConvertLatin1ToUTF16BE/Q-latin1-ramp/boundary/0065
+ConvertLatin1ToUTF16BE/Q-latin1-ramp/boundary/0127
+ConvertLatin1ToUTF16BE/Q-latin1-ramp/boundary/0128
+ConvertLatin1ToUTF16BE/Q-latin1-ramp/boundary/0129
+ConvertLatin1ToUTF16BE/Q-latin1-ramp/bulk/4096
+ConvertLatin1ToUTF32/Q-latin1-ramp/short/0001
+ConvertLatin1ToUTF32/Q-latin1-ramp/short/0015
+ConvertLatin1ToUTF32/Q-latin1-ramp/short/0016
+ConvertLatin1ToUTF32/Q-latin1-ramp/short/0017
+ConvertLatin1ToUTF32/Q-latin1-ramp/short/0031
+ConvertLatin1ToUTF32/Q-latin1-ramp/short/0032
+ConvertLatin1ToUTF32/Q-latin1-ramp/short/0033
+ConvertLatin1ToUTF32/Q-latin1-ramp/boundary/0063
+ConvertLatin1ToUTF32/Q-latin1-ramp/boundary/0064
+ConvertLatin1ToUTF32/Q-latin1-ramp/boundary/0065
+ConvertLatin1ToUTF32/Q-latin1-ramp/boundary/0127
+ConvertLatin1ToUTF32/Q-latin1-ramp/boundary/0128
+ConvertLatin1ToUTF32/Q-latin1-ramp/boundary/0129
+ConvertLatin1ToUTF32/Q-latin1-ramp/bulk/4096
 `
 
 func TestDispatchQualificationSurface(t *testing.T) {
@@ -1001,9 +1006,12 @@ func TestDispatchQualificationSurface(t *testing.T) {
 }
 
 func TestDispatchQualificationInputs(t *testing.T) {
-	byteZero, uint16Raw, uint16Zero, uint32Raw, uint32Zero := materializeDispatchQualificationCorpora()
+	byteZero, uint16Raw, uint16Zero, uint32Raw, uint32Zero, latin1Ramp := materializeDispatchQualificationCorpora()
 	if got := fmt.Sprintf("%x", sha256.Sum256(byteZero)); got != dispatchQualificationZeroSHA256 {
 		t.Fatalf("Q-byte-zero SHA-256 = %s, want %s", got, dispatchQualificationZeroSHA256)
+	}
+	if got := fmt.Sprintf("%x", sha256.Sum256(latin1Ramp)); got != dispatchQualificationLatin1RampSHA256 {
+		t.Fatalf("Q-latin1-ramp SHA-256 = %s, want %s", got, dispatchQualificationLatin1RampSHA256)
 	}
 	if got := fmt.Sprintf("%x", sha256.Sum256(uint16Raw)); got != dispatchQualificationZeroSHA256 {
 		t.Fatalf("Q-u16-zero raw SHA-256 = %s, want %s", got, dispatchQualificationZeroSHA256)
