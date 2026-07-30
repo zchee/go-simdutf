@@ -520,8 +520,8 @@ func makeImplementation(input selectionInput) implementation {
 		),
 		convertUTF32ToLatin1WithErrors: selectVariant(
 			input,
-			variant[func([]uint32, []byte) Result]{value: convertUTF32ToLatin1WithErrorsScalar, kind: implementationScalar, available: true},
 			variant[func([]uint32, []byte) Result]{value: archsimdUTF32Latin1Err, kind: implementationArchsimd, required: cpuAVX2, available: archsimdUTF32Latin1Err != nil},
+			variant[func([]uint32, []byte) Result]{value: convertUTF32ToLatin1WithErrorsScalar, kind: implementationScalar, available: true},
 			variant[func([]uint32, []byte) Result]{value: convertUTF32ToLatin1WithErrorsHaswell, kind: implementationHaswell, required: cpuAVX2, available: true},
 			variant[func([]uint32, []byte) Result]{value: convertUTF32ToLatin1WithErrorsWestmere, kind: implementationWestmere, required: cpuSSSE3, available: true},
 		),

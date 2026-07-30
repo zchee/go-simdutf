@@ -247,16 +247,22 @@ func TestMakeImplementationARM64UTF16UTF8QualificationSelection(t *testing.T) {
 }
 
 func TestMakeImplementationARM64UTF32SourceQualificationSelection(t *testing.T) {
-	// UTF-32-source convert providers remain scalar-first until qualification
-	// dispositions promote selected backends.
+	// UTF-32-source stays scalar-first except ConvertUTF32ToLatin1WithErrors and
+	// ConvertValidUTF32ToLatin1, which qualification selected as neon on darwin-arm64.
 	for _, input := range []selectionInput{
 		{},
 		{features: cpuNEON},
 	} {
 		got := makeImplementation(input)
+		wantLatin1Err := convertUTF32ToLatin1WithErrorsScalar
+		wantValidLatin1 := convertValidUTF32ToLatin1Scalar
+		if input.features&cpuNEON != 0 {
+			wantLatin1Err = convertUTF32ToLatin1WithErrorsNEON
+			wantValidLatin1 = convertValidUTF32ToLatin1NEON
+		}
 		if !sameFunction(got.convertUTF32ToLatin1, convertUTF32ToLatin1Scalar) ||
-			!sameFunction(got.convertUTF32ToLatin1WithErrors, convertUTF32ToLatin1WithErrorsScalar) ||
-			!sameFunction(got.convertValidUTF32ToLatin1, convertValidUTF32ToLatin1Scalar) ||
+			!sameFunction(got.convertUTF32ToLatin1WithErrors, wantLatin1Err) ||
+			!sameFunction(got.convertValidUTF32ToLatin1, wantValidLatin1) ||
 			!sameFunction(got.convertUTF32ToUTF8, convertUTF32ToUTF8Scalar) ||
 			!sameFunction(got.convertUTF32ToUTF8WithErrors, convertUTF32ToUTF8WithErrorsScalar) ||
 			!sameFunction(got.convertValidUTF32ToUTF8, convertValidUTF32ToUTF8Scalar) ||
@@ -268,7 +274,7 @@ func TestMakeImplementationARM64UTF32SourceQualificationSelection(t *testing.T) 
 			!sameFunction(got.convertValidUTF32ToUTF16BE, convertValidUTF32ToUTF16BEScalar) ||
 			!sameFunction(got.utf8LengthFromUTF32, utf8LengthFromUTF32Scalar) ||
 			!sameFunction(got.utf16LengthFromUTF32, utf16LengthFromUTF32Scalar) {
-			t.Fatalf("UTF-32-source providers leaked ahead of scalar for %#v", input)
+			t.Fatalf("UTF-32-source selection mismatch for %#v", input)
 		}
 	}
 }

@@ -1,0 +1,140 @@
+{
+  "family_contract_id": "FC-v1-utf32-source",
+  "head": "531ec37aa8bbf87156752291ce039b43621ab862",
+  "lanes": {
+    "darwin-arm64-nosimd-neon": {
+      "host": "darwin-arm64-apple-m3-max",
+      "incumbent": "scalar",
+      "lane": "darwin-arm64-nosimd",
+      "ops": {
+        "ConvertUTF32ToLatin1": "direct_only",
+        "ConvertUTF32ToLatin1WithErrors": "selected",
+        "ConvertUTF32ToUTF16BE": "direct_only",
+        "ConvertUTF32ToUTF16BEWithErrors": "direct_only",
+        "ConvertUTF32ToUTF16LE": "direct_only",
+        "ConvertUTF32ToUTF16LEWithErrors": "direct_only",
+        "ConvertUTF32ToUTF8": "direct_only",
+        "ConvertUTF32ToUTF8WithErrors": "direct_only",
+        "ConvertValidUTF32ToLatin1": "selected",
+        "ConvertValidUTF32ToUTF16BE": "direct_only",
+        "ConvertValidUTF32ToUTF16LE": "direct_only",
+        "ConvertValidUTF32ToUTF8": "direct_only",
+        "UTF16LengthFromUTF32": "direct_only",
+        "UTF8LengthFromUTF32": "direct_only"
+      },
+      "provider_candidate": "neon",
+      "source": "utf32-darwin-neon-dispositions-v1.json"
+    },
+    "linux-amd64-none-haswell": {
+      "host": "linux-amd64-debian-13-xeon-platinum-8481c",
+      "incumbent": "scalar",
+      "lane": "linux-amd64-none",
+      "ops": {
+        "ConvertUTF32ToLatin1": "direct_only",
+        "ConvertUTF32ToLatin1WithErrors": "direct_only",
+        "ConvertUTF32ToUTF16BE": "direct_only",
+        "ConvertUTF32ToUTF16BEWithErrors": "direct_only",
+        "ConvertUTF32ToUTF16LE": "direct_only",
+        "ConvertUTF32ToUTF16LEWithErrors": "direct_only",
+        "ConvertUTF32ToUTF8": "direct_only",
+        "ConvertUTF32ToUTF8WithErrors": "direct_only",
+        "ConvertValidUTF32ToLatin1": "direct_only",
+        "ConvertValidUTF32ToUTF16BE": "direct_only",
+        "ConvertValidUTF32ToUTF16LE": "direct_only",
+        "ConvertValidUTF32ToUTF8": "direct_only",
+        "UTF16LengthFromUTF32": "direct_only",
+        "UTF8LengthFromUTF32": "direct_only"
+      },
+      "provider_candidate": "haswell",
+      "source": "utf32-linux-haswell-dispositions-v1.json"
+    },
+    "linux-amd64-none-westmere": {
+      "host": "linux-amd64-debian-13-xeon-platinum-8481c",
+      "incumbent": "scalar",
+      "lane": "linux-amd64-none",
+      "ops": {
+        "ConvertUTF32ToLatin1": "direct_only",
+        "ConvertUTF32ToLatin1WithErrors": "direct_only",
+        "ConvertUTF32ToUTF16BE": "direct_only",
+        "ConvertUTF32ToUTF16BEWithErrors": "direct_only",
+        "ConvertUTF32ToUTF16LE": "direct_only",
+        "ConvertUTF32ToUTF16LEWithErrors": "direct_only",
+        "ConvertUTF32ToUTF8": "direct_only",
+        "ConvertUTF32ToUTF8WithErrors": "direct_only",
+        "ConvertValidUTF32ToLatin1": "direct_only",
+        "ConvertValidUTF32ToUTF16BE": "direct_only",
+        "ConvertValidUTF32ToUTF16LE": "direct_only",
+        "ConvertValidUTF32ToUTF8": "direct_only",
+        "UTF16LengthFromUTF32": "direct_only",
+        "UTF8LengthFromUTF32": "direct_only"
+      },
+      "provider_candidate": "westmere",
+      "source": "utf32-linux-westmere-dispositions-v1.json"
+    },
+    "linux-amd64-simd-archsimd": {
+      "host": "linux-amd64-debian-13-xeon-platinum-8481c",
+      "incumbent": "scalar",
+      "lane": "linux-amd64-simd",
+      "ops": {
+        "ConvertUTF32ToLatin1": "direct_only",
+        "ConvertUTF32ToLatin1WithErrors": "selected",
+        "ConvertUTF32ToUTF16BE": "direct_only",
+        "ConvertUTF32ToUTF16BEWithErrors": "direct_only",
+        "ConvertUTF32ToUTF16LE": "direct_only",
+        "ConvertUTF32ToUTF16LEWithErrors": "direct_only",
+        "ConvertUTF32ToUTF8": "direct_only",
+        "ConvertUTF32ToUTF8WithErrors": "direct_only",
+        "ConvertValidUTF32ToLatin1": "direct_only",
+        "ConvertValidUTF32ToUTF16BE": "direct_only",
+        "ConvertValidUTF32ToUTF16LE": "direct_only",
+        "ConvertValidUTF32ToUTF8": "direct_only",
+        "UTF16LengthFromUTF32": "direct_only",
+        "UTF8LengthFromUTF32": "direct_only"
+      },
+      "provider_candidate": "archsimd",
+      "source": "utf32-linux-archsimd-dispositions-v1.json"
+    }
+  },
+  "notes": [
+    "Promote only selected providers ahead of scalar in public dispatch order.",
+    "Direct-only providers remain registered after scalar and forceable via SIMDUTF_FORCE_PROVIDER / SIMDUTF_BENCH_EXPECT_TIER.",
+    "Do not emit/promote until both host campaigns have DONE and every ConvertUTF16* pair is complete."
+  ],
+  "pending_lanes": [],
+  "public_selection": {
+    "darwin-arm64": {
+      "ConvertUTF32ToLatin1": "scalar",
+      "ConvertUTF32ToLatin1WithErrors": "neon",
+      "ConvertUTF32ToUTF16BE": "scalar",
+      "ConvertUTF32ToUTF16BEWithErrors": "scalar",
+      "ConvertUTF32ToUTF16LE": "scalar",
+      "ConvertUTF32ToUTF16LEWithErrors": "scalar",
+      "ConvertUTF32ToUTF8": "scalar",
+      "ConvertUTF32ToUTF8WithErrors": "scalar",
+      "ConvertValidUTF32ToLatin1": "neon",
+      "ConvertValidUTF32ToUTF16BE": "scalar",
+      "ConvertValidUTF32ToUTF16LE": "scalar",
+      "ConvertValidUTF32ToUTF8": "scalar",
+      "UTF16LengthFromUTF32": "scalar",
+      "UTF8LengthFromUTF32": "scalar"
+    },
+    "linux-amd64": {
+      "ConvertUTF32ToLatin1": "scalar",
+      "ConvertUTF32ToLatin1WithErrors": "archsimd",
+      "ConvertUTF32ToUTF16BE": "scalar",
+      "ConvertUTF32ToUTF16BEWithErrors": "scalar",
+      "ConvertUTF32ToUTF16LE": "scalar",
+      "ConvertUTF32ToUTF16LEWithErrors": "scalar",
+      "ConvertUTF32ToUTF8": "scalar",
+      "ConvertUTF32ToUTF8WithErrors": "scalar",
+      "ConvertValidUTF32ToLatin1": "scalar",
+      "ConvertValidUTF32ToUTF16BE": "scalar",
+      "ConvertValidUTF32ToUTF16LE": "scalar",
+      "ConvertValidUTF32ToUTF8": "scalar",
+      "UTF16LengthFromUTF32": "scalar",
+      "UTF8LengthFromUTF32": "scalar"
+    }
+  },
+  "schema": "simdutf-utf32-qualification-summary-v1",
+  "version": 1
+}

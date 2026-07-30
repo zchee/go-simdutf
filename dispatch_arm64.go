@@ -326,13 +326,13 @@ func makeImplementation(input selectionInput) implementation {
 		),
 		convertUTF32ToLatin1WithErrors: selectVariant(
 			input,
-			variant[func([]uint32, []byte) Result]{value: convertUTF32ToLatin1WithErrorsScalar, kind: implementationScalar, available: true},
 			variant[func([]uint32, []byte) Result]{value: convertUTF32ToLatin1WithErrorsNEON, kind: implementationNEON, required: cpuNEON, available: true},
+			variant[func([]uint32, []byte) Result]{value: convertUTF32ToLatin1WithErrorsScalar, kind: implementationScalar, available: true},
 		),
 		convertValidUTF32ToLatin1: selectVariant(
 			input,
-			variant[func([]uint32, []byte) int]{value: convertValidUTF32ToLatin1Scalar, kind: implementationScalar, available: true},
 			variant[func([]uint32, []byte) int]{value: convertValidUTF32ToLatin1NEON, kind: implementationNEON, required: cpuNEON, available: true},
+			variant[func([]uint32, []byte) int]{value: convertValidUTF32ToLatin1Scalar, kind: implementationScalar, available: true},
 		),
 		convertUTF32ToUTF8: selectVariant(
 			input,
