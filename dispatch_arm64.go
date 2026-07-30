@@ -246,42 +246,52 @@ func makeImplementation(input selectionInput) implementation {
 		convertUTF16LEToUTF8: selectVariant(
 			input,
 			variant[func([]uint16, []byte) int]{value: convertUTF16LEToUTF8Scalar, kind: implementationScalar, available: true},
+			variant[func([]uint16, []byte) int]{value: convertUTF16LEToUTF8NEON, kind: implementationNEON, required: cpuNEON, available: true},
 		),
 		convertUTF16BEToUTF8: selectVariant(
 			input,
 			variant[func([]uint16, []byte) int]{value: convertUTF16BEToUTF8Scalar, kind: implementationScalar, available: true},
+			variant[func([]uint16, []byte) int]{value: convertUTF16BEToUTF8NEON, kind: implementationNEON, required: cpuNEON, available: true},
 		),
 		convertUTF16LEToUTF8WithErrors: selectVariant(
 			input,
 			variant[func([]uint16, []byte) Result]{value: convertUTF16LEToUTF8WithErrorsScalar, kind: implementationScalar, available: true},
+			variant[func([]uint16, []byte) Result]{value: convertUTF16LEToUTF8WithErrorsNEON, kind: implementationNEON, required: cpuNEON, available: true},
 		),
 		convertUTF16BEToUTF8WithErrors: selectVariant(
 			input,
 			variant[func([]uint16, []byte) Result]{value: convertUTF16BEToUTF8WithErrorsScalar, kind: implementationScalar, available: true},
+			variant[func([]uint16, []byte) Result]{value: convertUTF16BEToUTF8WithErrorsNEON, kind: implementationNEON, required: cpuNEON, available: true},
 		),
 		convertUTF16LEToUTF8WithReplacement: selectVariant(
 			input,
 			variant[func([]uint16, []byte) int]{value: convertUTF16LEToUTF8WithReplacementScalar, kind: implementationScalar, available: true},
+			variant[func([]uint16, []byte) int]{value: convertUTF16LEToUTF8WithReplacementNEON, kind: implementationNEON, required: cpuNEON, available: true},
 		),
 		convertUTF16BEToUTF8WithReplacement: selectVariant(
 			input,
 			variant[func([]uint16, []byte) int]{value: convertUTF16BEToUTF8WithReplacementScalar, kind: implementationScalar, available: true},
+			variant[func([]uint16, []byte) int]{value: convertUTF16BEToUTF8WithReplacementNEON, kind: implementationNEON, required: cpuNEON, available: true},
 		),
 		convertValidUTF16LEToUTF8: selectVariant(
 			input,
 			variant[func([]uint16, []byte) int]{value: convertValidUTF16LEToUTF8Scalar, kind: implementationScalar, available: true},
+			variant[func([]uint16, []byte) int]{value: convertValidUTF16LEToUTF8NEON, kind: implementationNEON, required: cpuNEON, available: true},
 		),
 		convertValidUTF16BEToUTF8: selectVariant(
 			input,
 			variant[func([]uint16, []byte) int]{value: convertValidUTF16BEToUTF8Scalar, kind: implementationScalar, available: true},
+			variant[func([]uint16, []byte) int]{value: convertValidUTF16BEToUTF8NEON, kind: implementationNEON, required: cpuNEON, available: true},
 		),
 		utf8LengthFromUTF16LE: selectVariant(
 			input,
 			variant[func([]uint16) int]{value: utf8LengthFromUTF16LEScalar, kind: implementationScalar, available: true},
+			variant[func([]uint16) int]{value: utf8LengthFromUTF16LENEON, kind: implementationNEON, required: cpuNEON, available: true},
 		),
 		utf8LengthFromUTF16BE: selectVariant(
 			input,
 			variant[func([]uint16) int]{value: utf8LengthFromUTF16BEScalar, kind: implementationScalar, available: true},
+			variant[func([]uint16) int]{value: utf8LengthFromUTF16BENEON, kind: implementationNEON, required: cpuNEON, available: true},
 		),
 		countUTF16LE: selectVariant(
 			input,
@@ -301,10 +311,12 @@ func makeImplementation(input selectionInput) implementation {
 		utf8LengthFromUTF16LEWithReplacement: selectVariant(
 			input,
 			variant[func([]uint16) Result]{value: utf8LengthFromUTF16LEWithReplacementScalar, kind: implementationScalar, available: true},
+			variant[func([]uint16) Result]{value: utf8LengthFromUTF16LEWithReplacementNEON, kind: implementationNEON, required: cpuNEON, available: true},
 		),
 		utf8LengthFromUTF16BEWithReplacement: selectVariant(
 			input,
 			variant[func([]uint16) Result]{value: utf8LengthFromUTF16BEWithReplacementScalar, kind: implementationScalar, available: true},
+			variant[func([]uint16) Result]{value: utf8LengthFromUTF16BEWithReplacementNEON, kind: implementationNEON, required: cpuNEON, available: true},
 		),
 	}
 }

@@ -78,3 +78,51 @@ func archsimdConvertValidUTF16LEToUTF32() func([]uint16, []uint32) int {
 func archsimdConvertValidUTF16BEToUTF32() func([]uint16, []uint32) int {
 	return convertValidUTF16BEToUTF32Archsimd
 }
+
+func archsimdConvertUTF16LEToUTF8() func([]uint16, []byte) int {
+	return convertUTF16LEToUTF8Archsimd
+}
+
+func archsimdConvertUTF16BEToUTF8() func([]uint16, []byte) int {
+	return convertUTF16BEToUTF8Archsimd
+}
+
+func archsimdConvertUTF16LEToUTF8WithErrors() func([]uint16, []byte) Result {
+	return convertUTF16LEToUTF8WithErrorsArchsimd
+}
+
+func archsimdConvertUTF16BEToUTF8WithErrors() func([]uint16, []byte) Result {
+	return convertUTF16BEToUTF8WithErrorsArchsimd
+}
+
+func archsimdConvertUTF16LEToUTF8WithReplacement() func([]uint16, []byte) int {
+	return convertUTF16LEToUTF8WithReplacementArchsimd
+}
+
+func archsimdConvertUTF16BEToUTF8WithReplacement() func([]uint16, []byte) int {
+	return convertUTF16BEToUTF8WithReplacementArchsimd
+}
+
+func archsimdConvertValidUTF16LEToUTF8() func([]uint16, []byte) int {
+	return convertValidUTF16LEToUTF8Archsimd
+}
+
+func archsimdConvertValidUTF16BEToUTF8() func([]uint16, []byte) int {
+	return convertValidUTF16BEToUTF8Archsimd
+}
+
+func archsimdUTF8LengthFromUTF16LE() func([]uint16) int {
+	return utf8LengthFromUTF16LEArchsimd
+}
+
+func archsimdUTF8LengthFromUTF16BE() func([]uint16) int {
+	return utf8LengthFromUTF16BEArchsimd
+}
+
+func archsimdUTF8LengthFromUTF16LEWithReplacement() func([]uint16) Result {
+	return utf8LengthFromUTF16LEWithReplacementArchsimd
+}
+
+func archsimdUTF8LengthFromUTF16BEWithReplacement() func([]uint16) Result {
+	return utf8LengthFromUTF16BEWithReplacementArchsimd
+}

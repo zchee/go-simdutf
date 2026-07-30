@@ -210,3 +210,28 @@ func TestMakeImplementationARM64UTF16UTF32QualificationSelection(t *testing.T) {
 		}
 	}
 }
+
+func TestMakeImplementationARM64UTF16UTF8QualificationSelection(t *testing.T) {
+	// UTF-16→UTF-8 providers are forceable but remain scalar-first until
+	// qualification dispositions promote selected backends.
+	for _, input := range []selectionInput{
+		{},
+		{features: cpuNEON},
+	} {
+		got := makeImplementation(input)
+		if !sameFunction(got.convertUTF16LEToUTF8, convertUTF16LEToUTF8Scalar) ||
+			!sameFunction(got.convertUTF16BEToUTF8, convertUTF16BEToUTF8Scalar) ||
+			!sameFunction(got.convertUTF16LEToUTF8WithErrors, convertUTF16LEToUTF8WithErrorsScalar) ||
+			!sameFunction(got.convertUTF16BEToUTF8WithErrors, convertUTF16BEToUTF8WithErrorsScalar) ||
+			!sameFunction(got.convertUTF16LEToUTF8WithReplacement, convertUTF16LEToUTF8WithReplacementScalar) ||
+			!sameFunction(got.convertUTF16BEToUTF8WithReplacement, convertUTF16BEToUTF8WithReplacementScalar) ||
+			!sameFunction(got.convertValidUTF16LEToUTF8, convertValidUTF16LEToUTF8Scalar) ||
+			!sameFunction(got.convertValidUTF16BEToUTF8, convertValidUTF16BEToUTF8Scalar) ||
+			!sameFunction(got.utf8LengthFromUTF16LE, utf8LengthFromUTF16LEScalar) ||
+			!sameFunction(got.utf8LengthFromUTF16BE, utf8LengthFromUTF16BEScalar) ||
+			!sameFunction(got.utf8LengthFromUTF16LEWithReplacement, utf8LengthFromUTF16LEWithReplacementScalar) ||
+			!sameFunction(got.utf8LengthFromUTF16BEWithReplacement, utf8LengthFromUTF16BEWithReplacementScalar) {
+			t.Fatalf("UTF-16→UTF-8 providers leaked ahead of scalar-first qualification gate for %#v", input)
+		}
+	}
+}
