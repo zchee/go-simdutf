@@ -130,8 +130,8 @@ func makeImplementation(input selectionInput) implementation {
 		),
 		utf8LengthFromLatin1: selectVariant(
 			input,
-			variant[func([]byte) int]{value: utf8LengthFromLatin1Scalar, kind: implementationScalar, available: true},
 			variant[func([]byte) int]{value: archsimdLatin1Length, kind: implementationArchsimd, required: cpuAVX2, available: archsimdLatin1Length != nil},
+			variant[func([]byte) int]{value: utf8LengthFromLatin1Scalar, kind: implementationScalar, available: true},
 			variant[func([]byte) int]{value: utf8LengthFromLatin1Haswell, kind: implementationHaswell, required: cpuAVX2, available: true},
 			variant[func([]byte) int]{value: utf8LengthFromLatin1Westmere, kind: implementationWestmere, required: cpuSSSE3, available: true},
 		),

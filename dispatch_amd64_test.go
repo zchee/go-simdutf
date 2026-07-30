@@ -179,3 +179,39 @@ func TestMakeImplementationAMD64W01QualifiedSelection(t *testing.T) {
 		t.Fatal("archsimd providers leaked into a non-SIMD build")
 	}
 }
+
+func TestMakeImplementationAMD64Latin1QualificationSelection(t *testing.T) {
+	// After Q-latin1-ramp on linux-amd64-debian-13-xeon-platinum-8481c:
+	// westmere/haswell Latin-1 remain direct_only; archsimd UTF8LengthFromLatin1
+	// is selected. Other Latin-1-source ops stay scalar-first.
+	for _, input := range []selectionInput{
+		{},
+		{features: cpuSSSE3},
+		{features: cpuAVX2},
+		{features: cpuSSSE3 | cpuAVX2},
+	} {
+		got := makeImplementation(input)
+		if !sameFunction(got.utf8LengthFromLatin1, utf8LengthFromLatin1Scalar) ||
+			!sameFunction(got.convertLatin1ToUTF8, convertLatin1ToUTF8Scalar) ||
+			!sameFunction(got.convertLatin1ToUTF16LE, convertLatin1ToUTF16LEScalar) ||
+			!sameFunction(got.convertLatin1ToUTF16BE, convertLatin1ToUTF16BEScalar) ||
+			!sameFunction(got.convertLatin1ToUTF32, convertLatin1ToUTF32Scalar) {
+			t.Fatalf("Latin-1 public selection leaked accelerated provider for %#v", input)
+		}
+	}
+
+	withSIMD := makeImplementation(selectionInput{features: cpuSSSE3 | cpuAVX2, archsimdAVX2: true})
+	if archsimdUTF8LengthFromLatin1() != nil {
+		if !sameFunction(withSIMD.utf8LengthFromLatin1, archsimdUTF8LengthFromLatin1()) {
+			t.Fatal("qualified archsimd UTF8LengthFromLatin1 was not selected")
+		}
+	} else if !sameFunction(withSIMD.utf8LengthFromLatin1, utf8LengthFromLatin1Scalar) {
+		t.Fatal("archsimd Latin-1 length leaked into a non-SIMD build")
+	}
+	if !sameFunction(withSIMD.convertLatin1ToUTF8, convertLatin1ToUTF8Scalar) ||
+		!sameFunction(withSIMD.convertLatin1ToUTF16LE, convertLatin1ToUTF16LEScalar) ||
+		!sameFunction(withSIMD.convertLatin1ToUTF16BE, convertLatin1ToUTF16BEScalar) ||
+		!sameFunction(withSIMD.convertLatin1ToUTF32, convertLatin1ToUTF32Scalar) {
+		t.Fatal("direct-only Latin-1 providers leaked ahead of scalar under SIMD")
+	}
+}

@@ -1,0 +1,425 @@
+TEXT github.com/zchee/go-simdutf.utf8LengthFromLatin1NEON(SB) /Users/zchee/go/src/github.com/zchee/go-simdutf/latin1_arm64.go
+  latin1_arm64.go:41	0x10027a530		f9400b90		MOVD 16(R28), R16								
+  latin1_arm64.go:41	0x10027a534		eb3063ff		CMP R16, RSP									
+  latin1_arm64.go:41	0x10027a538		54000669		BLS 51(PC)									
+  latin1_arm64.go:41	0x10027a53c		f81c0ffe		MOVD.W R30, -64(RSP)								
+  latin1_arm64.go:41	0x10027a540		f81f83fd		MOVD R29, -8(RSP)								
+  latin1_arm64.go:41	0x10027a544		d10023fd		SUB $8, RSP, R29								
+  latin1_arm64.go:41	0x10027a548		f90027e0		MOVD R0, 72(RSP)								
+  latin1_arm64.go:43	0x10027a54c		f101003f		CMP $64, R1									
+  latin1_arm64.go:43	0x10027a550		5400008a		BGE 4(PC)									
+  latin1_arm64.go:43	0x10027a554		aa0103e2		MOVD R1, R2									
+  latin1_scalar.go:29	0x10027a558		aa1f03e3		MOVD ZR, R3									
+  latin1_scalar.go:29	0x10027a55c		14000024		JMP 36(PC)									
+  latin1_arm64.go:43	0x10027a560		f9002fe2		MOVD R2, 88(RSP)								
+  latin1_arm64.go:43	0x10027a564		f9002be1		MOVD R1, 80(RSP)								
+  latin1_arm64.go:43	0x10027a568		f90027e0		MOVD R0, 72(RSP)								
+  latin1_arm64.go:47	0x10027a56c		f90007e0		MOVD R0, 8(RSP)									
+  latin1_arm64.go:46	0x10027a570		927ae420		AND $-64, R1, R0								
+  latin1_arm64.go:46	0x10027a574		f9001be0		MOVD R0, 48(RSP)								
+  latin1_arm64.go:47	0x10027a578		a9010be0		STP (R0, R2), 16(RSP)								
+  latin1_arm64.go:47	0x10027a57c		9400fba1		CALL github.com/zchee/go-simdutf.utf8LengthFromLatin1BlocksNEON.abi0(SB)	
+  latin1_arm64.go:47	0x10027a580		f9401be0		MOVD 48(RSP), R0								
+  latin1_arm64.go:47	0x10027a584		f9402fe1		MOVD 88(RSP), R1								
+  latin1_arm64.go:47	0x10027a588		cb010001		SUB R1, R0, R1									
+  latin1_arm64.go:47	0x10027a58c		f9402be2		MOVD 80(RSP), R2								
+  latin1_arm64.go:47	0x10027a590		8a81fc41		AND R1->63, R2, R1								
+  latin1_arm64.go:47	0x10027a594		927ae421		AND $-64, R1, R1								
+  latin1_arm64.go:47	0x10027a598		cb000040		SUB R0, R2, R0									
+  latin1_arm64.go:47	0x10027a59c		f94027e2		MOVD 72(RSP), R2								
+  latin1_arm64.go:47	0x10027a5a0		8b010041		ADD R1, R2, R1									
+  latin1_arm64.go:47	0x10027a5a4		aa0003e2		MOVD R0, R2									
+  latin1_scalar.go:29	0x10027a5a8		aa1f03e3		MOVD ZR, R3									
+  latin1_scalar.go:29	0x10027a5ac		14000005		JMP 5(PC)									
+  latin1_scalar.go:29	0x10027a5b0		38636824		MOVBU (R1)(R3), R4								
+  latin1_scalar.go:30	0x10027a5b4		d3471c84		UBFX $7, R4, $1, R4								
+  latin1_scalar.go:30	0x10027a5b8		8b000080		ADD R0, R4, R0									
+  latin1_scalar.go:29	0x10027a5bc		91000463		ADD $1, R3, R3									
+  latin1_scalar.go:29	0x10027a5c0		eb02007f		CMP R2, R3									
+  latin1_scalar.go:29	0x10027a5c4		54ffff6b		BLT -5(PC)									
+  latin1_arm64.go:47	0x10027a5c8		f94013e1		MOVD 32(RSP), R1								
+  latin1_arm64.go:47	0x10027a5cc		8b000020		ADD R0, R1, R0									
+  latin1_arm64.go:47	0x10027a5d0		f85f83fd		MOVD -8(RSP), R29								
+  latin1_arm64.go:47	0x10027a5d4		f84407fe		MOVD.P 64(RSP), R30								
+  latin1_arm64.go:47	0x10027a5d8		d65f03c0		RET										
+  latin1_scalar.go:29	0x10027a5dc		38636804		MOVBU (R0)(R3), R4								
+  latin1_scalar.go:30	0x10027a5e0		d3471c84		UBFX $7, R4, $1, R4								
+  latin1_scalar.go:30	0x10027a5e4		8b010081		ADD R1, R4, R1									
+  latin1_scalar.go:29	0x10027a5e8		91000463		ADD $1, R3, R3									
+  latin1_scalar.go:29	0x10027a5ec		eb03005f		CMP R3, R2									
+  latin1_scalar.go:29	0x10027a5f0		54ffff6c		BGT -5(PC)									
+  latin1_arm64.go:44	0x10027a5f4		aa0103e0		MOVD R1, R0									
+  latin1_arm64.go:44	0x10027a5f8		f85f83fd		MOVD -8(RSP), R29								
+  latin1_arm64.go:44	0x10027a5fc		f84407fe		MOVD.P 64(RSP), R30								
+  latin1_arm64.go:44	0x10027a600		d65f03c0		RET										
+  latin1_arm64.go:41	0x10027a604		a90087e0		STP (R0, R1), 8(RSP)								
+  latin1_arm64.go:41	0x10027a608		f9000fe2		MOVD R2, 24(RSP)								
+  latin1_arm64.go:41	0x10027a60c		aa1e03e3		MOVD R30, R3									
+  latin1_arm64.go:41	0x10027a610		97f81f28		CALL runtime.morestack_noctxt.abi0(SB)						
+  latin1_arm64.go:41	0x10027a614		a94087e0		LDP 8(RSP), (R0, R1)								
+  latin1_arm64.go:41	0x10027a618		f9400fe2		MOVD 24(RSP), R2								
+  latin1_arm64.go:41	0x10027a61c		17ffffc5		JMP github.com/zchee/go-simdutf.utf8LengthFromLatin1NEON(SB)			
+
+TEXT github.com/zchee/go-simdutf.convertLatin1ToUTF8NEON(SB) /Users/zchee/go/src/github.com/zchee/go-simdutf/latin1_arm64.go
+  latin1_arm64.go:50	0x10027a620		f9400b90		MOVD 16(R28), R16								
+  latin1_arm64.go:50	0x10027a624		eb3063ff		CMP R16, RSP									
+  latin1_arm64.go:50	0x10027a628		54000889		BLS 68(PC)									
+  latin1_arm64.go:50	0x10027a62c		f81b0ffe		MOVD.W R30, -80(RSP)								
+  latin1_arm64.go:50	0x10027a630		f81f83fd		MOVD R29, -8(RSP)								
+  latin1_arm64.go:50	0x10027a634		d10023fd		SUB $8, RSP, R29								
+  latin1_arm64.go:50	0x10027a638		f9002fe0		MOVD R0, 88(RSP)								
+  latin1_arm64.go:50	0x10027a63c		f9003be3		MOVD R3, 112(RSP)								
+  latin1_arm64.go:52	0x10027a640		f101003f		CMP $64, R1									
+  latin1_arm64.go:52	0x10027a644		540000aa		BGE 5(PC)									
+  latin1_arm64.go:53	0x10027a648		94000166		CALL github.com/zchee/go-simdutf.convertLatin1ToUTF8Scalar(SB)			
+  latin1_arm64.go:53	0x10027a64c		f85f83fd		MOVD -8(RSP), R29								
+  latin1_arm64.go:53	0x10027a650		f84507fe		MOVD.P 80(RSP), R30								
+  latin1_arm64.go:53	0x10027a654		d65f03c0		RET										
+  latin1_arm64.go:52	0x10027a658		f90043e5		MOVD R5, 128(RSP)								
+  latin1_arm64.go:52	0x10027a65c		f90033e1		MOVD R1, 96(RSP)								
+  latin1_arm64.go:52	0x10027a660		f9003fe4		MOVD R4, 120(RSP)								
+  latin1_arm64.go:52	0x10027a664		f9003be3		MOVD R3, 112(RSP)								
+  latin1_arm64.go:52	0x10027a668		f9002fe0		MOVD R0, 88(RSP)								
+  latin1_arm64.go:52	0x10027a66c		f90037e2		MOVD R2, 104(RSP)								
+  latin1_arm64.go:55	0x10027a670		97ffffb0		CALL github.com/zchee/go-simdutf.utf8LengthFromLatin1NEON(SB)			
+  latin1_arm64.go:56	0x10027a674		f9403fe3		MOVD 120(RSP), R3								
+  latin1_arm64.go:56	0x10027a678		eb03001f		CMP R3, R0									
+  latin1_arm64.go:56	0x10027a67c		5400052c		BGT 41(PC)									
+  latin1_arm64.go:62	0x10027a680		f9402fe0		MOVD 88(RSP), R0								
+  latin1_arm64.go:62	0x10027a684		f94033e1		MOVD 96(RSP), R1								
+  latin1_arm64.go:62	0x10027a688		a90087e0		STP (R0, R1), 8(RSP)								
+  latin1_arm64.go:62	0x10027a68c		f94037e0		MOVD 104(RSP), R0								
+  latin1_arm64.go:62	0x10027a690		f9403be1		MOVD 112(RSP), R1								
+  latin1_arm64.go:62	0x10027a694		a90187e0		STP (R0, R1), 24(RSP)								
+  latin1_arm64.go:62	0x10027a698		f94043e0		MOVD 128(RSP), R0								
+  latin1_arm64.go:62	0x10027a69c		a90283e3		STP (R3, R0), 40(RSP)								
+  latin1_arm64.go:62	0x10027a6a0		9400fb6c		CALL github.com/zchee/go-simdutf.convertLatin1ToUTF8ASCIIPrefixNEON.abi0(SB)	
+  latin1_arm64.go:62	0x10027a6a4		f9401fe0		MOVD 56(RSP), R0								
+  latin1_arm64.go:63	0x10027a6a8		f94033e1		MOVD 96(RSP), R1								
+  latin1_arm64.go:63	0x10027a6ac		eb00003f		CMP R0, R1									
+  latin1_arm64.go:63	0x10027a6b0		54000363		BCC 27(PC)									
+  latin1_arm64.go:63	0x10027a6b4		f94037e6		MOVD 104(RSP), R6								
+  latin1_arm64.go:63	0x10027a6b8		cb060007		SUB R6, R0, R7									
+  latin1_arm64.go:63	0x10027a6bc		8a87fc07		AND R7->63, R0, R7								
+  latin1_arm64.go:63	0x10027a6c0		cb000021		SUB R0, R1, R1									
+  latin1_arm64.go:63	0x10027a6c4		cb0000c2		SUB R0, R6, R2									
+  latin1_arm64.go:63	0x10027a6c8		f9402fe6		MOVD 88(RSP), R6								
+  latin1_arm64.go:63	0x10027a6cc		8b0700c6		ADD R7, R6, R6									
+  latin1_arm64.go:63	0x10027a6d0		f9403fe7		MOVD 120(RSP), R7								
+  latin1_arm64.go:63	0x10027a6d4		eb0000ff		CMP R0, R7									
+  latin1_arm64.go:63	0x10027a6d8		54000203		BCC 16(PC)									
+  latin1_arm64.go:62	0x10027a6dc		f90023e0		MOVD R0, 64(RSP)								
+  latin1_arm64.go:63	0x10027a6e0		f94043e8		MOVD 128(RSP), R8								
+  latin1_arm64.go:63	0x10027a6e4		cb080009		SUB R8, R0, R9									
+  latin1_arm64.go:63	0x10027a6e8		cb0000e4		SUB R0, R7, R4									
+  latin1_arm64.go:63	0x10027a6ec		cb000105		SUB R0, R8, R5									
+  latin1_arm64.go:63	0x10027a6f0		8a89fc07		AND R9->63, R0, R7								
+  latin1_arm64.go:63	0x10027a6f4		f9403be8		MOVD 112(RSP), R8								
+  latin1_arm64.go:63	0x10027a6f8		8b070103		ADD R7, R8, R3									
+  latin1_arm64.go:63	0x10027a6fc		aa0603e0		MOVD R6, R0									
+  latin1_arm64.go:63	0x10027a700		94000138		CALL github.com/zchee/go-simdutf.convertLatin1ToUTF8Scalar(SB)			
+  latin1_arm64.go:63	0x10027a704		f94023e6		MOVD 64(RSP), R6								
+  latin1_arm64.go:63	0x10027a708		8b0000c0		ADD R0, R6, R0									
+  latin1_arm64.go:63	0x10027a70c		f85f83fd		MOVD -8(RSP), R29								
+  latin1_arm64.go:63	0x10027a710		f84507fe		MOVD.P 80(RSP), R30								
+  latin1_arm64.go:63	0x10027a714		d65f03c0		RET										
+  latin1_arm64.go:63	0x10027a718		97f8276a		CALL runtime.panicBounds(SB)							
+  latin1_arm64.go:63	0x10027a71c		97f82769		CALL runtime.panicBounds(SB)							
+  latin1_arm64.go:57	0x10027a720		900016c0		ADRP 2981888(PC), R0								
+  latin1_arm64.go:57	0x10027a724		91200000		ADD $2048, R0, R0								
+  latin1_arm64.go:57	0x10027a728		b0001a41		ADRP 3444736(PC), R1								
+  latin1_arm64.go:57	0x10027a72c		91290021		ADD $2624, R1, R1								
+  latin1_arm64.go:57	0x10027a730		97f80844		CALL runtime.gopanic(SB)							
+  latin1_arm64.go:57	0x10027a734		d503201f		NOOP										
+  latin1_arm64.go:50	0x10027a738		a90087e0		STP (R0, R1), 8(RSP)								
+  latin1_arm64.go:50	0x10027a73c		a9018fe2		STP (R2, R3), 24(RSP)								
+  latin1_arm64.go:50	0x10027a740		a90297e4		STP (R4, R5), 40(RSP)								
+  latin1_arm64.go:50	0x10027a744		aa1e03e3		MOVD R30, R3									
+  latin1_arm64.go:50	0x10027a748		97f81eda		CALL runtime.morestack_noctxt.abi0(SB)						
+  latin1_arm64.go:50	0x10027a74c		a94087e0		LDP 8(RSP), (R0, R1)								
+  latin1_arm64.go:50	0x10027a750		a9418fe2		LDP 24(RSP), (R2, R3)								
+  latin1_arm64.go:50	0x10027a754		a94297e4		LDP 40(RSP), (R4, R5)								
+  latin1_arm64.go:50	0x10027a758		17ffffb2		JMP github.com/zchee/go-simdutf.convertLatin1ToUTF8NEON(SB)			
+  latin1_arm64.go:50	0x10027a75c		00000000		?										
+
+TEXT github.com/zchee/go-simdutf.convertLatin1ToUTF16LENEON(SB) /Users/zchee/go/src/github.com/zchee/go-simdutf/latin1_arm64.go
+  latin1_arm64.go:66	0x10027a760		f9400b90		MOVD 16(R28), R16								
+  latin1_arm64.go:66	0x10027a764		eb3063ff		CMP R16, RSP									
+  latin1_arm64.go:66	0x10027a768		54000989		BLS 76(PC)									
+  latin1_arm64.go:66	0x10027a76c		f81b0ffe		MOVD.W R30, -80(RSP)								
+  latin1_arm64.go:66	0x10027a770		f81f83fd		MOVD R29, -8(RSP)								
+  latin1_arm64.go:66	0x10027a774		d10023fd		SUB $8, RSP, R29								
+  latin1_arm64.go:66	0x10027a778		f9002fe0		MOVD R0, 88(RSP)								
+  latin1_arm64.go:66	0x10027a77c		f9003be3		MOVD R3, 112(RSP)								
+  latin1_arm64.go:67	0x10027a780		eb04003f		CMP R4, R1									
+  latin1_arm64.go:67	0x10027a784		540007ec		BGT 63(PC)									
+  latin1_arm64.go:71	0x10027a788		f100803f		CMP $32, R1									
+  latin1_arm64.go:71	0x10027a78c		5400008a		BGE 4(PC)									
+  latin1_scalar.go:87	0x10027a790		d503201f		NOOP										
+  latin1_scalar.go:98	0x10027a794		aa1f03e2		MOVD ZR, R2									
+  latin1_scalar.go:98	0x10027a798		14000034		JMP 52(PC)									
+  latin1_arm64.go:67	0x10027a79c		f9002fe0		MOVD R0, 88(RSP)								
+  latin1_arm64.go:67	0x10027a7a0		f90043e5		MOVD R5, 128(RSP)								
+  latin1_arm64.go:67	0x10027a7a4		f9003fe4		MOVD R4, 120(RSP)								
+  latin1_arm64.go:67	0x10027a7a8		f9003be3		MOVD R3, 112(RSP)								
+  latin1_arm64.go:67	0x10027a7ac		f90037e2		MOVD R2, 104(RSP)								
+  latin1_arm64.go:67	0x10027a7b0		f90033e1		MOVD R1, 96(RSP)								
+  latin1_arm64.go:74	0x10027a7b4		927be821		AND $-32, R1, R1								
+  latin1_arm64.go:75	0x10027a7b8		a90087e0		STP (R0, R1), 8(RSP)								
+  latin1_arm64.go:75	0x10027a7bc		a9018fe2		STP (R2, R3), 24(RSP)								
+  latin1_arm64.go:75	0x10027a7c0		a90297e1		STP (R1, R5), 40(RSP)								
+  latin1_arm64.go:75	0x10027a7c4		9400fb3b		CALL github.com/zchee/go-simdutf.convertLatin1ToUTF16LEBlocksNEON.abi0(SB)	
+  latin1_arm64.go:75	0x10027a7c8		f9401fe0		MOVD 56(RSP), R0								
+  latin1_arm64.go:76	0x10027a7cc		f94033e1		MOVD 96(RSP), R1								
+  latin1_arm64.go:76	0x10027a7d0		eb00003f		CMP R0, R1									
+  latin1_arm64.go:76	0x10027a7d4		54000423		BCC 33(PC)									
+  latin1_arm64.go:76	0x10027a7d8		cb000022		SUB R0, R1, R2									
+  latin1_arm64.go:76	0x10027a7dc		f94037e3		MOVD 104(RSP), R3								
+  latin1_arm64.go:76	0x10027a7e0		cb030003		SUB R3, R0, R3									
+  latin1_arm64.go:76	0x10027a7e4		8a83fc03		AND R3->63, R0, R3								
+  latin1_arm64.go:76	0x10027a7e8		f9403fe4		MOVD 120(RSP), R4								
+  latin1_arm64.go:76	0x10027a7ec		cb000084		SUB R0, R4, R4									
+  latin1_arm64.go:76	0x10027a7f0		f94043e5		MOVD 128(RSP), R5								
+  latin1_arm64.go:76	0x10027a7f4		cb050005		SUB R5, R0, R5									
+  latin1_arm64.go:76	0x10027a7f8		8a85fc05		AND R5->63, R0, R5								
+  latin1_arm64.go:76	0x10027a7fc		f9402fe6		MOVD 88(RSP), R6								
+  latin1_arm64.go:76	0x10027a800		8b0300c3		ADD R3, R6, R3									
+  latin1_arm64.go:76	0x10027a804		f9403be6		MOVD 112(RSP), R6								
+  latin1_arm64.go:76	0x10027a808		8b0504c5		ADD R5<<1, R6, R5								
+  latin1_scalar.go:87	0x10027a80c		d503201f		NOOP										
+  latin1_scalar.go:95	0x10027a810		eb02009f		CMP R2, R4									
+  latin1_scalar.go:95	0x10027a814		5400018b		BLT 12(PC)									
+  latin1_scalar.go:98	0x10027a818		aa1f03e0		MOVD ZR, R0									
+  latin1_scalar.go:98	0x10027a81c		14000004		JMP 4(PC)									
+  latin1_scalar.go:98	0x10027a820		38606864		MOVBU (R3)(R0), R4								
+  latin1_scalar.go:103	0x10027a824		782078a4		MOVH R4, (R5)(R0<<1)								
+  latin1_scalar.go:98	0x10027a828		91000400		ADD $1, R0, R0									
+  latin1_scalar.go:98	0x10027a82c		eb02001f		CMP R2, R0									
+  latin1_scalar.go:98	0x10027a830		54ffff8b		BLT -4(PC)									
+  latin1_arm64.go:76	0x10027a834		aa0103e0		MOVD R1, R0									
+  latin1_arm64.go:76	0x10027a838		f85f83fd		MOVD -8(RSP), R29								
+  latin1_arm64.go:76	0x10027a83c		f84507fe		MOVD.P 80(RSP), R30								
+  latin1_arm64.go:76	0x10027a840		d65f03c0		RET										
+  latin1_scalar.go:96	0x10027a844		900016c0		ADRP 2981888(PC), R0								
+  latin1_scalar.go:96	0x10027a848		91200000		ADD $2048, R0, R0								
+  latin1_scalar.go:96	0x10027a84c		b0001a41		ADRP 3444736(PC), R1								
+  latin1_scalar.go:96	0x10027a850		91298021		ADD $2656, R1, R1								
+  latin1_scalar.go:96	0x10027a854		97f807fb		CALL runtime.gopanic(SB)							
+  latin1_arm64.go:76	0x10027a858		97f8271a		CALL runtime.panicBounds(SB)							
+  latin1_scalar.go:98	0x10027a85c		38626804		MOVBU (R0)(R2), R4								
+  latin1_scalar.go:103	0x10027a860		78227864		MOVH R4, (R3)(R2<<1)								
+  latin1_scalar.go:98	0x10027a864		91000442		ADD $1, R2, R2									
+  latin1_scalar.go:98	0x10027a868		eb02003f		CMP R2, R1									
+  latin1_scalar.go:98	0x10027a86c		54ffff8c		BGT -4(PC)									
+  latin1_arm64.go:72	0x10027a870		aa0103e0		MOVD R1, R0									
+  latin1_arm64.go:72	0x10027a874		f85f83fd		MOVD -8(RSP), R29								
+  latin1_arm64.go:72	0x10027a878		f84507fe		MOVD.P 80(RSP), R30								
+  latin1_arm64.go:72	0x10027a87c		d65f03c0		RET										
+  latin1_arm64.go:68	0x10027a880		900016c0		ADRP 2981888(PC), R0								
+  latin1_arm64.go:68	0x10027a884		91200000		ADD $2048, R0, R0								
+  latin1_arm64.go:68	0x10027a888		b0001a41		ADRP 3444736(PC), R1								
+  latin1_arm64.go:68	0x10027a88c		91294021		ADD $2640, R1, R1								
+  latin1_arm64.go:68	0x10027a890		97f807ec		CALL runtime.gopanic(SB)							
+  latin1_arm64.go:68	0x10027a894		d503201f		NOOP										
+  latin1_arm64.go:66	0x10027a898		a90087e0		STP (R0, R1), 8(RSP)								
+  latin1_arm64.go:66	0x10027a89c		a9018fe2		STP (R2, R3), 24(RSP)								
+  latin1_arm64.go:66	0x10027a8a0		a90297e4		STP (R4, R5), 40(RSP)								
+  latin1_arm64.go:66	0x10027a8a4		aa1e03e3		MOVD R30, R3									
+  latin1_arm64.go:66	0x10027a8a8		97f81e82		CALL runtime.morestack_noctxt.abi0(SB)						
+  latin1_arm64.go:66	0x10027a8ac		a94087e0		LDP 8(RSP), (R0, R1)								
+  latin1_arm64.go:66	0x10027a8b0		a9418fe2		LDP 24(RSP), (R2, R3)								
+  latin1_arm64.go:66	0x10027a8b4		a94297e4		LDP 40(RSP), (R4, R5)								
+  latin1_arm64.go:66	0x10027a8b8		17ffffaa		JMP github.com/zchee/go-simdutf.convertLatin1ToUTF16LENEON(SB)			
+  latin1_arm64.go:66	0x10027a8bc		00000000		?										
+
+TEXT github.com/zchee/go-simdutf.convertLatin1ToUTF16BENEON(SB) /Users/zchee/go/src/github.com/zchee/go-simdutf/latin1_arm64.go
+  latin1_arm64.go:79	0x10027a8c0		f9400b90		MOVD 16(R28), R16								
+  latin1_arm64.go:79	0x10027a8c4		eb3063ff		CMP R16, RSP									
+  latin1_arm64.go:79	0x10027a8c8		54000ac9		BLS 86(PC)									
+  latin1_arm64.go:79	0x10027a8cc		f81b0ffe		MOVD.W R30, -80(RSP)								
+  latin1_arm64.go:79	0x10027a8d0		f81f83fd		MOVD R29, -8(RSP)								
+  latin1_arm64.go:79	0x10027a8d4		d10023fd		SUB $8, RSP, R29								
+  latin1_arm64.go:79	0x10027a8d8		f9002fe0		MOVD R0, 88(RSP)								
+  latin1_arm64.go:79	0x10027a8dc		f9003be3		MOVD R3, 112(RSP)								
+  latin1_arm64.go:80	0x10027a8e0		eb04003f		CMP R4, R1									
+  latin1_arm64.go:80	0x10027a8e4		5400092c		BGT 73(PC)									
+  latin1_arm64.go:84	0x10027a8e8		f100803f		CMP $32, R1									
+  latin1_arm64.go:84	0x10027a8ec		5400008a		BGE 4(PC)									
+  latin1_scalar.go:91	0x10027a8f0		d503201f		NOOP										
+  latin1_scalar.go:98	0x10027a8f4		aa1f03e2		MOVD ZR, R2									
+  latin1_scalar.go:98	0x10027a8f8		1400003e		JMP 62(PC)									
+  latin1_arm64.go:80	0x10027a8fc		f9002fe0		MOVD R0, 88(RSP)								
+  latin1_arm64.go:80	0x10027a900		f90043e5		MOVD R5, 128(RSP)								
+  latin1_arm64.go:80	0x10027a904		f9003fe4		MOVD R4, 120(RSP)								
+  latin1_arm64.go:80	0x10027a908		f9003be3		MOVD R3, 112(RSP)								
+  latin1_arm64.go:80	0x10027a90c		f90037e2		MOVD R2, 104(RSP)								
+  latin1_arm64.go:80	0x10027a910		f90033e1		MOVD R1, 96(RSP)								
+  latin1_arm64.go:87	0x10027a914		927be821		AND $-32, R1, R1								
+  latin1_arm64.go:88	0x10027a918		a90087e0		STP (R0, R1), 8(RSP)								
+  latin1_arm64.go:88	0x10027a91c		a9018fe2		STP (R2, R3), 24(RSP)								
+  latin1_arm64.go:88	0x10027a920		a90297e1		STP (R1, R5), 40(RSP)								
+  latin1_arm64.go:88	0x10027a924		9400faf3		CALL github.com/zchee/go-simdutf.convertLatin1ToUTF16BEBlocksNEON.abi0(SB)	
+  latin1_arm64.go:88	0x10027a928		f9401fe0		MOVD 56(RSP), R0								
+  latin1_arm64.go:89	0x10027a92c		f94033e1		MOVD 96(RSP), R1								
+  latin1_arm64.go:89	0x10027a930		eb00003f		CMP R0, R1									
+  latin1_arm64.go:89	0x10027a934		540004c3		BCC 38(PC)									
+  latin1_arm64.go:89	0x10027a938		cb000022		SUB R0, R1, R2									
+  latin1_arm64.go:89	0x10027a93c		f94037e3		MOVD 104(RSP), R3								
+  latin1_arm64.go:89	0x10027a940		cb030003		SUB R3, R0, R3									
+  latin1_arm64.go:89	0x10027a944		8a83fc03		AND R3->63, R0, R3								
+  latin1_arm64.go:89	0x10027a948		f94043e4		MOVD 128(RSP), R4								
+  latin1_arm64.go:89	0x10027a94c		cb040004		SUB R4, R0, R4									
+  latin1_arm64.go:89	0x10027a950		f9403fe5		MOVD 120(RSP), R5								
+  latin1_arm64.go:89	0x10027a954		cb0000a5		SUB R0, R5, R5									
+  latin1_arm64.go:89	0x10027a958		8a84fc04		AND R4->63, R0, R4								
+  latin1_arm64.go:89	0x10027a95c		f9402fe6		MOVD 88(RSP), R6								
+  latin1_arm64.go:89	0x10027a960		8b0300c3		ADD R3, R6, R3									
+  latin1_arm64.go:89	0x10027a964		f9403be6		MOVD 112(RSP), R6								
+  latin1_arm64.go:89	0x10027a968		8b0404c4		ADD R4<<1, R6, R4								
+  latin1_scalar.go:91	0x10027a96c		d503201f		NOOP										
+  latin1_scalar.go:95	0x10027a970		eb0200bf		CMP R2, R5									
+  latin1_scalar.go:95	0x10027a974		5400022b		BLT 17(PC)									
+  latin1_scalar.go:98	0x10027a978		aa1f03e0		MOVD ZR, R0									
+  latin1_scalar.go:98	0x10027a97c		14000009		JMP 9(PC)									
+  latin1_scalar.go:98	0x10027a980		38606865		MOVBU (R3)(R0), R5								
+  latin1_scalar.go:99	0x10027a984		aa0503e6		MOVD R5, R6									
+  bits.go:277		0x10027a988		d3483cc6		UBFX $8, R6, $8, R6								
+  bits.go:277		0x10027a98c		d3781ca5		UBFIZ $8, R5, $8, R5								
+  bits.go:277		0x10027a990		aa0600a5		ORR R6, R5, R5									
+  latin1_scalar.go:101	0x10027a994		d503201f		NOOP										
+  latin1_scalar.go:103	0x10027a998		78207885		MOVH R5, (R4)(R0<<1)								
+  latin1_scalar.go:98	0x10027a99c		91000400		ADD $1, R0, R0									
+  latin1_scalar.go:98	0x10027a9a0		eb02001f		CMP R2, R0									
+  latin1_scalar.go:98	0x10027a9a4		54fffeeb		BLT -9(PC)									
+  latin1_arm64.go:89	0x10027a9a8		aa0103e0		MOVD R1, R0									
+  latin1_arm64.go:89	0x10027a9ac		f85f83fd		MOVD -8(RSP), R29								
+  latin1_arm64.go:89	0x10027a9b0		f84507fe		MOVD.P 80(RSP), R30								
+  latin1_arm64.go:89	0x10027a9b4		d65f03c0		RET										
+  latin1_scalar.go:96	0x10027a9b8		900016c0		ADRP 2981888(PC), R0								
+  latin1_scalar.go:96	0x10027a9bc		91200000		ADD $2048, R0, R0								
+  latin1_scalar.go:96	0x10027a9c0		b0001a41		ADRP 3444736(PC), R1								
+  latin1_scalar.go:96	0x10027a9c4		91298021		ADD $2656, R1, R1								
+  latin1_scalar.go:96	0x10027a9c8		97f8079e		CALL runtime.gopanic(SB)							
+  latin1_arm64.go:89	0x10027a9cc		97f826bd		CALL runtime.panicBounds(SB)							
+  latin1_scalar.go:98	0x10027a9d0		38626804		MOVBU (R0)(R2), R4								
+  latin1_scalar.go:99	0x10027a9d4		aa0403e5		MOVD R4, R5									
+  bits.go:277		0x10027a9d8		d3781c84		UBFIZ $8, R4, $8, R4								
+  bits.go:277		0x10027a9dc		d3483ca5		UBFX $8, R5, $8, R5								
+  bits.go:277		0x10027a9e0		aa050084		ORR R5, R4, R4									
+  latin1_scalar.go:101	0x10027a9e4		d503201f		NOOP										
+  latin1_scalar.go:103	0x10027a9e8		78227864		MOVH R4, (R3)(R2<<1)								
+  latin1_scalar.go:98	0x10027a9ec		91000442		ADD $1, R2, R2									
+  latin1_scalar.go:98	0x10027a9f0		eb02003f		CMP R2, R1									
+  latin1_scalar.go:98	0x10027a9f4		54fffeec		BGT -9(PC)									
+  latin1_arm64.go:85	0x10027a9f8		aa0103e0		MOVD R1, R0									
+  latin1_arm64.go:85	0x10027a9fc		f85f83fd		MOVD -8(RSP), R29								
+  latin1_arm64.go:85	0x10027aa00		f84507fe		MOVD.P 80(RSP), R30								
+  latin1_arm64.go:85	0x10027aa04		d65f03c0		RET										
+  latin1_arm64.go:81	0x10027aa08		900016c0		ADRP 2981888(PC), R0								
+  latin1_arm64.go:81	0x10027aa0c		91200000		ADD $2048, R0, R0								
+  latin1_arm64.go:81	0x10027aa10		b0001a41		ADRP 3444736(PC), R1								
+  latin1_arm64.go:81	0x10027aa14		91294021		ADD $2640, R1, R1								
+  latin1_arm64.go:81	0x10027aa18		97f8078a		CALL runtime.gopanic(SB)							
+  latin1_arm64.go:81	0x10027aa1c		d503201f		NOOP										
+  latin1_arm64.go:79	0x10027aa20		a90087e0		STP (R0, R1), 8(RSP)								
+  latin1_arm64.go:79	0x10027aa24		a9018fe2		STP (R2, R3), 24(RSP)								
+  latin1_arm64.go:79	0x10027aa28		a90297e4		STP (R4, R5), 40(RSP)								
+  latin1_arm64.go:79	0x10027aa2c		aa1e03e3		MOVD R30, R3									
+  latin1_arm64.go:79	0x10027aa30		97f81e20		CALL runtime.morestack_noctxt.abi0(SB)						
+  latin1_arm64.go:79	0x10027aa34		a94087e0		LDP 8(RSP), (R0, R1)								
+  latin1_arm64.go:79	0x10027aa38		a9418fe2		LDP 24(RSP), (R2, R3)								
+  latin1_arm64.go:79	0x10027aa3c		a94297e4		LDP 40(RSP), (R4, R5)								
+  latin1_arm64.go:79	0x10027aa40		17ffffa0		JMP github.com/zchee/go-simdutf.convertLatin1ToUTF16BENEON(SB)			
+  latin1_arm64.go:79	0x10027aa44		00000000		?										
+  latin1_arm64.go:79	0x10027aa48		00000000		?										
+  latin1_arm64.go:79	0x10027aa4c		00000000		?										
+
+TEXT github.com/zchee/go-simdutf.convertLatin1ToUTF32NEON(SB) /Users/zchee/go/src/github.com/zchee/go-simdutf/latin1_arm64.go
+  latin1_arm64.go:92	0x10027aa50		f9400b90		MOVD 16(R28), R16								
+  latin1_arm64.go:92	0x10027aa54		eb3063ff		CMP R16, RSP									
+  latin1_arm64.go:92	0x10027aa58		54000949		BLS 74(PC)									
+  latin1_arm64.go:92	0x10027aa5c		f81b0ffe		MOVD.W R30, -80(RSP)								
+  latin1_arm64.go:92	0x10027aa60		f81f83fd		MOVD R29, -8(RSP)								
+  latin1_arm64.go:92	0x10027aa64		d10023fd		SUB $8, RSP, R29								
+  latin1_arm64.go:92	0x10027aa68		f9002fe0		MOVD R0, 88(RSP)								
+  latin1_arm64.go:92	0x10027aa6c		f9003be3		MOVD R3, 112(RSP)								
+  latin1_arm64.go:93	0x10027aa70		eb04003f		CMP R4, R1									
+  latin1_arm64.go:93	0x10027aa74		540007ac		BGT 61(PC)									
+  latin1_arm64.go:97	0x10027aa78		f100403f		CMP $16, R1									
+  latin1_arm64.go:97	0x10027aa7c		5400006a		BGE 3(PC)									
+  latin1_scalar.go:80	0x10027aa80		aa1f03e2		MOVD ZR, R2									
+  latin1_scalar.go:80	0x10027aa84		14000033		JMP 51(PC)									
+  latin1_arm64.go:93	0x10027aa88		f9002fe0		MOVD R0, 88(RSP)								
+  latin1_arm64.go:93	0x10027aa8c		f90043e5		MOVD R5, 128(RSP)								
+  latin1_arm64.go:93	0x10027aa90		f9003fe4		MOVD R4, 120(RSP)								
+  latin1_arm64.go:93	0x10027aa94		f9003be3		MOVD R3, 112(RSP)								
+  latin1_arm64.go:93	0x10027aa98		f90037e2		MOVD R2, 104(RSP)								
+  latin1_arm64.go:93	0x10027aa9c		f90033e1		MOVD R1, 96(RSP)								
+  latin1_arm64.go:100	0x10027aaa0		927cec21		AND $-16, R1, R1								
+  latin1_arm64.go:101	0x10027aaa4		a90087e0		STP (R0, R1), 8(RSP)								
+  latin1_arm64.go:101	0x10027aaa8		a9018fe2		STP (R2, R3), 24(RSP)								
+  latin1_arm64.go:101	0x10027aaac		a90297e1		STP (R1, R5), 40(RSP)								
+  latin1_arm64.go:101	0x10027aab0		9400faa0		CALL github.com/zchee/go-simdutf.convertLatin1ToUTF32BlocksNEON.abi0(SB)	
+  latin1_arm64.go:101	0x10027aab4		f9401fe0		MOVD 56(RSP), R0								
+  latin1_arm64.go:102	0x10027aab8		f94033e1		MOVD 96(RSP), R1								
+  latin1_arm64.go:102	0x10027aabc		eb00003f		CMP R0, R1									
+  latin1_arm64.go:102	0x10027aac0		54000403		BCC 32(PC)									
+  latin1_arm64.go:102	0x10027aac4		cb000022		SUB R0, R1, R2									
+  latin1_arm64.go:102	0x10027aac8		f94037e3		MOVD 104(RSP), R3								
+  latin1_arm64.go:102	0x10027aacc		cb030003		SUB R3, R0, R3									
+  latin1_arm64.go:102	0x10027aad0		8a83fc03		AND R3->63, R0, R3								
+  latin1_arm64.go:102	0x10027aad4		f94043e4		MOVD 128(RSP), R4								
+  latin1_arm64.go:102	0x10027aad8		cb040004		SUB R4, R0, R4									
+  latin1_arm64.go:102	0x10027aadc		f9403fe5		MOVD 120(RSP), R5								
+  latin1_arm64.go:102	0x10027aae0		cb0000a5		SUB R0, R5, R5									
+  latin1_arm64.go:102	0x10027aae4		8a84fc04		AND R4->63, R0, R4								
+  latin1_arm64.go:102	0x10027aae8		f9402fe6		MOVD 88(RSP), R6								
+  latin1_arm64.go:102	0x10027aaec		8b0300c3		ADD R3, R6, R3									
+  latin1_arm64.go:102	0x10027aaf0		f9403be6		MOVD 112(RSP), R6								
+  latin1_arm64.go:102	0x10027aaf4		8b0408c4		ADD R4<<2, R6, R4								
+  latin1_scalar.go:77	0x10027aaf8		eb0200bf		CMP R2, R5									
+  latin1_scalar.go:77	0x10027aafc		5400018b		BLT 12(PC)									
+  latin1_scalar.go:80	0x10027ab00		aa1f03e0		MOVD ZR, R0									
+  latin1_scalar.go:80	0x10027ab04		14000004		JMP 4(PC)									
+  latin1_scalar.go:80	0x10027ab08		38606865		MOVBU (R3)(R0), R5								
+  latin1_scalar.go:81	0x10027ab0c		b8207885		MOVW R5, (R4)(R0<<2)								
+  latin1_scalar.go:80	0x10027ab10		91000400		ADD $1, R0, R0									
+  latin1_scalar.go:80	0x10027ab14		eb02001f		CMP R2, R0									
+  latin1_scalar.go:80	0x10027ab18		54ffff8b		BLT -4(PC)									
+  latin1_arm64.go:102	0x10027ab1c		aa0103e0		MOVD R1, R0									
+  latin1_arm64.go:102	0x10027ab20		f85f83fd		MOVD -8(RSP), R29								
+  latin1_arm64.go:102	0x10027ab24		f84507fe		MOVD.P 80(RSP), R30								
+  latin1_arm64.go:102	0x10027ab28		d65f03c0		RET										
+  latin1_scalar.go:78	0x10027ab2c		900016c0		ADRP 2981888(PC), R0								
+  latin1_scalar.go:78	0x10027ab30		91200000		ADD $2048, R0, R0								
+  latin1_scalar.go:78	0x10027ab34		b0001a41		ADRP 3444736(PC), R1								
+  latin1_scalar.go:78	0x10027ab38		91298021		ADD $2656, R1, R1								
+  latin1_scalar.go:78	0x10027ab3c		97f80741		CALL runtime.gopanic(SB)							
+  latin1_arm64.go:102	0x10027ab40		97f82660		CALL runtime.panicBounds(SB)							
+  latin1_scalar.go:80	0x10027ab44		38626804		MOVBU (R0)(R2), R4								
+  latin1_scalar.go:81	0x10027ab48		b8227864		MOVW R4, (R3)(R2<<2)								
+  latin1_scalar.go:80	0x10027ab4c		91000442		ADD $1, R2, R2									
+  latin1_scalar.go:80	0x10027ab50		eb02003f		CMP R2, R1									
+  latin1_scalar.go:80	0x10027ab54		54ffff8c		BGT -4(PC)									
+  latin1_arm64.go:98	0x10027ab58		aa0103e0		MOVD R1, R0									
+  latin1_arm64.go:98	0x10027ab5c		f85f83fd		MOVD -8(RSP), R29								
+  latin1_arm64.go:98	0x10027ab60		f84507fe		MOVD.P 80(RSP), R30								
+  latin1_arm64.go:98	0x10027ab64		d65f03c0		RET										
+  latin1_arm64.go:94	0x10027ab68		900016c0		ADRP 2981888(PC), R0								
+  latin1_arm64.go:94	0x10027ab6c		91200000		ADD $2048, R0, R0								
+  latin1_arm64.go:94	0x10027ab70		b0001a41		ADRP 3444736(PC), R1								
+  latin1_arm64.go:94	0x10027ab74		9129c021		ADD $2672, R1, R1								
+  latin1_arm64.go:94	0x10027ab78		97f80732		CALL runtime.gopanic(SB)							
+  latin1_arm64.go:94	0x10027ab7c		d503201f		NOOP										
+  latin1_arm64.go:92	0x10027ab80		a90087e0		STP (R0, R1), 8(RSP)								
+  latin1_arm64.go:92	0x10027ab84		a9018fe2		STP (R2, R3), 24(RSP)								
+  latin1_arm64.go:92	0x10027ab88		a90297e4		STP (R4, R5), 40(RSP)								
+  latin1_arm64.go:92	0x10027ab8c		aa1e03e3		MOVD R30, R3									
+  latin1_arm64.go:92	0x10027ab90		97f81dc8		CALL runtime.morestack_noctxt.abi0(SB)						
+  latin1_arm64.go:92	0x10027ab94		a94087e0		LDP 8(RSP), (R0, R1)								
+  latin1_arm64.go:92	0x10027ab98		a9418fe2		LDP 24(RSP), (R2, R3)								
+  latin1_arm64.go:92	0x10027ab9c		a94297e4		LDP 40(RSP), (R4, R5)								
+  latin1_arm64.go:92	0x10027aba0		17ffffac		JMP github.com/zchee/go-simdutf.convertLatin1ToUTF32NEON(SB)			
+  latin1_arm64.go:92	0x10027aba4		00000000		?										
+  latin1_arm64.go:92	0x10027aba8		00000000		?										
+  latin1_arm64.go:92	0x10027abac		00000000		?										

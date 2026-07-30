@@ -100,8 +100,8 @@ func makeImplementation(input selectionInput) implementation {
 		),
 		convertLatin1ToUTF16LE: selectVariant(
 			input,
-			variant[func([]byte, []uint16) int]{value: convertLatin1ToUTF16LEScalar, kind: implementationScalar, available: true},
 			variant[func([]byte, []uint16) int]{value: convertLatin1ToUTF16LENEON, kind: implementationNEON, required: cpuNEON, available: true},
+			variant[func([]byte, []uint16) int]{value: convertLatin1ToUTF16LEScalar, kind: implementationScalar, available: true},
 		),
 		convertLatin1ToUTF16BE: selectVariant(
 			input,
@@ -110,8 +110,8 @@ func makeImplementation(input selectionInput) implementation {
 		),
 		convertLatin1ToUTF32: selectVariant(
 			input,
-			variant[func([]byte, []uint32) int]{value: convertLatin1ToUTF32Scalar, kind: implementationScalar, available: true},
 			variant[func([]byte, []uint32) int]{value: convertLatin1ToUTF32NEON, kind: implementationNEON, required: cpuNEON, available: true},
+			variant[func([]byte, []uint32) int]{value: convertLatin1ToUTF32Scalar, kind: implementationScalar, available: true},
 		),
 	}
 }

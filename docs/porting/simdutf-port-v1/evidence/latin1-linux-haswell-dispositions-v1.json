@@ -1,0 +1,80 @@
+{
+  "corpus": "Q-latin1-ramp",
+  "generated_at": "2026-07-30T14:56:16Z",
+  "head": "188fcff64e391345baf7a7f6f2713a04191ac2f2",
+  "host": "linux-amd64-debian-13-xeon-platinum-8481c",
+  "incumbent": "scalar",
+  "lane": "linux-amd64-none",
+  "ops": {
+    "ConvertLatin1ToUTF16BE": {
+      "disposition": "direct_only",
+      "reasons": [
+        "sig_slowdown:short/1"
+      ]
+    },
+    "ConvertLatin1ToUTF16LE": {
+      "disposition": "direct_only",
+      "reasons": [
+        "sig_slowdown:short/1",
+        "sig_slowdown:short/15",
+        "sig_slowdown:short/16",
+        "sig_slowdown:short/17",
+        "protected_regression:short/1:106.28%",
+        "protected_regression:short/15:35.95%",
+        "protected_regression:short/16:5.86%",
+        "protected_regression:short/17:15.67%"
+      ]
+    },
+    "ConvertLatin1ToUTF32": {
+      "disposition": "direct_only",
+      "reasons": [
+        "sig_slowdown:short/15",
+        "sig_slowdown:short/17",
+        "protected_regression:short/15:44.54%",
+        "protected_regression:short/17:3.43%"
+      ]
+    },
+    "ConvertLatin1ToUTF8": {
+      "disposition": "direct_only",
+      "reasons": [
+        "sig_slowdown:bulk/4096",
+        "sig_slowdown:short/1",
+        "sig_slowdown:short/15",
+        "sig_slowdown:short/16",
+        "sig_slowdown:short/17",
+        "protected_regression:short/1:80.14%",
+        "protected_regression:short/15:105.12%",
+        "protected_regression:short/16:337.80%",
+        "protected_regression:short/17:352.17%",
+        "bulk_not_win:4096:imp=-56.74%:p=0.0001806"
+      ]
+    },
+    "UTF8LengthFromLatin1": {
+      "disposition": "direct_only",
+      "reasons": [
+        "sig_slowdown:boundary/64",
+        "sig_slowdown:short/17",
+        "sig_slowdown:short/32",
+        "protected_regression:boundary/64:2.03%",
+        "protected_regression:short/16:6.24%",
+        "protected_regression:short/17:6.91%",
+        "protected_regression:short/32:4.07%"
+      ]
+    }
+  },
+  "provider_candidate": "haswell",
+  "schema": "simdutf-latin1-qualification-disposition-v1",
+  "source_files": [
+    "none-haswell-ConvertLatin1ToUTF16BE.txt",
+    "none-haswell-ConvertLatin1ToUTF16LE.txt",
+    "none-haswell-ConvertLatin1ToUTF32.txt",
+    "none-haswell-ConvertLatin1ToUTF8.txt",
+    "none-haswell-UTF8LengthFromLatin1.txt",
+    "none-scalar-ConvertLatin1ToUTF16BE.txt",
+    "none-scalar-ConvertLatin1ToUTF16LE.txt",
+    "none-scalar-ConvertLatin1ToUTF32.txt",
+    "none-scalar-ConvertLatin1ToUTF8.txt",
+    "none-scalar-UTF8LengthFromLatin1.txt"
+  ],
+  "version": 1
+}

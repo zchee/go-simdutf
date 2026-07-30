@@ -104,3 +104,28 @@ func TestMakeImplementationARM64W01ProvidersRemainDirectOnly(t *testing.T) {
 		t.Fatal("unqualified NEON W01 provider leaked into selection")
 	}
 }
+
+func TestMakeImplementationARM64Latin1QualificationSelection(t *testing.T) {
+	got := makeImplementation(selectionInput{features: cpuNEON})
+	// Selected after Q-latin1-ramp qualification on darwin-arm64-apple-m3-max.
+	if !sameFunction(got.convertLatin1ToUTF16LE, convertLatin1ToUTF16LENEON) {
+		t.Fatal("ConvertLatin1ToUTF16LE must select NEON after qualification")
+	}
+	if !sameFunction(got.convertLatin1ToUTF32, convertLatin1ToUTF32NEON) {
+		t.Fatal("ConvertLatin1ToUTF32 must select NEON after qualification")
+	}
+	// Direct-only Latin-1 providers remain registered after scalar for force/tests.
+	if !sameFunction(got.utf8LengthFromLatin1, utf8LengthFromLatin1Scalar) ||
+		!sameFunction(got.convertLatin1ToUTF8, convertLatin1ToUTF8Scalar) ||
+		!sameFunction(got.convertLatin1ToUTF16BE, convertLatin1ToUTF16BEScalar) {
+		t.Fatal("direct-only Latin-1 providers leaked ahead of scalar")
+	}
+	live := activeImplementation
+	if !sameFunction(live.convertLatin1ToUTF16LE, convertLatin1ToUTF16LENEON) ||
+		!sameFunction(live.convertLatin1ToUTF32, convertLatin1ToUTF32NEON) ||
+		!sameFunction(live.utf8LengthFromLatin1, utf8LengthFromLatin1Scalar) ||
+		!sameFunction(live.convertLatin1ToUTF8, convertLatin1ToUTF8Scalar) ||
+		!sameFunction(live.convertLatin1ToUTF16BE, convertLatin1ToUTF16BEScalar) {
+		t.Fatal("live Latin-1 selection mismatched qualification dispositions")
+	}
+}

@@ -1,0 +1,85 @@
+{
+  "audit_head": "188fcff64e391345baf7a7f6f2713a04191ac2f2",
+  "corpus": "Q-latin1-ramp",
+  "family_contract_id": "FC-v1-latin1-source",
+  "generated_at": "2026-07-30T15:10:30Z",
+  "head": "188fcff64e391345baf7a7f6f2713a04191ac2f2",
+  "lanes": {
+    "darwin-arm64-nosimd-neon": {
+      "host": "darwin-arm64-apple-m3-max",
+      "incumbent": "scalar",
+      "lane": "darwin-arm64-nosimd",
+      "ops": {
+        "ConvertLatin1ToUTF16BE": "direct_only",
+        "ConvertLatin1ToUTF16LE": "selected",
+        "ConvertLatin1ToUTF32": "selected",
+        "ConvertLatin1ToUTF8": "direct_only",
+        "UTF8LengthFromLatin1": "direct_only"
+      },
+      "provider_candidate": "neon"
+    },
+    "linux-amd64-none-haswell": {
+      "host": "linux-amd64-debian-13-xeon-platinum-8481c",
+      "incumbent": "scalar",
+      "lane": "linux-amd64-none",
+      "ops": {
+        "ConvertLatin1ToUTF16BE": "direct_only",
+        "ConvertLatin1ToUTF16LE": "direct_only",
+        "ConvertLatin1ToUTF32": "direct_only",
+        "ConvertLatin1ToUTF8": "direct_only",
+        "UTF8LengthFromLatin1": "direct_only"
+      },
+      "provider_candidate": "haswell"
+    },
+    "linux-amd64-none-westmere": {
+      "host": "linux-amd64-debian-13-xeon-platinum-8481c",
+      "incumbent": "scalar",
+      "lane": "linux-amd64-none",
+      "ops": {
+        "ConvertLatin1ToUTF16BE": "direct_only",
+        "ConvertLatin1ToUTF16LE": "direct_only",
+        "ConvertLatin1ToUTF32": "direct_only",
+        "ConvertLatin1ToUTF8": "direct_only",
+        "UTF8LengthFromLatin1": "direct_only"
+      },
+      "provider_candidate": "westmere"
+    },
+    "linux-amd64-simd-archsimd": {
+      "host": "linux-amd64-debian-13-xeon-platinum-8481c",
+      "incumbent": "scalar",
+      "lane": "linux-amd64-simd",
+      "ops": {
+        "ConvertLatin1ToUTF16BE": "direct_only",
+        "ConvertLatin1ToUTF16LE": "direct_only",
+        "ConvertLatin1ToUTF32": "direct_only",
+        "ConvertLatin1ToUTF8": "direct_only",
+        "UTF8LengthFromLatin1": "selected"
+      },
+      "provider_candidate": "archsimd"
+    }
+  },
+  "notes": [
+    "Promote only selected providers ahead of scalar in public dispatch order.",
+    "Direct-only providers remain registered after scalar and forceable via SIMDUTF_FORCE_PROVIDER / SIMDUTF_BENCH_EXPECT_TIER.",
+    "linux-amd64-simd archsimd selected UTF8LengthFromLatin1; other Latin-1-source archsimd/westmere/haswell providers remain direct_only."
+  ],
+  "pending_lanes": [],
+  "public_selection": {
+    "darwin-arm64": {
+      "ConvertLatin1ToUTF16BE": "scalar",
+      "ConvertLatin1ToUTF16LE": "neon",
+      "ConvertLatin1ToUTF32": "neon",
+      "ConvertLatin1ToUTF8": "scalar",
+      "UTF8LengthFromLatin1": "scalar"
+    },
+    "linux-amd64": {
+      "ConvertLatin1ToUTF16BE": "scalar",
+      "ConvertLatin1ToUTF16LE": "scalar",
+      "ConvertLatin1ToUTF32": "scalar",
+      "ConvertLatin1ToUTF8": "scalar",
+      "UTF8LengthFromLatin1": "archsimd"
+    }
+  },
+  "schema": "simdutf-latin1-qualification-summary-v1",
+  "version": 1
+}

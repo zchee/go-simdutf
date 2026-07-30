@@ -1,0 +1,208 @@
+== nm none.test ==
+== nm simd.test ==
+== objdump westmere/haswell snippets ==
+bash: line 11: rg: command not found
+bash: line 11: rg: command not found
+TEXT github.com/zchee/go-simdutf.convertLatin1ToUTF8Westmere(SB) /tmp/go-simdutf-latin1-qual-stable/latin1_amd64.go
+  latin1_amd64.go:56	0x6db380		493b6610		CMPQ SP, 0x10(R14)						
+  latin1_amd64.go:56	0x6db384		0f8684000000		JBE 0x6db40e							
+  latin1_amd64.go:56	0x6db38a		55			PUSHQ BP							
+  latin1_amd64.go:56	0x6db38b		4889e5			MOVQ SP, BP							
+  latin1_amd64.go:56	0x6db38e		4883ec38		SUBQ $0x38, SP							
+  latin1_amd64.go:57	0x6db392		4c89442470		MOVQ R8, 0x70(SP)						
+  latin1_amd64.go:57	0x6db397		4889742468		MOVQ SI, 0x68(SP)						
+  latin1_amd64.go:57	0x6db39c		48897c2460		MOVQ DI, 0x60(SP)						
+  latin1_amd64.go:57	0x6db3a1		48894c2458		MOVQ CX, 0x58(SP)						
+  latin1_amd64.go:57	0x6db3a6		48895c2450		MOVQ BX, 0x50(SP)						
+  latin1_amd64.go:57	0x6db3ab		4889442448		MOVQ AX, 0x48(SP)						
+  latin1_amd64.go:135	0x6db3b0		488d3d99a31300		LEAQ 0x13a399(IP), DI						
+  latin1_amd64.go:135	0x6db3b7		be40000000		MOVL $0x40, SI							
+  latin1_amd64.go:135	0x6db3bc		0f1f4000		NOPL 0(AX)							
+  latin1_amd64.go:135	0x6db3c0		e85b0a0000		CALL github.com/zchee/go-simdutf.latin1LengthAMD64(SB)		
+  latin1_amd64.go:57	0x6db3c5		488b742468		MOVQ 0x68(SP), SI						
+  latin1_amd64.go:57	0x6db3ca		4839f0			CMPQ AX, SI							
+  latin1_amd64.go:57	0x6db3cd		7f2b			JG 0x6db3fa							
+  latin1_amd64.go:60	0x6db3cf		488b442448		MOVQ 0x48(SP), AX						
+  latin1_amd64.go:60	0x6db3d4		488b5c2450		MOVQ 0x50(SP), BX						
+  latin1_amd64.go:60	0x6db3d9		488b4c2458		MOVQ 0x58(SP), CX						
+  latin1_amd64.go:60	0x6db3de		488b7c2460		MOVQ 0x60(SP), DI						
+  latin1_amd64.go:60	0x6db3e3		4c8b442470		MOVQ 0x70(SP), R8						
+  latin1_amd64.go:60	0x6db3e8		4c8d0db9a31300		LEAQ 0x13a3b9(IP), R9						
+  latin1_amd64.go:60	0x6db3ef		e84c010000		CALL github.com/zchee/go-simdutf.convertLatin1ToUTF8AMD64(SB)	
+  latin1_amd64.go:60	0x6db3f4		4883c438		ADDQ $0x38, SP							
+  latin1_amd64.go:60	0x6db3f8		5d			POPQ BP								
+  latin1_amd64.go:60	0x6db3f9		c3			RET								
+  latin1_amd64.go:58	0x6db3fa		488d051f840900		LEAQ 0x9841f(IP), AX						
+  latin1_amd64.go:58	0x6db401		488d1d68cc1300		LEAQ 0x13cc68(IP), BX						
+  latin1_amd64.go:58	0x6db408		e83375daff		CALL runtime.gopanic(SB)					
+  latin1_amd64.go:58	0x6db40d		90			NOPL								
+  latin1_amd64.go:56	0x6db40e		4889442408		MOVQ AX, 0x8(SP)						
+  latin1_amd64.go:56	0x6db413		48895c2410		MOVQ BX, 0x10(SP)						
+  latin1_amd64.go:56	0x6db418		48894c2418		MOVQ CX, 0x18(SP)						
+  latin1_amd64.go:56	0x6db41d		48897c2420		MOVQ DI, 0x20(SP)						
+  latin1_amd64.go:56	0x6db422		4889742428		MOVQ SI, 0x28(SP)						
+  latin1_amd64.go:56	0x6db427		4c89442430		MOVQ R8, 0x30(SP)						
+  latin1_amd64.go:56	0x6db42c		e84fd4daff		CALL runtime.morestack_noctxt.abi0(SB)				
+  latin1_amd64.go:56	0x6db431		488b442408		MOVQ 0x8(SP), AX						
+  latin1_amd64.go:56	0x6db436		488b5c2410		MOVQ 0x10(SP), BX						
+  latin1_amd64.go:56	0x6db43b		488b4c2418		MOVQ 0x18(SP), CX						
+  latin1_amd64.go:56	0x6db440		488b7c2420		MOVQ 0x20(SP), DI						
+  latin1_amd64.go:56	0x6db445		488b742428		MOVQ 0x28(SP), SI						
+  latin1_amd64.go:56	0x6db44a		4c8b442430		MOVQ 0x30(SP), R8						
+  latin1_amd64.go:56	0x6db44f		e92cffffff		JMP github.com/zchee/go-simdutf.convertLatin1ToUTF8Westmere(SB)	
+
+TEXT github.com/zchee/go-simdutf.convertLatin1ToUTF8Haswell(SB) /tmp/go-simdutf-latin1-qual-stable/latin1_amd64.go
+  latin1_amd64.go:62	0x6db460		493b6610		CMPQ SP, 0x10(R14)						
+  latin1_amd64.go:62	0x6db464		0f8684000000		JBE 0x6db4ee							
+  latin1_amd64.go:62	0x6db46a		55			PUSHQ BP							
+  latin1_amd64.go:62	0x6db46b		4889e5			MOVQ SP, BP							
+  latin1_amd64.go:62	0x6db46e		4883ec38		SUBQ $0x38, SP							
+  latin1_amd64.go:63	0x6db472		4c89442470		MOVQ R8, 0x70(SP)						
+  latin1_amd64.go:63	0x6db477		4889742468		MOVQ SI, 0x68(SP)						
+  latin1_amd64.go:63	0x6db47c		48897c2460		MOVQ DI, 0x60(SP)						
+  latin1_amd64.go:63	0x6db481		48894c2458		MOVQ CX, 0x58(SP)						
+  latin1_amd64.go:63	0x6db486		48895c2450		MOVQ BX, 0x50(SP)						
+  latin1_amd64.go:63	0x6db48b		4889442448		MOVQ AX, 0x48(SP)						
+  latin1_amd64.go:138	0x6db490		488d3db1a21300		LEAQ 0x13a2b1(IP), DI						
+  latin1_amd64.go:138	0x6db497		be80000000		MOVL $0x80, SI							
+  latin1_amd64.go:138	0x6db49c		0f1f4000		NOPL 0(AX)							
+  latin1_amd64.go:138	0x6db4a0		e87b090000		CALL github.com/zchee/go-simdutf.latin1LengthAMD64(SB)		
+  latin1_amd64.go:63	0x6db4a5		488b742468		MOVQ 0x68(SP), SI						
+  latin1_amd64.go:63	0x6db4aa		4839f0			CMPQ AX, SI							
+  latin1_amd64.go:63	0x6db4ad		7f2b			JG 0x6db4da							
+  latin1_amd64.go:66	0x6db4af		488b442448		MOVQ 0x48(SP), AX						
+  latin1_amd64.go:66	0x6db4b4		488b5c2450		MOVQ 0x50(SP), BX						
+  latin1_amd64.go:66	0x6db4b9		488b4c2458		MOVQ 0x58(SP), CX						
+  latin1_amd64.go:66	0x6db4be		488b7c2460		MOVQ 0x60(SP), DI						
+  latin1_amd64.go:66	0x6db4c3		4c8b442470		MOVQ 0x70(SP), R8						
+  latin1_amd64.go:66	0x6db4c8		4c8d0dd1a21300		LEAQ 0x13a2d1(IP), R9						
+  latin1_amd64.go:66	0x6db4cf		e86c000000		CALL github.com/zchee/go-simdutf.convertLatin1ToUTF8AMD64(SB)	
+  latin1_amd64.go:66	0x6db4d4		4883c438		ADDQ $0x38, SP							
+  latin1_amd64.go:66	0x6db4d8		5d			POPQ BP								
+  latin1_amd64.go:66	0x6db4d9		c3			RET								
+  latin1_amd64.go:64	0x6db4da		488d053f830900		LEAQ 0x9833f(IP), AX						
+  latin1_amd64.go:64	0x6db4e1		488d1d88cb1300		LEAQ 0x13cb88(IP), BX						
+  latin1_amd64.go:64	0x6db4e8		e85374daff		CALL runtime.gopanic(SB)					
+  latin1_amd64.go:64	0x6db4ed		90			NOPL								
+  latin1_amd64.go:62	0x6db4ee		4889442408		MOVQ AX, 0x8(SP)						
+  latin1_amd64.go:62	0x6db4f3		48895c2410		MOVQ BX, 0x10(SP)						
+  latin1_amd64.go:62	0x6db4f8		48894c2418		MOVQ CX, 0x18(SP)						
+  latin1_amd64.go:62	0x6db4fd		48897c2420		MOVQ DI, 0x20(SP)						
+  latin1_amd64.go:62	0x6db502		4889742428		MOVQ SI, 0x28(SP)						
+  latin1_amd64.go:62	0x6db507		4c89442430		MOVQ R8, 0x30(SP)						
+  latin1_amd64.go:62	0x6db50c		e86fd3daff		CALL runtime.morestack_noctxt.abi0(SB)				
+  latin1_amd64.go:62	0x6db511		488b442408		MOVQ 0x8(SP), AX						
+  latin1_amd64.go:62	0x6db516		488b5c2410		MOVQ 0x10(SP), BX						
+  latin1_amd64.go:62	0x6db51b		488b4c2418		MOVQ 0x18(SP), CX						
+  latin1_amd64.go:62	0x6db520		488b7c2420		MOVQ 0x20(SP), DI						
+  latin1_amd64.go:62	0x6db525		488b742428		MOVQ 0x28(SP), SI						
+  latin1_amd64.go:62	0x6db52a		4c8b442430		MOVQ 0x30(SP), R8						
+  latin1_amd64.go:62	0x6db52f		e92cffffff		JMP github.com/zchee/go-simdutf.convertLatin1ToUTF8Haswell(SB)	
+
+TEXT github.com/zchee/go-simdutf.utf8LengthFromLatin1Westmere(SB) /tmp/go-simdutf-latin1-qual-stable/latin1_amd64.go
+  latin1_amd64.go:134	0x6dbd60		493b6610		CMPQ SP, 0x10(R14)							
+  latin1_amd64.go:134	0x6dbd64		7625			JBE 0x6dbd8b								
+  latin1_amd64.go:134	0x6dbd66		55			PUSHQ BP								
+  latin1_amd64.go:134	0x6dbd67		4889e5			MOVQ SP, BP								
+  latin1_amd64.go:134	0x6dbd6a		4883ec28		SUBQ $0x28, SP								
+  latin1_amd64.go:134	0x6dbd6e		4889442438		MOVQ AX, 0x38(SP)							
+  latin1_amd64.go:135	0x6dbd73		488d3dd6991300		LEAQ 0x1399d6(IP), DI							
+  latin1_amd64.go:135	0x6dbd7a		be40000000		MOVL $0x40, SI								
+  latin1_amd64.go:135	0x6dbd7f		90			NOPL									
+  latin1_amd64.go:135	0x6dbd80		e89b000000		CALL github.com/zchee/go-simdutf.latin1LengthAMD64(SB)			
+  latin1_amd64.go:135	0x6dbd85		4883c428		ADDQ $0x28, SP								
+  latin1_amd64.go:135	0x6dbd89		5d			POPQ BP									
+  latin1_amd64.go:135	0x6dbd8a		c3			RET									
+  latin1_amd64.go:134	0x6dbd8b		4889442408		MOVQ AX, 0x8(SP)							
+  latin1_amd64.go:134	0x6dbd90		48895c2410		MOVQ BX, 0x10(SP)							
+  latin1_amd64.go:134	0x6dbd95		48894c2418		MOVQ CX, 0x18(SP)							
+  latin1_amd64.go:134	0x6dbd9a		e8e1cadaff		CALL runtime.morestack_noctxt.abi0(SB)					
+  latin1_amd64.go:134	0x6dbd9f		488b442408		MOVQ 0x8(SP), AX							
+  latin1_amd64.go:134	0x6dbda4		488b5c2410		MOVQ 0x10(SP), BX							
+  latin1_amd64.go:134	0x6dbda9		488b4c2418		MOVQ 0x18(SP), CX							
+  latin1_amd64.go:134	0x6dbdae		ebb0			JMP github.com/zchee/go-simdutf.utf8LengthFromLatin1Westmere(SB)	
+
+TEXT github.com/zchee/go-simdutf.utf8LengthFromLatin1Haswell(SB) /tmp/go-simdutf-latin1-qual-stable/latin1_amd64.go
+== objdump archsimd ==
+go tool objdump: signal: broken pipe
+TEXT github.com/zchee/go-simdutf.convertLatin1ToUTF8Archsimd(SB) /tmp/go-simdutf-latin1-qual-stable/latin1_archsimd.go
+  latin1_archsimd.go:32		0x6e0b40		493b6610		CMPQ SP, 0x10(R14)							
+  latin1_archsimd.go:32		0x6e0b44		0f8674020000		JBE 0x6e0dbe								
+  latin1_archsimd.go:32		0x6e0b4a		55			PUSHQ BP								
+  latin1_archsimd.go:32		0x6e0b4b		4889e5			MOVQ SP, BP								
+  latin1_archsimd.go:32		0x6e0b4e		4883ec40		SUBQ $0x40, SP								
+  latin1_archsimd.go:32		0x6e0b52		4889442450		MOVQ AX, 0x50(SP)							
+  latin1_archsimd.go:32		0x6e0b57		48897c2468		MOVQ DI, 0x68(SP)							
+  latin1_archsimd.go:32		0x6e0b5c		0f1f4000		NOPL 0(AX)								
+  latin1_archsimd.go:33		0x6e0b60		4883fb20		CMPQ BX, $0x20								
+  latin1_archsimd.go:33		0x6e0b64		7d0b			JGE 0x6e0b71								
+  latin1_archsimd.go:34		0x6e0b66		e8f50c0000		CALL github.com/zchee/go-simdutf.convertLatin1ToUTF8Scalar(SB)		
+  latin1_archsimd.go:34		0x6e0b6b		4883c440		ADDQ $0x40, SP								
+  latin1_archsimd.go:34		0x6e0b6f		5d			POPQ BP									
+  latin1_archsimd.go:34		0x6e0b70		c3			RET									
+  latin1_archsimd.go:33		0x6e0b71		4889742470		MOVQ SI, 0x70(SP)							
+  latin1_archsimd.go:33		0x6e0b76		4c89442478		MOVQ R8, 0x78(SP)							
+  latin1_archsimd.go:33		0x6e0b7b		48897c2468		MOVQ DI, 0x68(SP)							
+  latin1_archsimd.go:33		0x6e0b80		48895c2458		MOVQ BX, 0x58(SP)							
+  latin1_archsimd.go:33		0x6e0b85		48894c2460		MOVQ CX, 0x60(SP)							
+  latin1_archsimd.go:33		0x6e0b8a		4889442450		MOVQ AX, 0x50(SP)							
+  latin1_archsimd.go:36		0x6e0b8f		e8cc0a0000		CALL github.com/zchee/go-simdutf.utf8LengthFromLatin1Archsimd(SB)	
+  latin1_archsimd.go:37		0x6e0b94		488b742470		MOVQ 0x70(SP), SI							
+  latin1_archsimd.go:37		0x6e0b99		0f1f8000000000		NOPL 0(AX)								
+  latin1_archsimd.go:37		0x6e0ba0		4839f0			CMPQ AX, SI								
+  latin1_archsimd.go:37		0x6e0ba3		0f8f01020000		JG 0x6e0daa								
+  other_gen_amd64.go:139	0x6e0ba9		ba7f000000		MOVL $0x7f, DX								
+  other_gen_amd64.go:139	0x6e0bae		c4e1f96e		OUTSB DS:0(SI), DX							
+  other_gen_amd64.go:139	0x6e0bb2		c290c4			RET $0xc490								
+  other_gen_amd64.go:139	0x6e0bb5		e27d			LOOP 0x6e0c34								
+  other_gen_amd64.go:139	0x6e0bb7		78c0			JS 0x6e0b79								
+  latin1_archsimd.go:43		0x6e0bb9		488b5c2458		MOVQ 0x58(SP), BX							
+  latin1_archsimd.go:43		0x6e0bbe		4c8b442478		MOVQ 0x78(SP), R8							
+  latin1_archsimd.go:43		0x6e0bc3		488b542468		MOVQ 0x68(SP), DX							
+  latin1_archsimd.go:43		0x6e0bc8		488b4c2460		MOVQ 0x60(SP), CX							
+  latin1_archsimd.go:43		0x6e0bcd		4c8b4c2450		MOVQ 0x50(SP), R9							
+  latin1_archsimd.go:43		0x6e0bd2		31c0			XORL AX, AX								
+  latin1_archsimd.go:43		0x6e0bd4		31ff			XORL DI, DI								
+  latin1_archsimd.go:43		0x6e0bd6		eb06			JMP 0x6e0bde								
+  latin1_archsimd.go:43		0x6e0bd8		4c89d0			MOVQ R10, AX								
+  latin1_archsimd.go:43		0x6e0bdb		4c89e7			MOVQ R12, DI								
+  latin1_archsimd.go:43		0x6e0bde		4c8d5020		LEAQ 0x20(AX), R10							
+  latin1_archsimd.go:43		0x6e0be2		4c39d3			CMPQ BX, R10								
+  latin1_archsimd.go:43		0x6e0be5		0f8c21010000		JL 0x6e0d0c								
+  latin1_archsimd.go:44		0x6e0beb		4839c3			CMPQ BX, AX								
+  latin1_archsimd.go:44		0x6e0bee		0f82b1010000		JB 0x6e0da5								
+  latin1_archsimd.go:44		0x6e0bf4		4989db			MOVQ BX, R11								
+  latin1_archsimd.go:44		0x6e0bf7		4929c3			SUBQ AX, R11								
+  latin1_archsimd.go:44		0x6e0bfa		4989c4			MOVQ AX, R12								
+  latin1_archsimd.go:44		0x6e0bfd		4829c8			SUBQ CX, AX								
+  latin1_archsimd.go:44		0x6e0c00		48c1f83f		SARQ $0x3f, AX								
+  latin1_archsimd.go:44		0x6e0c04		4c21e0			ANDQ R12, AX								
+  latin1_archsimd.go:44		0x6e0c07		4d8d2c01		LEAQ 0(R9)(AX*1), R13							
+  slice_gen_amd64.go:151	0x6e0c0b		4983fb20		CMPQ R11, $0x20								
+  slice_gen_amd64.go:151	0x6e0c0f		0f8281010000		JB 0x6e0d96								
+  slice_gen_amd64.go:151	0x6e0c15		c4c17e6f4d00		VMOVDQU 0(BP), X1							
+  other_gen_amd64.go:103	0x6e0c1b		41bb80ffffff		MOVL $-0x80, R11							
+  other_gen_amd64.go:103	0x6e0c21		c4c1f96e		OUTSB DS:0(SI), DX							
+  other_gen_amd64.go:103	0x6e0c25		d3c4			ROLL CL, SP								
+  other_gen_amd64.go:103	0x6e0c27		e27d			LOOP 0x6e0ca6								
+  other_gen_amd64.go:103	0x6e0c29		78d2			JS 0x6e0bfd								
+  compare_gen_amd64.go:455	0x6e0c2b		c5edef			OUTL AX, DX								
+  compare_gen_amd64.go:455	0x6e0c2e		d9c5			FLD F5									
+  compare_gen_amd64.go:455	0x6e0c30		ed			INL DX, AX								
+  compare_gen_amd64.go:455	0x6e0c31		ef			OUTL AX, DX								
+  compare_gen_amd64.go:455	0x6e0c32		d0c5			ROLL $0x1, CH								
+  compare_gen_amd64.go:455	0x6e0c34		e564			INL $0x64, AX								
+  compare_gen_amd64.go:455	0x6e0c36		d2c5			ROLL CL, CH								
+  latin1_archsimd.go:45		0x6e0c38		7dd7			JGE 0x6e0c11								
+  latin1_archsimd.go:45		0x6e0c3a		ea			?									
+  compare_gen_amd64.go:454	0x6e0c3b		90			NOPL									
+  compare_gen_amd64.go:454	0x6e0c3c		0f1f4000		NOPL 0(AX)								
+  latin1_archsimd.go:45		0x6e0c40		4585ed			TESTL R13, R13								
+  latin1_archsimd.go:45		0x6e0c43		753b			JNE 0x6e0c80								
+  latin1_archsimd.go:46		0x6e0c45		4839fe			CMPQ SI, DI								
+  latin1_archsimd.go:46		0x6e0c48		0f8243010000		JB 0x6e0d91								
+  latin1_archsimd.go:46		0x6e0c4e		4989f4			MOVQ SI, R12								
+  latin1_archsimd.go:46		0x6e0c51		4929fc			SUBQ DI, R12								
+  latin1_archsimd.go:46		0x6e0c54		4989fd			MOVQ DI, R13								
+  latin1_archsimd.go:46		0x6e0c57		4c29c7			SUBQ R8, DI								
+go tool objdump: signal: broken pipe

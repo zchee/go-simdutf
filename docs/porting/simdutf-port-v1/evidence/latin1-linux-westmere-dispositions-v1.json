@@ -1,0 +1,76 @@
+{
+  "corpus": "Q-latin1-ramp",
+  "generated_at": "2026-07-30T14:47:15Z",
+  "head": "188fcff64e391345baf7a7f6f2713a04191ac2f2",
+  "host": "linux-amd64-debian-13-xeon-platinum-8481c",
+  "incumbent": "scalar",
+  "lane": "linux-amd64-none",
+  "ops": {
+    "ConvertLatin1ToUTF16BE": {
+      "disposition": "direct_only",
+      "reasons": [
+        "sig_slowdown:short/1"
+      ]
+    },
+    "ConvertLatin1ToUTF16LE": {
+      "disposition": "direct_only",
+      "reasons": [
+        "sig_slowdown:short/1",
+        "sig_slowdown:short/15",
+        "sig_slowdown:short/16",
+        "sig_slowdown:short/17",
+        "protected_regression:short/1:105.25%",
+        "protected_regression:short/15:35.60%",
+        "protected_regression:short/16:3.82%",
+        "protected_regression:short/17:15.22%"
+      ]
+    },
+    "ConvertLatin1ToUTF32": {
+      "disposition": "direct_only",
+      "reasons": [
+        "sig_slowdown:short/15",
+        "sig_slowdown:short/17",
+        "protected_regression:short/15:44.36%",
+        "protected_regression:short/17:5.05%"
+      ]
+    },
+    "ConvertLatin1ToUTF8": {
+      "disposition": "direct_only",
+      "reasons": [
+        "sig_slowdown:bulk/4096",
+        "sig_slowdown:short/1",
+        "sig_slowdown:short/15",
+        "sig_slowdown:short/17",
+        "protected_regression:short/1:76.34%",
+        "protected_regression:short/15:103.00%",
+        "protected_regression:short/17:6.89%",
+        "bulk_not_win:4096:imp=-56.91%:p=0.0001796"
+      ]
+    },
+    "UTF8LengthFromLatin1": {
+      "disposition": "direct_only",
+      "reasons": [
+        "sig_slowdown:short/17",
+        "sig_slowdown:short/32",
+        "protected_regression:short/16:8.70%",
+        "protected_regression:short/17:9.28%",
+        "protected_regression:short/32:5.49%"
+      ]
+    }
+  },
+  "provider_candidate": "westmere",
+  "schema": "simdutf-latin1-qualification-disposition-v1",
+  "source_files": [
+    "none-scalar-ConvertLatin1ToUTF16BE.txt",
+    "none-scalar-ConvertLatin1ToUTF16LE.txt",
+    "none-scalar-ConvertLatin1ToUTF32.txt",
+    "none-scalar-ConvertLatin1ToUTF8.txt",
+    "none-scalar-UTF8LengthFromLatin1.txt",
+    "none-westmere-ConvertLatin1ToUTF16BE.txt",
+    "none-westmere-ConvertLatin1ToUTF16LE.txt",
+    "none-westmere-ConvertLatin1ToUTF32.txt",
+    "none-westmere-ConvertLatin1ToUTF8.txt",
+    "none-westmere-UTF8LengthFromLatin1.txt"
+  ],
+  "version": 1
+}
