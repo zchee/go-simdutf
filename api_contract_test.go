@@ -258,12 +258,12 @@ func TestAPIManifestMilestones(t *testing.T) {
 
 	assertStringIntMap(t, "status counts", statusCounts, map[string]int{
 		"excluded":    9,
-		"implemented": 50,
-		"planned":     105,
+		"implemented": 65,
+		"planned":     90,
 	})
 	assertStringIntMap(t, "milestone counts", milestoneCounts, map[string]int{
-		"611becc-current-api": 50,
-		"future-upstream-api": 105,
+		"611becc-current-api": 65,
+		"future-upstream-api": 90,
 		"upstream-excluded":   9,
 	})
 	assertStringIntMap(t, "family counts", familyCounts, map[string]int{
@@ -293,6 +293,21 @@ func TestAPIManifestMilestones(t *testing.T) {
 		"ConvertLatin1ToUTF32",
 		"ConvertLatin1ToUTF8",
 		"ConvertLatin1ToUTF8Safe",
+		"ConvertUTF8ToLatin1",
+		"ConvertUTF8ToLatin1WithErrors",
+		"ConvertUTF8ToUTF16",
+		"ConvertUTF8ToUTF16BE",
+		"ConvertUTF8ToUTF16BEWithErrors",
+		"ConvertUTF8ToUTF16LE",
+		"ConvertUTF8ToUTF16LEWithErrors",
+		"ConvertUTF8ToUTF16WithErrors",
+		"ConvertUTF8ToUTF32",
+		"ConvertUTF8ToUTF32WithErrors",
+		"ConvertValidUTF8ToLatin1",
+		"ConvertValidUTF8ToUTF16",
+		"ConvertValidUTF8ToUTF16BE",
+		"ConvertValidUTF8ToUTF16LE",
+		"ConvertValidUTF8ToUTF32",
 		"CountUTF8",
 		"DefaultLineLength",
 		"Encoding",
@@ -344,7 +359,7 @@ func TestPortPhase0FrozenInputs(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	if got, want := portplan.SHA256Hex(manifest), "7379c49a42309fc3b695bdc93ec3f6fda5f20b3f10b6f034828377ac8dc25ef2"; got != want {
+	if got, want := portplan.SHA256Hex(manifest), "ba0de2e79677f42ab4990c03427cfef1a782d46c4268486750db2bc386768eb4"; got != want {
 		t.Fatalf("%s SHA-256 = %s, want %s", manifestPath, got, want)
 	}
 	allRows, err := portplan.ParseManifestV1(manifest)
@@ -358,7 +373,7 @@ func TestPortPhase0FrozenInputs(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	if got, want := len(livePlannedRows), 105; got != want {
+	if got, want := len(livePlannedRows), 90; got != want {
 		t.Fatalf("remaining planned rows = %d, want %d", got, want)
 	}
 	frozenPath := filepath.Join("docs", "porting", "simdutf-port-v1", "inputs", "planned-rows-v1.tsv")

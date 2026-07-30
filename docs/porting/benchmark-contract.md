@@ -11,24 +11,36 @@ authority and produced no performance claim.
 ## Phase D public-dispatch qualification surface
 
 `BenchmarkDispatchQualification` is the only qualification entry point. Its
-169 stable rows have the exact name grammar
+561 stable rows have the exact name grammar
 `BenchmarkDispatchQualification/<Operation>/<Corpus>/<Class>/<size>`; `size`
 is zero-padded to four decimal digits, is bytes for byte corpora, and is code
-units for `Q-u16-zero`. Provider names are never appended.
+units for `Q-u16-zero` and `Q-u32-zero`. Provider names are never appended.
 
 | Operations | Corpus and classes | Exact sizes | Rows |
 | --- | --- | --- | ---: |
 | `ValidateASCII`, `ValidateASCIIWithErrors` | `Q-byte-zero`: `short`, `boundary`, `bulk` | short `1,15,16,17,31,32,33`; boundary `63,64,65,127,128,129`; bulk `4096` bytes | 28 |
 | `ValidateUTF16LEAsASCII`, `ValidateUTF16BEAsASCII`, `ValidateUTF16AsASCII` | `Q-u16-zero`: `short`, `boundary`, `bulk` | short `1,7,8,9,15,16,17`; boundary `31,32,33,63,64,65,127,128,129`; bulk `2048` code units | 51 |
 | `ValidateUTF8`, `ValidateUTF8WithErrors`, `CountUTF8`, `Latin1LengthFromUTF8`, `UTF16LengthFromUTF8`, `UTF32LengthFromUTF8` | all 14 `Q-byte-zero` rows above, then `Q-emoji/bulk/3150` | zero sizes above; emoji `3150` bytes | 90 |
+| `ValidateUTF16LE`, `ValidateUTF16BE`, `ValidateUTF16LEWithErrors`, `ValidateUTF16BEWithErrors`, `ToWellFormedUTF16LE`, `ToWellFormedUTF16BE` | `Q-u16-zero`: `short`, `boundary`, `bulk` | short `1,7,8,9,15,16,17`; boundary `31,32,33,63,64,65,127,128,129`; bulk `2048` code units | 102 |
+| `ValidateUTF32`, `ValidateUTF32WithErrors` | `Q-u32-zero`: `short`, `boundary`, `bulk` | short `1,3,4,5,7,8,9`; boundary `15,16,17,31,32,33`; bulk `1024` code units | 28 |
+| `UTF8LengthFromLatin1`, `ConvertLatin1ToUTF8`, `ConvertLatin1ToUTF16LE`, `ConvertLatin1ToUTF16BE`, `ConvertLatin1ToUTF32` | `Q-latin1-ramp`: `short`, `boundary`, `bulk` | short `1,15,16,17,31,32,33`; boundary `63,64,65,127,128,129`; bulk `4096` bytes | 70 |
+| `ConvertUTF8ToLatin1`, `ConvertUTF8ToLatin1WithErrors`, `ConvertValidUTF8ToLatin1`, `ConvertUTF8ToUTF16LE`, `ConvertUTF8ToUTF16BE`, `ConvertUTF8ToUTF16LEWithErrors`, `ConvertUTF8ToUTF16BEWithErrors`, `ConvertValidUTF8ToUTF16LE`, `ConvertValidUTF8ToUTF16BE`, `ConvertUTF8ToUTF32`, `ConvertUTF8ToUTF32WithErrors`, `ConvertValidUTF8ToUTF32` | all 14 `Q-byte-zero` rows above, then `Q-emoji/bulk/3150`, then `Q-arabic-lipsum/bulk/81685` | zero sizes above; emoji `3150` bytes; arabic `81685` bytes | 192 |
 
-`Q-byte-zero` is exactly 4096 zero bytes and `Q-u16-zero` is derived outside
-the timed loop from an identical 4096-byte zero blob with
+`Q-byte-zero` is exactly 4096 zero bytes and `Q-u16-zero`/`Q-u32-zero` are
+derived outside the timed loop from an identical 4096-byte zero blob with
 `encoding/binary.NativeEndian`, never `unsafe`. Both raw blobs have SHA-256
 `ad7facb2586fc6e966c004d7d1d16b024f5805ff7cb47c7a85dabd8b48892ca7`.
 `Q-emoji` is the existing byte-identical embedded 3150-byte upstream blob with
 SHA-256
 `d6484d359bff183e4d6a4d20b3cc7056c55f372011f28b21b06462ba4d643523`.
+`Q-latin1-ramp` is the deterministic 4096-byte `byte(i % 256)` sequence with
+SHA-256
+`c8f5d0341d54d951a71b136e6e2afcb14d11ed8489a7ae126a8fee0df6ecf193`.
+`Q-arabic-lipsum` loads the frozen external 81685-byte Arabic lipsum file from
+`.omx/artifacts/phase0/benchmark-corpora/corpus/unicode_lipsum/lipsum/Arabic-Lipsum.utf8.txt`
+and verifies SHA-256
+`b20003e7999187985e931b1b0404f9f273576b3e9bbd77bda7466de5f26a15bb`
+before use; a missing or mismatched artifact fails closed.
 The baseline and candidate must use an identical benchmark source blob, names,
 corpus bytes, order, setup, sinks, timing boundary, and byte denominators.
 
