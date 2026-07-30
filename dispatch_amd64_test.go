@@ -336,3 +336,33 @@ func TestMakeImplementationAMD64UTF16UTF8QualificationSelection(t *testing.T) {
 		}
 	}
 }
+
+func TestMakeImplementationAMD64UTF32SourceQualificationSelection(t *testing.T) {
+	// UTF-32-source convert providers remain scalar-first until qualification
+	// dispositions promote selected backends.
+	for _, input := range []selectionInput{
+		{},
+		{features: cpuSSSE3},
+		{features: cpuAVX2},
+		{features: cpuSSSE3 | cpuAVX2},
+		{features: cpuSSSE3 | cpuAVX2, archsimdAVX2: true},
+	} {
+		got := makeImplementation(input)
+		if !sameFunction(got.convertUTF32ToLatin1, convertUTF32ToLatin1Scalar) ||
+			!sameFunction(got.convertUTF32ToLatin1WithErrors, convertUTF32ToLatin1WithErrorsScalar) ||
+			!sameFunction(got.convertValidUTF32ToLatin1, convertValidUTF32ToLatin1Scalar) ||
+			!sameFunction(got.convertUTF32ToUTF8, convertUTF32ToUTF8Scalar) ||
+			!sameFunction(got.convertUTF32ToUTF8WithErrors, convertUTF32ToUTF8WithErrorsScalar) ||
+			!sameFunction(got.convertValidUTF32ToUTF8, convertValidUTF32ToUTF8Scalar) ||
+			!sameFunction(got.convertUTF32ToUTF16LE, convertUTF32ToUTF16LEScalar) ||
+			!sameFunction(got.convertUTF32ToUTF16BE, convertUTF32ToUTF16BEScalar) ||
+			!sameFunction(got.convertUTF32ToUTF16LEWithErrors, convertUTF32ToUTF16LEWithErrorsScalar) ||
+			!sameFunction(got.convertUTF32ToUTF16BEWithErrors, convertUTF32ToUTF16BEWithErrorsScalar) ||
+			!sameFunction(got.convertValidUTF32ToUTF16LE, convertValidUTF32ToUTF16LEScalar) ||
+			!sameFunction(got.convertValidUTF32ToUTF16BE, convertValidUTF32ToUTF16BEScalar) ||
+			!sameFunction(got.utf8LengthFromUTF32, utf8LengthFromUTF32Scalar) ||
+			!sameFunction(got.utf16LengthFromUTF32, utf16LengthFromUTF32Scalar) {
+			t.Fatalf("UTF-32-source providers leaked ahead of scalar for %#v", input)
+		}
+	}
+}

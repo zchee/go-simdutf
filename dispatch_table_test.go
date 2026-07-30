@@ -97,6 +97,20 @@ func TestImplementationTableExactFields(t *testing.T) {
 		{name: "changeEndiannessUTF16", typ: reflect.TypeFor[func([]uint16, []uint16)]()},
 		{name: "utf8LengthFromUTF16LEWithReplacement", typ: reflect.TypeFor[func([]uint16) Result]()},
 		{name: "utf8LengthFromUTF16BEWithReplacement", typ: reflect.TypeFor[func([]uint16) Result]()},
+		{name: "convertUTF32ToLatin1", typ: reflect.TypeFor[func([]uint32, []byte) int]()},
+		{name: "convertUTF32ToLatin1WithErrors", typ: reflect.TypeFor[func([]uint32, []byte) Result]()},
+		{name: "convertValidUTF32ToLatin1", typ: reflect.TypeFor[func([]uint32, []byte) int]()},
+		{name: "convertUTF32ToUTF8", typ: reflect.TypeFor[func([]uint32, []byte) int]()},
+		{name: "convertUTF32ToUTF8WithErrors", typ: reflect.TypeFor[func([]uint32, []byte) Result]()},
+		{name: "convertValidUTF32ToUTF8", typ: reflect.TypeFor[func([]uint32, []byte) int]()},
+		{name: "convertUTF32ToUTF16LE", typ: reflect.TypeFor[func([]uint32, []uint16) int]()},
+		{name: "convertUTF32ToUTF16BE", typ: reflect.TypeFor[func([]uint32, []uint16) int]()},
+		{name: "convertUTF32ToUTF16LEWithErrors", typ: reflect.TypeFor[func([]uint32, []uint16) Result]()},
+		{name: "convertUTF32ToUTF16BEWithErrors", typ: reflect.TypeFor[func([]uint32, []uint16) Result]()},
+		{name: "convertValidUTF32ToUTF16LE", typ: reflect.TypeFor[func([]uint32, []uint16) int]()},
+		{name: "convertValidUTF32ToUTF16BE", typ: reflect.TypeFor[func([]uint32, []uint16) int]()},
+		{name: "utf8LengthFromUTF32", typ: reflect.TypeFor[func([]uint32) int]()},
+		{name: "utf16LengthFromUTF32", typ: reflect.TypeFor[func([]uint32) int]()},
 	}
 	if typ.NumField() != len(want) {
 		t.Fatalf("implementation has %d fields, want exactly %d", typ.NumField(), len(want))

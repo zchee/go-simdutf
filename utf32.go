@@ -28,3 +28,9 @@ func ValidateUTF32(input []uint32) bool {
 func ValidateUTF32WithErrors(input []uint32) Result {
 	return activeImplementation.validateUTF32WithErrors(input)
 }
+
+// Latin1LengthFromUTF32 returns the number of Latin-1 bytes needed for a
+// UTF-32 input of length code units. It is an identity mapping.
+func Latin1LengthFromUTF32(length int) int {
+	return latin1LengthFromUTF32Scalar(length)
+}

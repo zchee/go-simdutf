@@ -180,6 +180,20 @@ type implementation struct {
 	changeEndiannessUTF16                func([]uint16, []uint16)
 	utf8LengthFromUTF16LEWithReplacement func([]uint16) Result
 	utf8LengthFromUTF16BEWithReplacement func([]uint16) Result
+	convertUTF32ToLatin1                 func([]uint32, []byte) int
+	convertUTF32ToLatin1WithErrors       func([]uint32, []byte) Result
+	convertValidUTF32ToLatin1            func([]uint32, []byte) int
+	convertUTF32ToUTF8                   func([]uint32, []byte) int
+	convertUTF32ToUTF8WithErrors         func([]uint32, []byte) Result
+	convertValidUTF32ToUTF8              func([]uint32, []byte) int
+	convertUTF32ToUTF16LE                func([]uint32, []uint16) int
+	convertUTF32ToUTF16BE                func([]uint32, []uint16) int
+	convertUTF32ToUTF16LEWithErrors      func([]uint32, []uint16) Result
+	convertUTF32ToUTF16BEWithErrors      func([]uint32, []uint16) Result
+	convertValidUTF32ToUTF16LE           func([]uint32, []uint16) int
+	convertValidUTF32ToUTF16BE           func([]uint32, []uint16) int
+	utf8LengthFromUTF32                  func([]uint32) int
+	utf16LengthFromUTF32                 func([]uint32) int
 }
 
 var activeImplementation = makeImplementation(detectSelectionInput())

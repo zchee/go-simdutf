@@ -69,6 +69,16 @@ func	ConvertUTF16ToUTF8	func([]uint16, []byte) int
 func	ConvertUTF16ToUTF8Safe	func([]uint16, []byte) int
 func	ConvertUTF16ToUTF8WithErrors	func([]uint16, []byte) Result
 func	ConvertUTF16ToUTF8WithReplacement	func([]uint16, []byte) int
+func	ConvertUTF32ToLatin1	func([]uint32, []byte) int
+func	ConvertUTF32ToLatin1WithErrors	func([]uint32, []byte) Result
+func	ConvertUTF32ToUTF16	func([]uint32, []uint16) int
+func	ConvertUTF32ToUTF16BE	func([]uint32, []uint16) int
+func	ConvertUTF32ToUTF16BEWithErrors	func([]uint32, []uint16) Result
+func	ConvertUTF32ToUTF16LE	func([]uint32, []uint16) int
+func	ConvertUTF32ToUTF16LEWithErrors	func([]uint32, []uint16) Result
+func	ConvertUTF32ToUTF16WithErrors	func([]uint32, []uint16) Result
+func	ConvertUTF32ToUTF8	func([]uint32, []byte) int
+func	ConvertUTF32ToUTF8WithErrors	func([]uint32, []byte) Result
 func	ConvertUTF8ToLatin1	func([]byte, []byte) int
 func	ConvertUTF8ToLatin1WithErrors	func([]byte, []byte) Result
 func	ConvertUTF8ToUTF16	func([]byte, []uint16) int
@@ -88,6 +98,11 @@ func	ConvertValidUTF16LEToUTF8	func([]uint16, []byte) int
 func	ConvertValidUTF16ToLatin1	func([]uint16, []byte) int
 func	ConvertValidUTF16ToUTF32	func([]uint16, []uint32) int
 func	ConvertValidUTF16ToUTF8	func([]uint16, []byte) int
+func	ConvertValidUTF32ToLatin1	func([]uint32, []byte) int
+func	ConvertValidUTF32ToUTF16	func([]uint32, []uint16) int
+func	ConvertValidUTF32ToUTF16BE	func([]uint32, []uint16) int
+func	ConvertValidUTF32ToUTF16LE	func([]uint32, []uint16) int
+func	ConvertValidUTF32ToUTF8	func([]uint32, []byte) int
 func	ConvertValidUTF8ToLatin1	func([]byte, []byte) int
 func	ConvertValidUTF8ToUTF16	func([]byte, []uint16) int
 func	ConvertValidUTF8ToUTF16BE	func([]byte, []uint16) int
@@ -102,6 +117,7 @@ func	ErrorToString	func(ErrorCode) string
 func	IsPartial	func(LastChunkHandlingOptions) bool
 func	LastChunkHandlingOptionsString	func(LastChunkHandlingOptions) string
 func	Latin1LengthFromUTF16	func(int) int
+func	Latin1LengthFromUTF32	func(int) int
 func	Latin1LengthFromUTF8	func([]byte) int
 func	ToWellFormedUTF16	func([]uint16, []uint16)
 func	ToWellFormedUTF16BE	func([]uint16, []uint16)
@@ -111,6 +127,7 @@ func	TrimPartialUTF16BE	func([]uint16) int
 func	TrimPartialUTF16LE	func([]uint16) int
 func	TrimPartialUTF8	func([]byte) int
 func	UTF16LengthFromLatin1	func(int) int
+func	UTF16LengthFromUTF32	func([]uint32) int
 func	UTF16LengthFromUTF8	func([]byte) int
 func	UTF32LengthFromLatin1	func(int) int
 func	UTF32LengthFromUTF16	func([]uint16) int
@@ -124,6 +141,7 @@ func	UTF8LengthFromUTF16BEWithReplacement	func([]uint16) Result
 func	UTF8LengthFromUTF16LE	func([]uint16) int
 func	UTF8LengthFromUTF16LEWithReplacement	func([]uint16) Result
 func	UTF8LengthFromUTF16WithReplacement	func([]uint16) Result
+func	UTF8LengthFromUTF32	func([]uint32) int
 func	ValidateASCII	func([]byte) bool
 func	ValidateASCIIWithErrors	func([]byte) Result
 func	ValidateUTF16	func([]uint16) bool

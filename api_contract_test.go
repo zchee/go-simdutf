@@ -49,15 +49,15 @@ func TestPublicAPIContract(t *testing.T) {
 		"const":      2,
 		"enum-const": 31,
 		"field":      6,
-		"func":       102,
+		"func":       120,
 		"method":     3,
 		"type":       6,
 	}
 	if !maps.Equal(counts, wantCounts) {
 		t.Fatalf("API leaf counts = %v, want %v", counts, wantCounts)
 	}
-	if len(got) != 150 {
-		t.Fatalf("API leaf record count = %d, want 150", len(got))
+	if len(got) != 168 {
+		t.Fatalf("API leaf record count = %d, want 168", len(got))
 	}
 
 	want, err := os.ReadFile(filepath.Join("testdata", "public-api.golden"))
@@ -259,12 +259,12 @@ func TestAPIManifestMilestones(t *testing.T) {
 
 	assertStringIntMap(t, "status counts", statusCounts, map[string]int{
 		"excluded":    9,
-		"implemented": 113,
-		"planned":     42,
+		"implemented": 131,
+		"planned":     24,
 	})
 	assertStringIntMap(t, "milestone counts", milestoneCounts, map[string]int{
-		"611becc-current-api": 113,
-		"future-upstream-api": 42,
+		"611becc-current-api": 131,
+		"future-upstream-api": 24,
 		"upstream-excluded":   9,
 	})
 	assertStringIntMap(t, "family counts", familyCounts, map[string]int{
@@ -317,6 +317,16 @@ func TestAPIManifestMilestones(t *testing.T) {
 		"ConvertUTF16ToUTF8Safe",
 		"ConvertUTF16ToUTF8WithErrors",
 		"ConvertUTF16ToUTF8WithReplacement",
+		"ConvertUTF32ToLatin1",
+		"ConvertUTF32ToLatin1WithErrors",
+		"ConvertUTF32ToUTF16",
+		"ConvertUTF32ToUTF16BE",
+		"ConvertUTF32ToUTF16BEWithErrors",
+		"ConvertUTF32ToUTF16LE",
+		"ConvertUTF32ToUTF16LEWithErrors",
+		"ConvertUTF32ToUTF16WithErrors",
+		"ConvertUTF32ToUTF8",
+		"ConvertUTF32ToUTF8WithErrors",
 		"ConvertUTF8ToLatin1",
 		"ConvertUTF8ToLatin1WithErrors",
 		"ConvertUTF8ToUTF16",
@@ -336,6 +346,11 @@ func TestAPIManifestMilestones(t *testing.T) {
 		"ConvertValidUTF16ToLatin1",
 		"ConvertValidUTF16ToUTF32",
 		"ConvertValidUTF16ToUTF8",
+		"ConvertValidUTF32ToLatin1",
+		"ConvertValidUTF32ToUTF16",
+		"ConvertValidUTF32ToUTF16BE",
+		"ConvertValidUTF32ToUTF16LE",
+		"ConvertValidUTF32ToUTF8",
 		"ConvertValidUTF8ToLatin1",
 		"ConvertValidUTF8ToUTF16",
 		"ConvertValidUTF8ToUTF16BE",
@@ -356,6 +371,7 @@ func TestAPIManifestMilestones(t *testing.T) {
 		"LastChunkHandlingOptions",
 		"LastChunkHandlingOptionsString",
 		"Latin1LengthFromUTF16",
+		"Latin1LengthFromUTF32",
 		"Latin1LengthFromUTF8",
 		"Result",
 		"Result.IsErr",
@@ -368,6 +384,7 @@ func TestAPIManifestMilestones(t *testing.T) {
 		"TrimPartialUTF16LE",
 		"TrimPartialUTF8",
 		"UTF16LengthFromLatin1",
+		"UTF16LengthFromUTF32",
 		"UTF16LengthFromUTF8",
 		"UTF32LengthFromLatin1",
 		"UTF32LengthFromUTF16",
@@ -381,6 +398,7 @@ func TestAPIManifestMilestones(t *testing.T) {
 		"UTF8LengthFromUTF16LE",
 		"UTF8LengthFromUTF16LEWithReplacement",
 		"UTF8LengthFromUTF16WithReplacement",
+		"UTF8LengthFromUTF32",
 		"ValidateASCII",
 		"ValidateASCIIWithErrors",
 		"ValidateUTF16",
@@ -408,7 +426,7 @@ func TestPortPhase0FrozenInputs(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	if got, want := portplan.SHA256Hex(manifest), "0027fbdea027ec7d00258d39a723a5b0d7646459b3fb9302286846e1fd5f5fb5"; got != want {
+	if got, want := portplan.SHA256Hex(manifest), "04fe5d98df8c894ad4cc340e841d597849d1abd00d417d210c5debf54d2d3f21"; got != want {
 		t.Fatalf("%s SHA-256 = %s, want %s", manifestPath, got, want)
 	}
 	allRows, err := portplan.ParseManifestV1(manifest)
@@ -422,7 +440,7 @@ func TestPortPhase0FrozenInputs(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	if got, want := len(livePlannedRows), 42; got != want {
+	if got, want := len(livePlannedRows), 24; got != want {
 		t.Fatalf("remaining planned rows = %d, want %d", got, want)
 	}
 	frozenPath := filepath.Join("docs", "porting", "simdutf-port-v1", "inputs", "planned-rows-v1.tsv")

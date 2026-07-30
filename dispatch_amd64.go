@@ -493,5 +493,62 @@ func makeImplementation(input selectionInput) implementation {
 			variant[func([]uint16) Result]{value: utf8LengthFromUTF16BEWithReplacementHaswell, kind: implementationHaswell, required: cpuAVX2, available: true},
 			variant[func([]uint16) Result]{value: utf8LengthFromUTF16BEWithReplacementWestmere, kind: implementationWestmere, required: cpuSSSE3, available: true},
 		),
+
+		convertUTF32ToLatin1: selectVariant(
+			input,
+			variant[func([]uint32, []byte) int]{value: convertUTF32ToLatin1Scalar, kind: implementationScalar, available: true},
+		),
+		convertUTF32ToLatin1WithErrors: selectVariant(
+			input,
+			variant[func([]uint32, []byte) Result]{value: convertUTF32ToLatin1WithErrorsScalar, kind: implementationScalar, available: true},
+		),
+		convertValidUTF32ToLatin1: selectVariant(
+			input,
+			variant[func([]uint32, []byte) int]{value: convertValidUTF32ToLatin1Scalar, kind: implementationScalar, available: true},
+		),
+		convertUTF32ToUTF8: selectVariant(
+			input,
+			variant[func([]uint32, []byte) int]{value: convertUTF32ToUTF8Scalar, kind: implementationScalar, available: true},
+		),
+		convertUTF32ToUTF8WithErrors: selectVariant(
+			input,
+			variant[func([]uint32, []byte) Result]{value: convertUTF32ToUTF8WithErrorsScalar, kind: implementationScalar, available: true},
+		),
+		convertValidUTF32ToUTF8: selectVariant(
+			input,
+			variant[func([]uint32, []byte) int]{value: convertValidUTF32ToUTF8Scalar, kind: implementationScalar, available: true},
+		),
+		convertUTF32ToUTF16LE: selectVariant(
+			input,
+			variant[func([]uint32, []uint16) int]{value: convertUTF32ToUTF16LEScalar, kind: implementationScalar, available: true},
+		),
+		convertUTF32ToUTF16BE: selectVariant(
+			input,
+			variant[func([]uint32, []uint16) int]{value: convertUTF32ToUTF16BEScalar, kind: implementationScalar, available: true},
+		),
+		convertUTF32ToUTF16LEWithErrors: selectVariant(
+			input,
+			variant[func([]uint32, []uint16) Result]{value: convertUTF32ToUTF16LEWithErrorsScalar, kind: implementationScalar, available: true},
+		),
+		convertUTF32ToUTF16BEWithErrors: selectVariant(
+			input,
+			variant[func([]uint32, []uint16) Result]{value: convertUTF32ToUTF16BEWithErrorsScalar, kind: implementationScalar, available: true},
+		),
+		convertValidUTF32ToUTF16LE: selectVariant(
+			input,
+			variant[func([]uint32, []uint16) int]{value: convertValidUTF32ToUTF16LEScalar, kind: implementationScalar, available: true},
+		),
+		convertValidUTF32ToUTF16BE: selectVariant(
+			input,
+			variant[func([]uint32, []uint16) int]{value: convertValidUTF32ToUTF16BEScalar, kind: implementationScalar, available: true},
+		),
+		utf8LengthFromUTF32: selectVariant(
+			input,
+			variant[func([]uint32) int]{value: utf8LengthFromUTF32Scalar, kind: implementationScalar, available: true},
+		),
+		utf16LengthFromUTF32: selectVariant(
+			input,
+			variant[func([]uint32) int]{value: utf16LengthFromUTF32Scalar, kind: implementationScalar, available: true},
+		),
 	}
 }
