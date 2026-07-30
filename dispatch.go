@@ -116,41 +116,53 @@ func forcedImplementationKind() (implementationKind, bool) {
 }
 
 type implementation struct {
-	validateUTF8              func([]byte) bool
-	validateUTF8WithErrors    func([]byte) Result
-	countUTF8                 func([]byte) int
-	latin1LengthFromUTF8      func([]byte) int
-	utf8LengthFromLatin1      func([]byte) int
-	utf16LengthFromUTF8       func([]byte) int
-	utf32LengthFromUTF8       func([]byte) int
-	validateASCII             func([]byte) bool
-	validateASCIIWithErrors   func([]byte) Result
-	validateUTF16LEAsASCII    func([]uint16) bool
-	validateUTF16BEAsASCII    func([]uint16) bool
-	validateUTF16LE           func([]uint16) bool
-	validateUTF16BE           func([]uint16) bool
-	validateUTF16LEWithErrors func([]uint16) Result
-	validateUTF16BEWithErrors func([]uint16) Result
-	toWellFormedUTF16LE       func([]uint16, []uint16)
-	toWellFormedUTF16BE       func([]uint16, []uint16)
-	validateUTF32             func([]uint32) bool
-	validateUTF32WithErrors   func([]uint32) Result
-	convertLatin1ToUTF8       func([]byte, []byte) int
-	convertLatin1ToUTF16LE    func([]byte, []uint16) int
-	convertLatin1ToUTF16BE    func([]byte, []uint16) int
-	convertLatin1ToUTF32      func([]byte, []uint32) int
-	convertUTF8ToLatin1            func([]byte, []byte) int
-	convertUTF8ToLatin1WithErrors  func([]byte, []byte) Result
-	convertValidUTF8ToLatin1       func([]byte, []byte) int
-	convertUTF8ToUTF16LE           func([]byte, []uint16) int
-	convertUTF8ToUTF16BE           func([]byte, []uint16) int
-	convertUTF8ToUTF16LEWithErrors func([]byte, []uint16) Result
-	convertUTF8ToUTF16BEWithErrors func([]byte, []uint16) Result
-	convertValidUTF8ToUTF16LE      func([]byte, []uint16) int
-	convertValidUTF8ToUTF16BE      func([]byte, []uint16) int
-	convertUTF8ToUTF32             func([]byte, []uint32) int
-	convertUTF8ToUTF32WithErrors   func([]byte, []uint32) Result
-	convertValidUTF8ToUTF32        func([]byte, []uint32) int
+	validateUTF8                     func([]byte) bool
+	validateUTF8WithErrors           func([]byte) Result
+	countUTF8                        func([]byte) int
+	latin1LengthFromUTF8             func([]byte) int
+	utf8LengthFromLatin1             func([]byte) int
+	utf16LengthFromUTF8              func([]byte) int
+	utf32LengthFromUTF8              func([]byte) int
+	validateASCII                    func([]byte) bool
+	validateASCIIWithErrors          func([]byte) Result
+	validateUTF16LEAsASCII           func([]uint16) bool
+	validateUTF16BEAsASCII           func([]uint16) bool
+	validateUTF16LE                  func([]uint16) bool
+	validateUTF16BE                  func([]uint16) bool
+	validateUTF16LEWithErrors        func([]uint16) Result
+	validateUTF16BEWithErrors        func([]uint16) Result
+	toWellFormedUTF16LE              func([]uint16, []uint16)
+	toWellFormedUTF16BE              func([]uint16, []uint16)
+	validateUTF32                    func([]uint32) bool
+	validateUTF32WithErrors          func([]uint32) Result
+	convertLatin1ToUTF8              func([]byte, []byte) int
+	convertLatin1ToUTF16LE           func([]byte, []uint16) int
+	convertLatin1ToUTF16BE           func([]byte, []uint16) int
+	convertLatin1ToUTF32             func([]byte, []uint32) int
+	convertUTF8ToLatin1              func([]byte, []byte) int
+	convertUTF8ToLatin1WithErrors    func([]byte, []byte) Result
+	convertValidUTF8ToLatin1         func([]byte, []byte) int
+	convertUTF8ToUTF16LE             func([]byte, []uint16) int
+	convertUTF8ToUTF16BE             func([]byte, []uint16) int
+	convertUTF8ToUTF16LEWithErrors   func([]byte, []uint16) Result
+	convertUTF8ToUTF16BEWithErrors   func([]byte, []uint16) Result
+	convertValidUTF8ToUTF16LE        func([]byte, []uint16) int
+	convertValidUTF8ToUTF16BE        func([]byte, []uint16) int
+	convertUTF8ToUTF32               func([]byte, []uint32) int
+	convertUTF8ToUTF32WithErrors     func([]byte, []uint32) Result
+	convertValidUTF8ToUTF32          func([]byte, []uint32) int
+	convertUTF16LEToLatin1           func([]uint16, []byte) int
+	convertUTF16BEToLatin1           func([]uint16, []byte) int
+	convertUTF16LEToLatin1WithErrors func([]uint16, []byte) Result
+	convertUTF16BEToLatin1WithErrors func([]uint16, []byte) Result
+	convertValidUTF16LEToLatin1      func([]uint16, []byte) int
+	convertValidUTF16BEToLatin1      func([]uint16, []byte) int
+	convertUTF16LEToUTF32            func([]uint16, []uint32) int
+	convertUTF16BEToUTF32            func([]uint16, []uint32) int
+	convertUTF16LEToUTF32WithErrors  func([]uint16, []uint32) Result
+	convertUTF16BEToUTF32WithErrors  func([]uint16, []uint32) Result
+	convertValidUTF16LEToUTF32       func([]uint16, []uint32) int
+	convertValidUTF16BEToUTF32       func([]uint16, []uint32) int
 }
 
 var activeImplementation = makeImplementation(detectSelectionInput())
