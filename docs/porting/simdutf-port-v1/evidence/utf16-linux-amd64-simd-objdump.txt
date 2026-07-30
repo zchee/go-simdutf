@@ -1,0 +1,351 @@
+
+/tmp/simdutf-simd.out:     file format elf64-x86-64
+
+
+Disassembly of section .text:
+
+00000000006e80c0 <github.com/zchee/go-simdutf.changeEndiannessUTF16Archsimd>:
+  6e80c0:	49 3b 66 10          	cmp    0x10(%r14),%rsp
+  6e80c4:	0f 86 3c 01 00 00    	jbe    6e8206 <github.com/zchee/go-simdutf.changeEndiannessUTF16Archsimd+0x146>
+  6e80ca:	55                   	push   %rbp
+  6e80cb:	48 89 e5             	mov    %rsp,%rbp
+  6e80ce:	48 83 ec 10          	sub    $0x10,%rsp
+  6e80d2:	48 89 44 24 20       	mov    %rax,0x20(%rsp)
+  6e80d7:	48 89 7c 24 38       	mov    %rdi,0x38(%rsp)
+  6e80dc:	0f 1f 40 00          	nopl   0x0(%rax)
+  6e80e0:	48 39 f3             	cmp    %rsi,%rbx
+  6e80e3:	0f 8f 06 01 00 00    	jg     6e81ef <github.com/zchee/go-simdutf.changeEndiannessUTF16Archsimd+0x12f>
+  6e80e9:	31 d2                	xor    %edx,%edx
+  6e80eb:	eb 0e                	jmp    6e80fb <github.com/zchee/go-simdutf.changeEndiannessUTF16Archsimd+0x3b>
+  6e80ed:	c4 c1 7e 7f 03       	vmovdqu %ymm0,(%r11)
+  6e80f2:	4c 89 d3             	mov    %r10,%rbx
+  6e80f5:	4c 89 e6             	mov    %r12,%rsi
+  6e80f8:	4c 89 ca             	mov    %r9,%rdx
+  6e80fb:	4c 8d 4a 10          	lea    0x10(%rdx),%r9
+  6e80ff:	90                   	nop
+  6e8100:	4c 39 cb             	cmp    %r9,%rbx
+  6e8103:	7c 66                	jl     6e816b <github.com/zchee/go-simdutf.changeEndiannessUTF16Archsimd+0xab>
+  6e8105:	48 39 d3             	cmp    %rdx,%rbx
+  6e8108:	0f 82 dc 00 00 00    	jb     6e81ea <github.com/zchee/go-simdutf.changeEndiannessUTF16Archsimd+0x12a>
+  6e810e:	49 89 da             	mov    %rbx,%r10
+  6e8111:	48 29 d3             	sub    %rdx,%rbx
+  6e8114:	4c 8d 1c 12          	lea    (%rdx,%rdx,1),%r11
+  6e8118:	49 89 d4             	mov    %rdx,%r12
+  6e811b:	48 29 ca             	sub    %rcx,%rdx
+  6e811e:	48 c1 fa 3f          	sar    $0x3f,%rdx
+  6e8122:	4c 21 da             	and    %r11,%rdx
+  6e8125:	48 01 c2             	add    %rax,%rdx
+  6e8128:	48 83 fb 10          	cmp    $0x10,%rbx
+  6e812c:	0f 82 b3 00 00 00    	jb     6e81e5 <github.com/zchee/go-simdutf.changeEndiannessUTF16Archsimd+0x125>
+  6e8132:	4d 89 e5             	mov    %r12,%r13
+  6e8135:	4d 29 c4             	sub    %r8,%r12
+  6e8138:	49 c1 fc 3f          	sar    $0x3f,%r12
+  6e813c:	4d 21 e3             	and    %r12,%r11
+  6e813f:	49 89 f4             	mov    %rsi,%r12
+  6e8142:	4c 29 ee             	sub    %r13,%rsi
+  6e8145:	c5 fe 6f 02          	vmovdqu (%rdx),%ymm0
+  6e8149:	c5 f5 71 f0 08       	vpsllw $0x8,%ymm0,%ymm1
+  6e814e:	ba 08 00 00 00       	mov    $0x8,%edx
+  6e8153:	66 48 0f 6e d2       	movq   %rdx,%xmm2
+  6e8158:	c5 fd d1 c2          	vpsrlw %xmm2,%ymm0,%ymm0
+  6e815c:	c5 f5 eb c0          	vpor   %ymm0,%ymm1,%ymm0
+  6e8160:	49 01 fb             	add    %rdi,%r11
+  6e8163:	48 83 fe 10          	cmp    $0x10,%rsi
+  6e8167:	73 84                	jae    6e80ed <github.com/zchee/go-simdutf.changeEndiannessUTF16Archsimd+0x2d>
+  6e8169:	eb 74                	jmp    6e81df <github.com/zchee/go-simdutf.changeEndiannessUTF16Archsimd+0x11f>
+  6e816b:	c5 f8 77             	vzeroupper
+  6e816e:	48 39 d3             	cmp    %rdx,%rbx
+  6e8171:	7e 37                	jle    6e81aa <github.com/zchee/go-simdutf.changeEndiannessUTF16Archsimd+0xea>
+  6e8173:	72 65                	jb     6e81da <github.com/zchee/go-simdutf.changeEndiannessUTF16Archsimd+0x11a>
+  6e8175:	48 29 d3             	sub    %rdx,%rbx
+  6e8178:	4c 8d 0c 12          	lea    (%rdx,%rdx,1),%r9
+  6e817c:	49 89 d2             	mov    %rdx,%r10
+  6e817f:	48 29 ca             	sub    %rcx,%rdx
+  6e8182:	48 c1 fa 3f          	sar    $0x3f,%rdx
+  6e8186:	4c 21 ca             	and    %r9,%rdx
+  6e8189:	4c 89 d1             	mov    %r10,%rcx
+  6e818c:	4d 29 c2             	sub    %r8,%r10
+  6e818f:	48 29 ce             	sub    %rcx,%rsi
+  6e8192:	49 c1 fa 3f          	sar    $0x3f,%r10
+  6e8196:	4d 21 d1             	and    %r10,%r9
+  6e8199:	48 8d 0c 10          	lea    (%rax,%rdx,1),%rcx
+  6e819d:	4a 8d 14 0f          	lea    (%rdi,%r9,1),%rdx
+  6e81a1:	48 39 de             	cmp    %rbx,%rsi
+  6e81a4:	7c 21                	jl     6e81c7 <github.com/zchee/go-simdutf.changeEndiannessUTF16Archsimd+0x107>
+  6e81a6:	31 c0                	xor    %eax,%eax
+  6e81a8:	eb 16                	jmp    6e81c0 <github.com/zchee/go-simdutf.changeEndiannessUTF16Archsimd+0x100>
+  6e81aa:	48 83 c4 10          	add    $0x10,%rsp
+  6e81ae:	5d                   	pop    %rbp
+  6e81af:	c3                   	ret
+  6e81b0:	0f b7 34 41          	movzwl (%rcx,%rax,2),%esi
+  6e81b4:	66 0f 38 f1 34 42    	movbe  %si,(%rdx,%rax,2)
+  6e81ba:	48 ff c0             	inc    %rax
+  6e81bd:	0f 1f 00             	nopl   (%rax)
+  6e81c0:	48 39 d8             	cmp    %rbx,%rax
+  6e81c3:	7c eb                	jl     6e81b0 <github.com/zchee/go-simdutf.changeEndiannessUTF16Archsimd+0xf0>
+  6e81c5:	eb e3                	jmp    6e81aa <github.com/zchee/go-simdutf.changeEndiannessUTF16Archsimd+0xea>
+  6e81c7:	48 8d 05 d2 94 0d 00 	lea    0xd94d2(%rip),%rax        # 7c16a0 <type:*+0x286a0>
+  6e81ce:	48 8d 1d 7b b6 18 00 	lea    0x18b67b(%rip),%rbx        # 873850 <internal/sync..dict.indirect[interface {},interface {}]+0x50>
+  6e81d5:	e8 86 db d9 ff       	call   485d60 <runtime.gopanic>
+  6e81da:	e8 c1 58 da ff       	call   48daa0 <runtime.panicBounds>
+  6e81df:	90                   	nop
+  6e81e0:	e8 bb 58 da ff       	call   48daa0 <runtime.panicBounds>
+  6e81e5:	e8 b6 58 da ff       	call   48daa0 <runtime.panicBounds>
+  6e81ea:	e8 b1 58 da ff       	call   48daa0 <runtime.panicBounds>
+  6e81ef:	48 8d 05 aa 94 0d 00 	lea    0xd94aa(%rip),%rax        # 7c16a0 <type:*+0x286a0>
+  6e81f6:	48 8d 1d 53 b6 18 00 	lea    0x18b653(%rip),%rbx        # 873850 <internal/sync..dict.indirect[interface {},interface {}]+0x50>
+  6e81fd:	0f 1f 00             	nopl   (%rax)
+  6e8200:	e8 5b db d9 ff       	call   485d60 <runtime.gopanic>
+  6e8205:	90                   	nop
+  6e8206:	48 89 44 24 08       	mov    %rax,0x8(%rsp)
+  6e820b:	48 89 5c 24 10       	mov    %rbx,0x10(%rsp)
+  6e8210:	48 89 4c 24 18       	mov    %rcx,0x18(%rsp)
+  6e8215:	48 89 7c 24 20       	mov    %rdi,0x20(%rsp)
+  6e821a:	48 89 74 24 28       	mov    %rsi,0x28(%rsp)
+  6e821f:	4c 89 44 24 30       	mov    %r8,0x30(%rsp)
+  6e8224:	e8 37 3b da ff       	call   48bd60 <runtime.morestack_noctxt.abi0>
+  6e8229:	48 8b 44 24 08       	mov    0x8(%rsp),%rax
+  6e822e:	48 8b 5c 24 10       	mov    0x10(%rsp),%rbx
+  6e8233:	48 8b 4c 24 18       	mov    0x18(%rsp),%rcx
+  6e8238:	48 8b 7c 24 20       	mov    0x20(%rsp),%rdi
+  6e823d:	48 8b 74 24 28       	mov    0x28(%rsp),%rsi
+  6e8242:	4c 8b 44 24 30       	mov    0x30(%rsp),%r8
+  6e8247:	e9 74 fe ff ff       	jmp    6e80c0 <github.com/zchee/go-simdutf.changeEndiannessUTF16Archsimd>
+
+
+/tmp/simdutf-simd.out:     file format elf64-x86-64
+
+
+Disassembly of section .text:
+
+00000000006e8260 <github.com/zchee/go-simdutf.countUTF16LEArchsimd>:
+  6e8260:	49 3b 66 10          	cmp    0x10(%r14),%rsp
+  6e8264:	76 1b                	jbe    6e8281 <github.com/zchee/go-simdutf.countUTF16LEArchsimd+0x21>
+  6e8266:	55                   	push   %rbp
+  6e8267:	48 89 e5             	mov    %rsp,%rbp
+  6e826a:	48 83 ec 20          	sub    $0x20,%rsp
+  6e826e:	48 89 44 24 30       	mov    %rax,0x30(%rsp)
+  6e8273:	31 ff                	xor    %edi,%edi
+  6e8275:	e8 a6 00 00 00       	call   6e8320 <github.com/zchee/go-simdutf.countUTF16Archsimd>
+  6e827a:	48 83 c4 20          	add    $0x20,%rsp
+  6e827e:	5d                   	pop    %rbp
+  6e827f:	90                   	nop
+  6e8280:	c3                   	ret
+  6e8281:	48 89 44 24 08       	mov    %rax,0x8(%rsp)
+  6e8286:	48 89 5c 24 10       	mov    %rbx,0x10(%rsp)
+  6e828b:	48 89 4c 24 18       	mov    %rcx,0x18(%rsp)
+  6e8290:	e8 cb 3a da ff       	call   48bd60 <runtime.morestack_noctxt.abi0>
+  6e8295:	48 8b 44 24 08       	mov    0x8(%rsp),%rax
+  6e829a:	48 8b 5c 24 10       	mov    0x10(%rsp),%rbx
+  6e829f:	48 8b 4c 24 18       	mov    0x18(%rsp),%rcx
+  6e82a4:	eb ba                	jmp    6e8260 <github.com/zchee/go-simdutf.countUTF16LEArchsimd>
+
+
+/tmp/simdutf-simd.out:     file format elf64-x86-64
+
+
+Disassembly of section .text:
+
+00000000006e9140 <github.com/zchee/go-simdutf.convertUTF16LEToLatin1Archsimd>:
+  6e9140:	49 3b 66 10          	cmp    0x10(%r14),%rsp
+  6e9144:	76 25                	jbe    6e916b <github.com/zchee/go-simdutf.convertUTF16LEToLatin1Archsimd+0x2b>
+  6e9146:	55                   	push   %rbp
+  6e9147:	48 89 e5             	mov    %rsp,%rbp
+  6e914a:	48 83 ec 38          	sub    $0x38,%rsp
+  6e914e:	48 89 44 24 48       	mov    %rax,0x48(%rsp)
+  6e9153:	48 89 7c 24 60       	mov    %rdi,0x60(%rsp)
+  6e9158:	45 31 c9             	xor    %r9d,%r9d
+  6e915b:	0f 1f 44 00 00       	nopl   0x0(%rax,%rax,1)
+  6e9160:	e8 db 00 00 00       	call   6e9240 <github.com/zchee/go-simdutf.convertUTF16ToLatin1Archsimd>
+  6e9165:	48 83 c4 38          	add    $0x38,%rsp
+  6e9169:	5d                   	pop    %rbp
+  6e916a:	c3                   	ret
+  6e916b:	48 89 44 24 08       	mov    %rax,0x8(%rsp)
+  6e9170:	48 89 5c 24 10       	mov    %rbx,0x10(%rsp)
+  6e9175:	48 89 4c 24 18       	mov    %rcx,0x18(%rsp)
+  6e917a:	48 89 7c 24 20       	mov    %rdi,0x20(%rsp)
+  6e917f:	48 89 74 24 28       	mov    %rsi,0x28(%rsp)
+  6e9184:	4c 89 44 24 30       	mov    %r8,0x30(%rsp)
+  6e9189:	e8 d2 2b da ff       	call   48bd60 <runtime.morestack_noctxt.abi0>
+  6e918e:	48 8b 44 24 08       	mov    0x8(%rsp),%rax
+  6e9193:	48 8b 5c 24 10       	mov    0x10(%rsp),%rbx
+  6e9198:	48 8b 4c 24 18       	mov    0x18(%rsp),%rcx
+  6e919d:	48 8b 7c 24 20       	mov    0x20(%rsp),%rdi
+  6e91a2:	48 8b 74 24 28       	mov    0x28(%rsp),%rsi
+  6e91a7:	4c 8b 44 24 30       	mov    0x30(%rsp),%r8
+  6e91ac:	eb 92                	jmp    6e9140 <github.com/zchee/go-simdutf.convertUTF16LEToLatin1Archsimd>
+
+
+/tmp/simdutf-simd.out:     file format elf64-x86-64
+
+
+Disassembly of section .text:
+
+00000000006e94c0 <github.com/zchee/go-simdutf.convertUTF16LEToLatin1WithErrorsArchsimd>:
+  6e94c0:	49 3b 66 10          	cmp    0x10(%r14),%rsp
+  6e94c4:	76 25                	jbe    6e94eb <github.com/zchee/go-simdutf.convertUTF16LEToLatin1WithErrorsArchsimd+0x2b>
+  6e94c6:	55                   	push   %rbp
+  6e94c7:	48 89 e5             	mov    %rsp,%rbp
+  6e94ca:	48 83 ec 38          	sub    $0x38,%rsp
+  6e94ce:	48 89 44 24 48       	mov    %rax,0x48(%rsp)
+  6e94d3:	48 89 7c 24 60       	mov    %rdi,0x60(%rsp)
+  6e94d8:	45 31 c9             	xor    %r9d,%r9d
+  6e94db:	0f 1f 44 00 00       	nopl   0x0(%rax,%rax,1)
+  6e94e0:	e8 db 00 00 00       	call   6e95c0 <github.com/zchee/go-simdutf.convertUTF16ToLatin1WithErrorsArchsimd>
+  6e94e5:	48 83 c4 38          	add    $0x38,%rsp
+  6e94e9:	5d                   	pop    %rbp
+  6e94ea:	c3                   	ret
+  6e94eb:	48 89 44 24 08       	mov    %rax,0x8(%rsp)
+  6e94f0:	48 89 5c 24 10       	mov    %rbx,0x10(%rsp)
+  6e94f5:	48 89 4c 24 18       	mov    %rcx,0x18(%rsp)
+  6e94fa:	48 89 7c 24 20       	mov    %rdi,0x20(%rsp)
+  6e94ff:	48 89 74 24 28       	mov    %rsi,0x28(%rsp)
+  6e9504:	4c 89 44 24 30       	mov    %r8,0x30(%rsp)
+  6e9509:	e8 52 28 da ff       	call   48bd60 <runtime.morestack_noctxt.abi0>
+  6e950e:	48 8b 44 24 08       	mov    0x8(%rsp),%rax
+  6e9513:	48 8b 5c 24 10       	mov    0x10(%rsp),%rbx
+  6e9518:	48 8b 4c 24 18       	mov    0x18(%rsp),%rcx
+  6e951d:	48 8b 7c 24 20       	mov    0x20(%rsp),%rdi
+  6e9522:	48 8b 74 24 28       	mov    0x28(%rsp),%rsi
+  6e9527:	4c 8b 44 24 30       	mov    0x30(%rsp),%r8
+  6e952c:	eb 92                	jmp    6e94c0 <github.com/zchee/go-simdutf.convertUTF16LEToLatin1WithErrorsArchsimd>
+
+
+/tmp/simdutf-simd.out:     file format elf64-x86-64
+
+
+Disassembly of section .text:
+
+00000000006eae60 <github.com/zchee/go-simdutf.convertUTF16LEToUTF32Archsimd>:
+  6eae60:	49 3b 66 10          	cmp    0x10(%r14),%rsp
+  6eae64:	76 25                	jbe    6eae8b <github.com/zchee/go-simdutf.convertUTF16LEToUTF32Archsimd+0x2b>
+  6eae66:	55                   	push   %rbp
+  6eae67:	48 89 e5             	mov    %rsp,%rbp
+  6eae6a:	48 83 ec 38          	sub    $0x38,%rsp
+  6eae6e:	48 89 44 24 48       	mov    %rax,0x48(%rsp)
+  6eae73:	48 89 7c 24 60       	mov    %rdi,0x60(%rsp)
+  6eae78:	45 31 c9             	xor    %r9d,%r9d
+  6eae7b:	0f 1f 44 00 00       	nopl   0x0(%rax,%rax,1)
+  6eae80:	e8 db 00 00 00       	call   6eaf60 <github.com/zchee/go-simdutf.convertUTF16ToUTF32Archsimd>
+  6eae85:	48 83 c4 38          	add    $0x38,%rsp
+  6eae89:	5d                   	pop    %rbp
+  6eae8a:	c3                   	ret
+  6eae8b:	48 89 44 24 08       	mov    %rax,0x8(%rsp)
+  6eae90:	48 89 5c 24 10       	mov    %rbx,0x10(%rsp)
+  6eae95:	48 89 4c 24 18       	mov    %rcx,0x18(%rsp)
+  6eae9a:	48 89 7c 24 20       	mov    %rdi,0x20(%rsp)
+  6eae9f:	48 89 74 24 28       	mov    %rsi,0x28(%rsp)
+  6eaea4:	4c 89 44 24 30       	mov    %r8,0x30(%rsp)
+  6eaea9:	e8 b2 0e da ff       	call   48bd60 <runtime.morestack_noctxt.abi0>
+  6eaeae:	48 8b 44 24 08       	mov    0x8(%rsp),%rax
+  6eaeb3:	48 8b 5c 24 10       	mov    0x10(%rsp),%rbx
+  6eaeb8:	48 8b 4c 24 18       	mov    0x18(%rsp),%rcx
+  6eaebd:	48 8b 7c 24 20       	mov    0x20(%rsp),%rdi
+  6eaec2:	48 8b 74 24 28       	mov    0x28(%rsp),%rsi
+  6eaec7:	4c 8b 44 24 30       	mov    0x30(%rsp),%r8
+  6eaecc:	eb 92                	jmp    6eae60 <github.com/zchee/go-simdutf.convertUTF16LEToUTF32Archsimd>
+
+
+/tmp/simdutf-simd.out:     file format elf64-x86-64
+
+
+Disassembly of section .text:
+
+00000000006eb2e0 <github.com/zchee/go-simdutf.convertUTF16LEToUTF32WithErrorsArchsimd>:
+  6eb2e0:	49 3b 66 10          	cmp    0x10(%r14),%rsp
+  6eb2e4:	76 25                	jbe    6eb30b <github.com/zchee/go-simdutf.convertUTF16LEToUTF32WithErrorsArchsimd+0x2b>
+  6eb2e6:	55                   	push   %rbp
+  6eb2e7:	48 89 e5             	mov    %rsp,%rbp
+  6eb2ea:	48 83 ec 38          	sub    $0x38,%rsp
+  6eb2ee:	48 89 44 24 48       	mov    %rax,0x48(%rsp)
+  6eb2f3:	48 89 7c 24 60       	mov    %rdi,0x60(%rsp)
+  6eb2f8:	45 31 c9             	xor    %r9d,%r9d
+  6eb2fb:	0f 1f 44 00 00       	nopl   0x0(%rax,%rax,1)
+  6eb300:	e8 db 00 00 00       	call   6eb3e0 <github.com/zchee/go-simdutf.convertUTF16ToUTF32WithErrorsArchsimd>
+  6eb305:	48 83 c4 38          	add    $0x38,%rsp
+  6eb309:	5d                   	pop    %rbp
+  6eb30a:	c3                   	ret
+  6eb30b:	48 89 44 24 08       	mov    %rax,0x8(%rsp)
+  6eb310:	48 89 5c 24 10       	mov    %rbx,0x10(%rsp)
+  6eb315:	48 89 4c 24 18       	mov    %rcx,0x18(%rsp)
+  6eb31a:	48 89 7c 24 20       	mov    %rdi,0x20(%rsp)
+  6eb31f:	48 89 74 24 28       	mov    %rsi,0x28(%rsp)
+  6eb324:	4c 89 44 24 30       	mov    %r8,0x30(%rsp)
+  6eb329:	e8 32 0a da ff       	call   48bd60 <runtime.morestack_noctxt.abi0>
+  6eb32e:	48 8b 44 24 08       	mov    0x8(%rsp),%rax
+  6eb333:	48 8b 5c 24 10       	mov    0x10(%rsp),%rbx
+  6eb338:	48 8b 4c 24 18       	mov    0x18(%rsp),%rcx
+  6eb33d:	48 8b 7c 24 20       	mov    0x20(%rsp),%rdi
+  6eb342:	48 8b 74 24 28       	mov    0x28(%rsp),%rsi
+  6eb347:	4c 8b 44 24 30       	mov    0x30(%rsp),%r8
+  6eb34c:	eb 92                	jmp    6eb2e0 <github.com/zchee/go-simdutf.convertUTF16LEToUTF32WithErrorsArchsimd>
+
+
+/tmp/simdutf-simd.out:     file format elf64-x86-64
+
+
+Disassembly of section .text:
+
+00000000006ed120 <github.com/zchee/go-simdutf.convertUTF16LEToUTF8Archsimd>:
+  6ed120:	49 3b 66 10          	cmp    0x10(%r14),%rsp
+  6ed124:	76 25                	jbe    6ed14b <github.com/zchee/go-simdutf.convertUTF16LEToUTF8Archsimd+0x2b>
+  6ed126:	55                   	push   %rbp
+  6ed127:	48 89 e5             	mov    %rsp,%rbp
+  6ed12a:	48 83 ec 38          	sub    $0x38,%rsp
+  6ed12e:	48 89 44 24 48       	mov    %rax,0x48(%rsp)
+  6ed133:	48 89 7c 24 60       	mov    %rdi,0x60(%rsp)
+  6ed138:	45 31 c9             	xor    %r9d,%r9d
+  6ed13b:	0f 1f 44 00 00       	nopl   0x0(%rax,%rax,1)
+  6ed140:	e8 db 00 00 00       	call   6ed220 <github.com/zchee/go-simdutf.convertUTF16ToUTF8Archsimd>
+  6ed145:	48 83 c4 38          	add    $0x38,%rsp
+  6ed149:	5d                   	pop    %rbp
+  6ed14a:	c3                   	ret
+  6ed14b:	48 89 44 24 08       	mov    %rax,0x8(%rsp)
+  6ed150:	48 89 5c 24 10       	mov    %rbx,0x10(%rsp)
+  6ed155:	48 89 4c 24 18       	mov    %rcx,0x18(%rsp)
+  6ed15a:	48 89 7c 24 20       	mov    %rdi,0x20(%rsp)
+  6ed15f:	48 89 74 24 28       	mov    %rsi,0x28(%rsp)
+  6ed164:	4c 89 44 24 30       	mov    %r8,0x30(%rsp)
+  6ed169:	e8 f2 eb d9 ff       	call   48bd60 <runtime.morestack_noctxt.abi0>
+  6ed16e:	48 8b 44 24 08       	mov    0x8(%rsp),%rax
+  6ed173:	48 8b 5c 24 10       	mov    0x10(%rsp),%rbx
+  6ed178:	48 8b 4c 24 18       	mov    0x18(%rsp),%rcx
+  6ed17d:	48 8b 7c 24 20       	mov    0x20(%rsp),%rdi
+  6ed182:	48 8b 74 24 28       	mov    0x28(%rsp),%rsi
+  6ed187:	4c 8b 44 24 30       	mov    0x30(%rsp),%r8
+  6ed18c:	eb 92                	jmp    6ed120 <github.com/zchee/go-simdutf.convertUTF16LEToUTF8Archsimd>
+
+
+/tmp/simdutf-simd.out:     file format elf64-x86-64
+
+
+Disassembly of section .text:
+
+00000000006ed480 <github.com/zchee/go-simdutf.convertUTF16LEToUTF8WithErrorsArchsimd>:
+  6ed480:	49 3b 66 10          	cmp    0x10(%r14),%rsp
+  6ed484:	76 25                	jbe    6ed4ab <github.com/zchee/go-simdutf.convertUTF16LEToUTF8WithErrorsArchsimd+0x2b>
+  6ed486:	55                   	push   %rbp
+  6ed487:	48 89 e5             	mov    %rsp,%rbp
+  6ed48a:	48 83 ec 38          	sub    $0x38,%rsp
+  6ed48e:	48 89 44 24 48       	mov    %rax,0x48(%rsp)
+  6ed493:	48 89 7c 24 60       	mov    %rdi,0x60(%rsp)
+  6ed498:	45 31 c9             	xor    %r9d,%r9d
+  6ed49b:	0f 1f 44 00 00       	nopl   0x0(%rax,%rax,1)
+  6ed4a0:	e8 db 00 00 00       	call   6ed580 <github.com/zchee/go-simdutf.convertUTF16ToUTF8WithErrorsArchsimd>
+  6ed4a5:	48 83 c4 38          	add    $0x38,%rsp
+  6ed4a9:	5d                   	pop    %rbp
+  6ed4aa:	c3                   	ret
+  6ed4ab:	48 89 44 24 08       	mov    %rax,0x8(%rsp)
+  6ed4b0:	48 89 5c 24 10       	mov    %rbx,0x10(%rsp)
+  6ed4b5:	48 89 4c 24 18       	mov    %rcx,0x18(%rsp)
+  6ed4ba:	48 89 7c 24 20       	mov    %rdi,0x20(%rsp)
+  6ed4bf:	48 89 74 24 28       	mov    %rsi,0x28(%rsp)
+  6ed4c4:	4c 89 44 24 30       	mov    %r8,0x30(%rsp)
+  6ed4c9:	e8 92 e8 d9 ff       	call   48bd60 <runtime.morestack_noctxt.abi0>
+  6ed4ce:	48 8b 44 24 08       	mov    0x8(%rsp),%rax
+  6ed4d3:	48 8b 5c 24 10       	mov    0x10(%rsp),%rbx
+  6ed4d8:	48 8b 4c 24 18       	mov    0x18(%rsp),%rcx
+  6ed4dd:	48 8b 7c 24 20       	mov    0x20(%rsp),%rdi
+  6ed4e2:	48 8b 74 24 28       	mov    0x28(%rsp),%rsi
+  6ed4e7:	4c 8b 44 24 30       	mov    0x30(%rsp),%r8
+  6ed4ec:	eb 92                	jmp    6ed480 <github.com/zchee/go-simdutf.convertUTF16LEToUTF8WithErrorsArchsimd>

@@ -11,7 +11,7 @@ authority and produced no performance claim.
 ## Phase D public-dispatch qualification surface
 
 `BenchmarkDispatchQualification` is the only qualification entry point. Its
-561 stable rows have the exact name grammar
+1054 stable rows have the exact name grammar
 `BenchmarkDispatchQualification/<Operation>/<Corpus>/<Class>/<size>`; `size`
 is zero-padded to four decimal digits, is bytes for byte corpora, and is code
 units for `Q-u16-zero` and `Q-u32-zero`. Provider names are never appended.
@@ -25,6 +25,7 @@ units for `Q-u16-zero` and `Q-u32-zero`. Provider names are never appended.
 | `ValidateUTF32`, `ValidateUTF32WithErrors` | `Q-u32-zero`: `short`, `boundary`, `bulk` | short `1,3,4,5,7,8,9`; boundary `15,16,17,31,32,33`; bulk `1024` code units | 28 |
 | `UTF8LengthFromLatin1`, `ConvertLatin1ToUTF8`, `ConvertLatin1ToUTF16LE`, `ConvertLatin1ToUTF16BE`, `ConvertLatin1ToUTF32` | `Q-latin1-ramp`: `short`, `boundary`, `bulk` | short `1,15,16,17,31,32,33`; boundary `63,64,65,127,128,129`; bulk `4096` bytes | 70 |
 | `ConvertUTF8ToLatin1`, `ConvertUTF8ToLatin1WithErrors`, `ConvertValidUTF8ToLatin1`, `ConvertUTF8ToUTF16LE`, `ConvertUTF8ToUTF16BE`, `ConvertUTF8ToUTF16LEWithErrors`, `ConvertUTF8ToUTF16BEWithErrors`, `ConvertValidUTF8ToUTF16LE`, `ConvertValidUTF8ToUTF16BE`, `ConvertUTF8ToUTF32`, `ConvertUTF8ToUTF32WithErrors`, `ConvertValidUTF8ToUTF32` | all 14 `Q-byte-zero` rows above, then `Q-emoji/bulk/3150`, then `Q-arabic-lipsum/bulk/81685` | zero sizes above; emoji `3150` bytes; arabic `81685` bytes | 192 |
+| `ConvertUTF16LEToLatin1`, `ConvertUTF16BEToLatin1`, `ConvertUTF16LEToLatin1WithErrors`, `ConvertUTF16BEToLatin1WithErrors`, `ConvertValidUTF16LEToLatin1`, `ConvertValidUTF16BEToLatin1`, `ConvertUTF16LEToUTF32`, `ConvertUTF16BEToUTF32`, `ConvertUTF16LEToUTF32WithErrors`, `ConvertUTF16BEToUTF32WithErrors`, `ConvertValidUTF16LEToUTF32`, `ConvertValidUTF16BEToUTF32`, `UTF32LengthFromUTF16LE`, `UTF32LengthFromUTF16BE`, `ConvertUTF16LEToUTF8`, `ConvertUTF16BEToUTF8`, `ConvertUTF16LEToUTF8WithErrors`, `ConvertUTF16BEToUTF8WithErrors`, `ConvertUTF16LEToUTF8WithReplacement`, `ConvertUTF16BEToUTF8WithReplacement`, `ConvertValidUTF16LEToUTF8`, `ConvertValidUTF16BEToUTF8`, `UTF8LengthFromUTF16LE`, `UTF8LengthFromUTF16BE`, `ChangeEndiannessUTF16`, `CountUTF16LE`, `CountUTF16BE`, `UTF8LengthFromUTF16LEWithReplacement`, `UTF8LengthFromUTF16BEWithReplacement` | `Q-u16-zero`: `short`, `boundary`, `bulk` | short `1,7,8,9,15,16,17`; boundary `31,32,33,63,64,65,127,128,129`; bulk `2048` code units | 493 |
 
 `Q-byte-zero` is exactly 4096 zero bytes and `Q-u16-zero`/`Q-u32-zero` are
 derived outside the timed loop from an identical 4096-byte zero blob with
