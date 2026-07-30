@@ -90,3 +90,17 @@ func TestARM64DirectRegistriesRetainNEONValidators(t *testing.T) {
 	}
 	check("fuzz", fuzz)
 }
+
+func TestMakeImplementationARM64W01ProvidersRemainDirectOnly(t *testing.T) {
+	got := makeImplementation(selectionInput{features: cpuNEON})
+	if !sameFunction(got.validateUTF16LE, validateUTF16LEScalar) ||
+		!sameFunction(got.validateUTF16BE, validateUTF16BEScalar) ||
+		!sameFunction(got.validateUTF16LEWithErrors, validateUTF16LEWithErrorsScalar) ||
+		!sameFunction(got.validateUTF16BEWithErrors, validateUTF16BEWithErrorsScalar) ||
+		!sameFunction(got.toWellFormedUTF16LE, toWellFormedUTF16LEScalar) ||
+		!sameFunction(got.toWellFormedUTF16BE, toWellFormedUTF16BEScalar) ||
+		!sameFunction(got.validateUTF32, validateUTF32Scalar) ||
+		!sameFunction(got.validateUTF32WithErrors, validateUTF32WithErrorsScalar) {
+		t.Fatal("unqualified NEON W01 provider leaked into selection")
+	}
+}

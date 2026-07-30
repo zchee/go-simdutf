@@ -140,3 +140,42 @@ func TestMakeImplementationAMD64Live(t *testing.T) {
 		validateASCIIWestmere, validateASCIIWithErrorsWestmere,
 		validateUTF16LEAsASCIIWestmere, validateUTF16BEAsASCIIWestmere)
 }
+
+func TestMakeImplementationAMD64W01QualifiedSelection(t *testing.T) {
+	scalar := makeImplementation(selectionInput{})
+	if !sameFunction(scalar.validateUTF16LE, validateUTF16LEScalar) ||
+		!sameFunction(scalar.validateUTF16BE, validateUTF16BEScalar) ||
+		!sameFunction(scalar.validateUTF16LEWithErrors, validateUTF16LEWithErrorsScalar) ||
+		!sameFunction(scalar.validateUTF16BEWithErrors, validateUTF16BEWithErrorsScalar) ||
+		!sameFunction(scalar.toWellFormedUTF16LE, toWellFormedUTF16LEScalar) ||
+		!sameFunction(scalar.toWellFormedUTF16BE, toWellFormedUTF16BEScalar) ||
+		!sameFunction(scalar.validateUTF32, validateUTF32Scalar) ||
+		!sameFunction(scalar.validateUTF32WithErrors, validateUTF32WithErrorsScalar) {
+		t.Fatal("feature-free W01 selection is not scalar")
+	}
+
+	qualified := makeImplementation(selectionInput{features: cpuSSE42 | cpuAVX2})
+	if !sameFunction(qualified.toWellFormedUTF16BE, toWellFormedUTF16BEWestmere) {
+		t.Fatal("qualified amd64 selection did not retain Westmere UTF-16BE repair")
+	}
+	if !sameFunction(qualified.validateUTF32WithErrors, validateUTF32WithErrorsHaswell) {
+		t.Fatal("qualified amd64 selection did not select Haswell UTF-32 errors")
+	}
+	if !sameFunction(qualified.validateUTF16LE, validateUTF16LEScalar) ||
+		!sameFunction(qualified.validateUTF16BE, validateUTF16BEScalar) ||
+		!sameFunction(qualified.validateUTF16BEWithErrors, validateUTF16BEWithErrorsScalar) ||
+		!sameFunction(qualified.toWellFormedUTF16LE, toWellFormedUTF16LEScalar) {
+		t.Fatal("direct-only W01 providers leaked into default selection")
+	}
+
+	withSIMD := makeImplementation(selectionInput{features: cpuSSE42 | cpuAVX2, archsimdAVX2: true})
+	if archsimdValidateUTF16LEWithErrors() != nil {
+		if !sameFunction(withSIMD.validateUTF16LEWithErrors, archsimdValidateUTF16LEWithErrors()) ||
+			!sameFunction(withSIMD.validateUTF32, archsimdValidateUTF32()) {
+			t.Fatal("qualified archsimd W01 providers were not selected")
+		}
+	} else if !sameFunction(withSIMD.validateUTF16LEWithErrors, validateUTF16LEWithErrorsScalar) ||
+		!sameFunction(withSIMD.validateUTF32, validateUTF32Scalar) {
+		t.Fatal("archsimd providers leaked into a non-SIMD build")
+	}
+}
