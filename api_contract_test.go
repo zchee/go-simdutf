@@ -48,15 +48,15 @@ func TestPublicAPIContract(t *testing.T) {
 		"const":      2,
 		"enum-const": 31,
 		"field":      6,
-		"func":       66,
+		"func":       78,
 		"method":     3,
 		"type":       6,
 	}
 	if !maps.Equal(counts, wantCounts) {
 		t.Fatalf("API leaf counts = %v, want %v", counts, wantCounts)
 	}
-	if len(got) != 114 {
-		t.Fatalf("API leaf record count = %d, want 114", len(got))
+	if len(got) != 126 {
+		t.Fatalf("API leaf record count = %d, want 126", len(got))
 	}
 
 	want, err := os.ReadFile(filepath.Join("testdata", "public-api.golden"))

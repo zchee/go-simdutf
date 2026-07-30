@@ -21,8 +21,9 @@ import (
 )
 
 // Test vectors adapted from simdutf/simdutf@611becc2a08c27a4edc77d9a45ff74c97130129b
-// convert_utf16*_to_latin1 / convert_utf16*_to_utf32 tests. Canary and
-// short-destination checks are Go-specific slice-contract coverage.
+// convert_utf16*_to_latin1 / convert_utf16*_to_utf32 / convert_utf16*_to_utf8
+// tests. Canary and short-destination checks are Go-specific slice-contract
+// coverage.
 
 func rawUTF16Words(native []uint16, little bool) []uint16 {
 	out := make([]uint16, len(native))
@@ -173,6 +174,10 @@ func TestUTF16ConvertShortDestinationPanics(t *testing.T) {
 	}
 	mustPanic("latin1", func() { convertUTF16LEToLatin1Scalar(input, make([]byte, 1)) })
 	mustPanic("utf32", func() { convertUTF16LEToUTF32Scalar(input, make([]uint32, 0)) })
+	mustPanic("utf8", func() { convertUTF16LEToUTF8Scalar(input, make([]byte, 0)) })
+	mustPanic("utf8_replacement", func() {
+		convertUTF16LEToUTF8WithReplacementScalar([]uint16{0xd800}, make([]byte, 2))
+	})
 }
 
 func TestUTF16ConvertPublicDispatch(t *testing.T) {
@@ -184,5 +189,104 @@ func TestUTF16ConvertPublicDispatch(t *testing.T) {
 	u32 := make([]uint32, 2)
 	if got := ConvertUTF16LEToUTF32(rawUTF16Words([]uint16{'A', 0xd83d, 0xde00}, true), u32); got != 2 || u32[0] != 'A' || u32[1] != 0x1f600 {
 		t.Fatalf("ConvertUTF16LEToUTF32 = %d %x", got, u32[:got])
+	}
+	utf16 := rawUTF16Words([]uint16{'A', 0x20ac, 0xd83d, 0xde00}, true)
+	if got := UTF8LengthFromUTF16LE(utf16); got != 1+3+4 {
+		t.Fatalf("UTF8LengthFromUTF16LE = %d", got)
+	}
+	if got := UTF32LengthFromUTF16LE(utf16); got != 3 {
+		t.Fatalf("UTF32LengthFromUTF16LE = %d", got)
+	}
+	utf8 := make([]byte, UTF8LengthFromUTF16LE(utf16))
+	if got := ConvertUTF16LEToUTF8(utf16, utf8); got != len(utf8) || string(utf8) != "A\xe2\x82\xac\xf0\x9f\x98\x80" {
+		t.Fatalf("ConvertUTF16LEToUTF8 = %d %q", got, utf8)
+	}
+}
+
+func TestUTF16ConvertToUTF8(t *testing.T) {
+	cases := []struct {
+		name        string
+		native      []uint16
+		want        []byte
+		wantReplace []byte
+		err         ErrorCode
+		errCount    int
+	}{
+		{"empty", nil, nil, nil, Success, 0},
+		{"ascii", []uint16{'a', 'b', 'c'}, []byte("abc"), []byte("abc"), Success, 0},
+		{"two_byte", []uint16{0x00a9}, []byte("\xc2\xa9"), []byte("\xc2\xa9"), Success, 0},
+		{"three_byte", []uint16{0x20ac}, []byte("\xe2\x82\xac"), []byte("\xe2\x82\xac"), Success, 0},
+		{"pair", []uint16{0xd83d, 0xde00}, []byte("\xf0\x9f\x98\x80"), []byte("\xf0\x9f\x98\x80"), Success, 0},
+		{"mixed", []uint16{'A', 0x20ac, 0xd83d, 0xde00}, []byte("A\xe2\x82\xac\xf0\x9f\x98\x80"), []byte("A\xe2\x82\xac\xf0\x9f\x98\x80"), Success, 0},
+		{"high_only", []uint16{0xd800}, nil, []byte("\xef\xbf\xbd"), Surrogate, 0},
+		{"low_only", []uint16{0xdc00}, nil, []byte("\xef\xbf\xbd"), Surrogate, 0},
+		{"bad_low", []uint16{0xd800, 0x0041}, nil, []byte("\xef\xbf\xbdA"), Surrogate, 0},
+	}
+	for _, tc := range cases {
+		t.Run(tc.name, func(t *testing.T) {
+			for _, little := range []bool{true, false} {
+				input := rawUTF16Words(tc.native, little)
+				storageNative := little == nativeLittleEndian()
+				need := utf8LengthFromUTF16Scalar(input, storageNative)
+				needReplace := utf8LengthFromUTF16WithReplacementScalar(input, storageNative)
+				if little {
+					if got := utf8LengthFromUTF16LEScalar(input); got != need {
+						t.Fatalf("utf8 length LE = %d, want %d", got, need)
+					}
+				} else if got := utf8LengthFromUTF16BEScalar(input); got != need {
+					t.Fatalf("utf8 length BE = %d, want %d", got, need)
+				}
+				dst := make([]byte, need+1)
+				dst[need] = 0x5a
+				replaceDst := make([]byte, needReplace+1)
+				replaceDst[needReplace] = 0x5a
+				var n int
+				var result Result
+				var replaced int
+				var valid int
+				if little {
+					n = convertUTF16LEToUTF8Scalar(input, dst[:need])
+					result = convertUTF16LEToUTF8WithErrorsScalar(input, dst[:need])
+					replaced = convertUTF16LEToUTF8WithReplacementScalar(input, replaceDst[:needReplace])
+					if tc.err == Success {
+						valid = convertValidUTF16LEToUTF8Scalar(input, dst[:need])
+					}
+				} else {
+					n = convertUTF16BEToUTF8Scalar(input, dst[:need])
+					result = convertUTF16BEToUTF8WithErrorsScalar(input, dst[:need])
+					replaced = convertUTF16BEToUTF8WithReplacementScalar(input, replaceDst[:needReplace])
+					if tc.err == Success {
+						valid = convertValidUTF16BEToUTF8Scalar(input, dst[:need])
+					}
+				}
+				if tc.err == Success {
+					if n != len(tc.want) || !bytes.Equal(dst[:n], tc.want) {
+						t.Fatalf("little=%v convert = %d %x, want %d %x", little, n, dst[:n], len(tc.want), tc.want)
+					}
+					if result.Error != Success || result.Count != len(tc.want) {
+						t.Fatalf("little=%v with_errors=%+v", little, result)
+					}
+					if valid != len(tc.want) {
+						t.Fatalf("little=%v valid = %d", little, valid)
+					}
+				} else {
+					if n != 0 {
+						t.Fatalf("little=%v convert = %d, want 0", little, n)
+					}
+					if result.Error != tc.err || result.Count != tc.errCount {
+						t.Fatalf("little=%v with_errors=%+v want {%v %d}", little, result, tc.err, tc.errCount)
+					}
+				}
+				if replaced != len(tc.wantReplace) || !bytes.Equal(replaceDst[:replaced], tc.wantReplace) {
+					t.Fatalf("little=%v replacement = %d %x, want %d %x", little, replaced, replaceDst[:replaced], len(tc.wantReplace), tc.wantReplace)
+				}
+				if dst[need] != 0x5a {
+					t.Fatalf("little=%v convert canary overwritten", little)
+				}
+				if replaceDst[needReplace] != 0x5a {
+					t.Fatalf("little=%v replacement canary overwritten", little)
+				}
+			}
+		})
 	}
 }
