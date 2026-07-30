@@ -1,0 +1,885 @@
+TEXT github.com/zchee/go-simdutf.validateASCIINEON(SB) /Users/zchee/go/src/github.com/zchee/go-simdutf/ascii_arm64.go
+  ascii_arm64.go:34	0x10027af80		f9400b90		MOVD 16(R28), R16							
+  ascii_arm64.go:34	0x10027af84		eb3063ff		CMP R16, RSP								
+  ascii_arm64.go:34	0x10027af88		54001029		BLS 129(PC)								
+  ascii_arm64.go:34	0x10027af8c		f81d0ffe		MOVD.W R30, -48(RSP)							
+  ascii_arm64.go:34	0x10027af90		f81f83fd		MOVD R29, -8(RSP)							
+  ascii_arm64.go:34	0x10027af94		d10023fd		SUB $8, RSP, R29							
+  ascii_arm64.go:34	0x10027af98		f9001fe0		MOVD R0, 56(RSP)							
+  ascii_arm64.go:37	0x10027af9c		f101003f		CMP $64, R1								
+  ascii_arm64.go:37	0x10027afa0		5400006a		BGE 3(PC)								
+  ascii_scalar.go:31	0x10027afa4		aa1f03e3		MOVD ZR, R3								
+  ascii_scalar.go:31	0x10027afa8		1400004b		JMP 75(PC)								
+  ascii_arm64.go:37	0x10027afac		f90027e2		MOVD R2, 72(RSP)							
+  ascii_arm64.go:37	0x10027afb0		f90023e1		MOVD R1, 64(RSP)							
+  ascii_arm64.go:37	0x10027afb4		f9001fe0		MOVD R0, 56(RSP)							
+  ascii_arm64.go:40	0x10027afb8		f90007e0		MOVD R0, 8(RSP)								
+  ascii_arm64.go:40	0x10027afbc		a9010be1		STP (R1, R2), 16(RSP)							
+  ascii_arm64.go:40	0x10027afc0		94012718		CALL github.com/zchee/go-simdutf.validateASCIIPrefixNEON.abi0(SB)	
+  ascii_arm64.go:40	0x10027afc4		f94013e0		MOVD 32(RSP), R0							
+  ascii_arm64.go:41	0x10027afc8		f94023e1		MOVD 64(RSP), R1							
+  ascii_arm64.go:41	0x10027afcc		927ae422		AND $-64, R1, R2							
+  ascii_arm64.go:41	0x10027afd0		eb02001f		CMP R2, R0								
+  ascii_arm64.go:41	0x10027afd4		5400016b		BLT 11(PC)								
+  ascii_arm64.go:44	0x10027afd8		eb00003f		CMP R0, R1								
+  ascii_arm64.go:44	0x10027afdc		54000783		BCC 60(PC)								
+  ascii_arm64.go:44	0x10027afe0		f94027e2		MOVD 72(RSP), R2							
+  ascii_arm64.go:44	0x10027afe4		cb020003		SUB R2, R0, R3								
+  ascii_arm64.go:44	0x10027afe8		8a83fc03		AND R3->63, R0, R3							
+  ascii_arm64.go:44	0x10027afec		cb000024		SUB R0, R1, R4								
+  ascii_arm64.go:44	0x10027aff0		f9401fe5		MOVD 56(RSP), R5							
+  ascii_arm64.go:44	0x10027aff4		8b0300a3		ADD R3, R5, R3								
+  ascii_scalar.go:31	0x10027aff8		aa1f03e5		MOVD ZR, R5								
+  ascii_scalar.go:31	0x10027affc		14000006		JMP 6(PC)								
+  ascii_arm64.go:42	0x10027b000		aa1f03e0		MOVD ZR, R0								
+  ascii_arm64.go:42	0x10027b004		f85f83fd		MOVD -8(RSP), R29							
+  ascii_arm64.go:42	0x10027b008		f84307fe		MOVD.P 48(RSP), R30							
+  ascii_arm64.go:42	0x10027b00c		d65f03c0		RET									
+  ascii_scalar.go:31	0x10027b010		aa0603e5		MOVD R6, R5								
+  ascii_scalar.go:31	0x10027b014		910040a6		ADD $16, R5, R6								
+  ascii_scalar.go:31	0x10027b018		eb06009f		CMP R6, R4								
+  ascii_scalar.go:31	0x10027b01c		5400036b		BLT 27(PC)								
+  ascii_scalar.go:32	0x10027b020		eb0400bf		CMP R4, R5								
+  ascii_scalar.go:32	0x10027b024		54000528		BHI 41(PC)								
+  ascii_scalar.go:32	0x10027b028		8b0000a7		ADD R0, R5, R7								
+  ascii_scalar.go:32	0x10027b02c		cb070028		SUB R7, R1, R8								
+  ascii_scalar.go:32	0x10027b030		cb0200e9		SUB R2, R7, R9								
+  ascii_scalar.go:32	0x10027b034		cb070047		SUB R7, R2, R7								
+  ascii_scalar.go:32	0x10027b038		8a89fca9		AND R9->63, R5, R9							
+  binary.go:116		0x10027b03c		f1001d1f		CMP $7, R8								
+  binary.go:116		0x10027b040		54000429		BLS 33(PC)								
+  ascii_scalar.go:33	0x10027b044		910020a5		ADD $8, R5, R5								
+  binary.go:117		0x10027b048		f8696869		MOVD (R3)(R9), R9							
+  ascii_scalar.go:33	0x10027b04c		eb05009f		CMP R5, R4								
+  ascii_scalar.go:33	0x10027b050		54000383		BCC 28(PC)								
+  ascii_scalar.go:33	0x10027b054		d1002108		SUB $8, R8, R8								
+  ascii_scalar.go:33	0x10027b058		d10020e7		SUB $8, R7, R7								
+  ascii_scalar.go:33	0x10027b05c		cb0703e7		NEG R7, R7								
+  ascii_scalar.go:33	0x10027b060		8a87fca5		AND R7->63, R5, R5							
+  binary.go:116		0x10027b064		f1001d1f		CMP $7, R8								
+  binary.go:116		0x10027b068		540002a9		BLS 21(PC)								
+  binary.go:117		0x10027b06c		f8656865		MOVD (R3)(R5), R5							
+  ascii_scalar.go:34	0x10027b070		aa050125		ORR R5, R9, R5								
+  ascii_scalar.go:34	0x10027b074		f201c0bf		TST $-9187201950435737472, R5						
+  ascii_scalar.go:34	0x10027b078		54fffcc0		BEQ -26(PC)								
+  ascii_arm64.go:44	0x10027b07c		aa1f03e0		MOVD ZR, R0								
+  ascii_arm64.go:44	0x10027b080		1400000b		JMP 11(PC)								
+  ascii_scalar.go:38	0x10027b084		910004a5		ADD $1, R5, R5								
+  ascii_scalar.go:38	0x10027b088		eb0400bf		CMP R4, R5								
+  ascii_scalar.go:38	0x10027b08c		540000ea		BGE 7(PC)								
+  ascii_scalar.go:39	0x10027b090		54000142		BCS 10(PC)								
+  ascii_scalar.go:39	0x10027b094		38656861		MOVBU (R3)(R5), R1							
+  ascii_scalar.go:39	0x10027b098		7102003f		CMPW $128, R1								
+  ascii_scalar.go:39	0x10027b09c		54ffff43		BCC -6(PC)								
+  ascii_arm64.go:44	0x10027b0a0		aa1f03e0		MOVD ZR, R0								
+  ascii_arm64.go:44	0x10027b0a4		14000002		JMP 2(PC)								
+  ascii_arm64.go:44	0x10027b0a8		b24003e0		ORR $1, ZR, R0								
+  ascii_arm64.go:44	0x10027b0ac		f85f83fd		MOVD -8(RSP), R29							
+  ascii_arm64.go:44	0x10027b0b0		f84307fe		MOVD.P 48(RSP), R30							
+  ascii_arm64.go:44	0x10027b0b4		d65f03c0		RET									
+  ascii_scalar.go:39	0x10027b0b8		97f82502		CALL runtime.panicBounds(SB)						
+  binary.go:116		0x10027b0bc		97f82501		CALL runtime.panicBounds(SB)						
+  ascii_scalar.go:33	0x10027b0c0		97f82500		CALL runtime.panicBounds(SB)						
+  binary.go:116		0x10027b0c4		97f824ff		CALL runtime.panicBounds(SB)						
+  ascii_scalar.go:32	0x10027b0c8		97f824fe		CALL runtime.panicBounds(SB)						
+  ascii_arm64.go:44	0x10027b0cc		97f824fd		CALL runtime.panicBounds(SB)						
+  ascii_scalar.go:31	0x10027b0d0		aa0403e3		MOVD R4, R3								
+  ascii_scalar.go:31	0x10027b0d4		91004064		ADD $16, R3, R4								
+  ascii_scalar.go:31	0x10027b0d8		eb04003f		CMP R4, R1								
+  ascii_scalar.go:31	0x10027b0dc		5400034b		BLT 26(PC)								
+  ascii_scalar.go:32	0x10027b0e0		eb03003f		CMP R3, R1								
+  ascii_scalar.go:32	0x10027b0e4		54000503		BCC 40(PC)								
+  ascii_scalar.go:32	0x10027b0e8		cb030025		SUB R3, R1, R5								
+  ascii_scalar.go:32	0x10027b0ec		cb020066		SUB R2, R3, R6								
+  ascii_scalar.go:32	0x10027b0f0		cb030047		SUB R3, R2, R7								
+  ascii_scalar.go:32	0x10027b0f4		8a86fc66		AND R6->63, R3, R6							
+  binary.go:116		0x10027b0f8		f1001cbf		CMP $7, R5								
+  binary.go:116		0x10027b0fc		54000429		BLS 33(PC)								
+  ascii_scalar.go:33	0x10027b100		91002063		ADD $8, R3, R3								
+  binary.go:117		0x10027b104		f8666806		MOVD (R0)(R6), R6							
+  ascii_scalar.go:33	0x10027b108		eb03003f		CMP R3, R1								
+  ascii_scalar.go:33	0x10027b10c		54000383		BCC 28(PC)								
+  ascii_scalar.go:33	0x10027b110		d10020a5		SUB $8, R5, R5								
+  ascii_scalar.go:33	0x10027b114		d10020e7		SUB $8, R7, R7								
+  ascii_scalar.go:33	0x10027b118		cb0703e7		NEG R7, R7								
+  ascii_scalar.go:33	0x10027b11c		8a87fc63		AND R7->63, R3, R3							
+  binary.go:116		0x10027b120		f1001cbf		CMP $7, R5								
+  binary.go:116		0x10027b124		540002a9		BLS 21(PC)								
+  binary.go:117		0x10027b128		f8636803		MOVD (R0)(R3), R3							
+  ascii_scalar.go:34	0x10027b12c		aa0300c3		ORR R3, R6, R3								
+  ascii_scalar.go:34	0x10027b130		f201c07f		TST $-9187201950435737472, R3						
+  ascii_scalar.go:34	0x10027b134		54fffce0		BEQ -25(PC)								
+  ascii_arm64.go:38	0x10027b138		aa1f03e0		MOVD ZR, R0								
+  ascii_arm64.go:38	0x10027b13c		1400000b		JMP 11(PC)								
+  ascii_scalar.go:38	0x10027b140		91000463		ADD $1, R3, R3								
+  ascii_scalar.go:38	0x10027b144		eb03003f		CMP R3, R1								
+  ascii_scalar.go:38	0x10027b148		540000ed		BLE 7(PC)								
+  ascii_scalar.go:39	0x10027b14c		54000149		BLS 10(PC)								
+  ascii_scalar.go:39	0x10027b150		38636802		MOVBU (R0)(R3), R2							
+  ascii_scalar.go:39	0x10027b154		7102005f		CMPW $128, R2								
+  ascii_scalar.go:39	0x10027b158		54ffff43		BCC -6(PC)								
+  ascii_arm64.go:38	0x10027b15c		aa1f03e0		MOVD ZR, R0								
+  ascii_arm64.go:38	0x10027b160		14000002		JMP 2(PC)								
+  ascii_arm64.go:38	0x10027b164		b24003e0		ORR $1, ZR, R0								
+  ascii_arm64.go:38	0x10027b168		f85f83fd		MOVD -8(RSP), R29							
+  ascii_arm64.go:38	0x10027b16c		f84307fe		MOVD.P 48(RSP), R30							
+  ascii_arm64.go:38	0x10027b170		d65f03c0		RET									
+  ascii_scalar.go:39	0x10027b174		97f824d3		CALL runtime.panicBounds(SB)						
+  binary.go:116		0x10027b178		97f824d2		CALL runtime.panicBounds(SB)						
+  ascii_scalar.go:33	0x10027b17c		97f824d1		CALL runtime.panicBounds(SB)						
+  binary.go:116		0x10027b180		97f824d0		CALL runtime.panicBounds(SB)						
+  ascii_scalar.go:32	0x10027b184		97f824cf		CALL runtime.panicBounds(SB)						
+  ascii_scalar.go:32	0x10027b188		d503201f		NOOP									
+  ascii_arm64.go:34	0x10027b18c		a90087e0		STP (R0, R1), 8(RSP)							
+  ascii_arm64.go:34	0x10027b190		f9000fe2		MOVD R2, 24(RSP)							
+  ascii_arm64.go:34	0x10027b194		aa1e03e3		MOVD R30, R3								
+  ascii_arm64.go:34	0x10027b198		97f81c46		CALL runtime.morestack_noctxt.abi0(SB)					
+  ascii_arm64.go:34	0x10027b19c		a94087e0		LDP 8(RSP), (R0, R1)							
+  ascii_arm64.go:34	0x10027b1a0		f9400fe2		MOVD 24(RSP), R2							
+  ascii_arm64.go:34	0x10027b1a4		17ffff77		JMP github.com/zchee/go-simdutf.validateASCIINEON(SB)			
+  ascii_arm64.go:34	0x10027b1a8		00000000		?									
+  ascii_arm64.go:34	0x10027b1ac		00000000		?									
+
+TEXT github.com/zchee/go-simdutf.countUTF8NEON(SB) /Users/zchee/go/src/github.com/zchee/go-simdutf/count_utf8_arm64.go
+  count_utf8_arm64.go:29	0x10027b6f0		f9400b90		MOVD 16(R28), R16						
+  count_utf8_arm64.go:29	0x10027b6f4		eb3063ff		CMP R16, RSP							
+  count_utf8_arm64.go:29	0x10027b6f8		54000689		BLS 52(PC)							
+  count_utf8_arm64.go:29	0x10027b6fc		f81c0ffe		MOVD.W R30, -64(RSP)						
+  count_utf8_arm64.go:29	0x10027b700		f81f83fd		MOVD R29, -8(RSP)						
+  count_utf8_arm64.go:29	0x10027b704		d10023fd		SUB $8, RSP, R29						
+  count_utf8_arm64.go:29	0x10027b708		f90027e0		MOVD R0, 72(RSP)						
+  count_utf8_arm64.go:30	0x10027b70c		927ae423		AND $-64, R1, R3						
+  count_utf8_arm64.go:31	0x10027b710		b5000083		CBNZ R3, 4(PC)							
+  utf8_scalar.go:154		0x10027b714		aa1f03e2		MOVD ZR, R2							
+  utf8_scalar.go:154		0x10027b718		aa1f03e3		MOVD ZR, R3							
+  utf8_scalar.go:154		0x10027b71c		14000025		JMP 37(PC)							
+  count_utf8_arm64.go:30	0x10027b720		f9001be3		MOVD R3, 48(RSP)						
+  count_utf8_arm64.go:31	0x10027b724		f9002fe2		MOVD R2, 88(RSP)						
+  count_utf8_arm64.go:31	0x10027b728		f9002be1		MOVD R1, 80(RSP)						
+  count_utf8_arm64.go:31	0x10027b72c		f90027e0		MOVD R0, 72(RSP)						
+  count_utf8_arm64.go:34	0x10027b730		f90007e0		MOVD R0, 8(RSP)							
+  count_utf8_arm64.go:34	0x10027b734		a9010be3		STP (R3, R2), 16(RSP)						
+  count_utf8_arm64.go:34	0x10027b738		94012582		CALL github.com/zchee/go-simdutf.countUTF8BlocksNEON.abi0(SB)	
+  count_utf8_arm64.go:34	0x10027b73c		f9401be0		MOVD 48(RSP), R0						
+  count_utf8_arm64.go:34	0x10027b740		f9402fe1		MOVD 88(RSP), R1						
+  count_utf8_arm64.go:34	0x10027b744		cb010001		SUB R1, R0, R1							
+  count_utf8_arm64.go:34	0x10027b748		f9402be2		MOVD 80(RSP), R2						
+  count_utf8_arm64.go:34	0x10027b74c		8a81fc41		AND R1->63, R2, R1						
+  count_utf8_arm64.go:34	0x10027b750		927ae421		AND $-64, R1, R1						
+  count_utf8_arm64.go:34	0x10027b754		cb000040		SUB R0, R2, R0							
+  count_utf8_arm64.go:34	0x10027b758		f94027e2		MOVD 72(RSP), R2						
+  count_utf8_arm64.go:34	0x10027b75c		8b010041		ADD R1, R2, R1							
+  utf8_scalar.go:154		0x10027b760		aa1f03e2		MOVD ZR, R2							
+  utf8_scalar.go:154		0x10027b764		aa1f03e3		MOVD ZR, R3							
+  utf8_scalar.go:154		0x10027b768		14000006		JMP 6(PC)							
+  utf8_scalar.go:154		0x10027b76c		38626824		MOVBU (R1)(R2), R4						
+  utf8_scalar.go:155		0x10027b770		93401c84		SXTB R4, R4							
+  utf8_scalar.go:154		0x10027b774		91000442		ADD $1, R2, R2							
+  utf8_scalar.go:155		0x10027b778		3101049f		CMNW $65, R4							
+  utf8_scalar.go:155		0x10027b77c		9a83d463		CINC GT, R3, R3							
+  utf8_scalar.go:154		0x10027b780		eb00005f		CMP R0, R2							
+  utf8_scalar.go:154		0x10027b784		54ffff4b		BLT -6(PC)							
+  count_utf8_arm64.go:34	0x10027b788		f94013e1		MOVD 32(RSP), R1						
+  count_utf8_arm64.go:34	0x10027b78c		8b030020		ADD R3, R1, R0							
+  count_utf8_arm64.go:34	0x10027b790		f85f83fd		MOVD -8(RSP), R29						
+  count_utf8_arm64.go:34	0x10027b794		f84407fe		MOVD.P 64(RSP), R30						
+  count_utf8_arm64.go:34	0x10027b798		d65f03c0		RET								
+  utf8_scalar.go:154		0x10027b79c		38626804		MOVBU (R0)(R2), R4						
+  utf8_scalar.go:155		0x10027b7a0		93401c84		SXTB R4, R4							
+  utf8_scalar.go:154		0x10027b7a4		91000442		ADD $1, R2, R2							
+  utf8_scalar.go:155		0x10027b7a8		3101049f		CMNW $65, R4							
+  utf8_scalar.go:155		0x10027b7ac		9a83d463		CINC GT, R3, R3							
+  utf8_scalar.go:154		0x10027b7b0		eb02003f		CMP R2, R1							
+  utf8_scalar.go:154		0x10027b7b4		54ffff4c		BGT -6(PC)							
+  count_utf8_arm64.go:32	0x10027b7b8		aa0303e0		MOVD R3, R0							
+  count_utf8_arm64.go:32	0x10027b7bc		f85f83fd		MOVD -8(RSP), R29						
+  count_utf8_arm64.go:32	0x10027b7c0		f84407fe		MOVD.P 64(RSP), R30						
+  count_utf8_arm64.go:32	0x10027b7c4		d65f03c0		RET								
+  count_utf8_arm64.go:29	0x10027b7c8		a90087e0		STP (R0, R1), 8(RSP)						
+  count_utf8_arm64.go:29	0x10027b7cc		f9000fe2		MOVD R2, 24(RSP)						
+  count_utf8_arm64.go:29	0x10027b7d0		aa1e03e3		MOVD R30, R3							
+  count_utf8_arm64.go:29	0x10027b7d4		97f81ab7		CALL runtime.morestack_noctxt.abi0(SB)				
+  count_utf8_arm64.go:29	0x10027b7d8		a94087e0		LDP 8(RSP), (R0, R1)						
+  count_utf8_arm64.go:29	0x10027b7dc		f9400fe2		MOVD 24(RSP), R2						
+  count_utf8_arm64.go:29	0x10027b7e0		17ffffc4		JMP github.com/zchee/go-simdutf.countUTF8NEON(SB)		
+  count_utf8_arm64.go:29	0x10027b7e4		00000000		?								
+  count_utf8_arm64.go:29	0x10027b7e8		00000000		?								
+  count_utf8_arm64.go:29	0x10027b7ec		00000000		?								
+
+TEXT github.com/zchee/go-simdutf.validateUTF8NEON(SB) /Users/zchee/go/src/github.com/zchee/go-simdutf/utf8_arm64.go
+  utf8_arm64.go:30	0x10027d7f0		f9400b90		MOVD 16(R28), R16							
+  utf8_arm64.go:30	0x10027d7f4		eb3063ff		CMP R16, RSP								
+  utf8_arm64.go:30	0x10027d7f8		54000529		BLS 41(PC)								
+  utf8_arm64.go:30	0x10027d7fc		f8180ffe		MOVD.W R30, -128(RSP)							
+  utf8_arm64.go:30	0x10027d800		f81f83fd		MOVD R29, -8(RSP)							
+  utf8_arm64.go:30	0x10027d804		d10023fd		SUB $8, RSP, R29							
+  utf8_arm64.go:30	0x10027d808		f90047e0		MOVD R0, 136(RSP)							
+  utf8_arm64.go:31	0x10027d80c		9100e3e3		ADD $56, RSP, R3							
+  utf8_arm64.go:31	0x10027d810		a9007c7f		STP (ZR, ZR), (R3)							
+  utf8_arm64.go:31	0x10027d814		a9017c7f		STP (ZR, ZR), 16(R3)							
+  utf8_arm64.go:31	0x10027d818		a9027c7f		STP (ZR, ZR), 32(R3)							
+  utf8_arm64.go:31	0x10027d81c		a9037c7f		STP (ZR, ZR), 48(R3)							
+  utf8_arm64.go:32	0x10027d820		927ae424		AND $-64, R1, R4							
+  utf8_arm64.go:32	0x10027d824		cb040025		SUB R4, R1, R5								
+  utf8_arm64.go:32	0x10027d828		cb020084		SUB R2, R4, R4								
+  utf8_arm64.go:32	0x10027d82c		8a84fc24		AND R4->63, R1, R4							
+  utf8_arm64.go:32	0x10027d830		927ae484		AND $-64, R4, R4							
+  utf8_arm64.go:32	0x10027d834		8b040004		ADD R4, R0, R4								
+  utf8_arm64.go:32	0x10027d838		f10100bf		CMP $64, R5								
+  utf8_arm64.go:32	0x10027d83c		b27a03e6		ORR $64, ZR, R6								
+  utf8_arm64.go:32	0x10027d840		9a86b0a5		CSEL LT, R5, R6, R5							
+  utf8_arm64.go:32	0x10027d844		eb04007f		CMP R4, R3								
+  utf8_arm64.go:32	0x10027d848		54000180		BEQ 12(PC)								
+  utf8_arm64.go:32	0x10027d84c		f9004fe2		MOVD R2, 152(RSP)							
+  utf8_arm64.go:32	0x10027d850		f90047e0		MOVD R0, 136(RSP)							
+  utf8_arm64.go:32	0x10027d854		f9004be1		MOVD R1, 144(RSP)							
+  utf8_arm64.go:32	0x10027d858		aa0303e0		MOVD R3, R0								
+  utf8_arm64.go:32	0x10027d85c		aa0403e1		MOVD R4, R1								
+  utf8_arm64.go:32	0x10027d860		aa0503e2		MOVD R5, R2								
+  utf8_arm64.go:32	0x10027d864		97f81b9b		CALL runtime.memmove(SB)						
+  utf8_arm64.go:33	0x10027d868		f94047e0		MOVD 136(RSP), R0							
+  utf8_arm64.go:33	0x10027d86c		f9404be1		MOVD 144(RSP), R1							
+  utf8_arm64.go:33	0x10027d870		f9404fe2		MOVD 152(RSP), R2							
+  utf8_arm64.go:31	0x10027d874		9100e3e3		ADD $56, RSP, R3							
+  utf8_arm64.go:33	0x10027d878		a90087e0		STP (R0, R1), 8(RSP)							
+  utf8_arm64.go:33	0x10027d87c		a9018fe2		STP (R2, R3), 24(RSP)							
+  utf8_arm64.go:33	0x10027d880		94011db4		CALL github.com/zchee/go-simdutf.validateUTF8Lookup4NEON.abi0(SB)	
+  utf8_arm64.go:33	0x10027d884		f9401be0		MOVD 48(RSP), R0							
+  utf8_arm64.go:34	0x10027d888		f100001f		CMP $0, R0								
+  utf8_arm64.go:34	0x10027d88c		9a9f17e0		CSET EQ, R0								
+  utf8_arm64.go:34	0x10027d890		f85f83fd		MOVD -8(RSP), R29							
+  utf8_arm64.go:34	0x10027d894		f84807fe		MOVD.P 128(RSP), R30							
+  utf8_arm64.go:34	0x10027d898		d65f03c0		RET									
+  utf8_arm64.go:30	0x10027d89c		a90087e0		STP (R0, R1), 8(RSP)							
+  utf8_arm64.go:30	0x10027d8a0		f9000fe2		MOVD R2, 24(RSP)							
+  utf8_arm64.go:30	0x10027d8a4		aa1e03e3		MOVD R30, R3								
+  utf8_arm64.go:30	0x10027d8a8		97f81282		CALL runtime.morestack_noctxt.abi0(SB)					
+  utf8_arm64.go:30	0x10027d8ac		a94087e0		LDP 8(RSP), (R0, R1)							
+  utf8_arm64.go:30	0x10027d8b0		f9400fe2		MOVD 24(RSP), R2							
+  utf8_arm64.go:30	0x10027d8b4		17ffffcf		JMP github.com/zchee/go-simdutf.validateUTF8NEON(SB)			
+  utf8_arm64.go:30	0x10027d8b8		00000000		?									
+  utf8_arm64.go:30	0x10027d8bc		00000000		?									
+
+TEXT github.com/zchee/go-simdutf.validateUTF8WithErrorsNEON(SB) /Users/zchee/go/src/github.com/zchee/go-simdutf/utf8_arm64.go
+  utf8_arm64.go:37	0x10027d8c0		f9400b90		MOVD 16(R28), R16							
+  utf8_arm64.go:37	0x10027d8c4		eb3063ff		CMP R16, RSP								
+  utf8_arm64.go:37	0x10027d8c8		54000609		BLS 48(PC)								
+  utf8_arm64.go:37	0x10027d8cc		f8180ffe		MOVD.W R30, -128(RSP)							
+  utf8_arm64.go:37	0x10027d8d0		f81f83fd		MOVD R29, -8(RSP)							
+  utf8_arm64.go:37	0x10027d8d4		d10023fd		SUB $8, RSP, R29							
+  utf8_arm64.go:39	0x10027d8d8		f9004be1		MOVD R1, 144(RSP)							
+  utf8_arm64.go:39	0x10027d8dc		f90047e0		MOVD R0, 136(RSP)							
+  utf8_arm64.go:39	0x10027d8e0		f9004fe2		MOVD R2, 152(RSP)							
+  utf8_arm64.go:38	0x10027d8e4		9100e3e3		ADD $56, RSP, R3							
+  utf8_arm64.go:38	0x10027d8e8		a9007c7f		STP (ZR, ZR), (R3)							
+  utf8_arm64.go:38	0x10027d8ec		a9017c7f		STP (ZR, ZR), 16(R3)							
+  utf8_arm64.go:38	0x10027d8f0		a9027c7f		STP (ZR, ZR), 32(R3)							
+  utf8_arm64.go:38	0x10027d8f4		a9037c7f		STP (ZR, ZR), 48(R3)							
+  utf8_arm64.go:39	0x10027d8f8		927ae424		AND $-64, R1, R4							
+  utf8_arm64.go:39	0x10027d8fc		cb040025		SUB R4, R1, R5								
+  utf8_arm64.go:39	0x10027d900		cb020084		SUB R2, R4, R4								
+  utf8_arm64.go:39	0x10027d904		8a84fc24		AND R4->63, R1, R4							
+  utf8_arm64.go:39	0x10027d908		927ae484		AND $-64, R4, R4							
+  utf8_arm64.go:39	0x10027d90c		8b040004		ADD R4, R0, R4								
+  utf8_arm64.go:39	0x10027d910		f10100bf		CMP $64, R5								
+  utf8_arm64.go:39	0x10027d914		b27a03e6		ORR $64, ZR, R6								
+  utf8_arm64.go:39	0x10027d918		9a86b0a5		CSEL LT, R5, R6, R5							
+  utf8_arm64.go:39	0x10027d91c		eb04007f		CMP R4, R3								
+  utf8_arm64.go:39	0x10027d920		54000120		BEQ 9(PC)								
+  utf8_arm64.go:39	0x10027d924		aa0303e0		MOVD R3, R0								
+  utf8_arm64.go:39	0x10027d928		aa0403e1		MOVD R4, R1								
+  utf8_arm64.go:39	0x10027d92c		aa0503e2		MOVD R5, R2								
+  utf8_arm64.go:39	0x10027d930		97f81b68		CALL runtime.memmove(SB)						
+  utf8_arm64.go:40	0x10027d934		f94047e0		MOVD 136(RSP), R0							
+  utf8_arm64.go:40	0x10027d938		f9404be1		MOVD 144(RSP), R1							
+  utf8_arm64.go:40	0x10027d93c		f9404fe2		MOVD 152(RSP), R2							
+  utf8_arm64.go:38	0x10027d940		9100e3e3		ADD $56, RSP, R3							
+  utf8_arm64.go:40	0x10027d944		a90087e0		STP (R0, R1), 8(RSP)							
+  utf8_arm64.go:40	0x10027d948		a9018fe2		STP (R2, R3), 24(RSP)							
+  utf8_arm64.go:40	0x10027d94c		94011d81		CALL github.com/zchee/go-simdutf.validateUTF8Lookup4NEON.abi0(SB)	
+  utf8_arm64.go:40	0x10027d950		a94283e3		LDP 40(RSP), (R3, R0)							
+  utf8_arm64.go:41	0x10027d954		b50000c0		CBNZ R0, 6(PC)								
+  utf8_arm64.go:42	0x10027d958		aa1f03e0		MOVD ZR, R0								
+  utf8_arm64.go:42	0x10027d95c		f9404be1		MOVD 144(RSP), R1							
+  utf8_arm64.go:42	0x10027d960		f85f83fd		MOVD -8(RSP), R29							
+  utf8_arm64.go:42	0x10027d964		f84807fe		MOVD.P 128(RSP), R30							
+  utf8_arm64.go:42	0x10027d968		d65f03c0		RET									
+  utf8_arm64.go:44	0x10027d96c		f94047e0		MOVD 136(RSP), R0							
+  utf8_arm64.go:44	0x10027d970		f9404be1		MOVD 144(RSP), R1							
+  utf8_arm64.go:44	0x10027d974		f9404fe2		MOVD 152(RSP), R2							
+  utf8_arm64.go:44	0x10027d978		9400000e		CALL github.com/zchee/go-simdutf.validateUTF8RewindWithErrorsScalar(SB)	
+  utf8_arm64.go:44	0x10027d97c		f85f83fd		MOVD -8(RSP), R29							
+  utf8_arm64.go:44	0x10027d980		f84807fe		MOVD.P 128(RSP), R30							
+  utf8_arm64.go:44	0x10027d984		d65f03c0		RET									
+  utf8_arm64.go:37	0x10027d988		a90087e0		STP (R0, R1), 8(RSP)							
+  utf8_arm64.go:37	0x10027d98c		f9000fe2		MOVD R2, 24(RSP)							
+  utf8_arm64.go:37	0x10027d990		aa1e03e3		MOVD R30, R3								
+  utf8_arm64.go:37	0x10027d994		97f81247		CALL runtime.morestack_noctxt.abi0(SB)					
+  utf8_arm64.go:37	0x10027d998		a94087e0		LDP 8(RSP), (R0, R1)							
+  utf8_arm64.go:37	0x10027d99c		f9400fe2		MOVD 24(RSP), R2							
+  utf8_arm64.go:37	0x10027d9a0		17ffffc8		JMP github.com/zchee/go-simdutf.validateUTF8WithErrorsNEON(SB)		
+  utf8_arm64.go:37	0x10027d9a4		00000000		?									
+  utf8_arm64.go:37	0x10027d9a8		00000000		?									
+  utf8_arm64.go:37	0x10027d9ac		00000000		?									
+
+TEXT github.com/zchee/go-simdutf.utf16LengthFromUTF8NEON(SB) /Users/zchee/go/src/github.com/zchee/go-simdutf/utf8_length_arm64.go
+  utf8_length_arm64.go:37	0x1002804d0		f9400b90		MOVD 16(R28), R16							
+  utf8_length_arm64.go:37	0x1002804d4		eb3063ff		CMP R16, RSP								
+  utf8_length_arm64.go:37	0x1002804d8		54000709		BLS 56(PC)								
+  utf8_length_arm64.go:37	0x1002804dc		f81c0ffe		MOVD.W R30, -64(RSP)							
+  utf8_length_arm64.go:37	0x1002804e0		f81f83fd		MOVD R29, -8(RSP)							
+  utf8_length_arm64.go:37	0x1002804e4		d10023fd		SUB $8, RSP, R29							
+  utf8_length_arm64.go:37	0x1002804e8		f90027e0		MOVD R0, 72(RSP)							
+  utf8_length_arm64.go:38	0x1002804ec		927ae423		AND $-64, R1, R3							
+  utf8_length_arm64.go:39	0x1002804f0		b5000083		CBNZ R3, 4(PC)								
+  utf8_length_scalar.go:31	0x1002804f4		aa1f03e2		MOVD ZR, R2								
+  utf8_length_scalar.go:31	0x1002804f8		aa1f03e3		MOVD ZR, R3								
+  utf8_length_scalar.go:31	0x1002804fc		14000029		JMP 41(PC)								
+  utf8_length_arm64.go:38	0x100280500		f9001be3		MOVD R3, 48(RSP)							
+  utf8_length_arm64.go:39	0x100280504		f9002fe2		MOVD R2, 88(RSP)							
+  utf8_length_arm64.go:39	0x100280508		f9002be1		MOVD R1, 80(RSP)							
+  utf8_length_arm64.go:39	0x10028050c		f90027e0		MOVD R0, 72(RSP)							
+  utf8_length_arm64.go:42	0x100280510		f90007e0		MOVD R0, 8(RSP)								
+  utf8_length_arm64.go:42	0x100280514		a9010be3		STP (R3, R2), 16(RSP)							
+  utf8_length_arm64.go:42	0x100280518		94011352		CALL github.com/zchee/go-simdutf.utf16LengthFromUTF8BlocksNEON.abi0(SB)	
+  utf8_length_arm64.go:42	0x10028051c		f9401be0		MOVD 48(RSP), R0							
+  utf8_length_arm64.go:42	0x100280520		f9402fe1		MOVD 88(RSP), R1							
+  utf8_length_arm64.go:42	0x100280524		cb010001		SUB R1, R0, R1								
+  utf8_length_arm64.go:42	0x100280528		f9402be2		MOVD 80(RSP), R2							
+  utf8_length_arm64.go:42	0x10028052c		8a81fc41		AND R1->63, R2, R1							
+  utf8_length_arm64.go:42	0x100280530		927ae421		AND $-64, R1, R1							
+  utf8_length_arm64.go:42	0x100280534		cb000040		SUB R0, R2, R0								
+  utf8_length_arm64.go:42	0x100280538		f94027e2		MOVD 72(RSP), R2							
+  utf8_length_arm64.go:42	0x10028053c		8b010041		ADD R1, R2, R1								
+  utf8_length_scalar.go:31	0x100280540		aa1f03e2		MOVD ZR, R2								
+  utf8_length_scalar.go:31	0x100280544		aa1f03e3		MOVD ZR, R3								
+  utf8_length_scalar.go:31	0x100280548		14000008		JMP 8(PC)								
+  utf8_length_scalar.go:31	0x10028054c		38626824		MOVBU (R1)(R2), R4							
+  utf8_length_scalar.go:32	0x100280550		93401c85		SXTB R4, R5								
+  utf8_length_scalar.go:31	0x100280554		91000442		ADD $1, R2, R2								
+  utf8_length_scalar.go:32	0x100280558		310104bf		CMNW $65, R5								
+  utf8_length_scalar.go:35	0x10028055c		9a83d465		CINC GT, R3, R5								
+  utf8_length_scalar.go:35	0x100280560		7103c09f		CMPW $240, R4								
+  utf8_length_scalar.go:35	0x100280564		9a8534a3		CINC HS, R5, R3								
+  utf8_length_scalar.go:31	0x100280568		eb00005f		CMP R0, R2								
+  utf8_length_scalar.go:31	0x10028056c		54ffff0b		BLT -8(PC)								
+  utf8_length_arm64.go:42	0x100280570		f94013e1		MOVD 32(RSP), R1							
+  utf8_length_arm64.go:42	0x100280574		8b030020		ADD R3, R1, R0								
+  utf8_length_arm64.go:42	0x100280578		f85f83fd		MOVD -8(RSP), R29							
+  utf8_length_arm64.go:42	0x10028057c		f84407fe		MOVD.P 64(RSP), R30							
+  utf8_length_arm64.go:42	0x100280580		d65f03c0		RET									
+  utf8_length_scalar.go:31	0x100280584		38626804		MOVBU (R0)(R2), R4							
+  utf8_length_scalar.go:32	0x100280588		93401c85		SXTB R4, R5								
+  utf8_length_scalar.go:31	0x10028058c		91000442		ADD $1, R2, R2								
+  utf8_length_scalar.go:32	0x100280590		310104bf		CMNW $65, R5								
+  utf8_length_scalar.go:35	0x100280594		9a83d465		CINC GT, R3, R5								
+  utf8_length_scalar.go:35	0x100280598		7103c09f		CMPW $240, R4								
+  utf8_length_scalar.go:35	0x10028059c		9a8534a3		CINC HS, R5, R3								
+  utf8_length_scalar.go:31	0x1002805a0		eb02003f		CMP R2, R1								
+  utf8_length_scalar.go:31	0x1002805a4		54ffff0c		BGT -8(PC)								
+  utf8_length_arm64.go:40	0x1002805a8		aa0303e0		MOVD R3, R0								
+  utf8_length_arm64.go:40	0x1002805ac		f85f83fd		MOVD -8(RSP), R29							
+  utf8_length_arm64.go:40	0x1002805b0		f84407fe		MOVD.P 64(RSP), R30							
+  utf8_length_arm64.go:40	0x1002805b4		d65f03c0		RET									
+  utf8_length_arm64.go:37	0x1002805b8		a90087e0		STP (R0, R1), 8(RSP)							
+  utf8_length_arm64.go:37	0x1002805bc		f9000fe2		MOVD R2, 24(RSP)							
+  utf8_length_arm64.go:37	0x1002805c0		aa1e03e3		MOVD R30, R3								
+  utf8_length_arm64.go:37	0x1002805c4		97f8073b		CALL runtime.morestack_noctxt.abi0(SB)					
+  utf8_length_arm64.go:37	0x1002805c8		a94087e0		LDP 8(RSP), (R0, R1)							
+  utf8_length_arm64.go:37	0x1002805cc		f9400fe2		MOVD 24(RSP), R2							
+  utf8_length_arm64.go:37	0x1002805d0		17ffffc0		JMP github.com/zchee/go-simdutf.utf16LengthFromUTF8NEON(SB)		
+  utf8_length_arm64.go:37	0x1002805d4		00000000		?									
+  utf8_length_arm64.go:37	0x1002805d8		00000000		?									
+  utf8_length_arm64.go:37	0x1002805dc		00000000		?									
+
+TEXT github.com/zchee/go-simdutf.utf32LengthFromUTF8NEON(SB) /Users/zchee/go/src/github.com/zchee/go-simdutf/utf8_length_arm64.go
+  utf8_length_arm64.go:45	0x1002805e0		f9400b90		MOVD 16(R28), R16						
+  utf8_length_arm64.go:45	0x1002805e4		eb3063ff		CMP R16, RSP							
+  utf8_length_arm64.go:45	0x1002805e8		54000129		BLS 9(PC)							
+  utf8_length_arm64.go:45	0x1002805ec		f81d0ffe		MOVD.W R30, -48(RSP)						
+  utf8_length_arm64.go:45	0x1002805f0		f81f83fd		MOVD R29, -8(RSP)						
+  utf8_length_arm64.go:45	0x1002805f4		d10023fd		SUB $8, RSP, R29						
+  utf8_length_arm64.go:45	0x1002805f8		f9001fe0		MOVD R0, 56(RSP)						
+  utf8_length_arm64.go:46	0x1002805fc		97ffec3d		CALL github.com/zchee/go-simdutf.countUTF8NEON(SB)		
+  utf8_length_arm64.go:46	0x100280600		f85f83fd		MOVD -8(RSP), R29						
+  utf8_length_arm64.go:46	0x100280604		f84307fe		MOVD.P 48(RSP), R30						
+  utf8_length_arm64.go:46	0x100280608		d65f03c0		RET								
+  utf8_length_arm64.go:45	0x10028060c		a90087e0		STP (R0, R1), 8(RSP)						
+  utf8_length_arm64.go:45	0x100280610		f9000fe2		MOVD R2, 24(RSP)						
+  utf8_length_arm64.go:45	0x100280614		aa1e03e3		MOVD R30, R3							
+  utf8_length_arm64.go:45	0x100280618		97f80726		CALL runtime.morestack_noctxt.abi0(SB)				
+  utf8_length_arm64.go:45	0x10028061c		a94087e0		LDP 8(RSP), (R0, R1)						
+  utf8_length_arm64.go:45	0x100280620		f9400fe2		MOVD 24(RSP), R2						
+  utf8_length_arm64.go:45	0x100280624		17ffffef		JMP github.com/zchee/go-simdutf.utf32LengthFromUTF8NEON(SB)	
+  utf8_length_arm64.go:45	0x100280628		00000000		?								
+  utf8_length_arm64.go:45	0x10028062c		00000000		?								
+
+TEXT github.com/zchee/go-simdutf.validateUTF8Scalar(SB) /Users/zchee/go/src/github.com/zchee/go-simdutf/utf8_scalar.go
+  utf8_scalar.go:27	0x100280860		f9400b90		MOVD 16(R28), R16					
+  utf8_scalar.go:27	0x100280864		eb3063ff		CMP R16, RSP						
+  utf8_scalar.go:27	0x100280868		540017e9		BLS 191(PC)						
+  utf8_scalar.go:27	0x10028086c		f81f0ffe		MOVD.W R30, -16(RSP)					
+  utf8_scalar.go:27	0x100280870		f81f83fd		MOVD R29, -8(RSP)					
+  utf8_scalar.go:27	0x100280874		d10023fd		SUB $8, RSP, R29					
+  utf8_scalar.go:27	0x100280878		f9000fe0		MOVD R0, 24(RSP)					
+  utf8_scalar.go:29	0x10028087c		aa1f03e3		MOVD ZR, R3						
+  utf8_scalar.go:29	0x100280880		14000002		JMP 2(PC)						
+  utf8_scalar.go:29	0x100280884		aa0503e3		MOVD R5, R3						
+  utf8_scalar.go:29	0x100280888		eb03003f		CMP R3, R1						
+  utf8_scalar.go:29	0x10028088c		540010ad		BLE 133(PC)						
+  utf8_scalar.go:30	0x100280890		91004064		ADD $16, R3, R4						
+  utf8_scalar.go:31	0x100280894		eb04003f		CMP R4, R1						
+  utf8_scalar.go:31	0x100280898		5400036b		BLT 27(PC)						
+  utf8_scalar.go:29	0x10028089c		eb03003f		CMP R3, R1						
+  utf8_scalar.go:32	0x1002808a0		540015e3		BCC 175(PC)						
+  utf8_scalar.go:32	0x1002808a4		cb030025		SUB R3, R1, R5						
+  utf8_scalar.go:32	0x1002808a8		cb020066		SUB R2, R3, R6						
+  utf8_scalar.go:32	0x1002808ac		cb030047		SUB R3, R2, R7						
+  utf8_scalar.go:32	0x1002808b0		8a86fc66		AND R6->63, R3, R6					
+  binary.go:116		0x1002808b4		f1001cbf		CMP $7, R5						
+  binary.go:116		0x1002808b8		54001509		BLS 168(PC)						
+  utf8_scalar.go:33	0x1002808bc		91002068		ADD $8, R3, R8						
+  binary.go:117		0x1002808c0		f8666806		MOVD (R0)(R6), R6					
+  utf8_scalar.go:33	0x1002808c4		eb08003f		CMP R8, R1						
+  utf8_scalar.go:33	0x1002808c8		54001463		BCC 163(PC)						
+  utf8_scalar.go:33	0x1002808cc		d10020a5		SUB $8, R5, R5						
+  utf8_scalar.go:33	0x1002808d0		d10020e7		SUB $8, R7, R7						
+  utf8_scalar.go:33	0x1002808d4		cb0703e7		NEG R7, R7						
+  utf8_scalar.go:33	0x1002808d8		8a87fd07		AND R7->63, R8, R7					
+  binary.go:116		0x1002808dc		f1001cbf		CMP $7, R5						
+  binary.go:116		0x1002808e0		54001389		BLS 156(PC)						
+  binary.go:117		0x1002808e4		f8676805		MOVD (R0)(R7), R5					
+  utf8_scalar.go:34	0x1002808e8		aa0500c5		ORR R5, R6, R5						
+  utf8_scalar.go:34	0x1002808ec		f201c0bf		TST $-9187201950435737472, R5				
+  utf8_scalar.go:34	0x1002808f0		54000061		BNE 3(PC)						
+  utf8_scalar.go:30	0x1002808f4		aa0403e5		MOVD R4, R5						
+  utf8_scalar.go:36	0x1002808f8		17ffffe3		JMP -29(PC)						
+  utf8_scalar.go:29	0x1002808fc		eb03003f		CMP R3, R1						
+  utf8_scalar.go:34	0x100280900		14000002		JMP 2(PC)						
+  utf8_scalar.go:29	0x100280904		eb03003f		CMP R3, R1						
+  utf8_scalar.go:40	0x100280908		54001229		BLS 145(PC)						
+  utf8_scalar.go:40	0x10028090c		38636804		MOVBU (R0)(R3), R4					
+  utf8_scalar.go:41	0x100280910		14000002		JMP 2(PC)						
+  utf8_scalar.go:46	0x100280914		38636804		MOVBU (R0)(R3), R4					
+  utf8_scalar.go:41	0x100280918		d3401c85		UBFX $0, R4, $8, R5					
+  utf8_scalar.go:41	0x10028091c		710200bf		CMPW $128, R5						
+  utf8_scalar.go:41	0x100280920		540000c2		BCS 6(PC)						
+  utf8_scalar.go:42	0x100280924		91000463		ADD $1, R3, R3						
+  utf8_scalar.go:43	0x100280928		eb03003f		CMP R3, R1						
+  utf8_scalar.go:43	0x10028092c		54000c20		BEQ 97(PC)						
+  utf8_scalar.go:46	0x100280930		54ffff28		BHI -7(PC)						
+  utf8_scalar.go:46	0x100280934		14000085		JMP 133(PC)						
+  utf8_scalar.go:50	0x100280938		927b0885		AND $224, R4, R5					
+  utf8_scalar.go:50	0x10028093c		710300bf		CMPW $192, R5						
+  utf8_scalar.go:50	0x100280940		54000221		BNE 17(PC)						
+  utf8_scalar.go:51	0x100280944		91000865		ADD $2, R3, R5						
+  utf8_scalar.go:52	0x100280948		eb05003f		CMP R5, R1						
+  utf8_scalar.go:52	0x10028094c		54000c2b		BLT 97(PC)						
+  utf8_scalar.go:52	0x100280950		91000463		ADD $1, R3, R3						
+  utf8_scalar.go:52	0x100280954		eb03003f		CMP R3, R1						
+  utf8_scalar.go:52	0x100280958		54000f69		BLS 123(PC)						
+  utf8_scalar.go:52	0x10028095c		38636803		MOVBU (R0)(R3), R3					
+  utf8_scalar.go:52	0x100280960		927a0466		AND $192, R3, R6					
+  utf8_scalar.go:52	0x100280964		710200df		CMPW $128, R6						
+  utf8_scalar.go:52	0x100280968		54000b41		BNE 90(PC)						
+  utf8_scalar.go:55	0x10028096c		92401084		AND $31, R4, R4						
+  utf8_scalar.go:55	0x100280970		92401463		AND $63, R3, R3						
+  utf8_scalar.go:55	0x100280974		aa041863		ORR R4<<6, R3, R3					
+  utf8_scalar.go:56	0x100280978		7102007f		CMPW $128, R3						
+  utf8_scalar.go:56	0x10028097c		54fff842		BCS -62(PC)						
+  utf8_scalar.go:56	0x100280980		14000050		JMP 80(PC)						
+  utf8_scalar.go:59	0x100280984		927c0c85		AND $240, R4, R5					
+  utf8_scalar.go:59	0x100280988		710380bf		CMPW $224, R5						
+  utf8_scalar.go:59	0x10028098c		540003c1		BNE 30(PC)						
+  utf8_scalar.go:60	0x100280990		91000c65		ADD $3, R3, R5						
+  utf8_scalar.go:61	0x100280994		eb05003f		CMP R5, R1						
+  utf8_scalar.go:61	0x100280998		54000acb		BLT 86(PC)						
+  utf8_scalar.go:61	0x10028099c		91000466		ADD $1, R3, R6						
+  utf8_scalar.go:61	0x1002809a0		eb06003f		CMP R6, R1						
+  utf8_scalar.go:61	0x1002809a4		54000ce9		BLS 103(PC)						
+  utf8_scalar.go:61	0x1002809a8		38666806		MOVBU (R0)(R6), R6					
+  utf8_scalar.go:61	0x1002809ac		927a04c7		AND $192, R6, R7					
+  utf8_scalar.go:61	0x1002809b0		710200ff		CMPW $128, R7						
+  utf8_scalar.go:61	0x1002809b4		540009e1		BNE 79(PC)						
+  utf8_scalar.go:61	0x1002809b8		91000863		ADD $2, R3, R3						
+  utf8_scalar.go:61	0x1002809bc		eb03003f		CMP R3, R1						
+  utf8_scalar.go:61	0x1002809c0		54000be9		BLS 95(PC)						
+  utf8_scalar.go:61	0x1002809c4		38636803		MOVBU (R0)(R3), R3					
+  utf8_scalar.go:61	0x1002809c8		927a0467		AND $192, R3, R7					
+  utf8_scalar.go:61	0x1002809cc		710200ff		CMPW $128, R7						
+  utf8_scalar.go:61	0x1002809d0		54000901		BNE 72(PC)						
+  utf8_scalar.go:64	0x1002809d4		d3740c84		UBFIZ $12, R4, $4, R4					
+  utf8_scalar.go:64	0x1002809d8		924014c6		AND $63, R6, R6						
+  utf8_scalar.go:64	0x1002809dc		aa061884		ORR R6<<6, R4, R4					
+  utf8_scalar.go:64	0x1002809e0		92401463		AND $63, R3, R3						
+  utf8_scalar.go:64	0x1002809e4		aa030083		ORR R3, R4, R3						
+  utf8_scalar.go:65	0x1002809e8		7120007f		CMPW $2048, R3						
+  utf8_scalar.go:65	0x1002809ec		540007a3		BCC 61(PC)						
+  utf8_scalar.go:65	0x1002809f0		d29b0004		MOVD $55296, R4						
+  utf8_scalar.go:65	0x1002809f4		cb040063		SUB R4, R3, R3						
+  utf8_scalar.go:65	0x1002809f8		7120007f		CMPW $2048, R3						
+  utf8_scalar.go:65	0x1002809fc		54fff442		BCS -94(PC)						
+  utf8_scalar.go:65	0x100280a00		14000038		JMP 56(PC)						
+  utf8_scalar.go:68	0x100280a04		927d1085		AND $248, R4, R5					
+  utf8_scalar.go:68	0x100280a08		7103c0bf		CMPW $240, R5						
+  utf8_scalar.go:68	0x100280a0c		540008a1		BNE 69(PC)						
+  utf8_scalar.go:69	0x100280a10		91001065		ADD $4, R3, R5						
+  utf8_scalar.go:70	0x100280a14		eb05003f		CMP R5, R1						
+  utf8_scalar.go:70	0x100280a18		540007cb		BLT 62(PC)						
+  utf8_scalar.go:70	0x100280a1c		91000466		ADD $1, R3, R6						
+  utf8_scalar.go:70	0x100280a20		eb06003f		CMP R6, R1						
+  utf8_scalar.go:70	0x100280a24		540008a9		BLS 69(PC)						
+  utf8_scalar.go:70	0x100280a28		38666806		MOVBU (R0)(R6), R6					
+  utf8_scalar.go:70	0x100280a2c		927a04c7		AND $192, R6, R7					
+  utf8_scalar.go:70	0x100280a30		710200ff		CMPW $128, R7						
+  utf8_scalar.go:70	0x100280a34		540006e1		BNE 55(PC)						
+  utf8_scalar.go:70	0x100280a38		91000867		ADD $2, R3, R7						
+  utf8_scalar.go:70	0x100280a3c		eb07003f		CMP R7, R1						
+  utf8_scalar.go:70	0x100280a40		540007a9		BLS 61(PC)						
+  utf8_scalar.go:70	0x100280a44		38676807		MOVBU (R0)(R7), R7					
+  utf8_scalar.go:70	0x100280a48		927a04e8		AND $192, R7, R8					
+  utf8_scalar.go:70	0x100280a4c		7102011f		CMPW $128, R8						
+  utf8_scalar.go:70	0x100280a50		54000601		BNE 48(PC)						
+  utf8_scalar.go:70	0x100280a54		91000c63		ADD $3, R3, R3						
+  utf8_scalar.go:70	0x100280a58		eb03003f		CMP R3, R1						
+  utf8_scalar.go:70	0x100280a5c		540006a9		BLS 53(PC)						
+  utf8_scalar.go:70	0x100280a60		38636803		MOVBU (R0)(R3), R3					
+  utf8_scalar.go:70	0x100280a64		927a0468		AND $192, R3, R8					
+  utf8_scalar.go:70	0x100280a68		7102011f		CMPW $128, R8						
+  utf8_scalar.go:70	0x100280a6c		54000521		BNE 41(PC)						
+  utf8_scalar.go:73	0x100280a70		92400884		AND $7, R4, R4						
+  utf8_scalar.go:73	0x100280a74		d37414c6		UBFIZ $12, R6, $6, R6					
+  utf8_scalar.go:73	0x100280a78		aa0448c4		ORR R4<<18, R6, R4					
+  utf8_scalar.go:73	0x100280a7c		924014e6		AND $63, R7, R6						
+  utf8_scalar.go:73	0x100280a80		aa061884		ORR R6<<6, R4, R4					
+  utf8_scalar.go:73	0x100280a84		92401463		AND $63, R3, R3						
+  utf8_scalar.go:73	0x100280a88		aa040063		ORR R4, R3, R3						
+  utf8_scalar.go:74	0x100280a8c		d1404063		SUB $(16<<12), R3, R3					
+  utf8_scalar.go:74	0x100280a90		b2404fe4		MOVD $1048575, R4					
+  utf8_scalar.go:74	0x100280a94		6b04007f		CMPW R4, R3						
+  utf8_scalar.go:74	0x100280a98		54ffef69		BLS -133(PC)						
+  utf8_scalar.go:74	0x100280a9c		14000019		JMP 25(PC)						
+  utf8_scalar.go:82	0x100280aa0		b24003e0		ORR $1, ZR, R0						
+  utf8_scalar.go:82	0x100280aa4		f85f83fd		MOVD -8(RSP), R29					
+  utf8_scalar.go:82	0x100280aa8		f84107fe		MOVD.P 16(RSP), R30					
+  utf8_scalar.go:82	0x100280aac		d65f03c0		RET							
+  utf8_scalar.go:44	0x100280ab0		b24003e0		ORR $1, ZR, R0						
+  utf8_scalar.go:44	0x100280ab4		f85f83fd		MOVD -8(RSP), R29					
+  utf8_scalar.go:44	0x100280ab8		f84107fe		MOVD.P 16(RSP), R30					
+  utf8_scalar.go:44	0x100280abc		d65f03c0		RET							
+  utf8_scalar.go:57	0x100280ac0		aa1f03e0		MOVD ZR, R0						
+  utf8_scalar.go:57	0x100280ac4		f85f83fd		MOVD -8(RSP), R29					
+  utf8_scalar.go:57	0x100280ac8		f84107fe		MOVD.P 16(RSP), R30					
+  utf8_scalar.go:57	0x100280acc		d65f03c0		RET							
+  utf8_scalar.go:53	0x100280ad0		aa1f03e0		MOVD ZR, R0						
+  utf8_scalar.go:53	0x100280ad4		f85f83fd		MOVD -8(RSP), R29					
+  utf8_scalar.go:53	0x100280ad8		f84107fe		MOVD.P 16(RSP), R30					
+  utf8_scalar.go:53	0x100280adc		d65f03c0		RET							
+  utf8_scalar.go:66	0x100280ae0		aa1f03e0		MOVD ZR, R0						
+  utf8_scalar.go:66	0x100280ae4		f85f83fd		MOVD -8(RSP), R29					
+  utf8_scalar.go:66	0x100280ae8		f84107fe		MOVD.P 16(RSP), R30					
+  utf8_scalar.go:66	0x100280aec		d65f03c0		RET							
+  utf8_scalar.go:62	0x100280af0		aa1f03e0		MOVD ZR, R0						
+  utf8_scalar.go:62	0x100280af4		f85f83fd		MOVD -8(RSP), R29					
+  utf8_scalar.go:62	0x100280af8		f84107fe		MOVD.P 16(RSP), R30					
+  utf8_scalar.go:62	0x100280afc		d65f03c0		RET							
+  utf8_scalar.go:75	0x100280b00		aa1f03e0		MOVD ZR, R0						
+  utf8_scalar.go:75	0x100280b04		f85f83fd		MOVD -8(RSP), R29					
+  utf8_scalar.go:75	0x100280b08		f84107fe		MOVD.P 16(RSP), R30					
+  utf8_scalar.go:75	0x100280b0c		d65f03c0		RET							
+  utf8_scalar.go:71	0x100280b10		aa1f03e0		MOVD ZR, R0						
+  utf8_scalar.go:71	0x100280b14		f85f83fd		MOVD -8(RSP), R29					
+  utf8_scalar.go:71	0x100280b18		f84107fe		MOVD.P 16(RSP), R30					
+  utf8_scalar.go:71	0x100280b1c		d65f03c0		RET							
+  utf8_scalar.go:78	0x100280b20		aa1f03e0		MOVD ZR, R0						
+  utf8_scalar.go:78	0x100280b24		f85f83fd		MOVD -8(RSP), R29					
+  utf8_scalar.go:78	0x100280b28		f84107fe		MOVD.P 16(RSP), R30					
+  utf8_scalar.go:78	0x100280b2c		d65f03c0		RET							
+  utf8_scalar.go:70	0x100280b30		97f80e64		CALL runtime.panicBounds(SB)				
+  utf8_scalar.go:70	0x100280b34		97f80e63		CALL runtime.panicBounds(SB)				
+  utf8_scalar.go:70	0x100280b38		97f80e62		CALL runtime.panicBounds(SB)				
+  utf8_scalar.go:61	0x100280b3c		97f80e61		CALL runtime.panicBounds(SB)				
+  utf8_scalar.go:61	0x100280b40		97f80e60		CALL runtime.panicBounds(SB)				
+  utf8_scalar.go:52	0x100280b44		97f80e5f		CALL runtime.panicBounds(SB)				
+  utf8_scalar.go:46	0x100280b48		97f80e5e		CALL runtime.panicBounds(SB)				
+  utf8_scalar.go:40	0x100280b4c		97f80e5d		CALL runtime.panicBounds(SB)				
+  binary.go:116		0x100280b50		97f80e5c		CALL runtime.panicBounds(SB)				
+  utf8_scalar.go:33	0x100280b54		97f80e5b		CALL runtime.panicBounds(SB)				
+  binary.go:116		0x100280b58		97f80e5a		CALL runtime.panicBounds(SB)				
+  utf8_scalar.go:32	0x100280b5c		97f80e59		CALL runtime.panicBounds(SB)				
+  utf8_scalar.go:32	0x100280b60		d503201f		NOOP							
+  utf8_scalar.go:27	0x100280b64		a90087e0		STP (R0, R1), 8(RSP)					
+  utf8_scalar.go:27	0x100280b68		f9000fe2		MOVD R2, 24(RSP)					
+  utf8_scalar.go:27	0x100280b6c		aa1e03e3		MOVD R30, R3						
+  utf8_scalar.go:27	0x100280b70		97f805d0		CALL runtime.morestack_noctxt.abi0(SB)			
+  utf8_scalar.go:27	0x100280b74		a94087e0		LDP 8(RSP), (R0, R1)					
+  utf8_scalar.go:27	0x100280b78		f9400fe2		MOVD 24(RSP), R2					
+  utf8_scalar.go:27	0x100280b7c		17ffff39		JMP github.com/zchee/go-simdutf.validateUTF8Scalar(SB)	
+
+TEXT github.com/zchee/go-simdutf.validateUTF16LENEON(SB) /Users/zchee/go/src/github.com/zchee/go-simdutf/utf_validation_arm64.go
+  utf_validation_arm64.go:35	0x100280f50		f9400b90		MOVD 16(R28), R16							
+  utf_validation_arm64.go:35	0x100280f54		eb3063ff		CMP R16, RSP								
+  utf_validation_arm64.go:35	0x100280f58		54000489		BLS 36(PC)								
+  utf_validation_arm64.go:35	0x100280f5c		f81d0ffe		MOVD.W R30, -48(RSP)							
+  utf_validation_arm64.go:35	0x100280f60		f81f83fd		MOVD R29, -8(RSP)							
+  utf_validation_arm64.go:35	0x100280f64		d10023fd		SUB $8, RSP, R29							
+  utf_validation_arm64.go:35	0x100280f68		f9001fe0		MOVD R0, 56(RSP)							
+  utf_validation_arm64.go:36	0x100280f6c		f100403f		CMP $16, R1								
+  utf_validation_arm64.go:36	0x100280f70		540002eb		BLT 23(PC)								
+  utf_validation_arm64.go:36	0x100280f74		f9001fe0		MOVD R0, 56(RSP)							
+  utf_validation_arm64.go:36	0x100280f78		f90023e1		MOVD R1, 64(RSP)							
+  utf_validation_arm64.go:36	0x100280f7c		f90027e2		MOVD R2, 72(RSP)							
+  utf_validation_arm64.go:39	0x100280f80		f90007e0		MOVD R0, 8(RSP)								
+  utf_validation_arm64.go:39	0x100280f84		a9010be1		STP (R1, R2), 16(RSP)							
+  utf_validation_arm64.go:39	0x100280f88		940110ee		CALL github.com/zchee/go-simdutf.validateUTF16LEPrefixNEON.abi0(SB)	
+  utf_validation_arm64.go:39	0x100280f8c		f94013e0		MOVD 32(RSP), R0							
+  utf_validation_arm64.go:40	0x100280f90		f94023e1		MOVD 64(RSP), R1							
+  utf_validation_arm64.go:40	0x100280f94		eb00003f		CMP R0, R1								
+  utf_validation_arm64.go:40	0x100280f98		54000243		BCC 18(PC)								
+  utf_validation_arm64.go:40	0x100280f9c		cb000021		SUB R0, R1, R1								
+  utf_validation_arm64.go:40	0x100280fa0		f94027e4		MOVD 72(RSP), R4							
+  utf_validation_arm64.go:40	0x100280fa4		cb000082		SUB R0, R4, R2								
+  utf_validation_arm64.go:40	0x100280fa8		cb040004		SUB R4, R0, R4								
+  utf_validation_arm64.go:40	0x100280fac		8a84fc04		AND R4->63, R0, R4							
+  utf_validation_arm64.go:40	0x100280fb0		f9401fe5		MOVD 56(RSP), R5							
+  utf_validation_arm64.go:40	0x100280fb4		8b0404a0		ADD R4<<1, R5, R0							
+  utf16_scalar.go:25		0x100280fb8		b24003e3		ORR $1, ZR, R3								
+  utf16_scalar.go:25		0x100280fbc		97fff0d5		CALL github.com/zchee/go-simdutf.validateUTF16Scalar(SB)		
+  utf_validation_arm64.go:40	0x100280fc0		f85f83fd		MOVD -8(RSP), R29							
+  utf_validation_arm64.go:40	0x100280fc4		f84307fe		MOVD.P 48(RSP), R30							
+  utf_validation_arm64.go:40	0x100280fc8		d65f03c0		RET									
+  utf16_scalar.go:25		0x100280fcc		b24003e3		ORR $1, ZR, R3								
+  utf16_scalar.go:25		0x100280fd0		97fff0d0		CALL github.com/zchee/go-simdutf.validateUTF16Scalar(SB)		
+  utf_validation_arm64.go:37	0x100280fd4		f85f83fd		MOVD -8(RSP), R29							
+  utf_validation_arm64.go:37	0x100280fd8		f84307fe		MOVD.P 48(RSP), R30							
+  utf_validation_arm64.go:37	0x100280fdc		d65f03c0		RET									
+  utf_validation_arm64.go:40	0x100280fe0		97f80d38		CALL runtime.panicBounds(SB)						
+  utf_validation_arm64.go:40	0x100280fe4		d503201f		NOOP									
+  utf_validation_arm64.go:35	0x100280fe8		a90087e0		STP (R0, R1), 8(RSP)							
+  utf_validation_arm64.go:35	0x100280fec		f9000fe2		MOVD R2, 24(RSP)							
+  utf_validation_arm64.go:35	0x100280ff0		aa1e03e3		MOVD R30, R3								
+  utf_validation_arm64.go:35	0x100280ff4		97f804af		CALL runtime.morestack_noctxt.abi0(SB)					
+  utf_validation_arm64.go:35	0x100280ff8		a94087e0		LDP 8(RSP), (R0, R1)							
+  utf_validation_arm64.go:35	0x100280ffc		f9400fe2		MOVD 24(RSP), R2							
+  utf_validation_arm64.go:35	0x100281000		17ffffd4		JMP github.com/zchee/go-simdutf.validateUTF16LENEON(SB)			
+  utf_validation_arm64.go:35	0x100281004		00000000		?									
+  utf_validation_arm64.go:35	0x100281008		00000000		?									
+  utf_validation_arm64.go:35	0x10028100c		00000000		?									
+
+TEXT github.com/zchee/go-simdutf.validateUTF32NEON(SB) /Users/zchee/go/src/github.com/zchee/go-simdutf/utf_validation_arm64.go
+  utf_validation_arm64.go:106	0x100281510		f9400b90		MOVD 16(R28), R16							
+  utf_validation_arm64.go:106	0x100281514		eb3063ff		CMP R16, RSP								
+  utf_validation_arm64.go:106	0x100281518		54000849		BLS 66(PC)								
+  utf_validation_arm64.go:106	0x10028151c		f81d0ffe		MOVD.W R30, -48(RSP)							
+  utf_validation_arm64.go:106	0x100281520		f81f83fd		MOVD R29, -8(RSP)							
+  utf_validation_arm64.go:106	0x100281524		d10023fd		SUB $8, RSP, R29							
+  utf_validation_arm64.go:106	0x100281528		f9001fe0		MOVD R0, 56(RSP)							
+  utf_validation_arm64.go:107	0x10028152c		f100103f		CMP $4, R1								
+  utf_validation_arm64.go:107	0x100281530		5400006a		BGE 3(PC)								
+  utf32_scalar.go:23		0x100281534		aa1f03e2		MOVD ZR, R2								
+  utf32_scalar.go:23		0x100281538		14000028		JMP 40(PC)								
+  utf_validation_arm64.go:107	0x10028153c		f90023e1		MOVD R1, 64(RSP)							
+  utf_validation_arm64.go:107	0x100281540		f9001fe0		MOVD R0, 56(RSP)							
+  utf_validation_arm64.go:107	0x100281544		f90027e2		MOVD R2, 72(RSP)							
+  utf_validation_arm64.go:110	0x100281548		f90007e0		MOVD R0, 8(RSP)								
+  utf_validation_arm64.go:110	0x10028154c		a9010be1		STP (R1, R2), 16(RSP)							
+  utf_validation_arm64.go:110	0x100281550		94010fac		CALL github.com/zchee/go-simdutf.validateUTF32PrefixNEON.abi0(SB)	
+  utf_validation_arm64.go:110	0x100281554		f94013e0		MOVD 32(RSP), R0							
+  utf_validation_arm64.go:111	0x100281558		f94023e1		MOVD 64(RSP), R1							
+  utf_validation_arm64.go:111	0x10028155c		eb00003f		CMP R0, R1								
+  utf_validation_arm64.go:111	0x100281560		54000383		BCC 28(PC)								
+  utf_validation_arm64.go:111	0x100281564		f94027e2		MOVD 72(RSP), R2							
+  utf_validation_arm64.go:111	0x100281568		cb020002		SUB R2, R0, R2								
+  utf_validation_arm64.go:111	0x10028156c		8a82fc02		AND R2->63, R0, R2							
+  utf_validation_arm64.go:111	0x100281570		cb000021		SUB R0, R1, R1								
+  utf_validation_arm64.go:111	0x100281574		f9401fe3		MOVD 56(RSP), R3							
+  utf_validation_arm64.go:111	0x100281578		8b020862		ADD R2<<2, R3, R2							
+  utf32_scalar.go:23		0x10028157c		aa1f03e0		MOVD ZR, R0								
+  utf32_scalar.go:23		0x100281580		14000002		JMP 2(PC)								
+  utf32_scalar.go:23		0x100281584		91000400		ADD $1, R0, R0								
+  utf32_scalar.go:23		0x100281588		eb01001f		CMP R1, R0								
+  utf32_scalar.go:23		0x10028158c		540001aa		BGE 13(PC)								
+  utf32_scalar.go:23		0x100281590		b8607843		MOVWU (R2)(R0<<2), R3							
+  utf32_scalar.go:24		0x100281594		d29fffe4		MOVD $65535, R4								
+  utf32_scalar.go:24		0x100281598		f2a00204		MOVK $(16<<16), R4							
+  utf32_scalar.go:24		0x10028159c		6b04007f		CMPW R4, R3								
+  utf32_scalar.go:24		0x1002815a0		540000e8		BHI 7(PC)								
+  utf32_scalar.go:24		0x1002815a4		d29b0004		MOVD $55296, R4								
+  utf32_scalar.go:24		0x1002815a8		cb040063		SUB R4, R3, R3								
+  utf32_scalar.go:24		0x1002815ac		711ffc7f		CMPW $2047, R3								
+  utf32_scalar.go:24		0x1002815b0		54fffea8		BHI -11(PC)								
+  utf32_scalar.go:23		0x1002815b4		eb01001f		CMP R1, R0								
+  utf32_scalar.go:24		0x1002815b8		14000002		JMP 2(PC)								
+  utf32_scalar.go:23		0x1002815bc		eb01001f		CMP R1, R0								
+  utf_validation_arm64.go:111	0x1002815c0		9a9fb7e0		CSET GE, R0								
+  utf_validation_arm64.go:111	0x1002815c4		f85f83fd		MOVD -8(RSP), R29							
+  utf_validation_arm64.go:111	0x1002815c8		f84307fe		MOVD.P 48(RSP), R30							
+  utf_validation_arm64.go:111	0x1002815cc		d65f03c0		RET									
+  utf_validation_arm64.go:111	0x1002815d0		97f80bbc		CALL runtime.panicBounds(SB)						
+  utf32_scalar.go:23		0x1002815d4		91000442		ADD $1, R2, R2								
+  utf32_scalar.go:23		0x1002815d8		eb02003f		CMP R2, R1								
+  utf32_scalar.go:23		0x1002815dc		540001ad		BLE 13(PC)								
+  utf32_scalar.go:23		0x1002815e0		b8627803		MOVWU (R0)(R2<<2), R3							
+  utf32_scalar.go:24		0x1002815e4		d29fffe4		MOVD $65535, R4								
+  utf32_scalar.go:24		0x1002815e8		f2a00204		MOVK $(16<<16), R4							
+  utf32_scalar.go:24		0x1002815ec		6b04007f		CMPW R4, R3								
+  utf32_scalar.go:24		0x1002815f0		540000e8		BHI 7(PC)								
+  utf32_scalar.go:24		0x1002815f4		d29b0004		MOVD $55296, R4								
+  utf32_scalar.go:24		0x1002815f8		cb040063		SUB R4, R3, R3								
+  utf32_scalar.go:24		0x1002815fc		711ffc7f		CMPW $2047, R3								
+  utf32_scalar.go:24		0x100281600		54fffea8		BHI -11(PC)								
+  utf32_scalar.go:23		0x100281604		eb02003f		CMP R2, R1								
+  utf32_scalar.go:24		0x100281608		14000002		JMP 2(PC)								
+  utf32_scalar.go:23		0x10028160c		eb02003f		CMP R2, R1								
+  utf_validation_arm64.go:108	0x100281610		9a9fc7e0		CSET LE, R0								
+  utf_validation_arm64.go:108	0x100281614		f85f83fd		MOVD -8(RSP), R29							
+  utf_validation_arm64.go:108	0x100281618		f84307fe		MOVD.P 48(RSP), R30							
+  utf_validation_arm64.go:108	0x10028161c		d65f03c0		RET									
+  utf_validation_arm64.go:106	0x100281620		a90087e0		STP (R0, R1), 8(RSP)							
+  utf_validation_arm64.go:106	0x100281624		f9000fe2		MOVD R2, 24(RSP)							
+  utf_validation_arm64.go:106	0x100281628		aa1e03e3		MOVD R30, R3								
+  utf_validation_arm64.go:106	0x10028162c		97f80321		CALL runtime.morestack_noctxt.abi0(SB)					
+  utf_validation_arm64.go:106	0x100281630		a94087e0		LDP 8(RSP), (R0, R1)							
+  utf_validation_arm64.go:106	0x100281634		f9400fe2		MOVD 24(RSP), R2							
+  utf_validation_arm64.go:106	0x100281638		17ffffb6		JMP github.com/zchee/go-simdutf.validateUTF32NEON(SB)			
+  utf_validation_arm64.go:106	0x10028163c		00000000		?									
+
+TEXT github.com/zchee/go-simdutf.utf8ASCIIToLatin1BlocksNEON.abi0(SB) /Users/zchee/go/src/github.com/zchee/go-simdutf/utf8_convert_arm64.s
+  utf8_convert_arm64.s:26	0x1002c50e0		f94007e0		MOVD 8(RSP), R0			
+  utf8_convert_arm64.s:27	0x1002c50e4		f9400be1		MOVD 16(RSP), R1		
+  utf8_convert_arm64.s:28	0x1002c50e8		f94013e2		MOVD 32(RSP), R2		
+  utf8_convert_arm64.s:29	0x1002c50ec		aa1f03e3		MOVD ZR, R3			
+  utf8_convert_arm64.s:31	0x1002c50f0		f100403f		CMP $16, R1			
+  utf8_convert_arm64.s:32	0x1002c50f4		5400018b		BLT 12(PC)			
+  utf8_convert_arm64.s:33	0x1002c50f8		4c407000		VLD1 (R0), [V0.B16]		
+  utf8_convert_arm64.s:34	0x1002c50fc		6f090401		VUSHR $7, V0.B16, V1.B16	
+  utf8_convert_arm64.s:35	0x1002c5100		4e083c25		VMOV V1.D[0], R5		
+  utf8_convert_arm64.s:36	0x1002c5104		4e183c26		VMOV V1.D[1], R6		
+  utf8_convert_arm64.s:37	0x1002c5108		aa0600a5		ORR R6, R5, R5			
+  utf8_convert_arm64.s:38	0x1002c510c		b50000c5		CBNZ R5, 6(PC)			
+  utf8_convert_arm64.s:39	0x1002c5110		4c9f7040		VST1.P [V0.B16], 16(R2)		
+  utf8_convert_arm64.s:40	0x1002c5114		91004000		ADD $16, R0, R0			
+  utf8_convert_arm64.s:41	0x1002c5118		91004063		ADD $16, R3, R3			
+  utf8_convert_arm64.s:42	0x1002c511c		d1004021		SUB $16, R1, R1			
+  utf8_convert_arm64.s:43	0x1002c5120		17fffff4		JMP -12(PC)			
+  utf8_convert_arm64.s:45	0x1002c5124		f9001fe3		MOVD R3, 56(RSP)		
+  utf8_convert_arm64.s:46	0x1002c5128		d65f03c0		RET				
+  utf8_convert_arm64.s:46	0x1002c512c		00000000		?				
+
+TEXT github.com/zchee/go-simdutf.utf8ASCIIToUTF16LEBlocksNEON.abi0(SB) /Users/zchee/go/src/github.com/zchee/go-simdutf/utf8_convert_arm64.s
+  utf8_convert_arm64.s:50	0x1002c5130		f94007e0		MOVD 8(RSP), R0			
+  utf8_convert_arm64.s:51	0x1002c5134		f9400be1		MOVD 16(RSP), R1		
+  utf8_convert_arm64.s:52	0x1002c5138		f94013e2		MOVD 32(RSP), R2		
+  utf8_convert_arm64.s:53	0x1002c513c		aa1f03e3		MOVD ZR, R3			
+  utf8_convert_arm64.s:55	0x1002c5140		f100403f		CMP $16, R1			
+  utf8_convert_arm64.s:56	0x1002c5144		540001cb		BLT 14(PC)			
+  utf8_convert_arm64.s:57	0x1002c5148		4c407000		VLD1 (R0), [V0.B16]		
+  utf8_convert_arm64.s:58	0x1002c514c		6f090401		VUSHR $7, V0.B16, V1.B16	
+  utf8_convert_arm64.s:59	0x1002c5150		4e083c25		VMOV V1.D[0], R5		
+  utf8_convert_arm64.s:60	0x1002c5154		4e183c26		VMOV V1.D[1], R6		
+  utf8_convert_arm64.s:61	0x1002c5158		aa0600a5		ORR R6, R5, R5			
+  utf8_convert_arm64.s:62	0x1002c515c		b5000105		CBNZ R5, 8(PC)			
+  utf8_convert_arm64.s:63	0x1002c5160		2f08a402		VUXTL V0.B8, V2.H8		
+  utf8_convert_arm64.s:64	0x1002c5164		6f08a403		VUXTL2 V0.B16, V3.H8		
+  utf8_convert_arm64.s:65	0x1002c5168		4c9fa442		VST1.P [V2.H8, V3.H8], 32(R2)	
+  utf8_convert_arm64.s:66	0x1002c516c		91004000		ADD $16, R0, R0			
+  utf8_convert_arm64.s:67	0x1002c5170		91004063		ADD $16, R3, R3			
+  utf8_convert_arm64.s:68	0x1002c5174		d1004021		SUB $16, R1, R1			
+  utf8_convert_arm64.s:69	0x1002c5178		17fffff2		JMP -14(PC)			
+  utf8_convert_arm64.s:71	0x1002c517c		f9001fe3		MOVD R3, 56(RSP)		
+  utf8_convert_arm64.s:72	0x1002c5180		d65f03c0		RET				
+  utf8_convert_arm64.s:72	0x1002c5184		00000000		?				
+  utf8_convert_arm64.s:72	0x1002c5188		00000000		?				
+  utf8_convert_arm64.s:72	0x1002c518c		00000000		?				
+
+TEXT github.com/zchee/go-simdutf.utf8ASCIIToUTF16BEBlocksNEON.abi0(SB) /Users/zchee/go/src/github.com/zchee/go-simdutf/utf8_convert_arm64.s
+  utf8_convert_arm64.s:76	0x1002c5190		f94007e0		MOVD 8(RSP), R0			
+  utf8_convert_arm64.s:77	0x1002c5194		f9400be1		MOVD 16(RSP), R1		
+  utf8_convert_arm64.s:78	0x1002c5198		f94013e2		MOVD 32(RSP), R2		
+  utf8_convert_arm64.s:79	0x1002c519c		aa1f03e3		MOVD ZR, R3			
+  utf8_convert_arm64.s:81	0x1002c51a0		f100403f		CMP $16, R1			
+  utf8_convert_arm64.s:82	0x1002c51a4		5400020b		BLT 16(PC)			
+  utf8_convert_arm64.s:83	0x1002c51a8		4c407000		VLD1 (R0), [V0.B16]		
+  utf8_convert_arm64.s:84	0x1002c51ac		6f090401		VUSHR $7, V0.B16, V1.B16	
+  utf8_convert_arm64.s:85	0x1002c51b0		4e083c25		VMOV V1.D[0], R5		
+  utf8_convert_arm64.s:86	0x1002c51b4		4e183c26		VMOV V1.D[1], R6		
+  utf8_convert_arm64.s:87	0x1002c51b8		aa0600a5		ORR R6, R5, R5			
+  utf8_convert_arm64.s:88	0x1002c51bc		b5000145		CBNZ R5, 10(PC)			
+  utf8_convert_arm64.s:89	0x1002c51c0		2f08a402		VUXTL V0.B8, V2.H8		
+  utf8_convert_arm64.s:90	0x1002c51c4		6f08a403		VUXTL2 V0.B16, V3.H8		
+  utf8_convert_arm64.s:91	0x1002c51c8		4e201842		VREV16 V2.B16, V2.B16		
+  utf8_convert_arm64.s:92	0x1002c51cc		4e201863		VREV16 V3.B16, V3.B16		
+  utf8_convert_arm64.s:93	0x1002c51d0		4c9fa442		VST1.P [V2.H8, V3.H8], 32(R2)	
+  utf8_convert_arm64.s:94	0x1002c51d4		91004000		ADD $16, R0, R0			
+  utf8_convert_arm64.s:95	0x1002c51d8		91004063		ADD $16, R3, R3			
+  utf8_convert_arm64.s:96	0x1002c51dc		d1004021		SUB $16, R1, R1			
+  utf8_convert_arm64.s:97	0x1002c51e0		17fffff0		JMP -16(PC)			
+  utf8_convert_arm64.s:99	0x1002c51e4		f9001fe3		MOVD R3, 56(RSP)		
+  utf8_convert_arm64.s:100	0x1002c51e8		d65f03c0		RET				
+  utf8_convert_arm64.s:100	0x1002c51ec		00000000		?				
+
+TEXT github.com/zchee/go-simdutf.utf8ASCIIToUTF32BlocksNEON.abi0(SB) /Users/zchee/go/src/github.com/zchee/go-simdutf/utf8_convert_arm64.s
+  utf8_convert_arm64.s:104	0x1002c51f0		f94007e0		MOVD 8(RSP), R0					
+  utf8_convert_arm64.s:105	0x1002c51f4		f9400be1		MOVD 16(RSP), R1				
+  utf8_convert_arm64.s:106	0x1002c51f8		f94013e2		MOVD 32(RSP), R2				
+  utf8_convert_arm64.s:107	0x1002c51fc		aa1f03e3		MOVD ZR, R3					
+  utf8_convert_arm64.s:109	0x1002c5200		f100403f		CMP $16, R1					
+  utf8_convert_arm64.s:110	0x1002c5204		5400024b		BLT 18(PC)					
+  utf8_convert_arm64.s:111	0x1002c5208		4c407000		VLD1 (R0), [V0.B16]				
+  utf8_convert_arm64.s:112	0x1002c520c		6f090401		VUSHR $7, V0.B16, V1.B16			
+  utf8_convert_arm64.s:113	0x1002c5210		4e083c25		VMOV V1.D[0], R5				
+  utf8_convert_arm64.s:114	0x1002c5214		4e183c26		VMOV V1.D[1], R6				
+  utf8_convert_arm64.s:115	0x1002c5218		aa0600a5		ORR R6, R5, R5					
+  utf8_convert_arm64.s:116	0x1002c521c		b5000185		CBNZ R5, 12(PC)					
+  utf8_convert_arm64.s:117	0x1002c5220		2f08a401		VUXTL V0.B8, V1.H8				
+  utf8_convert_arm64.s:118	0x1002c5224		6f08a402		VUXTL2 V0.B16, V2.H8				
+  utf8_convert_arm64.s:119	0x1002c5228		2f10a423		VUXTL V1.H4, V3.S4				
+  utf8_convert_arm64.s:120	0x1002c522c		6f10a424		VUXTL2 V1.H8, V4.S4				
+  utf8_convert_arm64.s:121	0x1002c5230		2f10a445		VUXTL V2.H4, V5.S4				
+  utf8_convert_arm64.s:122	0x1002c5234		6f10a446		VUXTL2 V2.H8, V6.S4				
+  utf8_convert_arm64.s:123	0x1002c5238		4c9f2843		VST1.P [V3.S4, V4.S4, V5.S4, V6.S4], 64(R2)	
+  utf8_convert_arm64.s:124	0x1002c523c		91004000		ADD $16, R0, R0					
+  utf8_convert_arm64.s:125	0x1002c5240		91004063		ADD $16, R3, R3					
+  utf8_convert_arm64.s:126	0x1002c5244		d1004021		SUB $16, R1, R1					
+  utf8_convert_arm64.s:127	0x1002c5248		17ffffee		JMP -18(PC)					
+  utf8_convert_arm64.s:129	0x1002c524c		f9001fe3		MOVD R3, 56(RSP)				
+  utf8_convert_arm64.s:130	0x1002c5250		d65f03c0		RET						
+  utf8_convert_arm64.s:130	0x1002c5254		00000000		?						
+  utf8_convert_arm64.s:130	0x1002c5258		00000000		?						
+  utf8_convert_arm64.s:130	0x1002c525c		00000000		?						
+
+TEXT github.com/zchee/go-simdutf.utf8ASCIIToUTF16LEBlocksNEON(SB) <autogenerated>
+  <autogenerated>:1	0x1002c8240		f81b0ffe		MOVD.W R30, -80(RSP)							
+  <autogenerated>:1	0x1002c8244		f81f83fd		MOVD R29, -8(RSP)							
+  <autogenerated>:1	0x1002c8248		d10023fd		SUB $8, RSP, R29							
+  <autogenerated>:1	0x1002c824c		f9002fe0		MOVD R0, 88(RSP)							
+  <autogenerated>:1	0x1002c8250		f9003be3		MOVD R3, 112(RSP)							
+  <autogenerated>:1	0x1002c8254		a90087e0		STP (R0, R1), 8(RSP)							
+  <autogenerated>:1	0x1002c8258		a9018fe2		STP (R2, R3), 24(RSP)							
+  <autogenerated>:1	0x1002c825c		a90297e4		STP (R4, R5), 40(RSP)							
+  <autogenerated>:1	0x1002c8260		97fff3b4		CALL github.com/zchee/go-simdutf.utf8ASCIIToUTF16LEBlocksNEON.abi0(SB)	
+  <autogenerated>:1	0x1002c8264		f9401fe0		MOVD 56(RSP), R0							
+  <autogenerated>:1	0x1002c8268		f85f83fd		MOVD -8(RSP), R29							
+  <autogenerated>:1	0x1002c826c		f84507fe		MOVD.P 80(RSP), R30							
+  <autogenerated>:1	0x1002c8270		d65f03c0		RET									
+  <autogenerated>:1	0x1002c8274		00000000		?									
+  <autogenerated>:1	0x1002c8278		00000000		?									
+  <autogenerated>:1	0x1002c827c		00000000		?									
+
+TEXT github.com/zchee/go-simdutf.utf8ASCIIToUTF16BEBlocksNEON(SB) <autogenerated>
+  <autogenerated>:1	0x1002c8280		f81b0ffe		MOVD.W R30, -80(RSP)							
+  <autogenerated>:1	0x1002c8284		f81f83fd		MOVD R29, -8(RSP)							
+  <autogenerated>:1	0x1002c8288		d10023fd		SUB $8, RSP, R29							
+  <autogenerated>:1	0x1002c828c		f9002fe0		MOVD R0, 88(RSP)							
+  <autogenerated>:1	0x1002c8290		f9003be3		MOVD R3, 112(RSP)							
+  <autogenerated>:1	0x1002c8294		a90087e0		STP (R0, R1), 8(RSP)							
+  <autogenerated>:1	0x1002c8298		a9018fe2		STP (R2, R3), 24(RSP)							
+  <autogenerated>:1	0x1002c829c		a90297e4		STP (R4, R5), 40(RSP)							
+  <autogenerated>:1	0x1002c82a0		97fff3bc		CALL github.com/zchee/go-simdutf.utf8ASCIIToUTF16BEBlocksNEON.abi0(SB)	
+  <autogenerated>:1	0x1002c82a4		f9401fe0		MOVD 56(RSP), R0							
+  <autogenerated>:1	0x1002c82a8		f85f83fd		MOVD -8(RSP), R29							
+  <autogenerated>:1	0x1002c82ac		f84507fe		MOVD.P 80(RSP), R30							
+  <autogenerated>:1	0x1002c82b0		d65f03c0		RET									
+  <autogenerated>:1	0x1002c82b4		00000000		?									
+  <autogenerated>:1	0x1002c82b8		00000000		?									
+  <autogenerated>:1	0x1002c82bc		00000000		?									

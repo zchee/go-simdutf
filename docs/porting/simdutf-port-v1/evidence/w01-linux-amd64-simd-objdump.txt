@@ -1,0 +1,532 @@
+TEXT github.com/zchee/go-simdutf.validateASCIIArchsimd(SB) /tmp/utf8-qual-src/ascii_archsimd_amd64.go
+  ascii_archsimd_amd64.go:49	0x6e00c0		55			PUSHQ BP			
+  ascii_archsimd_amd64.go:49	0x6e00c1		4889e5			MOVQ SP, BP			
+  ascii_archsimd_amd64.go:49	0x6e00c4		4889442410		MOVQ AX, 0x10(SP)		
+  ascii_archsimd_amd64.go:50	0x6e00c9		c5fdef			OUTL AX, DX			
+  ascii_archsimd_amd64.go:50	0x6e00cc		c0			?				
+  ascii_archsimd_amd64.go:50	0x6e00cd		31d2			XORL DX, DX			
+  ascii_archsimd_amd64.go:52	0x6e00cf		eb06			JMP 0x6e00d7			
+  ascii_archsimd_amd64.go:52	0x6e00d1		4889fb			MOVQ DI, BX			
+  ascii_archsimd_amd64.go:52	0x6e00d4		4889f2			MOVQ SI, DX			
+  ascii_archsimd_amd64.go:52	0x6e00d7		488d7220		LEAQ 0x20(DX), SI		
+  ascii_archsimd_amd64.go:52	0x6e00db		0f1f440000		NOPL 0(AX)(AX*1)		
+  ascii_archsimd_amd64.go:52	0x6e00e0		4839f3			CMPQ BX, SI			
+  ascii_archsimd_amd64.go:52	0x6e00e3		7c3d			JL 0x6e0122			
+  ascii_archsimd_amd64.go:53	0x6e00e5		4839d3			CMPQ BX, DX			
+  ascii_archsimd_amd64.go:53	0x6e00e8		0f8228010000		JB 0x6e0216			
+  ascii_archsimd_amd64.go:53	0x6e00ee		4889df			MOVQ BX, DI			
+  ascii_archsimd_amd64.go:53	0x6e00f1		4829d3			SUBQ DX, BX			
+  ascii_archsimd_amd64.go:53	0x6e00f4		4989d0			MOVQ DX, R8			
+  ascii_archsimd_amd64.go:53	0x6e00f7		4829ca			SUBQ CX, DX			
+  ascii_archsimd_amd64.go:53	0x6e00fa		48c1fa3f		SARQ $0x3f, DX			
+  ascii_archsimd_amd64.go:53	0x6e00fe		4c21c2			ANDQ R8, DX			
+  ascii_archsimd_amd64.go:53	0x6e0101		4801c2			ADDQ AX, DX			
+  slice_gen_amd64.go:151	0x6e0104		4883fb20		CMPQ BX, $0x20			
+  slice_gen_amd64.go:151	0x6e0108		0f82fc000000		JB 0x6e020a			
+  slice_gen_amd64.go:151	0x6e010e		c5fe6f0a		VMOVDQU 0(DX), X1		
+  compare_gen_amd64.go:135	0x6e0112		c5fd64c9		LEAVE				
+  ascii_archsimd_amd64.go:54	0x6e0116		c5fdd7			XLATB DS:0(BX)			
+  ascii_archsimd_amd64.go:54	0x6e0119		d185d274b331		ROLL $0x1, 0x31b374d2(BP)	
+  ascii_archsimd_amd64.go:55	0x6e011f		c05dc348		RCRB $0x48, -0x3d(BP)		
+  ascii_archsimd_amd64.go:58	0x6e0123		39d3			CMPL BX, DX			
+  ascii_archsimd_amd64.go:58	0x6e0125		0f82da000000		JB 0x6e0205			
+  ascii_archsimd_amd64.go:58	0x6e012b		4829d1			SUBQ DX, CX			
+  ascii_archsimd_amd64.go:58	0x6e012e		4889ce			MOVQ CX, SI			
+  ascii_archsimd_amd64.go:58	0x6e0131		48f7d9			NEGQ CX				
+  ascii_archsimd_amd64.go:58	0x6e0134		48c1f93f		SARQ $0x3f, CX			
+  ascii_archsimd_amd64.go:58	0x6e0138		4821d1			ANDQ DX, CX			
+  ascii_archsimd_amd64.go:58	0x6e013b		4829d3			SUBQ DX, BX			
+  ascii_archsimd_amd64.go:58	0x6e013e		4801c1			ADDQ AX, CX			
+  ascii_archsimd_amd64.go:58	0x6e0141		31c0			XORL AX, AX			
+  ascii_scalar.go:31		0x6e0143		eb09			JMP 0x6e014e			
+  ascii_scalar.go:31		0x6e0145		4889fb			MOVQ DI, BX			
+  ascii_scalar.go:32		0x6e0148		4c89c6			MOVQ R8, SI			
+  ascii_scalar.go:31		0x6e014b		4889d0			MOVQ DX, AX			
+  ascii_scalar.go:31		0x6e014e		488d5010		LEAQ 0x10(AX), DX		
+  ascii_scalar.go:31		0x6e0152		4839d3			CMPQ BX, DX			
+  ascii_scalar.go:31		0x6e0155		7c75			JL 0x6e01cc			
+  ascii_scalar.go:31		0x6e0157		660f1f840000000000	NOPW 0(AX)(AX*1)		
+  ascii_scalar.go:32		0x6e0160		4839d8			CMPQ AX, BX			
+  ascii_scalar.go:32		0x6e0163		0f8794000000		JA 0x6e01fd			
+  ascii_scalar.go:32		0x6e0169		4889df			MOVQ BX, DI			
+  ascii_scalar.go:32		0x6e016c		4829c3			SUBQ AX, BX			
+  ascii_scalar.go:32		0x6e016f		4989f0			MOVQ SI, R8			
+  ascii_scalar.go:32		0x6e0172		4829c6			SUBQ AX, SI			
+  ascii_scalar.go:32		0x6e0175		4989f1			MOVQ SI, R9			
+  ascii_scalar.go:32		0x6e0178		48f7de			NEGQ SI				
+  ascii_scalar.go:32		0x6e017b		48c1fe3f		SARQ $0x3f, SI			
+  ascii_scalar.go:32		0x6e017f		4821c6			ANDQ AX, SI			
+  binary.go:116			0x6e0182		4883fb07		CMPQ BX, $0x7			
+  binary.go:116			0x6e0186		7670			JBE 0x6e01f8			
+  ascii_scalar.go:33		0x6e0188		4c8d5008		LEAQ 0x8(AX), R10		
+  binary.go:117			0x6e018c		488b3431		MOVQ 0(CX)(SI*1), SI		
+  ascii_scalar.go:33		0x6e0190		4c39d7			CMPQ DI, R10			
+  ascii_scalar.go:33		0x6e0193		725e			JB 0x6e01f3			
+  ascii_scalar.go:33		0x6e0195		4883c3f8		ADDQ $-0x8, BX			
+  ascii_scalar.go:33		0x6e0199		4983c1f8		ADDQ $-0x8, R9			
+  ascii_scalar.go:33		0x6e019d		49f7d9			NEGQ R9				
+  ascii_scalar.go:33		0x6e01a0		49c1f93f		SARQ $0x3f, R9			
+  ascii_scalar.go:33		0x6e01a4		4d21ca			ANDQ R9, R10			
+  binary.go:116			0x6e01a7		4883fb07		CMPQ BX, $0x7			
+  binary.go:116			0x6e01ab		7641			JBE 0x6e01ee			
+  ascii_scalar.go:34		0x6e01ad		4a0b3411		ORQ 0(CX)(R10*1), SI		
+  ascii_scalar.go:34		0x6e01b1		48bb8080808080808080	MOVQ $0x8080808080808080, BX	
+  ascii_scalar.go:34		0x6e01bb		0f1f440000		NOPL 0(AX)(AX*1)		
+  ascii_scalar.go:34		0x6e01c0		4885f3			TESTQ SI, BX			
+  ascii_scalar.go:34		0x6e01c3		7480			JE 0x6e0145			
+  ascii_scalar.go:34		0x6e01c5		31c0			XORL AX, AX			
+  ascii_archsimd_amd64.go:58	0x6e01c7		eb1e			JMP 0x6e01e7			
+  ascii_scalar.go:38		0x6e01c9		48ffc0			INCQ AX				
+  ascii_scalar.go:38		0x6e01cc		4839d8			CMPQ AX, BX			
+  ascii_scalar.go:38		0x6e01cf		7d11			JGE 0x6e01e2			
+  ascii_scalar.go:39		0x6e01d1		7316			JAE 0x6e01e9			
+  ascii_scalar.go:39		0x6e01d3		0fb61401		MOVZX 0(CX)(AX*1), DX		
+  ascii_scalar.go:39		0x6e01d7		80fa80			CMPL DL, $0x80			
+  ascii_scalar.go:39		0x6e01da		72ed			JB 0x6e01c9			
+  ascii_scalar.go:39		0x6e01dc		31c0			XORL AX, AX			
+  ascii_scalar.go:39		0x6e01de		6690			NOPW				
+  ascii_archsimd_amd64.go:58	0x6e01e0		eb05			JMP 0x6e01e7			
+  ascii_archsimd_amd64.go:58	0x6e01e2		b801000000		MOVL $0x1, AX			
+  ascii_archsimd_amd64.go:58	0x6e01e7		5d			POPQ BP				
+  ascii_archsimd_amd64.go:58	0x6e01e8		c3			RET				
+  ascii_scalar.go:39		0x6e01e9		e8d2e3daff		CALL runtime.panicBounds(SB)	
+  binary.go:116			0x6e01ee		e8cde3daff		CALL runtime.panicBounds(SB)	
+  ascii_scalar.go:33		0x6e01f3		e8c8e3daff		CALL runtime.panicBounds(SB)	
+  binary.go:116			0x6e01f8		e8c3e3daff		CALL runtime.panicBounds(SB)	
+  ascii_scalar.go:32		0x6e01fd		0f1f00			NOPL 0(AX)			
+  ascii_scalar.go:32		0x6e0200		e8bbe3daff		CALL runtime.panicBounds(SB)	
+  ascii_archsimd_amd64.go:58	0x6e0205		e8b6e3daff		CALL runtime.panicBounds(SB)	
+  slice_gen_amd64.go:151	0x6e020a		48c7c020000000		MOVQ $0x20, AX			
+  slice_gen_amd64.go:151	0x6e0211		e8aae3daff		CALL runtime.panicBounds(SB)	
+  ascii_archsimd_amd64.go:53	0x6e0216		e8a5e3daff		CALL runtime.panicBounds(SB)	
+  ascii_archsimd_amd64.go:53	0x6e021b		90			NOPL				
+
+TEXT github.com/zchee/go-simdutf.countUTF8Archsimd(SB) /tmp/utf8-qual-src/count_utf8_archsimd_amd64.go
+  count_utf8_archsimd_amd64.go:39	0x6e0a40		55			PUSHQ BP			
+  count_utf8_archsimd_amd64.go:39	0x6e0a41		4889e5			MOVQ SP, BP			
+  count_utf8_archsimd_amd64.go:39	0x6e0a44		4883ec20		SUBQ $0x20, SP			
+  count_utf8_archsimd_amd64.go:39	0x6e0a48		4889442430		MOVQ AX, 0x30(SP)		
+  count_utf8_archsimd_amd64.go:40	0x6e0a4d		4883fb7f		CMPQ BX, $0x7f			
+  count_utf8_archsimd_amd64.go:40	0x6e0a51		7f09			JG 0x6e0a5c			
+  count_utf8_archsimd_amd64.go:41	0x6e0a53		31c9			XORL CX, CX			
+  count_utf8_archsimd_amd64.go:41	0x6e0a55		31d2			XORL DX, DX			
+  utf8_scalar.go:154			0x6e0a57		e944020000		JMP 0x6e0ca0			
+  other_gen_amd64.go:103		0x6e0a5c		babfffffff		MOVL $-0x41, DX			
+  other_gen_amd64.go:103		0x6e0a61		c4e1f96e		OUTSB DS:0(SI), DX		
+  other_gen_amd64.go:103		0x6e0a65		c290c5			RET $0xc590			
+  count_utf8_archsimd_amd64.go:45	0x6e0a68		f5			CMC				
+  count_utf8_archsimd_amd64.go:45	0x6e0a69		ef			OUTL AX, DX			
+  count_utf8_archsimd_amd64.go:45	0x6e0a6a		c9			LEAVE				
+  count_utf8_archsimd_amd64.go:46	0x6e0a6b		c5edef			OUTL AX, DX			
+  count_utf8_archsimd_amd64.go:46	0x6e0a6e		d2c4			ROLL CL, AH			
+  other_gen_amd64.go:103		0x6e0a70		e27d			LOOP 0x6e0aef			
+  other_gen_amd64.go:103		0x6e0a72		78c0			JS 0x6e0a34			
+  count_utf8_archsimd_amd64.go:45	0x6e0a74		c5fe7fcb		VMOVDQU X1, X3			
+  count_utf8_archsimd_amd64.go:45	0x6e0a78		31d2			XORL DX, DX			
+  count_utf8_archsimd_amd64.go:45	0x6e0a7a		31f6			XORL SI, SI			
+  count_utf8_archsimd_amd64.go:50	0x6e0a7c		eb18			JMP 0x6e0a96			
+  count_utf8_archsimd_amd64.go:50	0x6e0a7e		4c89c3			MOVQ R8, BX			
+  count_utf8_archsimd_amd64.go:50	0x6e0a81		4889fa			MOVQ DI, DX			
+  count_utf8_archsimd_amd64.go:50	0x6e0a84		4889ce			MOVQ CX, SI			
+  count_utf8_archsimd_amd64.go:51	0x6e0a87		4c89c9			MOVQ R9, CX			
+  count_utf8_archsimd_amd64.go:63	0x6e0a8a		c5fe7fdc		VMOVDQU X3, X4			
+  count_utf8_archsimd_amd64.go:63	0x6e0a8e		c5fe7fcb		VMOVDQU X1, X3			
+  count_utf8_archsimd_amd64.go:50	0x6e0a92		c5fe7fe1		VMOVDQU X4, X1			
+  count_utf8_archsimd_amd64.go:50	0x6e0a96		488dba80000000		LEAQ 0x80(DX), DI		
+  count_utf8_archsimd_amd64.go:50	0x6e0a9d		0f1f00			NOPL 0(AX)			
+  count_utf8_archsimd_amd64.go:50	0x6e0aa0		4839fb			CMPQ BX, DI			
+  count_utf8_archsimd_amd64.go:50	0x6e0aa3		0f8c22010000		JL 0x6e0bcb			
+  count_utf8_archsimd_amd64.go:51	0x6e0aa9		4839d3			CMPQ BX, DX			
+  count_utf8_archsimd_amd64.go:51	0x6e0aac		0f82c9010000		JB 0x6e0c7b			
+  count_utf8_archsimd_amd64.go:51	0x6e0ab2		4989d8			MOVQ BX, R8			
+  count_utf8_archsimd_amd64.go:51	0x6e0ab5		4829d3			SUBQ DX, BX			
+  count_utf8_archsimd_amd64.go:51	0x6e0ab8		4989c9			MOVQ CX, R9			
+  count_utf8_archsimd_amd64.go:51	0x6e0abb		4829d1			SUBQ DX, CX			
+  count_utf8_archsimd_amd64.go:51	0x6e0abe		4989ca			MOVQ CX, R10			
+  count_utf8_archsimd_amd64.go:51	0x6e0ac1		48f7d9			NEGQ CX				
+  count_utf8_archsimd_amd64.go:51	0x6e0ac4		48c1f93f		SARQ $0x3f, CX			
+  count_utf8_archsimd_amd64.go:51	0x6e0ac8		4821d1			ANDQ DX, CX			
+  count_utf8_archsimd_amd64.go:51	0x6e0acb		4801c1			ADDQ AX, CX			
+  slice_gen_amd64.go:151		0x6e0ace		4883fb20		CMPQ BX, $0x20			
+  slice_gen_amd64.go:151		0x6e0ad2		0f8297010000		JB 0x6e0c6f			
+  count_utf8_archsimd_amd64.go:52	0x6e0ad8		4c8d5a20		LEAQ 0x20(DX), R11		
+  count_utf8_archsimd_amd64.go:52	0x6e0adc		0f1f4000		NOPL 0(AX)			
+  count_utf8_archsimd_amd64.go:52	0x6e0ae0		4d39d8			CMPQ R8, R11			
+  count_utf8_archsimd_amd64.go:52	0x6e0ae3		0f8281010000		JB 0x6e0c6a			
+  count_utf8_archsimd_amd64.go:52	0x6e0ae9		4c8d63e0		LEAQ -0x20(BX), R12		
+  count_utf8_archsimd_amd64.go:52	0x6e0aed		4d8d6ae0		LEAQ -0x20(R10), R13		
+  count_utf8_archsimd_amd64.go:52	0x6e0af1		49f7dd			NEGQ R13			
+  count_utf8_archsimd_amd64.go:52	0x6e0af4		49c1fd3f		SARQ $0x3f, R13			
+  count_utf8_archsimd_amd64.go:52	0x6e0af8		4d21eb			ANDQ R13, R11			
+  count_utf8_archsimd_amd64.go:52	0x6e0afb		4901c3			ADDQ AX, R11			
+  count_utf8_archsimd_amd64.go:52	0x6e0afe		6690			NOPW				
+  slice_gen_amd64.go:151		0x6e0b00		4983fc20		CMPQ R12, $0x20			
+  slice_gen_amd64.go:151		0x6e0b04		0f8254010000		JB 0x6e0c5e			
+  count_utf8_archsimd_amd64.go:53	0x6e0b0a		4c8d6240		LEAQ 0x40(DX), R12		
+  count_utf8_archsimd_amd64.go:53	0x6e0b0e		4d39e0			CMPQ R8, R12			
+  count_utf8_archsimd_amd64.go:53	0x6e0b11		0f8242010000		JB 0x6e0c59			
+  count_utf8_archsimd_amd64.go:53	0x6e0b17		4c8d6bc0		LEAQ -0x40(BX), R13		
+  count_utf8_archsimd_amd64.go:53	0x6e0b1b		4d8d7ac0		LEAQ -0x40(R10), R15		
+  count_utf8_archsimd_amd64.go:53	0x6e0b1f		49f7df			NEGQ R15			
+  count_utf8_archsimd_amd64.go:53	0x6e0b22		49c1ff3f		SARQ $0x3f, R15			
+  count_utf8_archsimd_amd64.go:53	0x6e0b26		4d21fc			ANDQ R15, R12			
+  count_utf8_archsimd_amd64.go:53	0x6e0b29		4901c4			ADDQ AX, R12			
+  slice_gen_amd64.go:151		0x6e0b2c		4983fd20		CMPQ R13, $0x20			
+  slice_gen_amd64.go:151		0x6e0b30		0f8217010000		JB 0x6e0c4d			
+  count_utf8_archsimd_amd64.go:54	0x6e0b36		4883c260		ADDQ $0x60, DX			
+  count_utf8_archsimd_amd64.go:54	0x6e0b3a		660f1f440000		NOPW 0(AX)(AX*1)		
+  count_utf8_archsimd_amd64.go:54	0x6e0b40		4939d0			CMPQ R8, DX			
+  count_utf8_archsimd_amd64.go:54	0x6e0b43		0f82ff000000		JB 0x6e0c48			
+  count_utf8_archsimd_amd64.go:54	0x6e0b49		4883c3a0		ADDQ $-0x60, BX			
+  count_utf8_archsimd_amd64.go:54	0x6e0b4d		4983c2a0		ADDQ $-0x60, R10		
+  count_utf8_archsimd_amd64.go:54	0x6e0b51		49f7da			NEGQ R10			
+  count_utf8_archsimd_amd64.go:54	0x6e0b54		49c1fa3f		SARQ $0x3f, R10			
+  count_utf8_archsimd_amd64.go:54	0x6e0b58		4c21d2			ANDQ R10, DX			
+  count_utf8_archsimd_amd64.go:54	0x6e0b5b		4801c2			ADDQ AX, DX			
+  count_utf8_archsimd_amd64.go:54	0x6e0b5e		6690			NOPW				
+  slice_gen_amd64.go:151		0x6e0b60		4883fb20		CMPQ BX, $0x20			
+  slice_gen_amd64.go:151		0x6e0b64		0f82d2000000		JB 0x6e0c3c			
+  slice_gen_amd64.go:151		0x6e0b6a		c5fe6f21		VMOVDQU 0(CX), X4		
+  count_utf8_archsimd_amd64.go:56	0x6e0b6e		c5dd64e0c5		LOOPNE 0x6e0b38			
+  count_utf8_archsimd_amd64.go:56	0x6e0b73		f5			CMC				
+  count_utf8_archsimd_amd64.go:56	0x6e0b74		f8			CLC				
+  count_utf8_archsimd_amd64.go:56	0x6e0b75		cc			INT $0x3			
+  slice_gen_amd64.go:151		0x6e0b76		c4c17e6f23		VMOVDQU 0(BX), X4		
+  count_utf8_archsimd_amd64.go:57	0x6e0b7b		c5dd64e0c5		LOOPNE 0x6e0b45			
+  count_utf8_archsimd_amd64.go:57	0x6e0b80		f5			CMC				
+  count_utf8_archsimd_amd64.go:57	0x6e0b81		f8			CLC				
+  count_utf8_archsimd_amd64.go:57	0x6e0b82		cc			INT $0x3			
+  slice_gen_amd64.go:151		0x6e0b83		c4c17e6f2424		VMOVDQU 0(R12), X4		
+  count_utf8_archsimd_amd64.go:58	0x6e0b89		c5dd64e0c5		LOOPNE 0x6e0b53			
+  count_utf8_archsimd_amd64.go:58	0x6e0b8e		f5			CMC				
+  count_utf8_archsimd_amd64.go:58	0x6e0b8f		f8			CLC				
+  count_utf8_archsimd_amd64.go:58	0x6e0b90		cc			INT $0x3			
+  slice_gen_amd64.go:151		0x6e0b91		c5fe6f22		VMOVDQU 0(DX), X4		
+  count_utf8_archsimd_amd64.go:59	0x6e0b95		c5dd64e0c5		LOOPNE 0x6e0b5f			
+  count_utf8_archsimd_amd64.go:59	0x6e0b9a		f5			CMC				
+  count_utf8_archsimd_amd64.go:59	0x6e0b9b		f8			CLC				
+  count_utf8_archsimd_amd64.go:59	0x6e0b9c		cc			INT $0x3			
+  count_utf8_archsimd_amd64.go:61	0x6e0b9d		488d4e01		LEAQ 0x1(SI), CX		
+  count_utf8_archsimd_amd64.go:62	0x6e0ba1		4883fe3e		CMPQ SI, $0x3e			
+  count_utf8_archsimd_amd64.go:62	0x6e0ba5		7513			JNE 0x6e0bba			
+  count_utf8_archsimd_amd64.go:63	0x6e0ba7		c5f5f6e3		MULL BL				
+  count_utf8_archsimd_amd64.go:63	0x6e0bab		c5			?				
+  count_utf8_archsimd_amd64.go:63	0x6e0bac		ed			INL DX, AX			
+  count_utf8_archsimd_amd64.go:63	0x6e0bad		d4			?				
+  count_utf8_archsimd_amd64.go:63	0x6e0bae		d4			?				
+  count_utf8_archsimd_amd64.go:45	0x6e0baf		c5fe7fd9		VMOVDQU X3, X1			
+  count_utf8_archsimd_amd64.go:45	0x6e0bb3		31c9			XORL CX, CX			
+  count_utf8_archsimd_amd64.go:65	0x6e0bb5		e9c4feffff		JMP 0x6e0a7e			
+  count_utf8_archsimd_amd64.go:63	0x6e0bba		c5fe7fcc		VMOVDQU X1, X4			
+  count_utf8_archsimd_amd64.go:63	0x6e0bbe		c5fe7fd9		VMOVDQU X3, X1			
+  count_utf8_archsimd_amd64.go:63	0x6e0bc2		c5fe7fe3		VMOVDQU X4, X3			
+  count_utf8_archsimd_amd64.go:62	0x6e0bc6		e9b3feffff		JMP 0x6e0a7e			
+  count_utf8_archsimd_amd64.go:69	0x6e0bcb		4885f6			TESTQ SI, SI			
+  count_utf8_archsimd_amd64.go:69	0x6e0bce		7408			JE 0x6e0bd8			
+  count_utf8_archsimd_amd64.go:70	0x6e0bd0		c5f5f6c3c5		TESTL $0xc5, BL			
+  count_utf8_archsimd_amd64.go:70	0x6e0bd5		ed			INL DX, AX			
+  count_utf8_archsimd_amd64.go:70	0x6e0bd6		d4			?				
+  count_utf8_archsimd_amd64.go:70	0x6e0bd7		d0c5			ROLL $0x1, CH			
+  count_utf8_archsimd_amd64.go:74	0x6e0bd9		fe			?				
+  count_utf8_archsimd_amd64.go:74	0x6e0bda		7f14			JG 0x6e0bf0			
+  count_utf8_archsimd_amd64.go:74	0x6e0bdc		24c5			ANDL $0xc5, AL			
+  count_utf8_archsimd_amd64.go:75	0x6e0bde		f8			CLC				
+  count_utf8_archsimd_amd64.go:75	0x6e0bdf		7748			JA 0x6e0c29			
+  count_utf8_archsimd_amd64.go:77	0x6e0be1		39d3			CMPL BX, DX			
+  count_utf8_archsimd_amd64.go:77	0x6e0be3		7252			JB 0x6e0c37			
+  count_utf8_archsimd_amd64.go:77	0x6e0be5		4889d6			MOVQ DX, SI			
+  count_utf8_archsimd_amd64.go:77	0x6e0be8		4829ca			SUBQ CX, DX			
+  count_utf8_archsimd_amd64.go:77	0x6e0beb		48c1fa3f		SARQ $0x3f, DX			
+  count_utf8_archsimd_amd64.go:77	0x6e0bef		4821f2			ANDQ SI, DX			
+  count_utf8_archsimd_amd64.go:77	0x6e0bf2		4829f3			SUBQ SI, BX			
+  count_utf8_archsimd_amd64.go:77	0x6e0bf5		488d0c02		LEAQ 0(DX)(AX*1), CX		
+  count_utf8_archsimd_amd64.go:77	0x6e0bf9		31c0			XORL AX, AX			
+  count_utf8_archsimd_amd64.go:77	0x6e0bfb		31d2			XORL DX, DX			
+  utf8_scalar.go:154			0x6e0bfd		eb16			JMP 0x6e0c15			
+  utf8_scalar.go:154			0x6e0bff		0fb63408		MOVZX 0(AX)(CX*1), SI		
+  utf8_scalar.go:154			0x6e0c03		48ffc0			INCQ AX				
+  utf8_scalar.go:154			0x6e0c06		4080febf		CMPL SI, $0xbf			
+  utf8_scalar.go:155			0x6e0c0a		400f9fc6		SETG SI				
+  utf8_scalar.go:155			0x6e0c0e		400fb6f6		MOVZX SI, SI			
+  utf8_scalar.go:155			0x6e0c12		4801f2			ADDQ SI, DX			
+  utf8_scalar.go:154			0x6e0c15		4839d8			CMPQ AX, BX			
+  utf8_scalar.go:154			0x6e0c18		7ce5			JL 0x6e0bff			
+  count_utf8_archsimd_amd64.go:76	0x6e0c1a		488b0c24		MOVQ 0(SP), CX			
+  count_utf8_archsimd_amd64.go:76	0x6e0c1e		48034c2408		ADDQ 0x8(SP), CX		
+  count_utf8_archsimd_amd64.go:76	0x6e0c23		48034c2410		ADDQ 0x10(SP), CX		
+  count_utf8_archsimd_amd64.go:76	0x6e0c28		48034c2418		ADDQ 0x18(SP), CX		
+  count_utf8_archsimd_amd64.go:77	0x6e0c2d		488d0411		LEAQ 0(CX)(DX*1), AX		
+  count_utf8_archsimd_amd64.go:77	0x6e0c31		4883c420		ADDQ $0x20, SP			
+  count_utf8_archsimd_amd64.go:77	0x6e0c35		5d			POPQ BP				
+  count_utf8_archsimd_amd64.go:77	0x6e0c36		c3			RET				
+  count_utf8_archsimd_amd64.go:77	0x6e0c37		e884d9daff		CALL runtime.panicBounds(SB)	
+  slice_gen_amd64.go:151		0x6e0c3c		48c7c020000000		MOVQ $0x20, AX			
+  slice_gen_amd64.go:151		0x6e0c43		e878d9daff		CALL runtime.panicBounds(SB)	
+  count_utf8_archsimd_amd64.go:54	0x6e0c48		e873d9daff		CALL runtime.panicBounds(SB)	
+  slice_gen_amd64.go:151		0x6e0c4d		48c7c020000000		MOVQ $0x20, AX			
+  slice_gen_amd64.go:151		0x6e0c54		e867d9daff		CALL runtime.panicBounds(SB)	
+  count_utf8_archsimd_amd64.go:53	0x6e0c59		e862d9daff		CALL runtime.panicBounds(SB)	
+  slice_gen_amd64.go:151		0x6e0c5e		48c7c020000000		MOVQ $0x20, AX			
+  slice_gen_amd64.go:151		0x6e0c65		e856d9daff		CALL runtime.panicBounds(SB)	
+  count_utf8_archsimd_amd64.go:52	0x6e0c6a		e851d9daff		CALL runtime.panicBounds(SB)	
+  slice_gen_amd64.go:151		0x6e0c6f		48c7c020000000		MOVQ $0x20, AX			
+  slice_gen_amd64.go:151		0x6e0c76		e845d9daff		CALL runtime.panicBounds(SB)	
+  count_utf8_archsimd_amd64.go:51	0x6e0c7b		0f1f440000		NOPL 0(AX)(AX*1)		
+  count_utf8_archsimd_amd64.go:51	0x6e0c80		e83bd9daff		CALL runtime.panicBounds(SB)	
+  utf8_scalar.go:154			0x6e0c85		0fb63408		MOVZX 0(AX)(CX*1), SI		
+  utf8_scalar.go:154			0x6e0c89		48ffc1			INCQ CX				
+  utf8_scalar.go:154			0x6e0c8c		4080febf		CMPL SI, $0xbf			
+  utf8_scalar.go:155			0x6e0c90		400f9fc6		SETG SI				
+  utf8_scalar.go:155			0x6e0c94		400fb6f6		MOVZX SI, SI			
+  utf8_scalar.go:155			0x6e0c98		4801f2			ADDQ SI, DX			
+  utf8_scalar.go:155			0x6e0c9b		0f1f440000		NOPL 0(AX)(AX*1)		
+  utf8_scalar.go:154			0x6e0ca0		4839cb			CMPQ BX, CX			
+  utf8_scalar.go:154			0x6e0ca3		7fe0			JG 0x6e0c85			
+  count_utf8_archsimd_amd64.go:41	0x6e0ca5		4889d0			MOVQ DX, AX			
+  count_utf8_archsimd_amd64.go:41	0x6e0ca8		4883c420		ADDQ $0x20, SP			
+  count_utf8_archsimd_amd64.go:41	0x6e0cac		5d			POPQ BP				
+  count_utf8_archsimd_amd64.go:41	0x6e0cad		c3			RET				
+
+TEXT github.com/zchee/go-simdutf.validateUTF8Archsimd(SB) /tmp/utf8-qual-src/utf8_archsimd_amd64.go
+  utf8_archsimd_amd64.go:59	0x6e5160		493b6610		CMPQ SP, 0x10(R14)							
+  utf8_archsimd_amd64.go:59	0x6e5164		7641			JBE 0x6e51a7								
+  utf8_archsimd_amd64.go:59	0x6e5166		55			PUSHQ BP								
+  utf8_archsimd_amd64.go:59	0x6e5167		4889e5			MOVQ SP, BP								
+  utf8_archsimd_amd64.go:59	0x6e516a		4883ec20		SUBQ $0x20, SP								
+  utf8_archsimd_amd64.go:60	0x6e516e		48895c2438		MOVQ BX, 0x38(SP)							
+  utf8_archsimd_amd64.go:60	0x6e5173		4889442430		MOVQ AX, 0x30(SP)							
+  utf8_archsimd_amd64.go:60	0x6e5178		48894c2440		MOVQ CX, 0x40(SP)							
+  utf8_archsimd_amd64.go:60	0x6e517d		0f1f00			NOPL 0(AX)								
+  utf8_archsimd_amd64.go:60	0x6e5180		e8db000000		CALL github.com/zchee/go-simdutf.validateUTF8PrefixArchsimd(SB)		
+  utf8_archsimd_amd64.go:60	0x6e5185		488b5c2438		MOVQ 0x38(SP), BX							
+  utf8_archsimd_amd64.go:60	0x6e518a		488b4c2440		MOVQ 0x40(SP), CX							
+  utf8_archsimd_amd64.go:60	0x6e518f		4889c7			MOVQ AX, DI								
+  utf8_archsimd_amd64.go:60	0x6e5192		488b442430		MOVQ 0x30(SP), AX							
+  utf8_archsimd_amd64.go:60	0x6e5197		e8e4feffff		CALL github.com/zchee/go-simdutf.validateUTF8AMD64FromPrefix(SB)	
+  utf8_archsimd_amd64.go:60	0x6e519c		84c0			TESTL AL, AL								
+  utf8_archsimd_amd64.go:60	0x6e519e		0f94c0			SETE AL									
+  utf8_archsimd_amd64.go:60	0x6e51a1		4883c420		ADDQ $0x20, SP								
+  utf8_archsimd_amd64.go:60	0x6e51a5		5d			POPQ BP									
+  utf8_archsimd_amd64.go:60	0x6e51a6		c3			RET									
+  utf8_archsimd_amd64.go:59	0x6e51a7		4889442408		MOVQ AX, 0x8(SP)							
+  utf8_archsimd_amd64.go:59	0x6e51ac		48895c2410		MOVQ BX, 0x10(SP)							
+  utf8_archsimd_amd64.go:59	0x6e51b1		48894c2418		MOVQ CX, 0x18(SP)							
+  utf8_archsimd_amd64.go:59	0x6e51b6		e8e576daff		CALL runtime.morestack_noctxt.abi0(SB)					
+  utf8_archsimd_amd64.go:59	0x6e51bb		488b442408		MOVQ 0x8(SP), AX							
+  utf8_archsimd_amd64.go:59	0x6e51c0		488b5c2410		MOVQ 0x10(SP), BX							
+  utf8_archsimd_amd64.go:59	0x6e51c5		488b4c2418		MOVQ 0x18(SP), CX							
+  utf8_archsimd_amd64.go:59	0x6e51ca		eb94			JMP github.com/zchee/go-simdutf.validateUTF8Archsimd(SB)		
+
+TEXT github.com/zchee/go-simdutf.utf16LengthFromUTF8Archsimd(SB) /tmp/utf8-qual-src/utf8_length_archsimd_amd64.go
+  utf8_length_archsimd_amd64.go:38	0x6eac60		55			PUSHQ BP			
+  utf8_length_archsimd_amd64.go:38	0x6eac61		4889e5			MOVQ SP, BP			
+  utf8_length_archsimd_amd64.go:38	0x6eac64		4883ec20		SUBQ $0x20, SP			
+  utf8_length_archsimd_amd64.go:38	0x6eac68		4889442430		MOVQ AX, 0x30(SP)		
+  utf8_length_archsimd_amd64.go:39	0x6eac6d		4883fb20		CMPQ BX, $0x20			
+  utf8_length_archsimd_amd64.go:39	0x6eac71		7d09			JGE 0x6eac7c			
+  utf8_length_archsimd_amd64.go:40	0x6eac73		31c9			XORL CX, CX			
+  utf8_length_archsimd_amd64.go:40	0x6eac75		31d2			XORL DX, DX			
+  utf8_length_scalar.go:31		0x6eac77		e964010000		JMP 0x6eade0			
+  other_gen_amd64.go:103		0x6eac7c		babfffffff		MOVL $-0x41, DX			
+  other_gen_amd64.go:103		0x6eac81		c4e1f96e		OUTSB DS:0(SI), DX		
+  other_gen_amd64.go:103		0x6eac85		c2baf0			RET $0xf0ba			
+  other_gen_amd64.go:139		0x6eac88		ff			?				
+  other_gen_amd64.go:139		0x6eac89		ff			?				
+  other_gen_amd64.go:139		0x6eac8a		ffc4			INCL SP				
+  other_gen_amd64.go:139		0x6eac8c		e1f9			LOOPE 0x6eac87			
+  other_gen_amd64.go:139		0x6eac8e		6e			OUTSB DS:0(SI), DX		
+  other_gen_amd64.go:139		0x6eac8f		ca31d2			LRET $0xd231			
+  other_gen_amd64.go:139		0x6eac92		c4e1f96e		OUTSB DS:0(SI), DX		
+  other_gen_amd64.go:139		0x6eac96		d2909090c5e5		RCLB CL, 0xe5c59090(AX)		
+  utf8_length_archsimd_amd64.go:46	0x6eac9c		ef			OUTL AX, DX			
+  utf8_length_archsimd_amd64.go:46	0x6eac9d		dbc5			FCMOVNB F5, F0			
+  utf8_length_archsimd_amd64.go:47	0x6eac9f		ddef			FUCOMP F7			
+  utf8_length_archsimd_amd64.go:47	0x6eaca1		e4c4			INL $0xc4, AL			
+  other_gen_amd64.go:103		0x6eaca3		e27d			LOOP 0x6ead22			
+  other_gen_amd64.go:103		0x6eaca5		78c0			JS 0x6eac67			
+  other_gen_amd64.go:139		0x6eaca7		c4e27d78c9		JS 0x6eac75			
+  other_gen_amd64.go:139		0x6eacac		c4e27d78d2		JS 0x6eac83			
+  other_gen_amd64.go:139		0x6eacb1		31d2			XORL DX, DX			
+  other_gen_amd64.go:139		0x6eacb3		31f6			XORL SI, SI			
+  utf8_length_archsimd_amd64.go:50	0x6eacb5		eb12			JMP 0x6eacc9			
+  utf8_length_archsimd_amd64.go:50	0x6eacb7		4889d6			MOVQ DX, SI			
+  utf8_length_archsimd_amd64.go:50	0x6eacba		4889fa			MOVQ DI, DX			
+  utf8_length_archsimd_amd64.go:59	0x6eacbd		c5fe7fd5		VMOVDQU X2, X5			
+  utf8_length_archsimd_amd64.go:59	0x6eacc1		c5fe7fda		VMOVDQU X3, X2			
+  utf8_length_archsimd_amd64.go:50	0x6eacc5		c5fe7feb		VMOVDQU X5, X3			
+  utf8_length_archsimd_amd64.go:50	0x6eacc9		488d7a20		LEAQ 0x20(DX), DI		
+  utf8_length_archsimd_amd64.go:50	0x6eaccd		4839fb			CMPQ BX, DI			
+  utf8_length_archsimd_amd64.go:50	0x6eacd0		7c5a			JL 0x6ead2c			
+  utf8_length_archsimd_amd64.go:51	0x6eacd2		4839f9			CMPQ CX, DI			
+  utf8_length_archsimd_amd64.go:51	0x6eacd5		0f82d9000000		JB 0x6eadb4			
+  utf8_length_archsimd_amd64.go:51	0x6eacdb		0f1f440000		NOPL 0(AX)(AX*1)		
+  utf8_length_archsimd_amd64.go:51	0x6eace0		4839fa			CMPQ DX, DI			
+  utf8_length_archsimd_amd64.go:51	0x6eace3		0f87c6000000		JA 0x6eadaf			
+  utf8_length_archsimd_amd64.go:51	0x6eace9		4801c2			ADDQ AX, DX			
+  slice_gen_amd64.go:151		0x6eacec		c5fe6f2a		VMOVDQU 0(DX), X5		
+  utf8_length_archsimd_amd64.go:52	0x6eacf0		c5			?				
+  utf8_length_archsimd_amd64.go:52	0x6eacf1		d5			?				
+  utf8_length_archsimd_amd64.go:52	0x6eacf2		64			?				
+  utf8_length_archsimd_amd64.go:52	0x6eacf3		f0			?				
+  utf8_length_archsimd_amd64.go:53	0x6eacf4		c5d5dae9		FUCOMPP				
+  utf8_length_archsimd_amd64.go:53	0x6eacf8		c5d574e9		JE 0x6eace5			
+  utf8_length_archsimd_amd64.go:54	0x6eacfc		c5e5f8			CLC				
+  utf8_length_archsimd_amd64.go:54	0x6eacff		dec5			FADDP F0, F5			
+  utf8_length_archsimd_amd64.go:55	0x6ead01		e5f8			INL $0xf8, AX			
+  utf8_length_archsimd_amd64.go:55	0x6ead03		dd488d			FISTTP -0x73(AX)		
+  utf8_length_archsimd_amd64.go:57	0x6ead06		56			PUSHQ SI			
+  utf8_length_archsimd_amd64.go:57	0x6ead07		014883			ADDL CX, -0x7d(AX)		
+  utf8_length_archsimd_amd64.go:58	0x6ead0a		fe			?				
+  utf8_length_archsimd_amd64.go:58	0x6ead0b		7e75			JLE 0x6ead82			
+  utf8_length_archsimd_amd64.go:58	0x6ead0d		10c5			ADCL AL, CH			
+  utf8_length_archsimd_amd64.go:59	0x6ead0f		e5f6			INL $0xf6, AX			
+  utf8_length_archsimd_amd64.go:59	0x6ead11		ea			?				
+  utf8_length_archsimd_amd64.go:59	0x6ead12		c5			?				
+  utf8_length_archsimd_amd64.go:59	0x6ead13		ddd4			FST F4				
+  utf8_length_archsimd_amd64.go:59	0x6ead15		e5c5			INL $0xc5, AX			
+  other_gen_amd64.go:139		0x6ead17		fe			?				
+  other_gen_amd64.go:139		0x6ead18		7fd3			JG 0x6eaced			
+  other_gen_amd64.go:139		0x6ead1a		31d2			XORL DX, DX			
+  utf8_length_archsimd_amd64.go:61	0x6ead1c		eb99			JMP 0x6eacb7			
+  utf8_length_archsimd_amd64.go:59	0x6ead1e		c5fe7fdd		VMOVDQU X3, X5			
+  utf8_length_archsimd_amd64.go:59	0x6ead22		c5fe7fd3		VMOVDQU X2, X3			
+  utf8_length_archsimd_amd64.go:59	0x6ead26		c5fe7fea		VMOVDQU X5, X2			
+  utf8_length_archsimd_amd64.go:58	0x6ead2a		eb8b			JMP 0x6eacb7			
+  utf8_length_archsimd_amd64.go:64	0x6ead2c		4885f6			TESTQ SI, SI			
+  utf8_length_archsimd_amd64.go:64	0x6ead2f		7408			JE 0x6ead39			
+  utf8_length_archsimd_amd64.go:65	0x6ead31		c5e5f6c2c5		TESTL $0xc5, DL			
+  utf8_length_archsimd_amd64.go:65	0x6ead36		ddd4			FST F4				
+  utf8_length_archsimd_amd64.go:65	0x6ead38		e0c5			LOOPNE 0x6eacff			
+  utf8_length_archsimd_amd64.go:69	0x6ead3a		fe			?				
+  utf8_length_archsimd_amd64.go:69	0x6ead3b		7f24			JG 0x6ead61			
+  utf8_length_archsimd_amd64.go:69	0x6ead3d		24c5			ANDL $0xc5, AL			
+  utf8_length_archsimd_amd64.go:70	0x6ead3f		f8			CLC				
+  utf8_length_archsimd_amd64.go:70	0x6ead40		7748			JA 0x6ead8a			
+  utf8_length_archsimd_amd64.go:72	0x6ead42		39d3			CMPL BX, DX			
+  utf8_length_archsimd_amd64.go:72	0x6ead44		7264			JB 0x6eadaa			
+  utf8_length_archsimd_amd64.go:72	0x6ead46		4889d6			MOVQ DX, SI			
+  utf8_length_archsimd_amd64.go:72	0x6ead49		4829ca			SUBQ CX, DX			
+  utf8_length_archsimd_amd64.go:72	0x6ead4c		48c1fa3f		SARQ $0x3f, DX			
+  utf8_length_archsimd_amd64.go:72	0x6ead50		4821f2			ANDQ SI, DX			
+  utf8_length_archsimd_amd64.go:72	0x6ead53		4829f3			SUBQ SI, BX			
+  utf8_length_archsimd_amd64.go:72	0x6ead56		488d0c02		LEAQ 0(DX)(AX*1), CX		
+  utf8_length_archsimd_amd64.go:72	0x6ead5a		31c0			XORL AX, AX			
+  utf8_length_archsimd_amd64.go:72	0x6ead5c		31d2			XORL DX, DX			
+  utf8_length_archsimd_amd64.go:72	0x6ead5e		6690			NOPW				
+  utf8_length_scalar.go:31		0x6ead60		eb26			JMP 0x6ead88			
+  utf8_length_scalar.go:31		0x6ead62		0fb63408		MOVZX 0(AX)(CX*1), SI		
+  utf8_length_scalar.go:31		0x6ead66		48ffc0			INCQ AX				
+  utf8_length_scalar.go:32		0x6ead69		4080febf		CMPL SI, $0xbf			
+  utf8_length_scalar.go:32		0x6ead6d		400f9fc7		SETG DI				
+  utf8_length_scalar.go:35		0x6ead71		400fb6ff		MOVZX DI, DI			
+  utf8_length_scalar.go:35		0x6ead75		4801d7			ADDQ DX, DI			
+  utf8_length_scalar.go:35		0x6ead78		4080fef0		CMPL SI, $0xf0			
+  utf8_length_scalar.go:35		0x6ead7c		400f93c6		SETAE SI			
+  utf8_length_scalar.go:35		0x6ead80		400fb6f6		MOVZX SI, SI			
+  utf8_length_scalar.go:35		0x6ead84		488d1437		LEAQ 0(DI)(SI*1), DX		
+  utf8_length_scalar.go:31		0x6ead88		4839d8			CMPQ AX, BX			
+  utf8_length_scalar.go:31		0x6ead8b		7cd5			JL 0x6ead62			
+  utf8_length_archsimd_amd64.go:71	0x6ead8d		488b0c24		MOVQ 0(SP), CX			
+  utf8_length_archsimd_amd64.go:71	0x6ead91		48034c2408		ADDQ 0x8(SP), CX		
+  utf8_length_archsimd_amd64.go:71	0x6ead96		48034c2410		ADDQ 0x10(SP), CX		
+  utf8_length_archsimd_amd64.go:71	0x6ead9b		48034c2418		ADDQ 0x18(SP), CX		
+  utf8_length_archsimd_amd64.go:72	0x6eada0		488d0411		LEAQ 0(CX)(DX*1), AX		
+  utf8_length_archsimd_amd64.go:72	0x6eada4		4883c420		ADDQ $0x20, SP			
+  utf8_length_archsimd_amd64.go:72	0x6eada8		5d			POPQ BP				
+  utf8_length_archsimd_amd64.go:72	0x6eada9		c3			RET				
+  utf8_length_archsimd_amd64.go:72	0x6eadaa		e81138daff		CALL runtime.panicBounds(SB)	
+  utf8_length_archsimd_amd64.go:51	0x6eadaf		e80c38daff		CALL runtime.panicBounds(SB)	
+  utf8_length_archsimd_amd64.go:51	0x6eadb4		e80738daff		CALL runtime.panicBounds(SB)	
+  utf8_length_scalar.go:31		0x6eadb9		0fb63408		MOVZX 0(AX)(CX*1), SI		
+  utf8_length_scalar.go:31		0x6eadbd		48ffc1			INCQ CX				
+  utf8_length_scalar.go:32		0x6eadc0		4080febf		CMPL SI, $0xbf			
+  utf8_length_scalar.go:32		0x6eadc4		400f9fc7		SETG DI				
+  utf8_length_scalar.go:35		0x6eadc8		400fb6ff		MOVZX DI, DI			
+  utf8_length_scalar.go:35		0x6eadcc		4801d7			ADDQ DX, DI			
+  utf8_length_scalar.go:35		0x6eadcf		4080fef0		CMPL SI, $0xf0			
+  utf8_length_scalar.go:35		0x6eadd3		400f93c6		SETAE SI			
+  utf8_length_scalar.go:35		0x6eadd7		400fb6f6		MOVZX SI, SI			
+  utf8_length_scalar.go:35		0x6eaddb		488d1437		LEAQ 0(DI)(SI*1), DX		
+  utf8_length_scalar.go:35		0x6eaddf		90			NOPL				
+  utf8_length_scalar.go:31		0x6eade0		4839cb			CMPQ BX, CX			
+  utf8_length_scalar.go:31		0x6eade3		7fd4			JG 0x6eadb9			
+  utf8_length_archsimd_amd64.go:40	0x6eade5		4889d0			MOVQ DX, AX			
+  utf8_length_archsimd_amd64.go:40	0x6eade8		4883c420		ADDQ $0x20, SP			
+  utf8_length_archsimd_amd64.go:40	0x6eadec		5d			POPQ BP				
+  utf8_length_archsimd_amd64.go:40	0x6eaded		c3			RET				
+
+TEXT github.com/zchee/go-simdutf.validateUTF16LEArchsimd(SB) /tmp/utf8-qual-src/utf_validation_archsimd_amd64.go
+  utf_validation_archsimd_amd64.go:29	0x6ec720		493b6610		CMPQ SP, 0x10(R14)							
+  utf_validation_archsimd_amd64.go:29	0x6ec724		763b			JBE 0x6ec761								
+  utf_validation_archsimd_amd64.go:29	0x6ec726		55			PUSHQ BP								
+  utf_validation_archsimd_amd64.go:29	0x6ec727		4889e5			MOVQ SP, BP								
+  utf_validation_archsimd_amd64.go:29	0x6ec72a		4883ec20		SUBQ $0x20, SP								
+  utf_validation_archsimd_amd64.go:29	0x6ec72e		4889442430		MOVQ AX, 0x30(SP)							
+  utf_validation_archsimd_amd64.go:30	0x6ec733		4883fb10		CMPQ BX, $0x10								
+  utf_validation_archsimd_amd64.go:30	0x6ec737		7d12			JGE 0x6ec74b								
+  utf16_scalar.go:25			0x6ec739		bf01000000		MOVL $0x1, DI								
+  utf16_scalar.go:25			0x6ec73e		6690			NOPW									
+  utf16_scalar.go:25			0x6ec740		e87b82ffff		CALL github.com/zchee/go-simdutf.validateUTF16Scalar(SB)		
+  utf_validation_archsimd_amd64.go:31	0x6ec745		4883c420		ADDQ $0x20, SP								
+  utf_validation_archsimd_amd64.go:31	0x6ec749		5d			POPQ BP									
+  utf_validation_archsimd_amd64.go:31	0x6ec74a		c3			RET									
+  utf_validation_archsimd_amd64.go:58	0x6ec74b		bf01000000		MOVL $0x1, DI								
+  utf_validation_archsimd_amd64.go:58	0x6ec750		e8ab010000		CALL github.com/zchee/go-simdutf.validateUTF16WithErrorsArchsimd(SB)	
+  utf_validation_archsimd_amd64.go:58	0x6ec755		84c0			TESTL AL, AL								
+  utf_validation_archsimd_amd64.go:58	0x6ec757		0f94c0			SETE AL									
+  utf_validation_archsimd_amd64.go:33	0x6ec75a		4883c420		ADDQ $0x20, SP								
+  utf_validation_archsimd_amd64.go:33	0x6ec75e		5d			POPQ BP									
+  utf_validation_archsimd_amd64.go:33	0x6ec75f		90			NOPL									
+  utf_validation_archsimd_amd64.go:33	0x6ec760		c3			RET									
+  utf_validation_archsimd_amd64.go:29	0x6ec761		4889442408		MOVQ AX, 0x8(SP)							
+  utf_validation_archsimd_amd64.go:29	0x6ec766		48895c2410		MOVQ BX, 0x10(SP)							
+  utf_validation_archsimd_amd64.go:29	0x6ec76b		48894c2418		MOVQ CX, 0x18(SP)							
+  utf_validation_archsimd_amd64.go:29	0x6ec770		e82b01daff		CALL runtime.morestack_noctxt.abi0(SB)					
+  utf_validation_archsimd_amd64.go:29	0x6ec775		488b442408		MOVQ 0x8(SP), AX							
+  utf_validation_archsimd_amd64.go:29	0x6ec77a		488b5c2410		MOVQ 0x10(SP), BX							
+  utf_validation_archsimd_amd64.go:29	0x6ec77f		488b4c2418		MOVQ 0x18(SP), CX							
+  utf_validation_archsimd_amd64.go:29	0x6ec784		eb9a			JMP github.com/zchee/go-simdutf.validateUTF16LEArchsimd(SB)		
+
+TEXT github.com/zchee/go-simdutf.validateUTF32Archsimd(SB) /tmp/utf8-qual-src/utf_validation_archsimd_amd64.go
+  utf_validation_archsimd_amd64.go:141	0x6ece20		493b6610		CMPQ SP, 0x10(R14)							
+  utf_validation_archsimd_amd64.go:141	0x6ece24		7661			JBE 0x6ece87								
+  utf_validation_archsimd_amd64.go:141	0x6ece26		55			PUSHQ BP								
+  utf_validation_archsimd_amd64.go:141	0x6ece27		4889e5			MOVQ SP, BP								
+  utf_validation_archsimd_amd64.go:141	0x6ece2a		4883ec18		SUBQ $0x18, SP								
+  utf_validation_archsimd_amd64.go:141	0x6ece2e		4889442428		MOVQ AX, 0x28(SP)							
+  utf_validation_archsimd_amd64.go:142	0x6ece33		4883fb08		CMPQ BX, $0x8								
+  utf_validation_archsimd_amd64.go:142	0x6ece37		7d04			JGE 0x6ece3d								
+  utf_validation_archsimd_amd64.go:143	0x6ece39		31c9			XORL CX, CX								
+  utf32_scalar.go:23			0x6ece3b		eb16			JMP 0x6ece53								
+  utf_validation_archsimd_amd64.go:145	0x6ece3d		0f1f00			NOPL 0(AX)								
+  utf_validation_archsimd_amd64.go:145	0x6ece40		e87b000000		CALL github.com/zchee/go-simdutf.validateUTF32WithErrorsArchsimd(SB)	
+  utf_validation_archsimd_amd64.go:145	0x6ece45		84c0			TESTL AL, AL								
+  utf_validation_archsimd_amd64.go:145	0x6ece47		0f94c0			SETE AL									
+  utf_validation_archsimd_amd64.go:145	0x6ece4a		4883c418		ADDQ $0x18, SP								
+  utf_validation_archsimd_amd64.go:145	0x6ece4e		5d			POPQ BP									
+  utf_validation_archsimd_amd64.go:145	0x6ece4f		c3			RET									
+  utf32_scalar.go:23			0x6ece50		48ffc1			INCQ CX									
+  utf32_scalar.go:23			0x6ece53		4839cb			CMPQ BX, CX								
+  utf32_scalar.go:23			0x6ece56		7e26			JLE 0x6ece7e								
+  utf32_scalar.go:23			0x6ece58		8b1488			MOVL 0(AX)(CX*4), DX							
+  utf32_scalar.go:23			0x6ece5b		0f1f440000		NOPL 0(AX)(AX*1)							
+  utf32_scalar.go:24			0x6ece60		81faffff1000		CMPL DX, $0x10ffff							
+  utf32_scalar.go:24			0x6ece66		7713			JA 0x6ece7b								
+  utf32_scalar.go:24			0x6ece68		81c20028ffff		ADDL $-0xd800, DX							
+  utf32_scalar.go:24			0x6ece6e		81faff070000		CMPL DX, $0x7ff								
+  utf32_scalar.go:24			0x6ece74		77da			JA 0x6ece50								
+  utf32_scalar.go:23			0x6ece76		4839cb			CMPQ BX, CX								
+  utf32_scalar.go:24			0x6ece79		eb03			JMP 0x6ece7e								
+  utf32_scalar.go:23			0x6ece7b		4839cb			CMPQ BX, CX								
+  utf_validation_archsimd_amd64.go:143	0x6ece7e		0f9ec0			SETLE AL								
+  utf_validation_archsimd_amd64.go:143	0x6ece81		4883c418		ADDQ $0x18, SP								
+  utf_validation_archsimd_amd64.go:143	0x6ece85		5d			POPQ BP									
+  utf_validation_archsimd_amd64.go:143	0x6ece86		c3			RET									
+  utf_validation_archsimd_amd64.go:141	0x6ece87		4889442408		MOVQ AX, 0x8(SP)							
+  utf_validation_archsimd_amd64.go:141	0x6ece8c		48895c2410		MOVQ BX, 0x10(SP)							
+  utf_validation_archsimd_amd64.go:141	0x6ece91		48894c2418		MOVQ CX, 0x18(SP)							
+  utf_validation_archsimd_amd64.go:141	0x6ece96		e805fad9ff		CALL runtime.morestack_noctxt.abi0(SB)					
+  utf_validation_archsimd_amd64.go:141	0x6ece9b		488b442408		MOVQ 0x8(SP), AX							
+  utf_validation_archsimd_amd64.go:141	0x6ecea0		488b5c2410		MOVQ 0x10(SP), BX							
+  utf_validation_archsimd_amd64.go:141	0x6ecea5		488b4c2418		MOVQ 0x18(SP), CX							
+  utf_validation_archsimd_amd64.go:141	0x6eceaa		e971ffffff		JMP github.com/zchee/go-simdutf.validateUTF32Archsimd(SB)		
