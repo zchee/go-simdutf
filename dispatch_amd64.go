@@ -123,5 +123,10 @@ func makeImplementation(input selectionInput) implementation {
 			variant[func([]uint32) Result]{value: validateUTF32WithErrorsHaswell, kind: implementationHaswell, required: cpuAVX2, available: true},
 			variant[func([]uint32) Result]{value: validateUTF32WithErrorsScalar, kind: implementationScalar, available: true},
 		),
+		utf8LengthFromLatin1:   utf8LengthFromLatin1Scalar,
+		convertLatin1ToUTF8:    convertLatin1ToUTF8Scalar,
+		convertLatin1ToUTF16LE: convertLatin1ToUTF16LEScalar,
+		convertLatin1ToUTF16BE: convertLatin1ToUTF16BEScalar,
+		convertLatin1ToUTF32:   convertLatin1ToUTF32Scalar,
 	}
 }

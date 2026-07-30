@@ -70,5 +70,10 @@ func makeImplementation(input selectionInput) implementation {
 		toWellFormedUTF16BE:       toWellFormedUTF16BEScalar,
 		validateUTF32:             validateUTF32Scalar,
 		validateUTF32WithErrors:   validateUTF32WithErrorsScalar,
+		utf8LengthFromLatin1:      utf8LengthFromLatin1Scalar,
+		convertLatin1ToUTF8:       convertLatin1ToUTF8Scalar,
+		convertLatin1ToUTF16LE:    convertLatin1ToUTF16LEScalar,
+		convertLatin1ToUTF16BE:    convertLatin1ToUTF16BEScalar,
+		convertLatin1ToUTF32:      convertLatin1ToUTF32Scalar,
 	}
 }

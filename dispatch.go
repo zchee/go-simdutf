@@ -78,6 +78,7 @@ type implementation struct {
 	validateUTF8WithErrors    func([]byte) Result
 	countUTF8                 func([]byte) int
 	latin1LengthFromUTF8      func([]byte) int
+	utf8LengthFromLatin1      func([]byte) int
 	utf16LengthFromUTF8       func([]byte) int
 	utf32LengthFromUTF8       func([]byte) int
 	validateASCII             func([]byte) bool
@@ -92,6 +93,10 @@ type implementation struct {
 	toWellFormedUTF16BE       func([]uint16, []uint16)
 	validateUTF32             func([]uint32) bool
 	validateUTF32WithErrors   func([]uint32) Result
+	convertLatin1ToUTF8       func([]byte, []byte) int
+	convertLatin1ToUTF16LE    func([]byte, []uint16) int
+	convertLatin1ToUTF16BE    func([]byte, []uint16) int
+	convertLatin1ToUTF32      func([]byte, []uint32) int
 }
 
 var activeImplementation = makeImplementation(detectSelectionInput())

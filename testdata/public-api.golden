@@ -40,6 +40,12 @@ field	Result.Error	0	ErrorCode	embedded=false	tag=""
 func	BOMByteSize	func(Encoding) int
 func	Base64OptionsString	func(Base64Options) string
 func	CheckBOM	func([]byte) Encoding
+func	ConvertLatin1ToUTF16	func([]byte, []uint16) int
+func	ConvertLatin1ToUTF16BE	func([]byte, []uint16) int
+func	ConvertLatin1ToUTF16LE	func([]byte, []uint16) int
+func	ConvertLatin1ToUTF32	func([]byte, []uint32) int
+func	ConvertLatin1ToUTF8	func([]byte, []byte) int
+func	ConvertLatin1ToUTF8Safe	func([]byte, []byte) int
 func	CountUTF8	func([]byte) int
 func	EncodingString	func(Encoding) string
 func	ErrorToString	func(ErrorCode) string
@@ -50,8 +56,11 @@ func	ToWellFormedUTF16	func([]uint16, []uint16)
 func	ToWellFormedUTF16BE	func([]uint16, []uint16)
 func	ToWellFormedUTF16LE	func([]uint16, []uint16)
 func	TrimPartialUTF8	func([]byte) int
+func	UTF16LengthFromLatin1	func(int) int
 func	UTF16LengthFromUTF8	func([]byte) int
+func	UTF32LengthFromLatin1	func(int) int
 func	UTF32LengthFromUTF8	func([]byte) int
+func	UTF8LengthFromLatin1	func([]byte) int
 func	ValidateASCII	func([]byte) bool
 func	ValidateASCIIWithErrors	func([]byte) Result
 func	ValidateUTF16	func([]uint16) bool
