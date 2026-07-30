@@ -14,22 +14,207 @@
 
 // Portions Copyright 2021 The simdutf Authors.
 
-//go:build amd64
+//go:build amd64 && goexperiment.simd
 
 package simdutf
 
-// Archsimd Base64 providers adapted against the frozen archsimd authority for
-// FC-v1-base64. Forceable and scalar-first until qualification promotes.
+import (
+	"math/bits"
+	"simd/archsimd"
+)
 
-//go:noinline
+// Independently adapted from simdutf/simdutf@611becc2a08c27a4edc77d9a45ff74c97130129b
+// (tree c8292790d793212ca0a1faf6ae42e7f8e7b70d4f): src/generic/base64lengths.h and
+// src/haswell/avx2_base64.cpp. Length counts units > 0x20 with AVX2 compare /
+// OnesCount; encode owns complete 24→32 groups via VPSHUFB expand, MulHigh /
+// Mul index packing, and lookup_pshufb_improved. Decode/details remain
+// forceable scalar-assisted symbols. Direct callers must satisfy the archsimd
+// AVX2 guard. Public selection stays scalar-first until qualification promotes.
+//
+// Go 1.26.5 archsimd API provenance:
+// src/simd/archsimd/slice_gen_amd64.go:149-162,50-53;
+// src/simd/archsimd/ops_amd64.go:297,602,4050,4202,4505,4830,5992,6094,7143,
+// 7334,8343,8355,8436,8517,8520,8644,8674; src/simd/archsimd/compare_gen_amd64.go:452;
+// src/simd/archsimd/other_gen_amd64.go:101,137,155,297-300; and
+// src/simd/archsimd/extra_amd64.go:9-17.
+
+// base64ArchsimdShuf is the AVX2 lane-expand control (duplicated 16-byte pattern).
+// Memory order matches _mm256_set_epi8(10,11,9,10,...,1,2,0,1, ...) reversed per lane.
+var base64ArchsimdShuf = [32]int8{
+	1, 0, 2, 1, 4, 3, 5, 4, 7, 6, 8, 7, 10, 9, 11, 10,
+	1, 0, 2, 1, 4, 3, 5, 4, 7, 6, 8, 7, 10, 9, 11, 10,
+}
+
+// setr_epi8 standard / URL shift LUTs from lookup_pshufb_improved, duplicated for AVX2.
+var base64ArchsimdShiftStd = [32]uint8{
+	71, 252, 252, 252, 252, 252, 252, 252, 252, 252, 252, 237, 240, 65, 0, 0,
+	71, 252, 252, 252, 252, 252, 252, 252, 252, 252, 252, 237, 240, 65, 0, 0,
+}
+
+var base64ArchsimdShiftURL = [32]uint8{
+	71, 252, 252, 252, 252, 252, 252, 252, 252, 252, 252, 239, 32, 65, 0, 0,
+	71, 252, 252, 252, 252, 252, 252, 252, 252, 252, 252, 239, 32, 65, 0, 0,
+}
+
 func binaryLengthFromBase64Archsimd(input []byte) int {
-	return binaryLengthFromBase64Scalar(input)
+	space := archsimd.BroadcastUint8x32(0x20)
+	count := 0
+	offset := 0
+	for ; offset+32 <= len(input); offset += 32 {
+		v := archsimd.LoadUint8x32Slice(input[offset:])
+		count += bits.OnesCount32(v.Greater(space).ToBits())
+	}
+	archsimd.ClearAVXUpperBits()
+	for _, c := range input[offset:] {
+		if c > ' ' {
+			count++
+		}
+	}
+	padding := 0
+	pos := len(input)
+	for pos > 0 && padding < 2 {
+		pos--
+		c := input[pos]
+		if c == '=' {
+			padding++
+		} else if c > ' ' {
+			break
+		}
+	}
+	return ((count - padding) * 3) / 4
 }
 
-//go:noinline
 func binaryLengthFromBase64UTF16Archsimd(input []uint16) int {
-	return binaryLengthFromBase64UTF16Scalar(input)
+	space := archsimd.BroadcastUint16x16(0x20)
+	count := 0
+	offset := 0
+	for ; offset+16 <= len(input); offset += 16 {
+		v := archsimd.LoadUint16x16Slice(input[offset:])
+		// Mask16x16.ToBits is AVX-512-only; reinterpret as bytes for AVX2 VPMOVMSKB.
+		mask := v.Greater(space).ToInt16x16().AsInt8x32().ToMask().ToBits()
+		count += bits.OnesCount32(mask)
+	}
+	archsimd.ClearAVXUpperBits()
+	// Each matching uint16 sets two bits in the byte mask.
+	count /= 2
+	for _, c := range input[offset:] {
+		if c > ' ' {
+			count++
+		}
+	}
+	padding := 0
+	pos := len(input)
+	for pos > 0 && padding < 2 {
+		pos--
+		c := input[pos]
+		if c == '=' {
+			padding++
+		} else if c > ' ' {
+			break
+		}
+	}
+	return ((count - padding) * 3) / 4
 }
+
+func base64EncodeBlocksArchsimd(input, dst []byte, url bool) (consumed, written int) {
+	shuf := archsimd.LoadInt8x32(&base64ArchsimdShuf)
+	mask0 := archsimd.BroadcastUint32x8(0x0fc0fc00).AsUint8x32()
+	mulHi := archsimd.BroadcastUint32x8(0x04000040).AsUint16x16()
+	mask1 := archsimd.BroadcastUint32x8(0x003f03f0).AsUint8x32()
+	mulLo := archsimd.BroadcastUint32x8(0x01000010).AsUint16x16()
+	spl51 := archsimd.BroadcastUint8x32(51)
+	spl26 := archsimd.BroadcastInt8x32(26)
+	spl13 := archsimd.BroadcastUint8x32(13)
+	shift := archsimd.LoadUint8x32(&base64ArchsimdShiftStd)
+	if url {
+		shift = archsimd.LoadUint8x32(&base64ArchsimdShiftURL)
+	}
+
+	var zero archsimd.Uint8x32
+	i, o := 0, 0
+	for i+28 <= len(input) && o+32 <= len(dst) {
+		in := zero.
+			SetLo(archsimd.LoadUint8x16Slice(input[i:])).
+			SetHi(archsimd.LoadUint8x16Slice(input[i+12:])).
+			PermuteOrZeroGrouped(shuf)
+
+		t0 := in.And(mask0).AsUint16x16().MulHigh(mulHi).AsUint8x32()
+		t1 := in.And(mask1).AsUint16x16().Mul(mulLo).AsUint8x32()
+		indices := t0.Or(t1)
+
+		result := indices.SubSaturated(spl51)
+		less := spl26.Greater(indices.AsInt8x32()).ToInt8x32().AsUint8x32().And(spl13)
+		result = result.Or(less)
+		out := shift.PermuteOrZeroGrouped(result.AsInt8x32()).Add(indices)
+		out.StoreSlice(dst[o:])
+
+		i += 24
+		o += 32
+	}
+	archsimd.ClearAVXUpperBits()
+	return i, o
+}
+
+func binaryToBase64Archsimd(input, dst []byte, options Base64Options) int {
+	required := base64LengthFromBinaryScalar(len(input), options)
+	if len(dst) < required {
+		panic("simdutf: destination is too short")
+	}
+	consumed, written := base64EncodeBlocksArchsimd(input, dst, options&Base64URL != 0)
+	if consumed >= len(input) {
+		return written
+	}
+	return written + tailEncodeBase64(dst[written:], input[consumed:], options, false, 0)
+}
+
+func binaryToBase64WithLinesArchsimd(input, dst []byte, lineLength int, options Base64Options) int {
+	required := base64LengthFromBinaryWithLinesScalar(len(input), options, lineLength)
+	if len(dst) < required {
+		panic("simdutf: destination is too short")
+	}
+	if lineLength < 4 {
+		lineLength = 4
+	}
+	url := options&Base64URL != 0
+	out := 0
+	col := 0
+	inOff := 0
+	for {
+		var buf [128]byte
+		consumed, written := base64EncodeBlocksArchsimd(input[inOff:], buf[:], url)
+		if consumed == 0 {
+			break
+		}
+		for j := 0; j < written; j++ {
+			if col == lineLength {
+				dst[out] = '\n'
+				out++
+				col = 0
+			}
+			dst[out] = buf[j]
+			out++
+			col++
+		}
+		inOff += consumed
+	}
+	if inOff < len(input) {
+		var rem [72]byte
+		n := tailEncodeBase64(rem[:], input[inOff:], options, false, 0)
+		for j := 0; j < n; j++ {
+			if col == lineLength {
+				dst[out] = '\n'
+				out++
+				col = 0
+			}
+			dst[out] = rem[j]
+			out++
+			col++
+		}
+	}
+	return out
+}
+
+// Decode/details stay forceable and distinct from scalar; SIMD decode lands later.
 
 //go:noinline
 func base64ToBinaryArchsimd(input []byte, dst []byte, options Base64Options, lastChunk LastChunkHandlingOptions) Result {
@@ -49,14 +234,4 @@ func base64ToBinaryDetailsArchsimd(input []byte, dst []byte, options Base64Optio
 //go:noinline
 func base64ToBinaryDetailsUTF16Archsimd(input []uint16, dst []byte, options Base64Options, lastChunk LastChunkHandlingOptions) FullResult {
 	return base64ToBinaryDetailsUTF16Scalar(input, dst, options, lastChunk)
-}
-
-//go:noinline
-func binaryToBase64Archsimd(input, dst []byte, options Base64Options) int {
-	return binaryToBase64Scalar(input, dst, options)
-}
-
-//go:noinline
-func binaryToBase64WithLinesArchsimd(input, dst []byte, lineLength int, options Base64Options) int {
-	return binaryToBase64WithLinesScalar(input, dst, lineLength, options)
 }
