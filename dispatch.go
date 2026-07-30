@@ -14,6 +14,11 @@
 
 package simdutf
 
+import (
+	"os"
+	"strings"
+)
+
 // Go-only dispatch glue based on the first-supported priority semantics in
 // simdutf/simdutf@611becc2a08c27a4edc77d9a45ff74c97130129b:src/implementation.cpp
 // and the per-symbol ISA/object-proof policy in
@@ -65,12 +70,39 @@ func (candidate variant[T]) supportedBy(input selectionInput) bool {
 }
 
 func selectVariant[T any](input selectionInput, candidates ...variant[T]) T {
+	if force, ok := forcedImplementationKind(); ok {
+		for _, candidate := range candidates {
+			if candidate.kind == force && candidate.supportedBy(input) {
+				return candidate.value
+			}
+		}
+		// Operations without the forced provider keep first-supported selection.
+	}
 	for _, candidate := range candidates {
 		if candidate.supportedBy(input) {
 			return candidate.value
 		}
 	}
 	panic("simdutf: internal dispatch has no available implementation")
+}
+
+func forcedImplementationKind() (implementationKind, bool) {
+	switch strings.ToLower(strings.TrimSpace(os.Getenv("SIMDUTF_FORCE_PROVIDER"))) {
+	case "":
+		return 0, false
+	case "scalar":
+		return implementationScalar, true
+	case "westmere":
+		return implementationWestmere, true
+	case "haswell":
+		return implementationHaswell, true
+	case "neon":
+		return implementationNEON, true
+	case "archsimd":
+		return implementationArchsimd, true
+	default:
+		panic("simdutf: unsupported SIMDUTF_FORCE_PROVIDER value")
+	}
 }
 
 type implementation struct {
