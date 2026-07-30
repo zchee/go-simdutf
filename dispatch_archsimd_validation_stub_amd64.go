@@ -23,6 +23,7 @@ func archsimdValidateUTF16BEWithErrors() func([]uint16) Result   { return nil }
 func archsimdToWellFormedUTF16LE() func([]uint16, []uint16)      { return nil }
 func archsimdToWellFormedUTF16BE() func([]uint16, []uint16)      { return nil }
 func archsimdValidateUTF32() func([]uint32) bool                 { return nil }
+func archsimdDetectEncodings() func([]byte) Encoding             { return nil }
 func archsimdValidateUTF32WithErrors() func([]uint32) Result     { return nil }
 func archsimdUTF8LengthFromLatin1() func([]byte) int             { return nil }
 func archsimdConvertLatin1ToUTF8() func([]byte, []byte) int      { return nil }

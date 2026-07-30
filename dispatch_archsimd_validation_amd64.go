@@ -27,6 +27,7 @@ func archsimdValidateUTF16BEWithErrors() func([]uint16) Result {
 func archsimdToWellFormedUTF16LE() func([]uint16, []uint16) { return toWellFormedUTF16LEArchsimd }
 func archsimdToWellFormedUTF16BE() func([]uint16, []uint16) { return toWellFormedUTF16BEArchsimd }
 func archsimdValidateUTF32() func([]uint32) bool            { return validateUTF32Archsimd }
+func archsimdDetectEncodings() func([]byte) Encoding        { return detectEncodingsArchsimd }
 func archsimdValidateUTF32WithErrors() func([]uint32) Result {
 	return validateUTF32WithErrorsArchsimd
 }

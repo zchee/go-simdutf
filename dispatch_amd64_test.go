@@ -265,6 +265,39 @@ func TestMakeImplementationAMD64UTF16HelpersQualificationSelection(t *testing.T)
 	}
 }
 
+func TestMakeImplementationAMD64FindQualificationSelection(t *testing.T) {
+	// find/findUTF16 providers are forceable but remain scalar-first until
+	// qualification dispositions promote selected backends.
+	for _, input := range []selectionInput{
+		{},
+		{features: cpuSSSE3},
+		{features: cpuAVX2},
+		{features: cpuSSSE3 | cpuAVX2},
+		{features: cpuSSSE3 | cpuAVX2, archsimdAVX2: true},
+	} {
+		got := makeImplementation(input)
+		if !sameFunction(got.find, findScalar) || !sameFunction(got.findUTF16, findUTF16Scalar) {
+			t.Fatalf("find providers leaked ahead of scalar for %#v", input)
+		}
+	}
+}
+func TestMakeImplementationAMD64DetectEncodingsQualificationSelection(t *testing.T) {
+	// detectEncodings providers are forceable but remain scalar-first until
+	// qualification dispositions promote selected backends.
+	for _, input := range []selectionInput{
+		{},
+		{features: cpuSSSE3},
+		{features: cpuAVX2},
+		{features: cpuSSSE3 | cpuAVX2},
+		{features: cpuSSSE3 | cpuAVX2, archsimdAVX2: true},
+	} {
+		got := makeImplementation(input)
+		if !sameFunction(got.detectEncodings, detectEncodingsScalar) {
+			t.Fatalf("detectEncodings leaked ahead of scalar for %#v", input)
+		}
+	}
+}
+
 func TestMakeImplementationAMD64UTF16Latin1QualificationSelection(t *testing.T) {
 	// UTF-16→Latin-1 providers are forceable but remain scalar-first until
 	// qualification dispositions promote selected backends.

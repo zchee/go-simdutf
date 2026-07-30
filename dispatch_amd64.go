@@ -36,6 +36,7 @@ func makeImplementation(input selectionInput) implementation {
 	archsimdUTF16BE := archsimdValidateUTF16BEAsASCII()
 	archsimdValidate16LEWithErrors := archsimdValidateUTF16LEWithErrors()
 	archsimdValidate32 := archsimdValidateUTF32()
+	archsimdDetectFn := archsimdDetectEncodings()
 	archsimdLatin1Length := archsimdUTF8LengthFromLatin1()
 	archsimdLatin1UTF8 := archsimdConvertLatin1ToUTF8()
 	archsimdLatin1UTF16LE := archsimdConvertLatin1ToUTF16LE()
@@ -96,6 +97,8 @@ func makeImplementation(input selectionInput) implementation {
 	archsimdValidUTF32UTF16BE := archsimdConvertValidUTF32ToUTF16BE()
 	archsimdUTF8Len32 := archsimdUTF8LengthFromUTF32()
 	archsimdUTF16Len32 := archsimdUTF16LengthFromUTF32()
+	archsimdFindFn := archsimdFind()
+	archsimdFindUTF16Fn := archsimdFindUTF16()
 	countUTF8 := selectVariant(
 		input,
 		variant[func([]byte) int]{value: archsimdCount, kind: implementationArchsimd, required: cpuAVX2, available: archsimdCount != nil},
@@ -609,14 +612,23 @@ func makeImplementation(input selectionInput) implementation {
 		detectEncodings: selectVariant(
 			input,
 			variant[func([]byte) Encoding]{value: detectEncodingsScalar, kind: implementationScalar, available: true},
+			variant[func([]byte) Encoding]{value: archsimdDetectFn, kind: implementationArchsimd, required: cpuAVX2, available: archsimdDetectFn != nil},
+			variant[func([]byte) Encoding]{value: detectEncodingsHaswell, kind: implementationHaswell, required: cpuAVX2, available: true},
+			variant[func([]byte) Encoding]{value: detectEncodingsWestmere, kind: implementationWestmere, required: cpuSSSE3, available: true},
 		),
 		find: selectVariant(
 			input,
 			variant[func([]byte, byte) int]{value: findScalar, kind: implementationScalar, available: true},
+			variant[func([]byte, byte) int]{value: archsimdFindFn, kind: implementationArchsimd, required: cpuAVX2, available: archsimdFindFn != nil},
+			variant[func([]byte, byte) int]{value: findHaswell, kind: implementationHaswell, required: cpuAVX2, available: true},
+			variant[func([]byte, byte) int]{value: findWestmere, kind: implementationWestmere, required: cpuSSSE3, available: true},
 		),
 		findUTF16: selectVariant(
 			input,
 			variant[func([]uint16, uint16) int]{value: findUTF16Scalar, kind: implementationScalar, available: true},
+			variant[func([]uint16, uint16) int]{value: archsimdFindUTF16Fn, kind: implementationArchsimd, required: cpuAVX2, available: archsimdFindUTF16Fn != nil},
+			variant[func([]uint16, uint16) int]{value: findUTF16Haswell, kind: implementationHaswell, required: cpuAVX2, available: true},
+			variant[func([]uint16, uint16) int]{value: findUTF16Westmere, kind: implementationWestmere, required: cpuSSSE3, available: true},
 		),
 	}
 }

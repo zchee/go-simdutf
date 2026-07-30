@@ -392,14 +392,17 @@ func makeImplementation(input selectionInput) implementation {
 		detectEncodings: selectVariant(
 			input,
 			variant[func([]byte) Encoding]{value: detectEncodingsScalar, kind: implementationScalar, available: true},
+			variant[func([]byte) Encoding]{value: detectEncodingsNEON, kind: implementationNEON, required: cpuNEON, available: true},
 		),
 		find: selectVariant(
 			input,
 			variant[func([]byte, byte) int]{value: findScalar, kind: implementationScalar, available: true},
+			variant[func([]byte, byte) int]{value: findNEON, kind: implementationNEON, required: cpuNEON, available: true},
 		),
 		findUTF16: selectVariant(
 			input,
 			variant[func([]uint16, uint16) int]{value: findUTF16Scalar, kind: implementationScalar, available: true},
+			variant[func([]uint16, uint16) int]{value: findUTF16NEON, kind: implementationNEON, required: cpuNEON, available: true},
 		),
 	}
 }

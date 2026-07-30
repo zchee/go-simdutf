@@ -262,3 +262,40 @@ func TestMakeImplementationARM64UTF32SourceQualificationSelection(t *testing.T) 
 		}
 	}
 }
+func TestMakeImplementationARM64FindQualificationSelection(t *testing.T) {
+	// Find providers are forceable but remain scalar-first until qualification
+	// dispositions promote selected backends.
+	for _, input := range []selectionInput{
+		{},
+		{features: cpuNEON},
+	} {
+		got := makeImplementation(input)
+		if !sameFunction(got.find, findScalar) ||
+			!sameFunction(got.findUTF16, findUTF16Scalar) {
+			t.Fatalf("find providers leaked ahead of scalar-first qualification gate for %#v", input)
+		}
+	}
+	t.Setenv("SIMDUTF_FORCE_PROVIDER", "neon")
+	got := makeImplementation(selectionInput{features: cpuNEON})
+	if !sameFunction(got.find, findNEON) || !sameFunction(got.findUTF16, findUTF16NEON) {
+		t.Fatal("forced NEON did not select findNEON/findUTF16NEON")
+	}
+}
+func TestMakeImplementationARM64DetectEncodingsQualificationSelection(t *testing.T) {
+	// detectEncodings providers are forceable but remain scalar-first until
+	// qualification dispositions promote selected backends.
+	for _, input := range []selectionInput{
+		{},
+		{features: cpuNEON},
+	} {
+		got := makeImplementation(input)
+		if !sameFunction(got.detectEncodings, detectEncodingsScalar) {
+			t.Fatalf("detectEncodings leaked ahead of scalar-first qualification gate for %#v", input)
+		}
+	}
+	t.Setenv("SIMDUTF_FORCE_PROVIDER", "neon")
+	got := makeImplementation(selectionInput{features: cpuNEON})
+	if !sameFunction(got.detectEncodings, detectEncodingsNEON) {
+		t.Fatal("forced NEON did not select detectEncodingsNEON")
+	}
+}
