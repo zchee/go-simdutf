@@ -53,6 +53,11 @@ func makeImplementation(input selectionInput) implementation {
 	archsimdUTF8UTF32 := archsimdConvertUTF8ToUTF32()
 	archsimdUTF8UTF32Err := archsimdConvertUTF8ToUTF32WithErrors()
 	archsimdValidUTF8UTF32 := archsimdConvertValidUTF8ToUTF32()
+	archsimdChangeEndian := archsimdChangeEndiannessUTF16()
+	archsimdCount16LE := archsimdCountUTF16LE()
+	archsimdCount16BE := archsimdCountUTF16BE()
+	archsimdUTF32Len16LE := archsimdUTF32LengthFromUTF16LE()
+	archsimdUTF32Len16BE := archsimdUTF32LengthFromUTF16BE()
 	countUTF8 := selectVariant(
 		input,
 		variant[func([]byte) int]{value: archsimdCount, kind: implementationArchsimd, required: cpuAVX2, available: archsimdCount != nil},
@@ -312,10 +317,16 @@ func makeImplementation(input selectionInput) implementation {
 		utf32LengthFromUTF16LE: selectVariant(
 			input,
 			variant[func([]uint16) int]{value: utf32LengthFromUTF16LEScalar, kind: implementationScalar, available: true},
+			variant[func([]uint16) int]{value: archsimdUTF32Len16LE, kind: implementationArchsimd, required: cpuAVX2, available: archsimdUTF32Len16LE != nil},
+			variant[func([]uint16) int]{value: utf32LengthFromUTF16LEHaswell, kind: implementationHaswell, required: cpuAVX2, available: true},
+			variant[func([]uint16) int]{value: utf32LengthFromUTF16LEWestmere, kind: implementationWestmere, required: cpuSSSE3, available: true},
 		),
 		utf32LengthFromUTF16BE: selectVariant(
 			input,
 			variant[func([]uint16) int]{value: utf32LengthFromUTF16BEScalar, kind: implementationScalar, available: true},
+			variant[func([]uint16) int]{value: archsimdUTF32Len16BE, kind: implementationArchsimd, required: cpuAVX2, available: archsimdUTF32Len16BE != nil},
+			variant[func([]uint16) int]{value: utf32LengthFromUTF16BEHaswell, kind: implementationHaswell, required: cpuAVX2, available: true},
+			variant[func([]uint16) int]{value: utf32LengthFromUTF16BEWestmere, kind: implementationWestmere, required: cpuSSSE3, available: true},
 		),
 		convertUTF16LEToUTF8: selectVariant(
 			input,
@@ -360,14 +371,23 @@ func makeImplementation(input selectionInput) implementation {
 		countUTF16LE: selectVariant(
 			input,
 			variant[func([]uint16) int]{value: countUTF16LEScalar, kind: implementationScalar, available: true},
+			variant[func([]uint16) int]{value: archsimdCount16LE, kind: implementationArchsimd, required: cpuAVX2, available: archsimdCount16LE != nil},
+			variant[func([]uint16) int]{value: countUTF16LEHaswell, kind: implementationHaswell, required: cpuAVX2, available: true},
+			variant[func([]uint16) int]{value: countUTF16LEWestmere, kind: implementationWestmere, required: cpuSSSE3, available: true},
 		),
 		countUTF16BE: selectVariant(
 			input,
 			variant[func([]uint16) int]{value: countUTF16BEScalar, kind: implementationScalar, available: true},
+			variant[func([]uint16) int]{value: archsimdCount16BE, kind: implementationArchsimd, required: cpuAVX2, available: archsimdCount16BE != nil},
+			variant[func([]uint16) int]{value: countUTF16BEHaswell, kind: implementationHaswell, required: cpuAVX2, available: true},
+			variant[func([]uint16) int]{value: countUTF16BEWestmere, kind: implementationWestmere, required: cpuSSSE3, available: true},
 		),
 		changeEndiannessUTF16: selectVariant(
 			input,
 			variant[func([]uint16, []uint16)]{value: changeEndiannessUTF16Scalar, kind: implementationScalar, available: true},
+			variant[func([]uint16, []uint16)]{value: archsimdChangeEndian, kind: implementationArchsimd, required: cpuAVX2, available: archsimdChangeEndian != nil},
+			variant[func([]uint16, []uint16)]{value: changeEndiannessUTF16Haswell, kind: implementationHaswell, required: cpuAVX2, available: true},
+			variant[func([]uint16, []uint16)]{value: changeEndiannessUTF16Westmere, kind: implementationWestmere, required: cpuSSSE3, available: true},
 		),
 		utf8LengthFromUTF16LEWithReplacement: selectVariant(
 			input,

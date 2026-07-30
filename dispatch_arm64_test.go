@@ -156,3 +156,20 @@ func TestMakeImplementationARM64UTF8QualificationSelection(t *testing.T) {
 		t.Fatal("live UTF-8 convert selection leaked ahead of scalar before qualification")
 	}
 }
+
+func TestMakeImplementationARM64UTF16HelpersQualificationSelection(t *testing.T) {
+	// Helper providers stay scalar-first pending qualification dispositions.
+	for _, input := range []selectionInput{
+		{},
+		{features: cpuNEON},
+	} {
+		got := makeImplementation(input)
+		if !sameFunction(got.changeEndiannessUTF16, changeEndiannessUTF16Scalar) ||
+			!sameFunction(got.countUTF16LE, countUTF16LEScalar) ||
+			!sameFunction(got.countUTF16BE, countUTF16BEScalar) ||
+			!sameFunction(got.utf32LengthFromUTF16LE, utf32LengthFromUTF16LEScalar) ||
+			!sameFunction(got.utf32LengthFromUTF16BE, utf32LengthFromUTF16BEScalar) {
+			t.Fatalf("UTF-16 helper providers leaked ahead of scalar for %#v", input)
+		}
+	}
+}

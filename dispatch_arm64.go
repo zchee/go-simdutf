@@ -224,10 +224,12 @@ func makeImplementation(input selectionInput) implementation {
 		utf32LengthFromUTF16LE: selectVariant(
 			input,
 			variant[func([]uint16) int]{value: utf32LengthFromUTF16LEScalar, kind: implementationScalar, available: true},
+			variant[func([]uint16) int]{value: utf32LengthFromUTF16LENEON, kind: implementationNEON, required: cpuNEON, available: true},
 		),
 		utf32LengthFromUTF16BE: selectVariant(
 			input,
 			variant[func([]uint16) int]{value: utf32LengthFromUTF16BEScalar, kind: implementationScalar, available: true},
+			variant[func([]uint16) int]{value: utf32LengthFromUTF16BENEON, kind: implementationNEON, required: cpuNEON, available: true},
 		),
 		convertUTF16LEToUTF8: selectVariant(
 			input,
@@ -272,14 +274,17 @@ func makeImplementation(input selectionInput) implementation {
 		countUTF16LE: selectVariant(
 			input,
 			variant[func([]uint16) int]{value: countUTF16LEScalar, kind: implementationScalar, available: true},
+			variant[func([]uint16) int]{value: countUTF16LENEON, kind: implementationNEON, required: cpuNEON, available: true},
 		),
 		countUTF16BE: selectVariant(
 			input,
 			variant[func([]uint16) int]{value: countUTF16BEScalar, kind: implementationScalar, available: true},
+			variant[func([]uint16) int]{value: countUTF16BENEON, kind: implementationNEON, required: cpuNEON, available: true},
 		),
 		changeEndiannessUTF16: selectVariant(
 			input,
 			variant[func([]uint16, []uint16)]{value: changeEndiannessUTF16Scalar, kind: implementationScalar, available: true},
+			variant[func([]uint16, []uint16)]{value: changeEndiannessUTF16NEON, kind: implementationNEON, required: cpuNEON, available: true},
 		),
 		utf8LengthFromUTF16LEWithReplacement: selectVariant(
 			input,
