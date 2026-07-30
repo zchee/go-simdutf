@@ -129,3 +129,30 @@ func TestMakeImplementationARM64Latin1QualificationSelection(t *testing.T) {
 		t.Fatal("live Latin-1 selection mismatched qualification dispositions")
 	}
 }
+
+func TestMakeImplementationARM64UTF8QualificationSelection(t *testing.T) {
+	// Until FC-v1-utf8-source dispositions promote any provider, public UTF-8
+	// convert selection stays scalar-first; NEON remains forceable/direct-only.
+	got := makeImplementation(selectionInput{features: cpuNEON})
+	if !sameFunction(got.convertUTF8ToLatin1, convertUTF8ToLatin1Scalar) ||
+		!sameFunction(got.convertUTF8ToLatin1WithErrors, convertUTF8ToLatin1WithErrorsScalar) ||
+		!sameFunction(got.convertValidUTF8ToLatin1, convertValidUTF8ToLatin1Scalar) ||
+		!sameFunction(got.convertUTF8ToUTF16LE, convertUTF8ToUTF16LEScalar) ||
+		!sameFunction(got.convertUTF8ToUTF16BE, convertUTF8ToUTF16BEScalar) ||
+		!sameFunction(got.convertUTF8ToUTF16LEWithErrors, convertUTF8ToUTF16LEWithErrorsScalar) ||
+		!sameFunction(got.convertUTF8ToUTF16BEWithErrors, convertUTF8ToUTF16BEWithErrorsScalar) ||
+		!sameFunction(got.convertValidUTF8ToUTF16LE, convertValidUTF8ToUTF16LEScalar) ||
+		!sameFunction(got.convertValidUTF8ToUTF16BE, convertValidUTF8ToUTF16BEScalar) ||
+		!sameFunction(got.convertUTF8ToUTF32, convertUTF8ToUTF32Scalar) ||
+		!sameFunction(got.convertUTF8ToUTF32WithErrors, convertUTF8ToUTF32WithErrorsScalar) ||
+		!sameFunction(got.convertValidUTF8ToUTF32, convertValidUTF8ToUTF32Scalar) {
+		t.Fatal("UTF-8 convert providers leaked ahead of scalar before qualification")
+	}
+	live := activeImplementation
+	if !sameFunction(live.convertUTF8ToLatin1, convertUTF8ToLatin1Scalar) ||
+		!sameFunction(live.convertUTF8ToUTF16LE, convertUTF8ToUTF16LEScalar) ||
+		!sameFunction(live.convertUTF8ToUTF16BE, convertUTF8ToUTF16BEScalar) ||
+		!sameFunction(live.convertUTF8ToUTF32, convertUTF8ToUTF32Scalar) {
+		t.Fatal("live UTF-8 convert selection leaked ahead of scalar before qualification")
+	}
+}

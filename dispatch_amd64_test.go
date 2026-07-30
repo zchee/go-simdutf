@@ -215,3 +215,31 @@ func TestMakeImplementationAMD64Latin1QualificationSelection(t *testing.T) {
 		t.Fatal("direct-only Latin-1 providers leaked ahead of scalar under SIMD")
 	}
 }
+
+func TestMakeImplementationAMD64UTF8QualificationSelection(t *testing.T) {
+	// Until FC-v1-utf8-source dispositions promote any provider, public UTF-8
+	// convert selection stays scalar-first across westmere/haswell/archsimd.
+	for _, input := range []selectionInput{
+		{},
+		{features: cpuSSSE3},
+		{features: cpuAVX2},
+		{features: cpuSSSE3 | cpuAVX2},
+		{features: cpuSSSE3 | cpuAVX2, archsimdAVX2: true},
+	} {
+		got := makeImplementation(input)
+		if !sameFunction(got.convertUTF8ToLatin1, convertUTF8ToLatin1Scalar) ||
+			!sameFunction(got.convertUTF8ToLatin1WithErrors, convertUTF8ToLatin1WithErrorsScalar) ||
+			!sameFunction(got.convertValidUTF8ToLatin1, convertValidUTF8ToLatin1Scalar) ||
+			!sameFunction(got.convertUTF8ToUTF16LE, convertUTF8ToUTF16LEScalar) ||
+			!sameFunction(got.convertUTF8ToUTF16BE, convertUTF8ToUTF16BEScalar) ||
+			!sameFunction(got.convertUTF8ToUTF16LEWithErrors, convertUTF8ToUTF16LEWithErrorsScalar) ||
+			!sameFunction(got.convertUTF8ToUTF16BEWithErrors, convertUTF8ToUTF16BEWithErrorsScalar) ||
+			!sameFunction(got.convertValidUTF8ToUTF16LE, convertValidUTF8ToUTF16LEScalar) ||
+			!sameFunction(got.convertValidUTF8ToUTF16BE, convertValidUTF8ToUTF16BEScalar) ||
+			!sameFunction(got.convertUTF8ToUTF32, convertUTF8ToUTF32Scalar) ||
+			!sameFunction(got.convertUTF8ToUTF32WithErrors, convertUTF8ToUTF32WithErrorsScalar) ||
+			!sameFunction(got.convertValidUTF8ToUTF32, convertValidUTF8ToUTF32Scalar) {
+			t.Fatalf("UTF-8 convert providers leaked ahead of scalar for %#v", input)
+		}
+	}
+}
