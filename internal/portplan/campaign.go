@@ -237,7 +237,7 @@ func commandCWDV1(action, role string) string {
 
 func validateArgvV1(c CampaignCommandV1) error {
 	for _, a := range c.Argv {
-		if a == "" || strings.ContainsAny(a, "\x00\r\n|&;<>()`*?[]\\") || strings.Contains(a, "${") {
+		if a == "" || strings.ContainsAny(a, "\x00\r\n|&<>()`*?[]\\") || strings.Contains(a, "${") {
 			return errors.New("unsafe command argv")
 		}
 	}
@@ -251,7 +251,7 @@ func validateArgvV1(c CampaignCommandV1) error {
 	}
 	switch c.Action {
 	case "source_commit", "source_tree", "source_parent", "source_status":
-		return exactArgsV1(c.Argv, []string{goBin, "run", "./internal/portplan/cmd/simdutf-evidence", "source-identity", "--role=" + c.Role, "--receipt=staging/identity/" + c.Role + ".json", "--archive=staging/source/" + c.Role + ".tar"})
+		return exactArgsV1(c.Argv, []string{goBin, "run", "./internal/portplan/cmd/simdutf-evidence", "source-identity", "--action=" + c.Action, "--role=" + c.Role, "--receipt=staging/identity/" + c.Role + ".json", "--archive=staging/source/" + c.Role + ".tar"})
 	case "host_uname":
 		return exactArgsV1(c.Argv, []string{"/usr/bin/uname", "-srm"})
 	case "host_cpu":
@@ -328,12 +328,18 @@ func validateArgvV1(c CampaignCommandV1) error {
 	case "final_selector_test":
 		return exactArgsV1(c.Argv, []string{goBin, "test", "-run=^TestFinalSelector$", "."})
 	case "quiet_affinity_recheck":
+		if c.Env["GOOS"] != "linux" {
+			return errors.New("quiet affinity recheck is Linux-only")
+		}
 		if !literalCPUSetV1(c.Env["SIMDUTF_CPU"]) {
 			return errors.New("invalid affinity recheck CPU")
 		}
+		if c.Env["SIMDUTF_AFFINITY"] != "taskset:"+c.Env["SIMDUTF_CPU"] {
+			return errors.New("invalid affinity recheck policy")
+		}
 		return exactArgsV1(c.Argv, []string{goBin, "run", "./internal/portplan/cmd/simdutf-evidence", "quiet-affinity-recheck", "--cpu=" + c.Env["SIMDUTF_CPU"], "--policy=" + c.Env["SIMDUTF_AFFINITY"]})
 	case "state_transition", "not_applicable":
-		return exactArgsV1(c.Argv, []string{goBin, "run", "./internal/portplan/cmd/simdutf-evidence", strings.ReplaceAll(c.Action, "_", "-")})
+		return validateEvidenceProducerStateArgsV1(c.Argv, goBin, c.Action == "not_applicable")
 	case "return_index":
 		return exactArgsV1(c.Argv, []string{goBin, "run", "./internal/portplan/cmd/simdutf-evidence", "return-index", "--descriptor-dir=staging/descriptors"})
 	default:
@@ -350,6 +356,97 @@ func exactArgsV1(got, want []string) error {
 		}
 	}
 	return nil
+}
+
+func validateEvidenceProducerStateArgsV1(argv []string, goBin string, notApplicable bool) error {
+	subcommand := "state-transition"
+	if notApplicable {
+		subcommand = "not-applicable"
+	}
+	prefix := []string{goBin, "run", "./internal/portplan/cmd/simdutf-evidence", subcommand}
+	required := []string{"--state-subject=", "--prerequisite-state=", "--current-state=", "--disposition=", "--go-qualification="}
+	if notApplicable {
+		required = append(required, "--na-reason=", "--na-source=")
+	}
+	if len(argv) < len(prefix)+len(required)+1 {
+		return errors.New("incorrect command argv")
+	}
+	if !exactArgsEqualV1(argv[:len(prefix)], prefix) {
+		return errors.New("incorrect command argv")
+	}
+	var naReason string
+	for i, flagPrefix := range required {
+		arg := argv[len(prefix)+i]
+		if !strings.HasPrefix(arg, flagPrefix) {
+			return errors.New("incorrect command argv")
+		}
+		value := strings.TrimPrefix(arg, flagPrefix)
+		if strings.ContainsAny(value, "\x00\r\n") {
+			return errors.New("incorrect command argv")
+		}
+		switch flagPrefix {
+		case "--state-subject=":
+			if notApplicable {
+				if value != "backend_cell" {
+					return errors.New("incorrect command argv")
+				}
+			} else if value != "row" && value != "backend_cell" {
+				return errors.New("incorrect command argv")
+			}
+		case "--prerequisite-state=", "--current-state=":
+			if value == "" {
+				return errors.New("incorrect command argv")
+			}
+			if notApplicable && flagPrefix == "--current-state=" && value != "not_applicable" {
+				return errors.New("incorrect command argv")
+			}
+		case "--disposition=":
+			if value != "" && value != "selected" && value != "direct_only" && value != "not_applicable" {
+				return errors.New("incorrect command argv")
+			}
+			if notApplicable && value != "not_applicable" {
+				return errors.New("incorrect command argv")
+			}
+		case "--go-qualification=":
+			if value != "" && value != "pass" && value != "fail" && value != "inconclusive" {
+				return errors.New("incorrect command argv")
+			}
+		case "--na-reason=":
+			if !validNAReason(value) {
+				return errors.New("incorrect command argv")
+			}
+			naReason = value
+		case "--na-source=":
+			if !validNAEvidenceSourceV1(naReason, value) {
+				return errors.New("incorrect command argv")
+			}
+		}
+	}
+	proofs := argv[len(prefix)+len(required):]
+	if len(proofs) == 0 {
+		return errors.New("incorrect command argv")
+	}
+	if len(proofs) == 1 {
+		if proofs[0] != "--proof-receipt-id=" && !literalProofReceiptFlagV1(proofs[0]) {
+			return errors.New("incorrect command argv")
+		}
+		return nil
+	}
+	for _, proof := range proofs {
+		if !literalProofReceiptFlagV1(proof) {
+			return errors.New("incorrect command argv")
+		}
+	}
+	return nil
+}
+
+func literalProofReceiptFlagV1(arg string) bool {
+	const prefix = "--proof-receipt-id="
+	if !strings.HasPrefix(arg, prefix) {
+		return false
+	}
+	value := strings.TrimPrefix(arg, prefix)
+	return strings.HasPrefix(value, "receipt-v1-") && lowerHex(strings.TrimPrefix(value, "receipt-v1-"), 64)
 }
 func literalTestNameV1(arg, prefix string) bool {
 	name := strings.TrimSuffix(strings.TrimPrefix(arg, prefix), "$")
@@ -483,7 +580,17 @@ func validateEnvV1(c CampaignCommandV1, evidence EvidenceValidationContextV1) er
 		} else if c.Env["GOOS"] == "darwin" && (c.Env["SIMDUTF_AFFINITY"] != "none" || c.Env["SIMDUTF_CPU"] != "") {
 			return errors.New("invalid Darwin benchmark affinity")
 		}
-	} else if c.Action != "quiet_affinity_recheck" && (c.Env["SIMDUTF_BENCH_EXPECT_OPERATION"] != "" || c.Env["SIMDUTF_BENCH_EXPECT_TIER"] != "" || c.Env["SIMDUTF_CPU"] != "" || c.Env["SIMDUTF_AFFINITY"] != "") {
+	} else if c.Action == "quiet_affinity_recheck" {
+		if c.Env["SIMDUTF_BENCH_EXPECT_OPERATION"] != "" || c.Env["SIMDUTF_BENCH_EXPECT_TIER"] != "" {
+			return errors.New("unexpected benchmark environment")
+		}
+		if c.Env["GOOS"] != "linux" {
+			return errors.New("quiet affinity recheck is Linux-only")
+		}
+		if c.Env["SIMDUTF_AFFINITY"] != "taskset:"+c.Env["SIMDUTF_CPU"] || !literalCPUSetV1(c.Env["SIMDUTF_CPU"]) {
+			return errors.New("invalid quiet affinity environment")
+		}
+	} else if c.Env["SIMDUTF_BENCH_EXPECT_OPERATION"] != "" || c.Env["SIMDUTF_BENCH_EXPECT_TIER"] != "" || c.Env["SIMDUTF_CPU"] != "" || c.Env["SIMDUTF_AFFINITY"] != "" {
 		return errors.New("unexpected benchmark environment")
 	}
 	return nil
@@ -557,7 +664,7 @@ func validateOutputsV1(c CampaignCommandV1) error {
 	}
 	if artifact != "" {
 		media := "text/plain"
-		if c.Action == "state_transition" || c.Action == "not_applicable" || c.Action == "return_index" {
+		if c.Action == "state_transition" || c.Action == "not_applicable" || c.Action == "return_index" || c.Action == "quiet_affinity_recheck" {
 			media = "application/json"
 		}
 		expected[artifact] = struct{ kind, media string }{artifact, media}
@@ -579,7 +686,7 @@ func validateOutputsV1(c CampaignCommandV1) error {
 }
 
 func outputExtensionV1(id string) string {
-	if id == "exit" || id == "argv-env" || id == "state-transition" || id == "not-applicable" || id == "index" {
+	if id == "exit" || id == "argv-env" || id == "state-transition" || id == "not-applicable" || id == "index" || id == "quiet-affinity" {
 		return ".json"
 	}
 	return ".txt"

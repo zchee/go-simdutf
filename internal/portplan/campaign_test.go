@@ -25,10 +25,10 @@ func TestRenderCanonicalCampaignCommandsV1Profiles(t *testing.T) {
 		action, role string
 		argv         []string
 	}{
-		{"source_commit", "old", []string{goBin, "run", "./internal/portplan/cmd/simdutf-evidence", "source-identity", "--role=old", "--receipt=staging/identity/old.json", "--archive=staging/source/old.tar"}},
-		{"source_tree", "new", []string{goBin, "run", "./internal/portplan/cmd/simdutf-evidence", "source-identity", "--role=new", "--receipt=staging/identity/new.json", "--archive=staging/source/new.tar"}},
-		{"source_parent", "old", []string{goBin, "run", "./internal/portplan/cmd/simdutf-evidence", "source-identity", "--role=old", "--receipt=staging/identity/old.json", "--archive=staging/source/old.tar"}},
-		{"source_status", "new", []string{goBin, "run", "./internal/portplan/cmd/simdutf-evidence", "source-identity", "--role=new", "--receipt=staging/identity/new.json", "--archive=staging/source/new.tar"}},
+		{"source_commit", "old", []string{goBin, "run", "./internal/portplan/cmd/simdutf-evidence", "source-identity", "--action=source_commit", "--role=old", "--receipt=staging/identity/old.json", "--archive=staging/source/old.tar"}},
+		{"source_tree", "new", []string{goBin, "run", "./internal/portplan/cmd/simdutf-evidence", "source-identity", "--action=source_tree", "--role=new", "--receipt=staging/identity/new.json", "--archive=staging/source/new.tar"}},
+		{"source_parent", "old", []string{goBin, "run", "./internal/portplan/cmd/simdutf-evidence", "source-identity", "--action=source_parent", "--role=old", "--receipt=staging/identity/old.json", "--archive=staging/source/old.tar"}},
+		{"source_status", "new", []string{goBin, "run", "./internal/portplan/cmd/simdutf-evidence", "source-identity", "--action=source_status", "--role=new", "--receipt=staging/identity/new.json", "--archive=staging/source/new.tar"}},
 		{"host_uname", "host", []string{"/usr/bin/uname", "-srm"}},
 		{"host_cpu", "host", []string{"/usr/bin/lscpu", "--json"}},
 		{"go_version", "host", []string{goBin, "version"}},
@@ -41,8 +41,8 @@ func TestRenderCanonicalCampaignCommandsV1Profiles(t *testing.T) {
 		{"final_selector_test", "selector", []string{goBin, "test", "-run=^TestFinalSelector$", "."}},
 		{"go_object_build", "object", []string{goBin, "test", "-c", "."}},
 		{"go_objdump", "object", []string{goBin, "tool", "objdump", "staging/object.test", "example.Symbol"}},
-		{"state_transition", "direct", []string{goBin, "run", "./internal/portplan/cmd/simdutf-evidence", "state-transition"}},
-		{"not_applicable", "direct", []string{goBin, "run", "./internal/portplan/cmd/simdutf-evidence", "not-applicable"}},
+		{"state_transition", "direct", []string{goBin, "run", "./internal/portplan/cmd/simdutf-evidence", "state-transition", "--state-subject=row", "--prerequisite-state=snapshot_planned", "--current-state=scalar_private", "--disposition=", "--go-qualification=", "--proof-receipt-id="}},
+		{"not_applicable", "direct", []string{goBin, "run", "./internal/portplan/cmd/simdutf-evidence", "not-applicable", "--state-subject=backend_cell", "--prerequisite-state=eligible", "--current-state=not_applicable", "--disposition=not_applicable", "--go-qualification=", "--na-reason=primitive_gap", "--na-source=611becc2a08c27a4edc77d9a45ff74c97130129b:include/simdutf/implementation.h:202", "--proof-receipt-id="}},
 		{"return_index", "direct", []string{goBin, "run", "./internal/portplan/cmd/simdutf-evidence", "return-index", "--descriptor-dir=staging/descriptors"}},
 	}
 	commands := make([]CampaignCommandV1, 0, len(profiles))
@@ -139,7 +139,7 @@ func campaignTestCommand(ordinal int, action, role string, argv []string) Campai
 	}
 	kind := campaignArtifactKindV1(action, role)
 	outputs := []CommandOutputV1{{"stdout", "stdout", "staging/" + id + "/stdout.txt", "text/plain", true}, {"stderr", "stderr", "staging/" + id + "/stderr.txt", "text/plain", true}, {"exit", "exit", "staging/" + id + "/exit.json", "application/json", true}, {"argv-env", "argv-env", "staging/" + id + "/argv-env.json", "application/json", true}}
-	outputs = append(outputs, CommandOutputV1{kind, kind, "staging/" + id + "/" + kind + outputExtensionV1(kind), map[bool]string{true: "application/json", false: "text/plain"}[action == "state_transition" || action == "not_applicable" || action == "return_index"], true})
+	outputs = append(outputs, CommandOutputV1{kind, kind, "staging/" + id + "/" + kind + outputExtensionV1(kind), map[bool]string{true: "application/json", false: "text/plain"}[action == "state_transition" || action == "not_applicable" || action == "return_index" || action == "quiet_affinity_recheck"], true})
 	return CampaignCommandV1{ordinal, id, action, role, argv, cwd, env, 60, 0, outputs, campaignTestID("op-v1-"), campaignTestID("batch-v1-"), campaignTestID("rk-v1-"), campaignTestID("cell-v1-"), "westmere"}
 }
 

@@ -87,10 +87,10 @@ func validEvidenceRecordV1(t *testing.T, contents []byte) (EvidenceRecordV1, Evi
 	context.IdentitySetDigest = identitySetDigestV1(context)
 
 	goBin := "/home/zchee/sdk/go1.26.5/bin/go"
-	sourceIdentityArgs := func(role string) []string {
+	sourceIdentityArgs := func(action, role string) []string {
 		return []string{
 			goBin, "run", "./internal/portplan/cmd/simdutf-evidence", "source-identity",
-			"--role=" + role, "--receipt=staging/identity/" + role + ".json",
+			"--action=" + action, "--role=" + role, "--receipt=staging/identity/" + role + ".json",
 			"--archive=staging/source/" + role + ".tar",
 		}
 	}
@@ -99,14 +99,14 @@ func validEvidenceRecordV1(t *testing.T, contents []byte) (EvidenceRecordV1, Evi
 		role   string
 		argv   []string
 	}{
-		{"source_commit", "old", sourceIdentityArgs("old")},
-		{"source_tree", "old", sourceIdentityArgs("old")},
-		{"source_parent", "old", sourceIdentityArgs("old")},
-		{"source_status", "old", sourceIdentityArgs("old")},
-		{"source_commit", "new", sourceIdentityArgs("new")},
-		{"source_tree", "new", sourceIdentityArgs("new")},
-		{"source_parent", "new", sourceIdentityArgs("new")},
-		{"source_status", "new", sourceIdentityArgs("new")},
+		{"source_commit", "old", sourceIdentityArgs("source_commit", "old")},
+		{"source_tree", "old", sourceIdentityArgs("source_tree", "old")},
+		{"source_parent", "old", sourceIdentityArgs("source_parent", "old")},
+		{"source_status", "old", sourceIdentityArgs("source_status", "old")},
+		{"source_commit", "new", sourceIdentityArgs("source_commit", "new")},
+		{"source_tree", "new", sourceIdentityArgs("source_tree", "new")},
+		{"source_parent", "new", sourceIdentityArgs("source_parent", "new")},
+		{"source_status", "new", sourceIdentityArgs("source_status", "new")},
 		{"host_uname", "host", []string{"/usr/bin/uname", "-srm"}},
 		{"host_cpu", "host", []string{"/usr/bin/lscpu", "--json"}},
 		{"go_version", "host", []string{goBin, "version"}},
@@ -199,7 +199,7 @@ func evidenceFixtureCommandV1(ordinal int, action, role string, argv []string, c
 		{ID: "stderr", Kind: "stderr", Path: "staging/" + id + "/stderr.txt", MediaType: "text/plain", Required: true},
 		{ID: "exit", Kind: "exit", Path: "staging/" + id + "/exit.json", MediaType: "application/json", Required: true},
 		{ID: "argv-env", Kind: "argv-env", Path: "staging/" + id + "/argv-env.json", MediaType: "application/json", Required: true},
-		{ID: artifact, Kind: artifact, Path: "staging/" + id + "/" + artifact + ".txt", MediaType: "text/plain", Required: true},
+		{ID: artifact, Kind: artifact, Path: "staging/" + id + "/" + artifact + outputExtensionV1(artifact), MediaType: map[bool]string{true: "application/json", false: "text/plain"}[outputExtensionV1(artifact) == ".json"], Required: true},
 	}
 	return CampaignCommandV1{
 		Ordinal: ordinal, ID: id, Action: action, Role: role, Argv: argv, CWD: cwd, Env: env,

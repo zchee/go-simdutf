@@ -15,6 +15,9 @@
 package portplan
 
 import (
+	"bytes"
+	"encoding/json"
+	"reflect"
 	"strings"
 	"testing"
 )
@@ -60,6 +63,85 @@ func TestEvidenceRegistryV1RejectsDuplicateLogicalReceipt(t *testing.T) {
 	if err := r.addValidated(record); err == nil {
 		t.Fatal("receipt value bypassed logical uniqueness")
 	}
+}
+
+func TestEvidenceRegistryV1RejectedInsertionsAreAtomic(t *testing.T) {
+	contents := []byte("evidence")
+	record, context := validEvidenceRecordV1(t, contents)
+	record.StateSubject = "none"
+	registry := &EvidenceRegistryV1{
+		contents: map[string][]byte{"sentinel": bytes.Clone(contents)},
+		states:   map[string]string{"sentinel": "snapshot_planned"},
+	}
+	contract, err := evidenceQualificationContractV1(context)
+	if err != nil {
+		t.Fatal(err)
+	}
+	registry.commitQualification(context.QualificationContractDigest, contract)
+	if err := registry.addValidated(record); err != nil {
+		t.Fatal(err)
+	}
+
+	type registryState struct {
+		keys           map[string]struct{}
+		receipts       map[string]EvidenceRecordV1
+		contents       map[string][]byte
+		qualifications map[string]QualificationContractV1
+		states         map[string]string
+	}
+	snapshot := func() registryState {
+		state := registryState{
+			keys:           make(map[string]struct{}, len(registry.keys)),
+			receipts:       make(map[string]EvidenceRecordV1, len(registry.receipts)),
+			contents:       make(map[string][]byte, len(registry.contents)),
+			qualifications: make(map[string]QualificationContractV1, len(registry.qualifications)),
+			states:         make(map[string]string, len(registry.states)),
+		}
+		for key := range registry.keys {
+			state.keys[key] = struct{}{}
+		}
+		for id, value := range registry.receipts {
+			state.receipts[id] = cloneEvidenceRecordV1(value)
+		}
+		for id, value := range registry.contents {
+			state.contents[id] = bytes.Clone(value)
+		}
+		for digest, value := range registry.qualifications {
+			state.qualifications[digest] = value
+		}
+		for key, value := range registry.states {
+			state.states[key] = value
+		}
+		return state
+	}
+	assertUnchanged := func(t *testing.T, before registryState) {
+		t.Helper()
+		after := snapshot()
+		if !reflect.DeepEqual(after, before) {
+			t.Fatalf("registry changed after rejected insertion\nbefore: %#v\nafter:  %#v", before, after)
+		}
+	}
+
+	t.Run("duplicate logical key", func(t *testing.T) {
+		before := snapshot()
+		duplicate := record
+		duplicate.ReceiptID = "receipt-v1-" + strings.Repeat("f", 64)
+		if err := registry.addValidated(duplicate); err == nil {
+			t.Fatal("accepted duplicate logical key")
+		}
+		assertUnchanged(t, before)
+	})
+
+	t.Run("unequal qualification contract", func(t *testing.T) {
+		unequal := contract
+		unequal.MinimumBulkWinBPS++
+		registry.qualifications[context.QualificationContractDigest] = unequal
+		before := snapshot()
+		if _, _, err := prepareEvidenceQualificationV1(context, registry); err == nil {
+			t.Fatal("accepted unequal contract under an existing qualification digest")
+		}
+		assertUnchanged(t, before)
+	})
 }
 func TestEvidenceRecordV1RejectsOriginPathAndContextTopologyMutations(t *testing.T) {
 	contents := []byte("evidence")
@@ -367,6 +449,31 @@ func TestMannWhitneyPValueMillionthsV1IsDerived(t *testing.T) {
 	got, err = mannWhitneyPValueMillionthsV1(oldSamples, oldSamples)
 	if err != nil || got != 1000000 {
 		t.Fatalf("equal-sample p-value = %d, %v", got, err)
+	}
+}
+
+func TestCanonicalQuietAffinityArtifactV1(t *testing.T) {
+	record := EvidenceRecordV1{CommandID: "quiet-command", CommandAction: "quiet_affinity_recheck"}
+	context := EvidenceValidationContextV1{ExpectedCommands: []CampaignCommandV1{{
+		ID: "quiet-command", Action: "quiet_affinity_recheck",
+		Argv: []string{"/home/zchee/sdk/go1.26.5/bin/go", "run", "./internal/portplan/cmd/simdutf-evidence", "quiet-affinity-recheck", "--cpu=1", "--policy=taskset:1"},
+		Env:  map[string]string{"SIMDUTF_CPU": "1", "SIMDUTF_AFFINITY": "taskset:1"},
+	}}}
+	canonical, err := json.Marshal(struct {
+		Schema  string `json:"schema"`
+		Version int    `json:"version"`
+		CPU     string `json:"cpu"`
+		Policy  string `json:"policy"`
+		Status  string `json:"status"`
+	}{"simdutf-quiet-affinity-v1", 1, "1", "taskset:1", "quiet"})
+	if err != nil {
+		t.Fatal(err)
+	}
+	if !canonicalQuietAffinityArtifactV1(record, append(canonical, '\n'), context) {
+		t.Fatal("exact quiet-affinity artifact rejected")
+	}
+	if canonicalQuietAffinityArtifactV1(record, []byte(`{"schema":"simdutf-quiet-affinity-v1","version":1,"cpu":"2","policy":"taskset:2","status":"quiet"}`+"\n"), context) {
+		t.Fatal("mismatched quiet-affinity artifact accepted")
 	}
 }
 

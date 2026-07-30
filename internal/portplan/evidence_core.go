@@ -47,7 +47,7 @@ var evidenceKindsV1 = map[string]bool{
 	"test": true, "race": true, "fuzz": true, "object": true, "disassembly": true,
 	"benchmark": true, "incumbent-benchmark": true, "candidate-benchmark": true, "benchstat": true,
 	"provider-guard": true, "selector": true, "final-selector": true, "state-transition": true,
-	"not-applicable": true, "index": true,
+	"not-applicable": true, "index": true, "quiet-affinity": true,
 }
 
 // EvidenceValidationContextV1 contains the complete frozen evidence matrix.
@@ -713,6 +713,10 @@ func validateArtifactSemanticsV1(r EvidenceRecordV1, contents []byte, c Evidence
 		if !canonicalStateArtifactV1(r, contents) {
 			return errors.New("state artifact does not equal receipt state")
 		}
+	case "quiet-affinity":
+		if !canonicalQuietAffinityArtifactV1(r, contents, c) {
+			return errors.New("quiet-affinity artifact does not equal commanded affinity")
+		}
 	case "index":
 		if !canonicalIndexArtifactV1(r, contents) {
 			return errors.New("index proof does not equal its frozen campaign identity")
@@ -821,6 +825,47 @@ func canonicalStateArtifactV1(r EvidenceRecordV1, contents []byte) bool {
 	return err == nil && bytes.Equal(contents, append(canonical, '\n'))
 }
 
+func canonicalQuietAffinityArtifactV1(r EvidenceRecordV1, contents []byte, c EvidenceValidationContextV1) bool {
+	if r.CommandAction != "quiet_affinity_recheck" {
+		return false
+	}
+	for _, command := range c.ExpectedCommands {
+		if command.ID != r.CommandID {
+			continue
+		}
+		if command.Action != "quiet_affinity_recheck" || command.Env["SIMDUTF_CPU"] == "" || command.Env["SIMDUTF_AFFINITY"] == "" {
+			return false
+		}
+		cpu := command.Env["SIMDUTF_CPU"]
+		policy := command.Env["SIMDUTF_AFFINITY"]
+		for _, arg := range command.Argv {
+			switch {
+			case strings.HasPrefix(arg, "--cpu="):
+				if strings.TrimPrefix(arg, "--cpu=") != cpu {
+					return false
+				}
+			case strings.HasPrefix(arg, "--policy="):
+				if strings.TrimPrefix(arg, "--policy=") != policy {
+					return false
+				}
+			}
+		}
+		artifact := struct {
+			Schema  string `json:"schema"`
+			Version int    `json:"version"`
+			CPU     string `json:"cpu"`
+			Policy  string `json:"policy"`
+			Status  string `json:"status"`
+		}{
+			Schema: "simdutf-quiet-affinity-v1", Version: 1,
+			CPU: cpu, Policy: policy, Status: "quiet",
+		}
+		canonical, err := json.Marshal(artifact)
+		return err == nil && bytes.Equal(contents, append(canonical, '\n'))
+	}
+	return false
+}
+
 func canonicalIndexArtifactV1(r EvidenceRecordV1, contents []byte) bool {
 	artifact := struct {
 		Schema                string `json:"schema"`
@@ -843,7 +888,7 @@ func proofArtifactV1(kind string) bool {
 	case "test", "race", "fuzz", "object", "disassembly",
 		"incumbent-benchmark", "candidate-benchmark", "benchstat",
 		"provider-guard", "selector", "final-selector",
-		"state-transition", "not-applicable", "index":
+		"quiet-affinity", "state-transition", "not-applicable", "index":
 		return true
 	}
 	return false
