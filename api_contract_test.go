@@ -259,12 +259,12 @@ func TestAPIManifestMilestones(t *testing.T) {
 
 	assertStringIntMap(t, "status counts", statusCounts, map[string]int{
 		"excluded":    9,
-		"implemented": 65,
-		"planned":     90,
+		"implemented": 113,
+		"planned":     42,
 	})
 	assertStringIntMap(t, "milestone counts", milestoneCounts, map[string]int{
-		"611becc-current-api": 65,
-		"future-upstream-api": 90,
+		"611becc-current-api": 113,
+		"future-upstream-api": 42,
 		"upstream-excluded":   9,
 	})
 	assertStringIntMap(t, "family counts", familyCounts, map[string]int{
@@ -287,6 +287,7 @@ func TestAPIManifestMilestones(t *testing.T) {
 		"Base64Options",
 		"Base64OptionsString",
 		"Base64ReversePadding",
+		"ChangeEndiannessUTF16",
 		"CheckBOM",
 		"ConvertLatin1ToUTF16",
 		"ConvertLatin1ToUTF16BE",
@@ -294,6 +295,28 @@ func TestAPIManifestMilestones(t *testing.T) {
 		"ConvertLatin1ToUTF32",
 		"ConvertLatin1ToUTF8",
 		"ConvertLatin1ToUTF8Safe",
+		"ConvertUTF16BEToLatin1",
+		"ConvertUTF16BEToLatin1WithErrors",
+		"ConvertUTF16BEToUTF32",
+		"ConvertUTF16BEToUTF32WithErrors",
+		"ConvertUTF16BEToUTF8",
+		"ConvertUTF16BEToUTF8WithErrors",
+		"ConvertUTF16BEToUTF8WithReplacement",
+		"ConvertUTF16LEToLatin1",
+		"ConvertUTF16LEToLatin1WithErrors",
+		"ConvertUTF16LEToUTF32",
+		"ConvertUTF16LEToUTF32WithErrors",
+		"ConvertUTF16LEToUTF8",
+		"ConvertUTF16LEToUTF8WithErrors",
+		"ConvertUTF16LEToUTF8WithReplacement",
+		"ConvertUTF16ToLatin1",
+		"ConvertUTF16ToLatin1WithErrors",
+		"ConvertUTF16ToUTF32",
+		"ConvertUTF16ToUTF32WithErrors",
+		"ConvertUTF16ToUTF8",
+		"ConvertUTF16ToUTF8Safe",
+		"ConvertUTF16ToUTF8WithErrors",
+		"ConvertUTF16ToUTF8WithReplacement",
 		"ConvertUTF8ToLatin1",
 		"ConvertUTF8ToLatin1WithErrors",
 		"ConvertUTF8ToUTF16",
@@ -304,11 +327,23 @@ func TestAPIManifestMilestones(t *testing.T) {
 		"ConvertUTF8ToUTF16WithErrors",
 		"ConvertUTF8ToUTF32",
 		"ConvertUTF8ToUTF32WithErrors",
+		"ConvertValidUTF16BEToLatin1",
+		"ConvertValidUTF16BEToUTF32",
+		"ConvertValidUTF16BEToUTF8",
+		"ConvertValidUTF16LEToLatin1",
+		"ConvertValidUTF16LEToUTF32",
+		"ConvertValidUTF16LEToUTF8",
+		"ConvertValidUTF16ToLatin1",
+		"ConvertValidUTF16ToUTF32",
+		"ConvertValidUTF16ToUTF8",
 		"ConvertValidUTF8ToLatin1",
 		"ConvertValidUTF8ToUTF16",
 		"ConvertValidUTF8ToUTF16BE",
 		"ConvertValidUTF8ToUTF16LE",
 		"ConvertValidUTF8ToUTF32",
+		"CountUTF16",
+		"CountUTF16BE",
+		"CountUTF16LE",
 		"CountUTF8",
 		"DefaultLineLength",
 		"Encoding",
@@ -320,6 +355,7 @@ func TestAPIManifestMilestones(t *testing.T) {
 		"IsPartial",
 		"LastChunkHandlingOptions",
 		"LastChunkHandlingOptionsString",
+		"Latin1LengthFromUTF16",
 		"Latin1LengthFromUTF8",
 		"Result",
 		"Result.IsErr",
@@ -327,12 +363,24 @@ func TestAPIManifestMilestones(t *testing.T) {
 		"ToWellFormedUTF16",
 		"ToWellFormedUTF16BE",
 		"ToWellFormedUTF16LE",
+		"TrimPartialUTF16",
+		"TrimPartialUTF16BE",
+		"TrimPartialUTF16LE",
 		"TrimPartialUTF8",
 		"UTF16LengthFromLatin1",
 		"UTF16LengthFromUTF8",
 		"UTF32LengthFromLatin1",
+		"UTF32LengthFromUTF16",
+		"UTF32LengthFromUTF16BE",
+		"UTF32LengthFromUTF16LE",
 		"UTF32LengthFromUTF8",
 		"UTF8LengthFromLatin1",
+		"UTF8LengthFromUTF16",
+		"UTF8LengthFromUTF16BE",
+		"UTF8LengthFromUTF16BEWithReplacement",
+		"UTF8LengthFromUTF16LE",
+		"UTF8LengthFromUTF16LEWithReplacement",
+		"UTF8LengthFromUTF16WithReplacement",
 		"ValidateASCII",
 		"ValidateASCIIWithErrors",
 		"ValidateUTF16",
@@ -360,7 +408,7 @@ func TestPortPhase0FrozenInputs(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	if got, want := portplan.SHA256Hex(manifest), "ba0de2e79677f42ab4990c03427cfef1a782d46c4268486750db2bc386768eb4"; got != want {
+	if got, want := portplan.SHA256Hex(manifest), "0027fbdea027ec7d00258d39a723a5b0d7646459b3fb9302286846e1fd5f5fb5"; got != want {
 		t.Fatalf("%s SHA-256 = %s, want %s", manifestPath, got, want)
 	}
 	allRows, err := portplan.ParseManifestV1(manifest)
@@ -374,7 +422,7 @@ func TestPortPhase0FrozenInputs(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	if got, want := len(livePlannedRows), 90; got != want {
+	if got, want := len(livePlannedRows), 42; got != want {
 		t.Fatalf("remaining planned rows = %d, want %d", got, want)
 	}
 	frozenPath := filepath.Join("docs", "porting", "simdutf-port-v1", "inputs", "planned-rows-v1.tsv")
