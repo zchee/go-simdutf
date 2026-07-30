@@ -322,58 +322,72 @@ func makeImplementation(input selectionInput) implementation {
 		convertUTF32ToLatin1: selectVariant(
 			input,
 			variant[func([]uint32, []byte) int]{value: convertUTF32ToLatin1Scalar, kind: implementationScalar, available: true},
+			variant[func([]uint32, []byte) int]{value: convertUTF32ToLatin1NEON, kind: implementationNEON, required: cpuNEON, available: true},
 		),
 		convertUTF32ToLatin1WithErrors: selectVariant(
 			input,
 			variant[func([]uint32, []byte) Result]{value: convertUTF32ToLatin1WithErrorsScalar, kind: implementationScalar, available: true},
+			variant[func([]uint32, []byte) Result]{value: convertUTF32ToLatin1WithErrorsNEON, kind: implementationNEON, required: cpuNEON, available: true},
 		),
 		convertValidUTF32ToLatin1: selectVariant(
 			input,
 			variant[func([]uint32, []byte) int]{value: convertValidUTF32ToLatin1Scalar, kind: implementationScalar, available: true},
+			variant[func([]uint32, []byte) int]{value: convertValidUTF32ToLatin1NEON, kind: implementationNEON, required: cpuNEON, available: true},
 		),
 		convertUTF32ToUTF8: selectVariant(
 			input,
 			variant[func([]uint32, []byte) int]{value: convertUTF32ToUTF8Scalar, kind: implementationScalar, available: true},
+			variant[func([]uint32, []byte) int]{value: convertUTF32ToUTF8NEON, kind: implementationNEON, required: cpuNEON, available: true},
 		),
 		convertUTF32ToUTF8WithErrors: selectVariant(
 			input,
 			variant[func([]uint32, []byte) Result]{value: convertUTF32ToUTF8WithErrorsScalar, kind: implementationScalar, available: true},
+			variant[func([]uint32, []byte) Result]{value: convertUTF32ToUTF8WithErrorsNEON, kind: implementationNEON, required: cpuNEON, available: true},
 		),
 		convertValidUTF32ToUTF8: selectVariant(
 			input,
 			variant[func([]uint32, []byte) int]{value: convertValidUTF32ToUTF8Scalar, kind: implementationScalar, available: true},
+			variant[func([]uint32, []byte) int]{value: convertValidUTF32ToUTF8NEON, kind: implementationNEON, required: cpuNEON, available: true},
 		),
 		convertUTF32ToUTF16LE: selectVariant(
 			input,
 			variant[func([]uint32, []uint16) int]{value: convertUTF32ToUTF16LEScalar, kind: implementationScalar, available: true},
+			variant[func([]uint32, []uint16) int]{value: convertUTF32ToUTF16LENEON, kind: implementationNEON, required: cpuNEON, available: true},
 		),
 		convertUTF32ToUTF16BE: selectVariant(
 			input,
 			variant[func([]uint32, []uint16) int]{value: convertUTF32ToUTF16BEScalar, kind: implementationScalar, available: true},
+			variant[func([]uint32, []uint16) int]{value: convertUTF32ToUTF16BENEON, kind: implementationNEON, required: cpuNEON, available: true},
 		),
 		convertUTF32ToUTF16LEWithErrors: selectVariant(
 			input,
 			variant[func([]uint32, []uint16) Result]{value: convertUTF32ToUTF16LEWithErrorsScalar, kind: implementationScalar, available: true},
+			variant[func([]uint32, []uint16) Result]{value: convertUTF32ToUTF16LEWithErrorsNEON, kind: implementationNEON, required: cpuNEON, available: true},
 		),
 		convertUTF32ToUTF16BEWithErrors: selectVariant(
 			input,
 			variant[func([]uint32, []uint16) Result]{value: convertUTF32ToUTF16BEWithErrorsScalar, kind: implementationScalar, available: true},
+			variant[func([]uint32, []uint16) Result]{value: convertUTF32ToUTF16BEWithErrorsNEON, kind: implementationNEON, required: cpuNEON, available: true},
 		),
 		convertValidUTF32ToUTF16LE: selectVariant(
 			input,
 			variant[func([]uint32, []uint16) int]{value: convertValidUTF32ToUTF16LEScalar, kind: implementationScalar, available: true},
+			variant[func([]uint32, []uint16) int]{value: convertValidUTF32ToUTF16LENEON, kind: implementationNEON, required: cpuNEON, available: true},
 		),
 		convertValidUTF32ToUTF16BE: selectVariant(
 			input,
 			variant[func([]uint32, []uint16) int]{value: convertValidUTF32ToUTF16BEScalar, kind: implementationScalar, available: true},
+			variant[func([]uint32, []uint16) int]{value: convertValidUTF32ToUTF16BENEON, kind: implementationNEON, required: cpuNEON, available: true},
 		),
 		utf8LengthFromUTF32: selectVariant(
 			input,
 			variant[func([]uint32) int]{value: utf8LengthFromUTF32Scalar, kind: implementationScalar, available: true},
+			variant[func([]uint32) int]{value: utf8LengthFromUTF32NEON, kind: implementationNEON, required: cpuNEON, available: true},
 		),
 		utf16LengthFromUTF32: selectVariant(
 			input,
 			variant[func([]uint32) int]{value: utf16LengthFromUTF32Scalar, kind: implementationScalar, available: true},
+			variant[func([]uint32) int]{value: utf16LengthFromUTF32NEON, kind: implementationNEON, required: cpuNEON, available: true},
 		),
 	}
 }
