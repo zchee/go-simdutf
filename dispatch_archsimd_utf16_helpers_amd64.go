@@ -30,3 +30,27 @@ func archsimdUTF32LengthFromUTF16LE() func([]uint16) int {
 func archsimdUTF32LengthFromUTF16BE() func([]uint16) int {
 	return utf32LengthFromUTF16BEArchsimd
 }
+
+func archsimdConvertUTF16LEToLatin1() func([]uint16, []byte) int {
+	return convertUTF16LEToLatin1Archsimd
+}
+
+func archsimdConvertUTF16BEToLatin1() func([]uint16, []byte) int {
+	return convertUTF16BEToLatin1Archsimd
+}
+
+func archsimdConvertUTF16LEToLatin1WithErrors() func([]uint16, []byte) Result {
+	return convertUTF16LEToLatin1WithErrorsArchsimd
+}
+
+func archsimdConvertUTF16BEToLatin1WithErrors() func([]uint16, []byte) Result {
+	return convertUTF16BEToLatin1WithErrorsArchsimd
+}
+
+func archsimdConvertValidUTF16LEToLatin1() func([]uint16, []byte) int {
+	return convertValidUTF16LEToLatin1Archsimd
+}
+
+func archsimdConvertValidUTF16BEToLatin1() func([]uint16, []byte) int {
+	return convertValidUTF16BEToLatin1Archsimd
+}

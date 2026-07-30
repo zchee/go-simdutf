@@ -173,3 +173,21 @@ func TestMakeImplementationARM64UTF16HelpersQualificationSelection(t *testing.T)
 		}
 	}
 }
+
+func TestMakeImplementationARM64UTF16Latin1QualificationSelection(t *testing.T) {
+	// UTF-16→Latin-1 NEON providers stay scalar-first pending qualification.
+	for _, input := range []selectionInput{
+		{},
+		{features: cpuNEON},
+	} {
+		got := makeImplementation(input)
+		if !sameFunction(got.convertUTF16LEToLatin1, convertUTF16LEToLatin1Scalar) ||
+			!sameFunction(got.convertUTF16BEToLatin1, convertUTF16BEToLatin1Scalar) ||
+			!sameFunction(got.convertUTF16LEToLatin1WithErrors, convertUTF16LEToLatin1WithErrorsScalar) ||
+			!sameFunction(got.convertUTF16BEToLatin1WithErrors, convertUTF16BEToLatin1WithErrorsScalar) ||
+			!sameFunction(got.convertValidUTF16LEToLatin1, convertValidUTF16LEToLatin1Scalar) ||
+			!sameFunction(got.convertValidUTF16BEToLatin1, convertValidUTF16BEToLatin1Scalar) {
+			t.Fatalf("UTF-16→Latin-1 providers leaked ahead of scalar for %#v", input)
+		}
+	}
+}

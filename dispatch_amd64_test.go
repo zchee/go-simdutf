@@ -264,3 +264,25 @@ func TestMakeImplementationAMD64UTF16HelpersQualificationSelection(t *testing.T)
 		}
 	}
 }
+
+func TestMakeImplementationAMD64UTF16Latin1QualificationSelection(t *testing.T) {
+	// UTF-16→Latin-1 providers are forceable but remain scalar-first until
+	// qualification dispositions promote selected backends.
+	for _, input := range []selectionInput{
+		{},
+		{features: cpuSSSE3},
+		{features: cpuAVX2},
+		{features: cpuSSSE3 | cpuAVX2},
+		{features: cpuSSSE3 | cpuAVX2, archsimdAVX2: true},
+	} {
+		got := makeImplementation(input)
+		if !sameFunction(got.convertUTF16LEToLatin1, convertUTF16LEToLatin1Scalar) ||
+			!sameFunction(got.convertUTF16BEToLatin1, convertUTF16BEToLatin1Scalar) ||
+			!sameFunction(got.convertUTF16LEToLatin1WithErrors, convertUTF16LEToLatin1WithErrorsScalar) ||
+			!sameFunction(got.convertUTF16BEToLatin1WithErrors, convertUTF16BEToLatin1WithErrorsScalar) ||
+			!sameFunction(got.convertValidUTF16LEToLatin1, convertValidUTF16LEToLatin1Scalar) ||
+			!sameFunction(got.convertValidUTF16BEToLatin1, convertValidUTF16BEToLatin1Scalar) {
+			t.Fatalf("UTF-16→Latin-1 providers leaked ahead of scalar for %#v", input)
+		}
+	}
+}
