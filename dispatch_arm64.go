@@ -404,5 +404,47 @@ func makeImplementation(input selectionInput) implementation {
 			variant[func([]uint16, uint16) int]{value: findUTF16Scalar, kind: implementationScalar, available: true},
 			variant[func([]uint16, uint16) int]{value: findUTF16NEON, kind: implementationNEON, required: cpuNEON, available: true},
 		),
+		maximalBinaryLengthFromBase64: selectVariant(
+			input,
+			variant[func([]byte) int]{value: maximalBinaryLengthFromBase64Scalar, kind: implementationScalar, available: true},
+		),
+		maximalBinaryLengthFromBase64UTF16: selectVariant(
+			input,
+			variant[func([]uint16) int]{value: maximalBinaryLengthFromBase64UTF16Scalar, kind: implementationScalar, available: true},
+		),
+		binaryLengthFromBase64: selectVariant(
+			input,
+			variant[func([]byte) int]{value: binaryLengthFromBase64Scalar, kind: implementationScalar, available: true},
+		),
+		binaryLengthFromBase64UTF16: selectVariant(
+			input,
+			variant[func([]uint16) int]{value: binaryLengthFromBase64UTF16Scalar, kind: implementationScalar, available: true},
+		),
+		base64ToBinary: selectVariant(
+			input,
+			variant[func([]byte, []byte, Base64Options, LastChunkHandlingOptions) Result]{value: base64ToBinaryScalar, kind: implementationScalar, available: true},
+		),
+		base64ToBinaryUTF16: selectVariant(
+			input,
+			variant[func([]uint16, []byte, Base64Options, LastChunkHandlingOptions) Result]{value: base64ToBinaryUTF16Scalar, kind: implementationScalar, available: true},
+		),
+		base64ToBinaryDetails: selectVariant(
+			input,
+			variant[func([]byte, []byte, Base64Options, LastChunkHandlingOptions) FullResult]{value: base64ToBinaryDetailsScalar, kind: implementationScalar, available: true},
+		),
+		base64ToBinaryDetailsUTF16: selectVariant(
+			input,
+			variant[func([]uint16, []byte, Base64Options, LastChunkHandlingOptions) FullResult]{value: base64ToBinaryDetailsUTF16Scalar, kind: implementationScalar, available: true},
+		),
+		base64ToBinarySafe:                   base64ToBinarySafeScalar,
+		base64ToBinarySafeUTF16:              base64ToBinarySafeUTF16Scalar,
+		binaryToBase64: selectVariant(
+			input,
+			variant[func([]byte, []byte, Base64Options) int]{value: binaryToBase64Scalar, kind: implementationScalar, available: true},
+		),
+		binaryToBase64WithLines: selectVariant(
+			input,
+			variant[func([]byte, []byte, int, Base64Options) int]{value: binaryToBase64WithLinesScalar, kind: implementationScalar, available: true},
+		),
 	}
 }

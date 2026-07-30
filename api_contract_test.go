@@ -49,15 +49,15 @@ func TestPublicAPIContract(t *testing.T) {
 		"const":      2,
 		"enum-const": 31,
 		"field":      6,
-		"func":       124,
+		"func":       144,
 		"method":     3,
 		"type":       6,
 	}
 	if !maps.Equal(counts, wantCounts) {
 		t.Fatalf("API leaf counts = %v, want %v", counts, wantCounts)
 	}
-	if len(got) != 172 {
-		t.Fatalf("API leaf record count = %d, want 172", len(got))
+	if len(got) != 192 {
+		t.Fatalf("API leaf record count = %d, want 192", len(got))
 	}
 
 	want, err := os.ReadFile(filepath.Join("testdata", "public-api.golden"))
@@ -259,12 +259,10 @@ func TestAPIManifestMilestones(t *testing.T) {
 
 	assertStringIntMap(t, "status counts", statusCounts, map[string]int{
 		"excluded":    9,
-		"implemented": 135,
-		"planned":     20,
+		"implemented": 155,
 	})
 	assertStringIntMap(t, "milestone counts", milestoneCounts, map[string]int{
-		"611becc-current-api": 135,
-		"future-upstream-api": 20,
+		"611becc-current-api": 155,
 		"upstream-excluded":   9,
 	})
 	assertStringIntMap(t, "family counts", familyCounts, map[string]int{
@@ -285,9 +283,27 @@ func TestAPIManifestMilestones(t *testing.T) {
 	wantCurrentSymbols := []string{
 		"AutodetectEncoding",
 		"BOMByteSize",
+		"Base64Ignorable",
+		"Base64IgnorableUTF16",
+		"Base64LengthFromBinary",
+		"Base64LengthFromBinaryWithLines",
 		"Base64Options",
 		"Base64OptionsString",
 		"Base64ReversePadding",
+		"Base64ToBinary",
+		"Base64ToBinaryDetails",
+		"Base64ToBinaryDetailsUTF16",
+		"Base64ToBinarySafe",
+		"Base64ToBinarySafeUTF16",
+		"Base64ToBinaryUTF16",
+		"Base64Valid",
+		"Base64ValidOrPadding",
+		"Base64ValidOrPaddingUTF16",
+		"Base64ValidUTF16",
+		"BinaryLengthFromBase64",
+		"BinaryLengthFromBase64UTF16",
+		"BinaryToBase64",
+		"BinaryToBase64WithLines",
 		"ChangeEndiannessUTF16",
 		"CheckBOM",
 		"ConvertLatin1ToUTF16",
@@ -377,6 +393,8 @@ func TestAPIManifestMilestones(t *testing.T) {
 		"Latin1LengthFromUTF16",
 		"Latin1LengthFromUTF32",
 		"Latin1LengthFromUTF8",
+		"MaximalBinaryLengthFromBase64",
+		"MaximalBinaryLengthFromBase64UTF16",
 		"Result",
 		"Result.IsErr",
 		"Result.IsOK",

@@ -39,7 +39,25 @@ field	Result.Count	1	int	embedded=false	tag=""
 field	Result.Error	0	ErrorCode	embedded=false	tag=""
 func	AutodetectEncoding	func([]byte) Encoding
 func	BOMByteSize	func(Encoding) int
+func	Base64Ignorable	func(byte, Base64Options) bool
+func	Base64IgnorableUTF16	func(uint16, Base64Options) bool
+func	Base64LengthFromBinary	func(int, Base64Options) int
+func	Base64LengthFromBinaryWithLines	func(int, Base64Options, int) int
 func	Base64OptionsString	func(Base64Options) string
+func	Base64ToBinary	func([]byte, []byte, Base64Options, LastChunkHandlingOptions) Result
+func	Base64ToBinaryDetails	func([]byte, []byte, Base64Options, LastChunkHandlingOptions) FullResult
+func	Base64ToBinaryDetailsUTF16	func([]uint16, []byte, Base64Options, LastChunkHandlingOptions) FullResult
+func	Base64ToBinarySafe	func([]byte, []byte, Base64Options, LastChunkHandlingOptions, bool) (Result, int)
+func	Base64ToBinarySafeUTF16	func([]uint16, []byte, Base64Options, LastChunkHandlingOptions, bool) (Result, int)
+func	Base64ToBinaryUTF16	func([]uint16, []byte, Base64Options, LastChunkHandlingOptions) Result
+func	Base64Valid	func(byte, Base64Options) bool
+func	Base64ValidOrPadding	func(byte, Base64Options) bool
+func	Base64ValidOrPaddingUTF16	func(uint16, Base64Options) bool
+func	Base64ValidUTF16	func(uint16, Base64Options) bool
+func	BinaryLengthFromBase64	func([]byte) int
+func	BinaryLengthFromBase64UTF16	func([]uint16) int
+func	BinaryToBase64	func([]byte, []byte, Base64Options) int
+func	BinaryToBase64WithLines	func([]byte, []byte, int, Base64Options) int
 func	ChangeEndiannessUTF16	func([]uint16, []uint16)
 func	CheckBOM	func([]byte) Encoding
 func	ConvertLatin1ToUTF16	func([]byte, []uint16) int
@@ -123,6 +141,8 @@ func	LastChunkHandlingOptionsString	func(LastChunkHandlingOptions) string
 func	Latin1LengthFromUTF16	func(int) int
 func	Latin1LengthFromUTF32	func(int) int
 func	Latin1LengthFromUTF8	func([]byte) int
+func	MaximalBinaryLengthFromBase64	func([]byte) int
+func	MaximalBinaryLengthFromBase64UTF16	func([]uint16) int
 func	ToWellFormedUTF16	func([]uint16, []uint16)
 func	ToWellFormedUTF16BE	func([]uint16, []uint16)
 func	ToWellFormedUTF16LE	func([]uint16, []uint16)

@@ -197,6 +197,18 @@ type implementation struct {
 	detectEncodings                      func([]byte) Encoding
 	find                                 func([]byte, byte) int
 	findUTF16                            func([]uint16, uint16) int
+	maximalBinaryLengthFromBase64        func([]byte) int
+	maximalBinaryLengthFromBase64UTF16   func([]uint16) int
+	binaryLengthFromBase64               func([]byte) int
+	binaryLengthFromBase64UTF16          func([]uint16) int
+	base64ToBinary                       func([]byte, []byte, Base64Options, LastChunkHandlingOptions) Result
+	base64ToBinaryUTF16                  func([]uint16, []byte, Base64Options, LastChunkHandlingOptions) Result
+	base64ToBinaryDetails                func([]byte, []byte, Base64Options, LastChunkHandlingOptions) FullResult
+	base64ToBinaryDetailsUTF16           func([]uint16, []byte, Base64Options, LastChunkHandlingOptions) FullResult
+	base64ToBinarySafe                   func([]byte, []byte, Base64Options, LastChunkHandlingOptions, bool) (Result, int)
+	base64ToBinarySafeUTF16              func([]uint16, []byte, Base64Options, LastChunkHandlingOptions, bool) (Result, int)
+	binaryToBase64                       func([]byte, []byte, Base64Options) int
+	binaryToBase64WithLines              func([]byte, []byte, int, Base64Options) int
 }
 
 var activeImplementation = makeImplementation(detectSelectionInput())
