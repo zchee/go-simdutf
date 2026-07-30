@@ -1,6 +1,6 @@
 schema_version	path	size	sha256
-v1	docs/porting/api-manifest.tsv	180495	04fe5d98df8c894ad4cc340e841d597849d1abd00d417d210c5debf54d2d3f21
-v1	docs/porting/benchmark-contract.md	18735	8d27f476949c8508ef5cdfb48355dcf418b6d8da565e7359d2feafc3cd8cbdf1
+v1	docs/porting/api-manifest.tsv	180591	eda31c7e6865c5c5ae34dee526d5f1bb5247e2f3b0a1017b9f26120038a271a0
+v1	docs/porting/benchmark-contract.md	19261	85d0f01e069b0f4adf8942309d35ef5369240a2919f9f75d0b941e7a9b213063
 v1	docs/porting/corpus-freeze.md	7559	0f26b4c26c2e223f1a1bc579f0de7d805c041d4111dd22967854156c2e37eac8
 v1	docs/porting/isa-eligibility.tsv	18810	d73b6bc48466dba23d28c2d06c877ccbeaa10ab5049d8fb6b314d651a46549cb
 v1	docs/porting/provenance.md	11204	6d713770ed8f3ab1d375d4865b79036ecc6bfe33d4d2058315466a77acfacf44
@@ -23,4 +23,4 @@ v1	docs/porting/simdutf-port-v1/inputs/review-fragments/rows-021-055.tsv	33837	9
 v1	docs/porting/simdutf-port-v1/inputs/review-fragments/rows-056-105.tsv	44993	ed9c6eaf64eb3b39347848ec3fb639b2888f39b743f761a129df1373afd7a263
 v1	docs/porting/simdutf-port-v1/inputs/review-fragments/rows-106-125.tsv	17874	0dce00824a9e5c569d8b32ce2531866b8b5a3c41419aaad1dab34a56d3f9445e
 v1	docs/porting/simdutf-port-v1/inputs/upstream-authority-v1.tsv	536	b9832ac443698fe77fe4b25772ae0835a01e53e5ea0db006719c3160b137bcb9
-v1	testdata/public-api.golden	8262	50c24405817f94d59c99c4b6f51b5185cff01ad7fb7a171116db3d8d5da8a54d
+v1	testdata/public-api.golden	9842	954f8b5cc1b564f6352c1c37c57250609d743ec23a5a93ab7e8c6652f05fc175

@@ -114,6 +114,18 @@ func TestImplementationTableExactFields(t *testing.T) {
 		{name: "detectEncodings", typ: reflect.TypeFor[func([]byte) Encoding]()},
 		{name: "find", typ: reflect.TypeFor[func([]byte, byte) int]()},
 		{name: "findUTF16", typ: reflect.TypeFor[func([]uint16, uint16) int]()},
+		{name: "maximalBinaryLengthFromBase64", typ: reflect.TypeFor[func([]byte) int]()},
+		{name: "maximalBinaryLengthFromBase64UTF16", typ: reflect.TypeFor[func([]uint16) int]()},
+		{name: "binaryLengthFromBase64", typ: reflect.TypeFor[func([]byte) int]()},
+		{name: "binaryLengthFromBase64UTF16", typ: reflect.TypeFor[func([]uint16) int]()},
+		{name: "base64ToBinary", typ: reflect.TypeFor[func([]byte, []byte, Base64Options, LastChunkHandlingOptions) Result]()},
+		{name: "base64ToBinaryUTF16", typ: reflect.TypeFor[func([]uint16, []byte, Base64Options, LastChunkHandlingOptions) Result]()},
+		{name: "base64ToBinaryDetails", typ: reflect.TypeFor[func([]byte, []byte, Base64Options, LastChunkHandlingOptions) FullResult]()},
+		{name: "base64ToBinaryDetailsUTF16", typ: reflect.TypeFor[func([]uint16, []byte, Base64Options, LastChunkHandlingOptions) FullResult]()},
+		{name: "base64ToBinarySafe", typ: reflect.TypeFor[func([]byte, []byte, Base64Options, LastChunkHandlingOptions, bool) (Result, int)]()},
+		{name: "base64ToBinarySafeUTF16", typ: reflect.TypeFor[func([]uint16, []byte, Base64Options, LastChunkHandlingOptions, bool) (Result, int)]()},
+		{name: "binaryToBase64", typ: reflect.TypeFor[func([]byte, []byte, Base64Options) int]()},
+		{name: "binaryToBase64WithLines", typ: reflect.TypeFor[func([]byte, []byte, int, Base64Options) int]()},
 	}
 	if typ.NumField() != len(want) {
 		t.Fatalf("implementation has %d fields, want exactly %d", typ.NumField(), len(want))

@@ -448,7 +448,7 @@ func TestPortPhase0FrozenInputs(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	if got, want := portplan.SHA256Hex(manifest), "1034d848fd50268725fbf52480d2c1af46f9c118254637595d1a76aa5a2b7a2e"; got != want {
+	if got, want := portplan.SHA256Hex(manifest), "eda31c7e6865c5c5ae34dee526d5f1bb5247e2f3b0a1017b9f26120038a271a0"; got != want {
 		t.Fatalf("%s SHA-256 = %s, want %s", manifestPath, got, want)
 	}
 	allRows, err := portplan.ParseManifestV1(manifest)
@@ -462,7 +462,7 @@ func TestPortPhase0FrozenInputs(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	if got, want := len(livePlannedRows), 20; got != want {
+	if got, want := len(livePlannedRows), 0; got != want {
 		t.Fatalf("remaining planned rows = %d, want %d", got, want)
 	}
 	frozenPath := filepath.Join("docs", "porting", "simdutf-port-v1", "inputs", "planned-rows-v1.tsv")

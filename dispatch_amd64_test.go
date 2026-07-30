@@ -403,3 +403,70 @@ func TestMakeImplementationAMD64UTF32SourceQualificationSelection(t *testing.T) 
 		}
 	}
 }
+
+
+func TestMakeImplementationAMD64Base64QualificationSelection(t *testing.T) {
+	// FC-v1-base64 SIMD providers are forceable but remain scalar-first until
+	// qualification dispositions promote them.
+	for _, input := range []selectionInput{
+		{},
+		{features: cpuSSSE3},
+		{features: cpuAVX2},
+		{features: cpuSSSE3 | cpuAVX2},
+		{features: cpuSSSE3 | cpuAVX2, archsimdAVX2: true},
+	} {
+		got := makeImplementation(input)
+		if !sameFunction(got.binaryLengthFromBase64, binaryLengthFromBase64Scalar) ||
+			!sameFunction(got.binaryLengthFromBase64UTF16, binaryLengthFromBase64UTF16Scalar) ||
+			!sameFunction(got.base64ToBinary, base64ToBinaryScalar) ||
+			!sameFunction(got.base64ToBinaryUTF16, base64ToBinaryUTF16Scalar) ||
+			!sameFunction(got.base64ToBinaryDetails, base64ToBinaryDetailsScalar) ||
+			!sameFunction(got.base64ToBinaryDetailsUTF16, base64ToBinaryDetailsUTF16Scalar) ||
+			!sameFunction(got.binaryToBase64, binaryToBase64Scalar) ||
+			!sameFunction(got.binaryToBase64WithLines, binaryToBase64WithLinesScalar) {
+			t.Fatalf("Base64 providers leaked ahead of scalar for %#v", input)
+		}
+	}
+}
+
+
+func TestMakeImplementationAMD64Base64ForceProvider(t *testing.T) {
+	t.Setenv("SIMDUTF_FORCE_PROVIDER", "westmere")
+	got := makeImplementation(selectionInput{features: cpuSSSE3 | cpuAVX2, archsimdAVX2: true})
+	if !sameFunction(got.binaryLengthFromBase64, binaryLengthFromBase64Westmere) ||
+		!sameFunction(got.binaryLengthFromBase64UTF16, binaryLengthFromBase64UTF16Westmere) ||
+		!sameFunction(got.base64ToBinary, base64ToBinaryWestmere) ||
+		!sameFunction(got.base64ToBinaryUTF16, base64ToBinaryUTF16Westmere) ||
+		!sameFunction(got.base64ToBinaryDetails, base64ToBinaryDetailsWestmere) ||
+		!sameFunction(got.base64ToBinaryDetailsUTF16, base64ToBinaryDetailsUTF16Westmere) ||
+		!sameFunction(got.binaryToBase64, binaryToBase64Westmere) ||
+		!sameFunction(got.binaryToBase64WithLines, binaryToBase64WithLinesWestmere) {
+		t.Fatal("forced Westmere did not select Base64 Westmere providers")
+	}
+
+	t.Setenv("SIMDUTF_FORCE_PROVIDER", "haswell")
+	got = makeImplementation(selectionInput{features: cpuSSSE3 | cpuAVX2, archsimdAVX2: true})
+	if !sameFunction(got.binaryLengthFromBase64, binaryLengthFromBase64Haswell) ||
+		!sameFunction(got.binaryLengthFromBase64UTF16, binaryLengthFromBase64UTF16Haswell) ||
+		!sameFunction(got.base64ToBinary, base64ToBinaryHaswell) ||
+		!sameFunction(got.base64ToBinaryUTF16, base64ToBinaryUTF16Haswell) ||
+		!sameFunction(got.base64ToBinaryDetails, base64ToBinaryDetailsHaswell) ||
+		!sameFunction(got.base64ToBinaryDetailsUTF16, base64ToBinaryDetailsUTF16Haswell) ||
+		!sameFunction(got.binaryToBase64, binaryToBase64Haswell) ||
+		!sameFunction(got.binaryToBase64WithLines, binaryToBase64WithLinesHaswell) {
+		t.Fatal("forced Haswell did not select Base64 Haswell providers")
+	}
+
+	t.Setenv("SIMDUTF_FORCE_PROVIDER", "archsimd")
+	got = makeImplementation(selectionInput{features: cpuSSSE3 | cpuAVX2, archsimdAVX2: true})
+	if !sameFunction(got.binaryLengthFromBase64, binaryLengthFromBase64Archsimd) ||
+		!sameFunction(got.binaryLengthFromBase64UTF16, binaryLengthFromBase64UTF16Archsimd) ||
+		!sameFunction(got.base64ToBinary, base64ToBinaryArchsimd) ||
+		!sameFunction(got.base64ToBinaryUTF16, base64ToBinaryUTF16Archsimd) ||
+		!sameFunction(got.base64ToBinaryDetails, base64ToBinaryDetailsArchsimd) ||
+		!sameFunction(got.base64ToBinaryDetailsUTF16, base64ToBinaryDetailsUTF16Archsimd) ||
+		!sameFunction(got.binaryToBase64, binaryToBase64Archsimd) ||
+		!sameFunction(got.binaryToBase64WithLines, binaryToBase64WithLinesArchsimd) {
+		t.Fatal("forced Archsimd did not select Base64 Archsimd providers")
+	}
+}

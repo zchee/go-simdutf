@@ -309,3 +309,41 @@ func TestMakeImplementationARM64DetectEncodingsQualificationSelection(t *testing
 		t.Fatal("forced NEON did not select detectEncodingsNEON")
 	}
 }
+
+
+func TestMakeImplementationARM64Base64QualificationSelection(t *testing.T) {
+	// FC-v1-base64 SIMD providers are forceable but remain scalar-first until
+	// qualification dispositions promote them.
+	for _, input := range []selectionInput{
+		{},
+		{features: cpuNEON},
+	} {
+		got := makeImplementation(input)
+		if !sameFunction(got.binaryLengthFromBase64, binaryLengthFromBase64Scalar) ||
+			!sameFunction(got.binaryLengthFromBase64UTF16, binaryLengthFromBase64UTF16Scalar) ||
+			!sameFunction(got.base64ToBinary, base64ToBinaryScalar) ||
+			!sameFunction(got.base64ToBinaryUTF16, base64ToBinaryUTF16Scalar) ||
+			!sameFunction(got.base64ToBinaryDetails, base64ToBinaryDetailsScalar) ||
+			!sameFunction(got.base64ToBinaryDetailsUTF16, base64ToBinaryDetailsUTF16Scalar) ||
+			!sameFunction(got.binaryToBase64, binaryToBase64Scalar) ||
+			!sameFunction(got.binaryToBase64WithLines, binaryToBase64WithLinesScalar) {
+			t.Fatalf("Base64 providers leaked ahead of scalar for %#v", input)
+		}
+	}
+}
+
+
+func TestMakeImplementationARM64Base64ForceProvider(t *testing.T) {
+	t.Setenv("SIMDUTF_FORCE_PROVIDER", "neon")
+	got := makeImplementation(selectionInput{features: cpuNEON})
+	if !sameFunction(got.binaryLengthFromBase64, binaryLengthFromBase64NEON) ||
+		!sameFunction(got.binaryLengthFromBase64UTF16, binaryLengthFromBase64UTF16NEON) ||
+		!sameFunction(got.base64ToBinary, base64ToBinaryNEON) ||
+		!sameFunction(got.base64ToBinaryUTF16, base64ToBinaryUTF16NEON) ||
+		!sameFunction(got.base64ToBinaryDetails, base64ToBinaryDetailsNEON) ||
+		!sameFunction(got.base64ToBinaryDetailsUTF16, base64ToBinaryDetailsUTF16NEON) ||
+		!sameFunction(got.binaryToBase64, binaryToBase64NEON) ||
+		!sameFunction(got.binaryToBase64WithLines, binaryToBase64WithLinesNEON) {
+		t.Fatal("forced NEON did not select Base64 NEON providers")
+	}
+}
