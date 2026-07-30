@@ -139,6 +139,18 @@ type implementation struct {
 	convertLatin1ToUTF16LE    func([]byte, []uint16) int
 	convertLatin1ToUTF16BE    func([]byte, []uint16) int
 	convertLatin1ToUTF32      func([]byte, []uint32) int
+	convertUTF8ToLatin1            func([]byte, []byte) int
+	convertUTF8ToLatin1WithErrors  func([]byte, []byte) Result
+	convertValidUTF8ToLatin1       func([]byte, []byte) int
+	convertUTF8ToUTF16LE           func([]byte, []uint16) int
+	convertUTF8ToUTF16BE           func([]byte, []uint16) int
+	convertUTF8ToUTF16LEWithErrors func([]byte, []uint16) Result
+	convertUTF8ToUTF16BEWithErrors func([]byte, []uint16) Result
+	convertValidUTF8ToUTF16LE      func([]byte, []uint16) int
+	convertValidUTF8ToUTF16BE      func([]byte, []uint16) int
+	convertUTF8ToUTF32             func([]byte, []uint32) int
+	convertUTF8ToUTF32WithErrors   func([]byte, []uint32) Result
+	convertValidUTF8ToUTF32        func([]byte, []uint32) int
 }
 
 var activeImplementation = makeImplementation(detectSelectionInput())

@@ -46,6 +46,21 @@ func	ConvertLatin1ToUTF16LE	func([]byte, []uint16) int
 func	ConvertLatin1ToUTF32	func([]byte, []uint32) int
 func	ConvertLatin1ToUTF8	func([]byte, []byte) int
 func	ConvertLatin1ToUTF8Safe	func([]byte, []byte) int
+func	ConvertUTF8ToLatin1	func([]byte, []byte) int
+func	ConvertUTF8ToLatin1WithErrors	func([]byte, []byte) Result
+func	ConvertUTF8ToUTF16	func([]byte, []uint16) int
+func	ConvertUTF8ToUTF16BE	func([]byte, []uint16) int
+func	ConvertUTF8ToUTF16BEWithErrors	func([]byte, []uint16) Result
+func	ConvertUTF8ToUTF16LE	func([]byte, []uint16) int
+func	ConvertUTF8ToUTF16LEWithErrors	func([]byte, []uint16) Result
+func	ConvertUTF8ToUTF16WithErrors	func([]byte, []uint16) Result
+func	ConvertUTF8ToUTF32	func([]byte, []uint32) int
+func	ConvertUTF8ToUTF32WithErrors	func([]byte, []uint32) Result
+func	ConvertValidUTF8ToLatin1	func([]byte, []byte) int
+func	ConvertValidUTF8ToUTF16	func([]byte, []uint16) int
+func	ConvertValidUTF8ToUTF16BE	func([]byte, []uint16) int
+func	ConvertValidUTF8ToUTF16LE	func([]byte, []uint16) int
+func	ConvertValidUTF8ToUTF32	func([]byte, []uint32) int
 func	CountUTF8	func([]byte) int
 func	EncodingString	func(Encoding) string
 func	ErrorToString	func(ErrorCode) string

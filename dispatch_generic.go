@@ -75,5 +75,17 @@ func makeImplementation(input selectionInput) implementation {
 		convertLatin1ToUTF16LE:    convertLatin1ToUTF16LEScalar,
 		convertLatin1ToUTF16BE:    convertLatin1ToUTF16BEScalar,
 		convertLatin1ToUTF32:      convertLatin1ToUTF32Scalar,
+		convertUTF8ToLatin1:            convertUTF8ToLatin1Scalar,
+		convertUTF8ToLatin1WithErrors:  convertUTF8ToLatin1WithErrorsScalar,
+		convertValidUTF8ToLatin1:       convertValidUTF8ToLatin1Scalar,
+		convertUTF8ToUTF16LE:           convertUTF8ToUTF16LEScalar,
+		convertUTF8ToUTF16BE:           convertUTF8ToUTF16BEScalar,
+		convertUTF8ToUTF16LEWithErrors: convertUTF8ToUTF16LEWithErrorsScalar,
+		convertUTF8ToUTF16BEWithErrors: convertUTF8ToUTF16BEWithErrorsScalar,
+		convertValidUTF8ToUTF16LE:      convertValidUTF8ToUTF16LEScalar,
+		convertValidUTF8ToUTF16BE:      convertValidUTF8ToUTF16BEScalar,
+		convertUTF8ToUTF32:             convertUTF8ToUTF32Scalar,
+		convertUTF8ToUTF32WithErrors:   convertUTF8ToUTF32WithErrorsScalar,
+		convertValidUTF8ToUTF32:        convertValidUTF8ToUTF32Scalar,
 	}
 }
