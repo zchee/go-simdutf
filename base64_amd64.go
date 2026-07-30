@@ -18,29 +18,182 @@
 
 package simdutf
 
-// Independently adapted from simdutf/simdutf@611becc2a08c27a4edc77d9a45ff74c97130129b
+// Independently translated from simdutf/simdutf@611becc2a08c27a4edc77d9a45ff74c97130129b
+// (tree c8292790d793212ca0a1faf6ae42e7f8e7b70d4f): src/generic/base64lengths.h,
+// src/westmere/sse_base64.cpp, src/haswell/avx2_base64.cpp, and the
 // westmere/haswell Base64 entry points in src/{westmere,haswell}/implementation.cpp.
-// These providers are forceable and stay behind scalar until qualification promotes.
+//
+// Staged hybrid: length and encode use real SSSE3/AVX2 assembly for complete
+// vector groups; decode/details remain forceable symbols with scalar bodies
+// until a later decode landing. Public selection stays scalar-first.
 
-//go:noinline
+//go:noescape
+func binaryLengthFromBase64BlocksWestmere(input []byte) (count int)
+
+//go:noescape
+func binaryLengthFromBase64BlocksHaswell(input []byte) (count int)
+
+//go:noescape
+func binaryLengthFromBase64UTF16BlocksWestmere(input []uint16) (count int)
+
+//go:noescape
+func binaryLengthFromBase64UTF16BlocksHaswell(input []uint16) (count int)
+
+//go:noescape
+func base64EncodeBlocksWestmere(input, dst []byte, url int) (consumed, written int)
+
+//go:noescape
+func base64EncodeBlocksHaswell(input, dst []byte, url int) (consumed, written int)
+
 func binaryLengthFromBase64Westmere(input []byte) int {
-	return binaryLengthFromBase64Scalar(input)
+	return binaryLengthFromBase64AMD64(input, binaryLengthFromBase64BlocksWestmere)
 }
 
-//go:noinline
 func binaryLengthFromBase64Haswell(input []byte) int {
-	return binaryLengthFromBase64Scalar(input)
+	return binaryLengthFromBase64AMD64(input, binaryLengthFromBase64BlocksHaswell)
 }
 
-//go:noinline
+func binaryLengthFromBase64AMD64(input []byte, blocks func([]byte) int) int {
+	complete := len(input) &^ 63
+	count := 0
+	if complete != 0 {
+		count = blocks(input[:complete])
+	}
+	for _, c := range input[complete:] {
+		if c > ' ' {
+			count++
+		}
+	}
+	padding := 0
+	pos := len(input)
+	for pos > 0 && padding < 2 {
+		pos--
+		c := input[pos]
+		if c == '=' {
+			padding++
+		} else if c > ' ' {
+			break
+		}
+	}
+	return ((count - padding) * 3) / 4
+}
+
 func binaryLengthFromBase64UTF16Westmere(input []uint16) int {
-	return binaryLengthFromBase64UTF16Scalar(input)
+	return binaryLengthFromBase64UTF16AMD64(input, binaryLengthFromBase64UTF16BlocksWestmere)
 }
 
-//go:noinline
 func binaryLengthFromBase64UTF16Haswell(input []uint16) int {
-	return binaryLengthFromBase64UTF16Scalar(input)
+	return binaryLengthFromBase64UTF16AMD64(input, binaryLengthFromBase64UTF16BlocksHaswell)
 }
+
+func binaryLengthFromBase64UTF16AMD64(input []uint16, blocks func([]uint16) int) int {
+	complete := len(input) &^ 31
+	count := 0
+	if complete != 0 {
+		count = blocks(input[:complete])
+	}
+	for _, c := range input[complete:] {
+		if c > ' ' {
+			count++
+		}
+	}
+	padding := 0
+	pos := len(input)
+	for pos > 0 && padding < 2 {
+		pos--
+		c := input[pos]
+		if c == '=' {
+			padding++
+		} else if c > ' ' {
+			break
+		}
+	}
+	return ((count - padding) * 3) / 4
+}
+
+func base64EncodeURLFlag(options Base64Options) int {
+	if options&Base64URL != 0 {
+		return 1
+	}
+	return 0
+}
+
+func binaryToBase64Westmere(input, dst []byte, options Base64Options) int {
+	return binaryToBase64AMD64(input, dst, options, base64EncodeBlocksWestmere)
+}
+
+func binaryToBase64Haswell(input, dst []byte, options Base64Options) int {
+	return binaryToBase64AMD64(input, dst, options, base64EncodeBlocksHaswell)
+}
+
+func binaryToBase64AMD64(input, dst []byte, options Base64Options, blocks func([]byte, []byte, int) (int, int)) int {
+	required := base64LengthFromBinaryScalar(len(input), options)
+	if len(dst) < required {
+		panic("simdutf: destination is too short")
+	}
+	consumed, written := blocks(input, dst, base64EncodeURLFlag(options))
+	if consumed >= len(input) {
+		return written
+	}
+	return written + tailEncodeBase64(dst[written:], input[consumed:], options, false, 0)
+}
+
+func binaryToBase64WithLinesWestmere(input, dst []byte, lineLength int, options Base64Options) int {
+	return binaryToBase64WithLinesAMD64(input, dst, lineLength, options, base64EncodeBlocksWestmere)
+}
+
+func binaryToBase64WithLinesHaswell(input, dst []byte, lineLength int, options Base64Options) int {
+	return binaryToBase64WithLinesAMD64(input, dst, lineLength, options, base64EncodeBlocksHaswell)
+}
+
+func binaryToBase64WithLinesAMD64(input, dst []byte, lineLength int, options Base64Options, blocks func([]byte, []byte, int) (int, int)) int {
+	required := base64LengthFromBinaryWithLinesScalar(len(input), options, lineLength)
+	if len(dst) < required {
+		panic("simdutf: destination is too short")
+	}
+	if lineLength < 4 {
+		lineLength = 4
+	}
+	url := base64EncodeURLFlag(options)
+	out := 0
+	col := 0
+	inOff := 0
+	for {
+		var buf [128]byte
+		consumed, written := blocks(input[inOff:], buf[:], url)
+		if consumed == 0 {
+			break
+		}
+		for j := 0; j < written; j++ {
+			if col == lineLength {
+				dst[out] = '\n'
+				out++
+				col = 0
+			}
+			dst[out] = buf[j]
+			out++
+			col++
+		}
+		inOff += consumed
+	}
+	if inOff < len(input) {
+		var rem [72]byte
+		n := tailEncodeBase64(rem[:], input[inOff:], options, false, 0)
+		for j := 0; j < n; j++ {
+			if col == lineLength {
+				dst[out] = '\n'
+				out++
+				col = 0
+			}
+			dst[out] = rem[j]
+			out++
+			col++
+		}
+	}
+	return out
+}
+
+// Decode/details stay forceable and distinct from scalar; SIMD decode lands later.
 
 //go:noinline
 func base64ToBinaryWestmere(input []byte, dst []byte, options Base64Options, lastChunk LastChunkHandlingOptions) Result {
@@ -80,24 +233,4 @@ func base64ToBinaryDetailsUTF16Westmere(input []uint16, dst []byte, options Base
 //go:noinline
 func base64ToBinaryDetailsUTF16Haswell(input []uint16, dst []byte, options Base64Options, lastChunk LastChunkHandlingOptions) FullResult {
 	return base64ToBinaryDetailsUTF16Scalar(input, dst, options, lastChunk)
-}
-
-//go:noinline
-func binaryToBase64Westmere(input, dst []byte, options Base64Options) int {
-	return binaryToBase64Scalar(input, dst, options)
-}
-
-//go:noinline
-func binaryToBase64Haswell(input, dst []byte, options Base64Options) int {
-	return binaryToBase64Scalar(input, dst, options)
-}
-
-//go:noinline
-func binaryToBase64WithLinesWestmere(input, dst []byte, lineLength int, options Base64Options) int {
-	return binaryToBase64WithLinesScalar(input, dst, lineLength, options)
-}
-
-//go:noinline
-func binaryToBase64WithLinesHaswell(input, dst []byte, lineLength int, options Base64Options) int {
-	return binaryToBase64WithLinesScalar(input, dst, lineLength, options)
 }
