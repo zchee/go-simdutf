@@ -112,7 +112,7 @@ func materializeDispatchQualificationCorpora() ([]byte, []byte, []uint16, []byte
 
 func dispatchQualificationRows() []dispatchQualificationRow {
 	byteZero, _, uint16Zero, _, uint32Zero := materializeDispatchQualificationCorpora()
-	rows := make([]dispatchQualificationRow, 0, 299)
+	rows := make([]dispatchQualificationRow, 0, 369)
 	for _, operation := range [...]string{"ValidateASCII", "ValidateASCIIWithErrors"} {
 		for _, input := range dispatchQualificationByteSizes {
 			rows = append(rows, dispatchQualificationRow{
@@ -193,6 +193,23 @@ func dispatchQualificationRows() []dispatchQualificationRow {
 				class:     input.class,
 				size:      input.size,
 				uint32s:   uint32Zero[:input.size],
+			})
+		}
+	}
+	for _, operation := range [...]string{
+		"UTF8LengthFromLatin1",
+		"ConvertLatin1ToUTF8",
+		"ConvertLatin1ToUTF16LE",
+		"ConvertLatin1ToUTF16BE",
+		"ConvertLatin1ToUTF32",
+	} {
+		for _, input := range dispatchQualificationByteSizes {
+			rows = append(rows, dispatchQualificationRow{
+				operation: operation,
+				corpus:    "Q-byte-zero",
+				class:     input.class,
+				size:      input.size,
+				bytes:     byteZero[:input.size],
 			})
 		}
 	}
@@ -326,6 +343,41 @@ var dispatchQualificationProviderIdentifiers = map[string]map[string][]string{
 		"neon":     {"validateUTF32WithErrorsNEON"},
 		"archsimd": {"validateUTF32WithErrorsArchsimd"},
 	},
+	"UTF8LengthFromLatin1": {
+		"scalar":   {"utf8LengthFromLatin1Scalar"},
+		"westmere": {"utf8LengthFromLatin1Westmere"},
+		"haswell":  {"utf8LengthFromLatin1Haswell"},
+		"neon":     {"utf8LengthFromLatin1NEON"},
+		"archsimd": {"utf8LengthFromLatin1Archsimd"},
+	},
+	"ConvertLatin1ToUTF8": {
+		"scalar":   {"convertLatin1ToUTF8Scalar"},
+		"westmere": {"convertLatin1ToUTF8Westmere"},
+		"haswell":  {"convertLatin1ToUTF8Haswell"},
+		"neon":     {"convertLatin1ToUTF8NEON"},
+		"archsimd": {"convertLatin1ToUTF8Archsimd"},
+	},
+	"ConvertLatin1ToUTF16LE": {
+		"scalar":   {"convertLatin1ToUTF16LEScalar"},
+		"westmere": {"convertLatin1ToUTF16LEWestmere"},
+		"haswell":  {"convertLatin1ToUTF16LEHaswell"},
+		"neon":     {"convertLatin1ToUTF16LENEON"},
+		"archsimd": {"convertLatin1ToUTF16LEArchsimd"},
+	},
+	"ConvertLatin1ToUTF16BE": {
+		"scalar":   {"convertLatin1ToUTF16BEScalar"},
+		"westmere": {"convertLatin1ToUTF16BEWestmere"},
+		"haswell":  {"convertLatin1ToUTF16BEHaswell"},
+		"neon":     {"convertLatin1ToUTF16BENEON"},
+		"archsimd": {"convertLatin1ToUTF16BEArchsimd"},
+	},
+	"ConvertLatin1ToUTF32": {
+		"scalar":   {"convertLatin1ToUTF32Scalar"},
+		"westmere": {"convertLatin1ToUTF32Westmere"},
+		"haswell":  {"convertLatin1ToUTF32Haswell"},
+		"neon":     {"convertLatin1ToUTF32NEON"},
+		"archsimd": {"convertLatin1ToUTF32Archsimd"},
+	},
 }
 
 func dispatchQualificationGuard(operation string, fn any) error {
@@ -428,6 +480,16 @@ func dispatchQualificationFunction(operation string) any {
 		return activeImplementation.validateUTF32
 	case "ValidateUTF32WithErrors":
 		return activeImplementation.validateUTF32WithErrors
+	case "UTF8LengthFromLatin1":
+		return activeImplementation.utf8LengthFromLatin1
+	case "ConvertLatin1ToUTF8":
+		return activeImplementation.convertLatin1ToUTF8
+	case "ConvertLatin1ToUTF16LE":
+		return activeImplementation.convertLatin1ToUTF16LE
+	case "ConvertLatin1ToUTF16BE":
+		return activeImplementation.convertLatin1ToUTF16BE
+	case "ConvertLatin1ToUTF32":
+		return activeImplementation.convertLatin1ToUTF32
 	default:
 		panic("unknown dispatch qualification operation: " + operation)
 	}
@@ -521,6 +583,30 @@ func BenchmarkDispatchQualification(b *testing.B) {
 			case "ValidateUTF32WithErrors":
 				for b.Loop() {
 					benchmarkResultSink = ValidateUTF32WithErrors(row.uint32s)
+				}
+			case "UTF8LengthFromLatin1":
+				for b.Loop() {
+					benchmarkIntSink = UTF8LengthFromLatin1(row.bytes)
+				}
+			case "ConvertLatin1ToUTF8":
+				dst := make([]byte, len(row.bytes)*2)
+				for b.Loop() {
+					benchmarkIntSink = ConvertLatin1ToUTF8(row.bytes, dst)
+				}
+			case "ConvertLatin1ToUTF16LE":
+				dst := make([]uint16, len(row.bytes))
+				for b.Loop() {
+					benchmarkIntSink = ConvertLatin1ToUTF16LE(row.bytes, dst)
+				}
+			case "ConvertLatin1ToUTF16BE":
+				dst := make([]uint16, len(row.bytes))
+				for b.Loop() {
+					benchmarkIntSink = ConvertLatin1ToUTF16BE(row.bytes, dst)
+				}
+			case "ConvertLatin1ToUTF32":
+				dst := make([]uint32, len(row.bytes))
+				for b.Loop() {
+					benchmarkIntSink = ConvertLatin1ToUTF32(row.bytes, dst)
 				}
 			default:
 				b.Fatalf("unknown operation %q", row.operation)
@@ -829,13 +915,83 @@ ValidateUTF32WithErrors/Q-u32-zero/boundary/0031
 ValidateUTF32WithErrors/Q-u32-zero/boundary/0032
 ValidateUTF32WithErrors/Q-u32-zero/boundary/0033
 ValidateUTF32WithErrors/Q-u32-zero/bulk/1024
+UTF8LengthFromLatin1/Q-byte-zero/short/0001
+UTF8LengthFromLatin1/Q-byte-zero/short/0015
+UTF8LengthFromLatin1/Q-byte-zero/short/0016
+UTF8LengthFromLatin1/Q-byte-zero/short/0017
+UTF8LengthFromLatin1/Q-byte-zero/short/0031
+UTF8LengthFromLatin1/Q-byte-zero/short/0032
+UTF8LengthFromLatin1/Q-byte-zero/short/0033
+UTF8LengthFromLatin1/Q-byte-zero/boundary/0063
+UTF8LengthFromLatin1/Q-byte-zero/boundary/0064
+UTF8LengthFromLatin1/Q-byte-zero/boundary/0065
+UTF8LengthFromLatin1/Q-byte-zero/boundary/0127
+UTF8LengthFromLatin1/Q-byte-zero/boundary/0128
+UTF8LengthFromLatin1/Q-byte-zero/boundary/0129
+UTF8LengthFromLatin1/Q-byte-zero/bulk/4096
+ConvertLatin1ToUTF8/Q-byte-zero/short/0001
+ConvertLatin1ToUTF8/Q-byte-zero/short/0015
+ConvertLatin1ToUTF8/Q-byte-zero/short/0016
+ConvertLatin1ToUTF8/Q-byte-zero/short/0017
+ConvertLatin1ToUTF8/Q-byte-zero/short/0031
+ConvertLatin1ToUTF8/Q-byte-zero/short/0032
+ConvertLatin1ToUTF8/Q-byte-zero/short/0033
+ConvertLatin1ToUTF8/Q-byte-zero/boundary/0063
+ConvertLatin1ToUTF8/Q-byte-zero/boundary/0064
+ConvertLatin1ToUTF8/Q-byte-zero/boundary/0065
+ConvertLatin1ToUTF8/Q-byte-zero/boundary/0127
+ConvertLatin1ToUTF8/Q-byte-zero/boundary/0128
+ConvertLatin1ToUTF8/Q-byte-zero/boundary/0129
+ConvertLatin1ToUTF8/Q-byte-zero/bulk/4096
+ConvertLatin1ToUTF16LE/Q-byte-zero/short/0001
+ConvertLatin1ToUTF16LE/Q-byte-zero/short/0015
+ConvertLatin1ToUTF16LE/Q-byte-zero/short/0016
+ConvertLatin1ToUTF16LE/Q-byte-zero/short/0017
+ConvertLatin1ToUTF16LE/Q-byte-zero/short/0031
+ConvertLatin1ToUTF16LE/Q-byte-zero/short/0032
+ConvertLatin1ToUTF16LE/Q-byte-zero/short/0033
+ConvertLatin1ToUTF16LE/Q-byte-zero/boundary/0063
+ConvertLatin1ToUTF16LE/Q-byte-zero/boundary/0064
+ConvertLatin1ToUTF16LE/Q-byte-zero/boundary/0065
+ConvertLatin1ToUTF16LE/Q-byte-zero/boundary/0127
+ConvertLatin1ToUTF16LE/Q-byte-zero/boundary/0128
+ConvertLatin1ToUTF16LE/Q-byte-zero/boundary/0129
+ConvertLatin1ToUTF16LE/Q-byte-zero/bulk/4096
+ConvertLatin1ToUTF16BE/Q-byte-zero/short/0001
+ConvertLatin1ToUTF16BE/Q-byte-zero/short/0015
+ConvertLatin1ToUTF16BE/Q-byte-zero/short/0016
+ConvertLatin1ToUTF16BE/Q-byte-zero/short/0017
+ConvertLatin1ToUTF16BE/Q-byte-zero/short/0031
+ConvertLatin1ToUTF16BE/Q-byte-zero/short/0032
+ConvertLatin1ToUTF16BE/Q-byte-zero/short/0033
+ConvertLatin1ToUTF16BE/Q-byte-zero/boundary/0063
+ConvertLatin1ToUTF16BE/Q-byte-zero/boundary/0064
+ConvertLatin1ToUTF16BE/Q-byte-zero/boundary/0065
+ConvertLatin1ToUTF16BE/Q-byte-zero/boundary/0127
+ConvertLatin1ToUTF16BE/Q-byte-zero/boundary/0128
+ConvertLatin1ToUTF16BE/Q-byte-zero/boundary/0129
+ConvertLatin1ToUTF16BE/Q-byte-zero/bulk/4096
+ConvertLatin1ToUTF32/Q-byte-zero/short/0001
+ConvertLatin1ToUTF32/Q-byte-zero/short/0015
+ConvertLatin1ToUTF32/Q-byte-zero/short/0016
+ConvertLatin1ToUTF32/Q-byte-zero/short/0017
+ConvertLatin1ToUTF32/Q-byte-zero/short/0031
+ConvertLatin1ToUTF32/Q-byte-zero/short/0032
+ConvertLatin1ToUTF32/Q-byte-zero/short/0033
+ConvertLatin1ToUTF32/Q-byte-zero/boundary/0063
+ConvertLatin1ToUTF32/Q-byte-zero/boundary/0064
+ConvertLatin1ToUTF32/Q-byte-zero/boundary/0065
+ConvertLatin1ToUTF32/Q-byte-zero/boundary/0127
+ConvertLatin1ToUTF32/Q-byte-zero/boundary/0128
+ConvertLatin1ToUTF32/Q-byte-zero/boundary/0129
+ConvertLatin1ToUTF32/Q-byte-zero/bulk/4096
 `
 
 func TestDispatchQualificationSurface(t *testing.T) {
 	rows := dispatchQualificationRows()
 	wantNames := strings.Fields(dispatchQualificationExpectedNames)
-	if len(rows) != 299 || len(wantNames) != 299 {
-		t.Fatalf("row counts = (%d, %d), want (299, 299)", len(rows), len(wantNames))
+	if len(rows) != 369 || len(wantNames) != 369 {
+		t.Fatalf("row counts = (%d, %d), want (369, 369)", len(rows), len(wantNames))
 	}
 	for i, row := range rows {
 		if got, want := row.name(), wantNames[i]; got != want {
@@ -997,6 +1153,11 @@ func TestDispatchQualificationTimedCallsAreLiteral(t *testing.T) {
 		"ToWellFormedUTF16BE(row.uint16s, dst)",
 		"benchmarkBoolSink = ValidateUTF32(row.uint32s)",
 		"benchmarkResultSink = ValidateUTF32WithErrors(row.uint32s)",
+		"benchmarkIntSink = UTF8LengthFromLatin1(row.bytes)",
+		"benchmarkIntSink = ConvertLatin1ToUTF8(row.bytes, dst)",
+		"benchmarkIntSink = ConvertLatin1ToUTF16LE(row.bytes, dst)",
+		"benchmarkIntSink = ConvertLatin1ToUTF16BE(row.bytes, dst)",
+		"benchmarkIntSink = ConvertLatin1ToUTF32(row.bytes, dst)",
 	} {
 		if got := bytesCount(timedSource, []byte(call)); got != 1 {
 			t.Errorf("literal timed call %q count = %d, want 1", call, got)

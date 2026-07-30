@@ -88,10 +88,30 @@ func makeImplementation(input selectionInput) implementation {
 		toWellFormedUTF16BE:       toWellFormedUTF16BEScalar,
 		validateUTF32:             validateUTF32Scalar,
 		validateUTF32WithErrors:   validateUTF32WithErrorsScalar,
-		utf8LengthFromLatin1:      utf8LengthFromLatin1Scalar,
-		convertLatin1ToUTF8:       convertLatin1ToUTF8Scalar,
-		convertLatin1ToUTF16LE:    convertLatin1ToUTF16LEScalar,
-		convertLatin1ToUTF16BE:    convertLatin1ToUTF16BEScalar,
-		convertLatin1ToUTF32:      convertLatin1ToUTF32Scalar,
+		utf8LengthFromLatin1: selectVariant(
+			input,
+			variant[func([]byte) int]{value: utf8LengthFromLatin1NEON, kind: implementationNEON, required: cpuNEON, available: true},
+			variant[func([]byte) int]{value: utf8LengthFromLatin1Scalar, kind: implementationScalar, available: true},
+		),
+		convertLatin1ToUTF8: selectVariant(
+			input,
+			variant[func([]byte, []byte) int]{value: convertLatin1ToUTF8NEON, kind: implementationNEON, required: cpuNEON, available: true},
+			variant[func([]byte, []byte) int]{value: convertLatin1ToUTF8Scalar, kind: implementationScalar, available: true},
+		),
+		convertLatin1ToUTF16LE: selectVariant(
+			input,
+			variant[func([]byte, []uint16) int]{value: convertLatin1ToUTF16LENEON, kind: implementationNEON, required: cpuNEON, available: true},
+			variant[func([]byte, []uint16) int]{value: convertLatin1ToUTF16LEScalar, kind: implementationScalar, available: true},
+		),
+		convertLatin1ToUTF16BE: selectVariant(
+			input,
+			variant[func([]byte, []uint16) int]{value: convertLatin1ToUTF16BENEON, kind: implementationNEON, required: cpuNEON, available: true},
+			variant[func([]byte, []uint16) int]{value: convertLatin1ToUTF16BEScalar, kind: implementationScalar, available: true},
+		),
+		convertLatin1ToUTF32: selectVariant(
+			input,
+			variant[func([]byte, []uint32) int]{value: convertLatin1ToUTF32NEON, kind: implementationNEON, required: cpuNEON, available: true},
+			variant[func([]byte, []uint32) int]{value: convertLatin1ToUTF32Scalar, kind: implementationScalar, available: true},
+		),
 	}
 }

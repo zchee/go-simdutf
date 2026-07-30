@@ -80,19 +80,75 @@ func TestDirectAMD64Latin1AgainstScalar(t *testing.T) {
 		})
 	}
 }
+func TestDirectAMD64Latin1PreflightPreservesDestination(t *testing.T) {
+	input := bytes.Repeat([]byte{0xff}, 65)
+	variants := []struct {
+		name    string
+		feature cpuFeatures
+		utf8    func([]byte, []byte) int
+		utf16le func([]byte, []uint16) int
+		utf16be func([]byte, []uint16) int
+		utf32   func([]byte, []uint32) int
+	}{
+		{"westmere", cpuSSSE3, convertLatin1ToUTF8Westmere, convertLatin1ToUTF16LEWestmere, convertLatin1ToUTF16BEWestmere, convertLatin1ToUTF32Westmere},
+		{"haswell", cpuAVX2, convertLatin1ToUTF8Haswell, convertLatin1ToUTF16LEHaswell, convertLatin1ToUTF16BEHaswell, convertLatin1ToUTF32Haswell},
+	}
+	for _, v := range variants {
+		t.Run(v.name, func(t *testing.T) {
+			requireLatin1AMD64Variant(t, v.feature)
+			dst8 := bytes.Repeat([]byte{0xa5}, 2*len(input)-1)
+			requireLatin1AMD64Panic(t, func() { v.utf8(input, dst8) })
+			if !bytes.Equal(dst8, bytes.Repeat([]byte{0xa5}, len(dst8))) {
+				t.Fatal("UTF-8 destination changed before short-destination panic")
+			}
+			for name, convert := range map[string]func([]byte, []uint16) int{"UTF-16LE": v.utf16le, "UTF-16BE": v.utf16be} {
+				dst := make([]uint16, len(input)-1)
+				for i := range dst {
+					dst[i] = 0xa5a5
+				}
+				requireLatin1AMD64Panic(t, func() { convert(input, dst) })
+				for _, value := range dst {
+					if value != 0xa5a5 {
+						t.Fatalf("%s destination changed before short-destination panic", name)
+					}
+				}
+			}
+			dst32 := make([]uint32, len(input)-1)
+			for i := range dst32 {
+				dst32[i] = 0xa5a5a5a5
+			}
+			requireLatin1AMD64Panic(t, func() { v.utf32(input, dst32) })
+			for _, value := range dst32 {
+				if value != 0xa5a5a5a5 {
+					t.Fatal("UTF-32 destination changed before short-destination panic")
+				}
+			}
+		})
+	}
+}
+
+func requireLatin1AMD64Panic(t *testing.T, fn func()) {
+	t.Helper()
+	defer func() {
+		if recover() == nil {
+			t.Fatal("expected panic")
+		}
+	}()
+	fn()
+}
 
 func FuzzLatin1AMD64AgainstScalar(f *testing.F) {
 	f.Add([]byte{0, 0x7f, 0x80, 0xff})
 	f.Fuzz(func(t *testing.T, input []byte) {
 		if detectAMD64Features()&cpuSSSE3 == cpuSSSE3 {
-			checkLatin1Direct(t, input, convertLatin1ToUTF8Westmere, convertLatin1ToUTF16LEWestmere, convertLatin1ToUTF32Westmere, utf8LengthFromLatin1Westmere)
+			checkLatin1Direct(t, input, convertLatin1ToUTF8Westmere, convertLatin1ToUTF16LEWestmere, convertLatin1ToUTF16BEWestmere, convertLatin1ToUTF32Westmere, utf8LengthFromLatin1Westmere)
 		}
 		if detectAMD64Features()&cpuAVX2 == cpuAVX2 {
-			checkLatin1Direct(t, input, convertLatin1ToUTF8Haswell, convertLatin1ToUTF16LEHaswell, convertLatin1ToUTF32Haswell, utf8LengthFromLatin1Haswell)
+			checkLatin1Direct(t, input, convertLatin1ToUTF8Haswell, convertLatin1ToUTF16LEHaswell, convertLatin1ToUTF16BEHaswell, convertLatin1ToUTF32Haswell, utf8LengthFromLatin1Haswell)
 		}
 	})
 }
-func checkLatin1Direct(t *testing.T, input []byte, to8 func([]byte, []byte) int, to16 func([]byte, []uint16) int, to32 func([]byte, []uint32) int, length func([]byte) int) {
+func checkLatin1Direct(t *testing.T, input []byte, to8 func([]byte, []byte) int, to16le, to16be func([]byte, []uint16) int, to32 func([]byte, []uint32) int, length func([]byte) int) {
 	want8 := make([]byte, utf8LengthFromLatin1Scalar(input))
 	convertLatin1ToUTF8Scalar(input, want8)
 	got8 := make([]byte, len(want8))
@@ -101,9 +157,14 @@ func checkLatin1Direct(t *testing.T, input []byte, to8 func([]byte, []byte) int,
 	}
 	want16, got16 := make([]uint16, len(input)), make([]uint16, len(input))
 	convertLatin1ToUTF16LEScalar(input, want16)
-	to16(input, got16)
+	to16le(input, got16)
 	if !equalU16(got16, want16) {
-		t.Fatal("UTF-16 differential mismatch")
+		t.Fatal("UTF-16LE differential mismatch")
+	}
+	convertLatin1ToUTF16BEScalar(input, want16)
+	to16be(input, got16)
+	if !equalU16(got16, want16) {
+		t.Fatal("UTF-16BE differential mismatch")
 	}
 	want32, got32 := make([]uint32, len(input)), make([]uint32, len(input))
 	convertLatin1ToUTF32Scalar(input, want32)
