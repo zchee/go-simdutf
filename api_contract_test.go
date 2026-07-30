@@ -48,15 +48,15 @@ func TestPublicAPIContract(t *testing.T) {
 		"const":      2,
 		"enum-const": 31,
 		"field":      6,
-		"func":       19,
+		"func":       30,
 		"method":     3,
 		"type":       6,
 	}
 	if !maps.Equal(counts, wantCounts) {
 		t.Fatalf("API leaf counts = %v, want %v", counts, wantCounts)
 	}
-	if len(got) != 67 {
-		t.Fatalf("API leaf record count = %d, want 67", len(got))
+	if len(got) != 78 {
+		t.Fatalf("API leaf record count = %d, want 78", len(got))
 	}
 
 	want, err := os.ReadFile(filepath.Join("testdata", "public-api.golden"))
@@ -258,12 +258,12 @@ func TestAPIManifestMilestones(t *testing.T) {
 
 	assertStringIntMap(t, "status counts", statusCounts, map[string]int{
 		"excluded":    9,
-		"implemented": 30,
-		"planned":     125,
+		"implemented": 41,
+		"planned":     114,
 	})
 	assertStringIntMap(t, "milestone counts", milestoneCounts, map[string]int{
-		"611becc-current-api": 30,
-		"future-upstream-api": 125,
+		"611becc-current-api": 41,
+		"future-upstream-api": 114,
 		"upstream-excluded":   9,
 	})
 	assertStringIntMap(t, "family counts", familyCounts, map[string]int{
@@ -302,14 +302,25 @@ func TestAPIManifestMilestones(t *testing.T) {
 		"Result",
 		"Result.IsErr",
 		"Result.IsOK",
+		"ToWellFormedUTF16",
+		"ToWellFormedUTF16BE",
+		"ToWellFormedUTF16LE",
 		"TrimPartialUTF8",
 		"UTF16LengthFromUTF8",
 		"UTF32LengthFromUTF8",
 		"ValidateASCII",
 		"ValidateASCIIWithErrors",
+		"ValidateUTF16",
 		"ValidateUTF16AsASCII",
+		"ValidateUTF16BE",
 		"ValidateUTF16BEAsASCII",
+		"ValidateUTF16BEWithErrors",
+		"ValidateUTF16LE",
 		"ValidateUTF16LEAsASCII",
+		"ValidateUTF16LEWithErrors",
+		"ValidateUTF16WithErrors",
+		"ValidateUTF32",
+		"ValidateUTF32WithErrors",
 		"ValidateUTF8",
 		"ValidateUTF8WithErrors",
 	}
@@ -324,7 +335,7 @@ func TestPortPhase0FrozenInputs(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	if got, want := portplan.SHA256Hex(manifest), "c0c4d87fc775b5fbd9c8295d60ddeb1de601e4be0120da1fa2775df0b8c743ad"; got != want {
+	if got, want := portplan.SHA256Hex(manifest), "167717774b337b4032f2c762c9850399c61cd7620cebcbee4b7791b6222bb5c0"; got != want {
 		t.Fatalf("%s SHA-256 = %s, want %s", manifestPath, got, want)
 	}
 	allRows, err := portplan.ParseManifestV1(manifest)
@@ -334,20 +345,33 @@ func TestPortPhase0FrozenInputs(t *testing.T) {
 	if got, want := len(allRows), 164; got != want {
 		t.Fatalf("manifest data rows = %d, want %d", got, want)
 	}
-	frozen, plannedRows, err := portplan.FreezePlannedRowsV1(manifest)
+	_, livePlannedRows, err := portplan.FreezePlannedRowsV1(manifest)
 	if err != nil {
 		t.Fatal(err)
 	}
-	if got, want := len(plannedRows), 125; got != want {
-		t.Fatalf("planned snapshot rows = %d, want %d", got, want)
+	if got, want := len(livePlannedRows), 114; got != want {
+		t.Fatalf("remaining planned rows = %d, want %d", got, want)
 	}
 	frozenPath := filepath.Join("docs", "porting", "simdutf-port-v1", "inputs", "planned-rows-v1.tsv")
 	wantFrozen, err := os.ReadFile(frozenPath)
 	if err != nil {
 		t.Fatal(err)
 	}
-	if !bytes.Equal(frozen, wantFrozen) {
-		t.Fatalf("%s is stale:\n%s", frozenPath, lineDiff(string(wantFrozen), string(frozen)))
+	frozenRows, err := portplan.ParseManifestV1(wantFrozen)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if got, want := len(frozenRows), 125; got != want {
+		t.Fatalf("frozen initial planned rows = %d, want %d", got, want)
+	}
+	frozenKeys := make(map[string]bool, len(frozenRows))
+	for _, row := range frozenRows {
+		frozenKeys[row.RowKeyV1] = true
+	}
+	for _, row := range livePlannedRows {
+		if !frozenKeys[row.RowKeyV1] {
+			t.Fatalf("remaining planned row %s is absent from the frozen snapshot", row.RowKeyV1)
+		}
 	}
 
 	isaPath := filepath.Join("docs", "porting", "isa-eligibility.tsv")
@@ -391,7 +415,9 @@ func TestPortPhase0ReviewedMembership(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	_, plannedRows, err := portplan.FreezePlannedRowsV1(manifest)
+	plannedRows, err := portplan.ParseManifestV1(
+		read("docs", "porting", "simdutf-port-v1", "inputs", "planned-rows-v1.tsv"),
+	)
 	if err != nil {
 		t.Fatal(err)
 	}

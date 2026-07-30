@@ -46,14 +46,25 @@ func	ErrorToString	func(ErrorCode) string
 func	IsPartial	func(LastChunkHandlingOptions) bool
 func	LastChunkHandlingOptionsString	func(LastChunkHandlingOptions) string
 func	Latin1LengthFromUTF8	func([]byte) int
+func	ToWellFormedUTF16	func([]uint16, []uint16)
+func	ToWellFormedUTF16BE	func([]uint16, []uint16)
+func	ToWellFormedUTF16LE	func([]uint16, []uint16)
 func	TrimPartialUTF8	func([]byte) int
 func	UTF16LengthFromUTF8	func([]byte) int
 func	UTF32LengthFromUTF8	func([]byte) int
 func	ValidateASCII	func([]byte) bool
 func	ValidateASCIIWithErrors	func([]byte) Result
+func	ValidateUTF16	func([]uint16) bool
 func	ValidateUTF16AsASCII	func([]uint16) bool
+func	ValidateUTF16BE	func([]uint16) bool
 func	ValidateUTF16BEAsASCII	func([]uint16) bool
+func	ValidateUTF16BEWithErrors	func([]uint16) Result
+func	ValidateUTF16LE	func([]uint16) bool
 func	ValidateUTF16LEAsASCII	func([]uint16) bool
+func	ValidateUTF16LEWithErrors	func([]uint16) Result
+func	ValidateUTF16WithErrors	func([]uint16) Result
+func	ValidateUTF32	func([]uint32) bool
+func	ValidateUTF32WithErrors	func([]uint32) Result
 func	ValidateUTF8	func([]byte) bool
 func	ValidateUTF8WithErrors	func([]byte) Result
 method	FullResult.Result	FullResult	func() Result

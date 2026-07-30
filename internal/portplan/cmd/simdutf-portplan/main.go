@@ -97,12 +97,21 @@ func render(root string) (map[string][]byte, error) {
 	if err != nil {
 		return nil, err
 	}
-	frozen, planned, err := portplan.FreezePlannedRowsV1(manifestData)
+	planned, err := portplan.ParseManifestV1(plannedData)
 	if err != nil {
 		return nil, err
 	}
-	if !bytes.Equal(frozen, plannedData) || len(planned) != 125 {
+	if len(planned) != 125 {
 		return nil, errors.New("planned snapshot drift")
+	}
+	manifestKeys := make(map[string]bool, len(manifest))
+	for _, row := range manifest {
+		manifestKeys[row.RowKeyV1] = true
+	}
+	for _, row := range planned {
+		if !manifestKeys[row.RowKeyV1] {
+			return nil, errors.New("planned snapshot row is absent from live manifest")
+		}
 	}
 	ledgerData, err := read("docs/porting/isa-eligibility.tsv")
 	if err != nil {

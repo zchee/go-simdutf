@@ -265,9 +265,12 @@ func completionClassificationFixtureV1(t *testing.T) (ClassificationV1, Membersh
 	if err != nil {
 		t.Fatal(err)
 	}
-	_, planned, err := FreezePlannedRowsV1(manifestData)
+	planned, err := ParseManifestV1(read("docs/porting/simdutf-port-v1/inputs/planned-rows-v1.tsv"))
 	if err != nil {
 		t.Fatal(err)
+	}
+	if len(planned) != 125 {
+		t.Fatalf("planned snapshot: got %d rows, want 125", len(planned))
 	}
 	ledger, err := ParseISALedgerV1(read("docs/porting/isa-eligibility.tsv"))
 	if err != nil {
@@ -521,14 +524,23 @@ func completionEndToEndFixtureV1(t *testing.T) (CompletionV1, CompletionValidati
 		}
 		return data
 	}
-	initialBytes := read("docs/porting/api-manifest.tsv")
-	initial, err := ParseManifestV1(initialBytes)
+	initial, err := ParseManifestV1(read("docs/porting/api-manifest.tsv"))
 	if err != nil {
 		t.Fatal(err)
 	}
-	_, planned, err := FreezePlannedRowsV1(initialBytes)
+	planned, err := ParseManifestV1(read("docs/porting/simdutf-port-v1/inputs/planned-rows-v1.tsv"))
 	if err != nil {
 		t.Fatal(err)
+	}
+	plannedByKey := make(map[string]ManifestRowV1, len(planned))
+	for _, row := range planned {
+		plannedByKey[row.RowKeyV1] = row
+	}
+	for index := range initial {
+		if frozen, ok := plannedByKey[initial[index].RowKeyV1]; ok {
+			initial[index].Cells[manifestStatusIndex] = frozen.Cells[manifestStatusIndex]
+			initial[index].Cells[manifestMilestoneIndex] = frozen.Cells[manifestMilestoneIndex]
+		}
 	}
 	ledger, err := ParseISALedgerV1(read("docs/porting/isa-eligibility.tsv"))
 	if err != nil {
@@ -577,12 +589,8 @@ func completionEndToEndFixtureV1(t *testing.T) (CompletionV1, CompletionValidati
 	}
 
 	final := append([]ManifestRowV1(nil), initial...)
-	plannedByKey := make(map[string]bool, len(planned))
-	for _, row := range planned {
-		plannedByKey[row.RowKeyV1] = true
-	}
 	for index := range final {
-		if plannedByKey[final[index].RowKeyV1] {
+		if _, ok := plannedByKey[final[index].RowKeyV1]; ok {
 			final[index].Cells[manifestStatusIndex] = "implemented"
 			final[index].Cells[manifestMilestoneIndex] = "611becc-current-api"
 		}

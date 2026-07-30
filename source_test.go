@@ -733,7 +733,7 @@ func TestSourcesRecordPinnedProvenance(t *testing.T) {
 		{"dispatch_table_test.go", []string{
 			upstreamSHA + ":src/implementation.cpp",
 			"Hand-authored Go-only tests",
-			"exact ten-field implementation-table",
+			"exact implementation-table shape",
 			"not\n// upstream test vectors",
 		}},
 		{"ascii_fuzz_variants_test.go", []string{

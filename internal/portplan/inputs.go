@@ -472,12 +472,16 @@ func ParseLockedSetsV1(data []byte, publicGolden []byte, planned []ManifestRowV1
 		}
 	}
 	golden, e := parseLines(publicGolden, "public golden")
-	if e != nil || len(golden) != 67 {
-		return nil, fmt.Errorf("locked sets: public golden must have 67 lines")
+	if e != nil || len(golden) < 67 {
+		return nil, fmt.Errorf("locked sets: public golden lost frozen API entries")
 	}
-	for i, line := range golden {
-		if out["current_public_api"][i].ValueHex != hex.EncodeToString([]byte(line)) {
-			return nil, fmt.Errorf("locked sets: public golden drift at %d", i+1)
+	goldenValues := make(map[string]bool, len(golden))
+	for _, line := range golden {
+		goldenValues[hex.EncodeToString([]byte(line))] = true
+	}
+	for i, record := range out["current_public_api"] {
+		if !goldenValues[record.ValueHex] {
+			return nil, fmt.Errorf("locked sets: frozen public API entry %d is absent", i+1)
 		}
 	}
 	for i, p := range planned {

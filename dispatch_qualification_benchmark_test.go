@@ -44,6 +44,7 @@ type dispatchQualificationRow struct {
 	size      int
 	bytes     []byte
 	uint16s   []uint16
+	uint32s   []uint32
 }
 
 func (row dispatchQualificationRow) name() string {
@@ -51,6 +52,9 @@ func (row dispatchQualificationRow) name() string {
 }
 
 func (row dispatchQualificationRow) inputBytes() int64 {
+	if row.uint32s != nil {
+		return int64(4 * len(row.uint32s))
+	}
 	if row.uint16s != nil {
 		return int64(2 * len(row.uint16s))
 	}
@@ -80,19 +84,35 @@ var dispatchQualificationUint16Sizes = [...]struct {
 	{2048, "bulk"},
 }
 
-func materializeDispatchQualificationCorpora() ([]byte, []byte, []uint16) {
+var dispatchQualificationUint32Sizes = [...]struct {
+	size  int
+	class string
+}{
+	{1, "short"}, {3, "short"}, {4, "short"}, {5, "short"},
+	{7, "short"}, {8, "short"}, {9, "short"},
+	{15, "boundary"}, {16, "boundary"}, {17, "boundary"},
+	{31, "boundary"}, {32, "boundary"}, {33, "boundary"},
+	{1024, "bulk"},
+}
+
+func materializeDispatchQualificationCorpora() ([]byte, []byte, []uint16, []byte, []uint32) {
 	byteZero := make([]byte, 4096)
 	uint16Raw := make([]byte, 4096)
 	uint16Zero := make([]uint16, len(uint16Raw)/2)
 	for i := range uint16Zero {
 		uint16Zero[i] = binary.NativeEndian.Uint16(uint16Raw[2*i:])
 	}
-	return byteZero, uint16Raw, uint16Zero
+	uint32Raw := make([]byte, 4096)
+	uint32Zero := make([]uint32, len(uint32Raw)/4)
+	for i := range uint32Zero {
+		uint32Zero[i] = binary.NativeEndian.Uint32(uint32Raw[4*i:])
+	}
+	return byteZero, uint16Raw, uint16Zero, uint32Raw, uint32Zero
 }
 
 func dispatchQualificationRows() []dispatchQualificationRow {
-	byteZero, _, uint16Zero := materializeDispatchQualificationCorpora()
-	rows := make([]dispatchQualificationRow, 0, 169)
+	byteZero, _, uint16Zero, _, uint32Zero := materializeDispatchQualificationCorpora()
+	rows := make([]dispatchQualificationRow, 0, 299)
 	for _, operation := range [...]string{"ValidateASCII", "ValidateASCIIWithErrors"} {
 		for _, input := range dispatchQualificationByteSizes {
 			rows = append(rows, dispatchQualificationRow{
@@ -143,6 +163,38 @@ func dispatchQualificationRows() []dispatchQualificationRow {
 			size:      len(upstreamEmojiUTF8),
 			bytes:     upstreamEmojiUTF8,
 		})
+	}
+	for _, operation := range [...]string{
+		"ValidateUTF16LE",
+		"ValidateUTF16BE",
+		"ValidateUTF16LEWithErrors",
+		"ValidateUTF16BEWithErrors",
+		"ToWellFormedUTF16LE",
+		"ToWellFormedUTF16BE",
+	} {
+		for _, input := range dispatchQualificationUint16Sizes {
+			rows = append(rows, dispatchQualificationRow{
+				operation: operation,
+				corpus:    "Q-u16-zero",
+				class:     input.class,
+				size:      input.size,
+				uint16s:   uint16Zero[:input.size],
+			})
+		}
+	}
+	for _, operation := range [...]string{
+		"ValidateUTF32",
+		"ValidateUTF32WithErrors",
+	} {
+		for _, input := range dispatchQualificationUint32Sizes {
+			rows = append(rows, dispatchQualificationRow{
+				operation: operation,
+				corpus:    "Q-u32-zero",
+				class:     input.class,
+				size:      input.size,
+				uint32s:   uint32Zero[:input.size],
+			})
+		}
 	}
 	return rows
 }
@@ -217,6 +269,62 @@ var dispatchQualificationProviderIdentifiers = map[string]map[string][]string{
 		"haswell":  {"utf32LengthFromUTF8Haswell"},
 		"neon":     {"utf32LengthFromUTF8NEON"},
 		"archsimd": {"utf32LengthFromUTF8Archsimd"},
+	},
+	"ValidateUTF16LE": {
+		"scalar":   {"validateUTF16LEScalar"},
+		"westmere": {"validateUTF16LEWestmere"},
+		"haswell":  {"validateUTF16LEHaswell"},
+		"neon":     {"validateUTF16LENEON"},
+		"archsimd": {"validateUTF16LEArchsimd"},
+	},
+	"ValidateUTF16BE": {
+		"scalar":   {"validateUTF16BEScalar"},
+		"westmere": {"validateUTF16BEWestmere"},
+		"haswell":  {"validateUTF16BEHaswell"},
+		"neon":     {"validateUTF16BENEON"},
+		"archsimd": {"validateUTF16BEArchsimd"},
+	},
+	"ValidateUTF16LEWithErrors": {
+		"scalar":   {"validateUTF16LEWithErrorsScalar"},
+		"westmere": {"validateUTF16LEWithErrorsWestmere"},
+		"haswell":  {"validateUTF16LEWithErrorsHaswell"},
+		"neon":     {"validateUTF16LEWithErrorsNEON"},
+		"archsimd": {"validateUTF16LEWithErrorsArchsimd"},
+	},
+	"ValidateUTF16BEWithErrors": {
+		"scalar":   {"validateUTF16BEWithErrorsScalar"},
+		"westmere": {"validateUTF16BEWithErrorsWestmere"},
+		"haswell":  {"validateUTF16BEWithErrorsHaswell"},
+		"neon":     {"validateUTF16BEWithErrorsNEON"},
+		"archsimd": {"validateUTF16BEWithErrorsArchsimd"},
+	},
+	"ToWellFormedUTF16LE": {
+		"scalar":   {"toWellFormedUTF16LEScalar"},
+		"westmere": {"toWellFormedUTF16LEWestmere"},
+		"haswell":  {"toWellFormedUTF16LEHaswell"},
+		"neon":     {"toWellFormedUTF16LENEON"},
+		"archsimd": {"toWellFormedUTF16LEArchsimd"},
+	},
+	"ToWellFormedUTF16BE": {
+		"scalar":   {"toWellFormedUTF16BEScalar"},
+		"westmere": {"toWellFormedUTF16BEWestmere"},
+		"haswell":  {"toWellFormedUTF16BEHaswell"},
+		"neon":     {"toWellFormedUTF16BENEON"},
+		"archsimd": {"toWellFormedUTF16BEArchsimd"},
+	},
+	"ValidateUTF32": {
+		"scalar":   {"validateUTF32Scalar"},
+		"westmere": {"validateUTF32Westmere"},
+		"haswell":  {"validateUTF32Haswell"},
+		"neon":     {"validateUTF32NEON"},
+		"archsimd": {"validateUTF32Archsimd"},
+	},
+	"ValidateUTF32WithErrors": {
+		"scalar":   {"validateUTF32WithErrorsScalar"},
+		"westmere": {"validateUTF32WithErrorsWestmere"},
+		"haswell":  {"validateUTF32WithErrorsHaswell"},
+		"neon":     {"validateUTF32WithErrorsNEON"},
+		"archsimd": {"validateUTF32WithErrorsArchsimd"},
 	},
 }
 
@@ -304,6 +412,22 @@ func dispatchQualificationFunction(operation string) any {
 		return activeImplementation.utf16LengthFromUTF8
 	case "UTF32LengthFromUTF8":
 		return activeImplementation.utf32LengthFromUTF8
+	case "ValidateUTF16LE":
+		return activeImplementation.validateUTF16LE
+	case "ValidateUTF16BE":
+		return activeImplementation.validateUTF16BE
+	case "ValidateUTF16LEWithErrors":
+		return activeImplementation.validateUTF16LEWithErrors
+	case "ValidateUTF16BEWithErrors":
+		return activeImplementation.validateUTF16BEWithErrors
+	case "ToWellFormedUTF16LE":
+		return activeImplementation.toWellFormedUTF16LE
+	case "ToWellFormedUTF16BE":
+		return activeImplementation.toWellFormedUTF16BE
+	case "ValidateUTF32":
+		return activeImplementation.validateUTF32
+	case "ValidateUTF32WithErrors":
+		return activeImplementation.validateUTF32WithErrors
 	default:
 		panic("unknown dispatch qualification operation: " + operation)
 	}
@@ -363,6 +487,40 @@ func BenchmarkDispatchQualification(b *testing.B) {
 			case "UTF32LengthFromUTF8":
 				for b.Loop() {
 					benchmarkIntSink = UTF32LengthFromUTF8(row.bytes)
+				}
+			case "ValidateUTF16LE":
+				for b.Loop() {
+					benchmarkBoolSink = ValidateUTF16LE(row.uint16s)
+				}
+			case "ValidateUTF16BE":
+				for b.Loop() {
+					benchmarkBoolSink = ValidateUTF16BE(row.uint16s)
+				}
+			case "ValidateUTF16LEWithErrors":
+				for b.Loop() {
+					benchmarkResultSink = ValidateUTF16LEWithErrors(row.uint16s)
+				}
+			case "ValidateUTF16BEWithErrors":
+				for b.Loop() {
+					benchmarkResultSink = ValidateUTF16BEWithErrors(row.uint16s)
+				}
+			case "ToWellFormedUTF16LE":
+				dst := make([]uint16, len(row.uint16s))
+				for b.Loop() {
+					ToWellFormedUTF16LE(row.uint16s, dst)
+				}
+			case "ToWellFormedUTF16BE":
+				dst := make([]uint16, len(row.uint16s))
+				for b.Loop() {
+					ToWellFormedUTF16BE(row.uint16s, dst)
+				}
+			case "ValidateUTF32":
+				for b.Loop() {
+					benchmarkBoolSink = ValidateUTF32(row.uint32s)
+				}
+			case "ValidateUTF32WithErrors":
+				for b.Loop() {
+					benchmarkResultSink = ValidateUTF32WithErrors(row.uint32s)
 				}
 			default:
 				b.Fatalf("unknown operation %q", row.operation)
@@ -541,13 +699,143 @@ UTF32LengthFromUTF8/Q-byte-zero/boundary/0128
 UTF32LengthFromUTF8/Q-byte-zero/boundary/0129
 UTF32LengthFromUTF8/Q-byte-zero/bulk/4096
 UTF32LengthFromUTF8/Q-emoji/bulk/3150
+ValidateUTF16LE/Q-u16-zero/short/0001
+ValidateUTF16LE/Q-u16-zero/short/0007
+ValidateUTF16LE/Q-u16-zero/short/0008
+ValidateUTF16LE/Q-u16-zero/short/0009
+ValidateUTF16LE/Q-u16-zero/short/0015
+ValidateUTF16LE/Q-u16-zero/short/0016
+ValidateUTF16LE/Q-u16-zero/short/0017
+ValidateUTF16LE/Q-u16-zero/boundary/0031
+ValidateUTF16LE/Q-u16-zero/boundary/0032
+ValidateUTF16LE/Q-u16-zero/boundary/0033
+ValidateUTF16LE/Q-u16-zero/boundary/0063
+ValidateUTF16LE/Q-u16-zero/boundary/0064
+ValidateUTF16LE/Q-u16-zero/boundary/0065
+ValidateUTF16LE/Q-u16-zero/boundary/0127
+ValidateUTF16LE/Q-u16-zero/boundary/0128
+ValidateUTF16LE/Q-u16-zero/boundary/0129
+ValidateUTF16LE/Q-u16-zero/bulk/2048
+ValidateUTF16BE/Q-u16-zero/short/0001
+ValidateUTF16BE/Q-u16-zero/short/0007
+ValidateUTF16BE/Q-u16-zero/short/0008
+ValidateUTF16BE/Q-u16-zero/short/0009
+ValidateUTF16BE/Q-u16-zero/short/0015
+ValidateUTF16BE/Q-u16-zero/short/0016
+ValidateUTF16BE/Q-u16-zero/short/0017
+ValidateUTF16BE/Q-u16-zero/boundary/0031
+ValidateUTF16BE/Q-u16-zero/boundary/0032
+ValidateUTF16BE/Q-u16-zero/boundary/0033
+ValidateUTF16BE/Q-u16-zero/boundary/0063
+ValidateUTF16BE/Q-u16-zero/boundary/0064
+ValidateUTF16BE/Q-u16-zero/boundary/0065
+ValidateUTF16BE/Q-u16-zero/boundary/0127
+ValidateUTF16BE/Q-u16-zero/boundary/0128
+ValidateUTF16BE/Q-u16-zero/boundary/0129
+ValidateUTF16BE/Q-u16-zero/bulk/2048
+ValidateUTF16LEWithErrors/Q-u16-zero/short/0001
+ValidateUTF16LEWithErrors/Q-u16-zero/short/0007
+ValidateUTF16LEWithErrors/Q-u16-zero/short/0008
+ValidateUTF16LEWithErrors/Q-u16-zero/short/0009
+ValidateUTF16LEWithErrors/Q-u16-zero/short/0015
+ValidateUTF16LEWithErrors/Q-u16-zero/short/0016
+ValidateUTF16LEWithErrors/Q-u16-zero/short/0017
+ValidateUTF16LEWithErrors/Q-u16-zero/boundary/0031
+ValidateUTF16LEWithErrors/Q-u16-zero/boundary/0032
+ValidateUTF16LEWithErrors/Q-u16-zero/boundary/0033
+ValidateUTF16LEWithErrors/Q-u16-zero/boundary/0063
+ValidateUTF16LEWithErrors/Q-u16-zero/boundary/0064
+ValidateUTF16LEWithErrors/Q-u16-zero/boundary/0065
+ValidateUTF16LEWithErrors/Q-u16-zero/boundary/0127
+ValidateUTF16LEWithErrors/Q-u16-zero/boundary/0128
+ValidateUTF16LEWithErrors/Q-u16-zero/boundary/0129
+ValidateUTF16LEWithErrors/Q-u16-zero/bulk/2048
+ValidateUTF16BEWithErrors/Q-u16-zero/short/0001
+ValidateUTF16BEWithErrors/Q-u16-zero/short/0007
+ValidateUTF16BEWithErrors/Q-u16-zero/short/0008
+ValidateUTF16BEWithErrors/Q-u16-zero/short/0009
+ValidateUTF16BEWithErrors/Q-u16-zero/short/0015
+ValidateUTF16BEWithErrors/Q-u16-zero/short/0016
+ValidateUTF16BEWithErrors/Q-u16-zero/short/0017
+ValidateUTF16BEWithErrors/Q-u16-zero/boundary/0031
+ValidateUTF16BEWithErrors/Q-u16-zero/boundary/0032
+ValidateUTF16BEWithErrors/Q-u16-zero/boundary/0033
+ValidateUTF16BEWithErrors/Q-u16-zero/boundary/0063
+ValidateUTF16BEWithErrors/Q-u16-zero/boundary/0064
+ValidateUTF16BEWithErrors/Q-u16-zero/boundary/0065
+ValidateUTF16BEWithErrors/Q-u16-zero/boundary/0127
+ValidateUTF16BEWithErrors/Q-u16-zero/boundary/0128
+ValidateUTF16BEWithErrors/Q-u16-zero/boundary/0129
+ValidateUTF16BEWithErrors/Q-u16-zero/bulk/2048
+ToWellFormedUTF16LE/Q-u16-zero/short/0001
+ToWellFormedUTF16LE/Q-u16-zero/short/0007
+ToWellFormedUTF16LE/Q-u16-zero/short/0008
+ToWellFormedUTF16LE/Q-u16-zero/short/0009
+ToWellFormedUTF16LE/Q-u16-zero/short/0015
+ToWellFormedUTF16LE/Q-u16-zero/short/0016
+ToWellFormedUTF16LE/Q-u16-zero/short/0017
+ToWellFormedUTF16LE/Q-u16-zero/boundary/0031
+ToWellFormedUTF16LE/Q-u16-zero/boundary/0032
+ToWellFormedUTF16LE/Q-u16-zero/boundary/0033
+ToWellFormedUTF16LE/Q-u16-zero/boundary/0063
+ToWellFormedUTF16LE/Q-u16-zero/boundary/0064
+ToWellFormedUTF16LE/Q-u16-zero/boundary/0065
+ToWellFormedUTF16LE/Q-u16-zero/boundary/0127
+ToWellFormedUTF16LE/Q-u16-zero/boundary/0128
+ToWellFormedUTF16LE/Q-u16-zero/boundary/0129
+ToWellFormedUTF16LE/Q-u16-zero/bulk/2048
+ToWellFormedUTF16BE/Q-u16-zero/short/0001
+ToWellFormedUTF16BE/Q-u16-zero/short/0007
+ToWellFormedUTF16BE/Q-u16-zero/short/0008
+ToWellFormedUTF16BE/Q-u16-zero/short/0009
+ToWellFormedUTF16BE/Q-u16-zero/short/0015
+ToWellFormedUTF16BE/Q-u16-zero/short/0016
+ToWellFormedUTF16BE/Q-u16-zero/short/0017
+ToWellFormedUTF16BE/Q-u16-zero/boundary/0031
+ToWellFormedUTF16BE/Q-u16-zero/boundary/0032
+ToWellFormedUTF16BE/Q-u16-zero/boundary/0033
+ToWellFormedUTF16BE/Q-u16-zero/boundary/0063
+ToWellFormedUTF16BE/Q-u16-zero/boundary/0064
+ToWellFormedUTF16BE/Q-u16-zero/boundary/0065
+ToWellFormedUTF16BE/Q-u16-zero/boundary/0127
+ToWellFormedUTF16BE/Q-u16-zero/boundary/0128
+ToWellFormedUTF16BE/Q-u16-zero/boundary/0129
+ToWellFormedUTF16BE/Q-u16-zero/bulk/2048
+ValidateUTF32/Q-u32-zero/short/0001
+ValidateUTF32/Q-u32-zero/short/0003
+ValidateUTF32/Q-u32-zero/short/0004
+ValidateUTF32/Q-u32-zero/short/0005
+ValidateUTF32/Q-u32-zero/short/0007
+ValidateUTF32/Q-u32-zero/short/0008
+ValidateUTF32/Q-u32-zero/short/0009
+ValidateUTF32/Q-u32-zero/boundary/0015
+ValidateUTF32/Q-u32-zero/boundary/0016
+ValidateUTF32/Q-u32-zero/boundary/0017
+ValidateUTF32/Q-u32-zero/boundary/0031
+ValidateUTF32/Q-u32-zero/boundary/0032
+ValidateUTF32/Q-u32-zero/boundary/0033
+ValidateUTF32/Q-u32-zero/bulk/1024
+ValidateUTF32WithErrors/Q-u32-zero/short/0001
+ValidateUTF32WithErrors/Q-u32-zero/short/0003
+ValidateUTF32WithErrors/Q-u32-zero/short/0004
+ValidateUTF32WithErrors/Q-u32-zero/short/0005
+ValidateUTF32WithErrors/Q-u32-zero/short/0007
+ValidateUTF32WithErrors/Q-u32-zero/short/0008
+ValidateUTF32WithErrors/Q-u32-zero/short/0009
+ValidateUTF32WithErrors/Q-u32-zero/boundary/0015
+ValidateUTF32WithErrors/Q-u32-zero/boundary/0016
+ValidateUTF32WithErrors/Q-u32-zero/boundary/0017
+ValidateUTF32WithErrors/Q-u32-zero/boundary/0031
+ValidateUTF32WithErrors/Q-u32-zero/boundary/0032
+ValidateUTF32WithErrors/Q-u32-zero/boundary/0033
+ValidateUTF32WithErrors/Q-u32-zero/bulk/1024
 `
 
 func TestDispatchQualificationSurface(t *testing.T) {
 	rows := dispatchQualificationRows()
 	wantNames := strings.Fields(dispatchQualificationExpectedNames)
-	if len(rows) != 169 || len(wantNames) != 169 {
-		t.Fatalf("row counts = (%d, %d), want (169, 169)", len(rows), len(wantNames))
+	if len(rows) != 299 || len(wantNames) != 299 {
+		t.Fatalf("row counts = (%d, %d), want (299, 299)", len(rows), len(wantNames))
 	}
 	for i, row := range rows {
 		if got, want := row.name(), wantNames[i]; got != want {
@@ -557,7 +845,7 @@ func TestDispatchQualificationSurface(t *testing.T) {
 }
 
 func TestDispatchQualificationInputs(t *testing.T) {
-	byteZero, uint16Raw, uint16Zero := materializeDispatchQualificationCorpora()
+	byteZero, uint16Raw, uint16Zero, uint32Raw, uint32Zero := materializeDispatchQualificationCorpora()
 	if got := fmt.Sprintf("%x", sha256.Sum256(byteZero)); got != dispatchQualificationZeroSHA256 {
 		t.Fatalf("Q-byte-zero SHA-256 = %s, want %s", got, dispatchQualificationZeroSHA256)
 	}
@@ -571,6 +859,16 @@ func TestDispatchQualificationInputs(t *testing.T) {
 	if !reflect.DeepEqual(encoded, uint16Raw) {
 		t.Fatal("Q-u16-zero is not the native-endian decoding of its raw bytes")
 	}
+	if got := fmt.Sprintf("%x", sha256.Sum256(uint32Raw)); got != dispatchQualificationZeroSHA256 {
+		t.Fatalf("Q-u32-zero raw SHA-256 = %s, want %s", got, dispatchQualificationZeroSHA256)
+	}
+	encoded32 := make([]byte, 4*len(uint32Zero))
+	for i, codeUnit := range uint32Zero {
+		binary.NativeEndian.PutUint32(encoded32[4*i:], codeUnit)
+	}
+	if !reflect.DeepEqual(encoded32, uint32Raw) {
+		t.Fatal("Q-u32-zero is not the native-endian decoding of its raw bytes")
+	}
 	if got := fmt.Sprintf("%x", sha256.Sum256(upstreamEmojiUTF8)); got != upstreamEmojiUTF8SHA256 {
 		t.Fatalf("Q-emoji SHA-256 = %s, want %s", got, upstreamEmojiUTF8SHA256)
 	}
@@ -578,6 +876,9 @@ func TestDispatchQualificationInputs(t *testing.T) {
 		wantBytes := int64(row.size)
 		if row.corpus == "Q-u16-zero" {
 			wantBytes *= 2
+		}
+		if row.corpus == "Q-u32-zero" {
+			wantBytes *= 4
 		}
 		if got := row.inputBytes(); got != wantBytes {
 			t.Fatalf("row %d (%s) denominator = %d, want %d", i, row.name(), got, wantBytes)
@@ -688,6 +989,14 @@ func TestDispatchQualificationTimedCallsAreLiteral(t *testing.T) {
 		"benchmarkIntSink = Latin1LengthFromUTF8(row.bytes)",
 		"benchmarkIntSink = UTF16LengthFromUTF8(row.bytes)",
 		"benchmarkIntSink = UTF32LengthFromUTF8(row.bytes)",
+		"benchmarkBoolSink = ValidateUTF16LE(row.uint16s)",
+		"benchmarkBoolSink = ValidateUTF16BE(row.uint16s)",
+		"benchmarkResultSink = ValidateUTF16LEWithErrors(row.uint16s)",
+		"benchmarkResultSink = ValidateUTF16BEWithErrors(row.uint16s)",
+		"ToWellFormedUTF16LE(row.uint16s, dst)",
+		"ToWellFormedUTF16BE(row.uint16s, dst)",
+		"benchmarkBoolSink = ValidateUTF32(row.uint32s)",
+		"benchmarkResultSink = ValidateUTF32WithErrors(row.uint32s)",
 	} {
 		if got := bytesCount(timedSource, []byte(call)); got != 1 {
 			t.Errorf("literal timed call %q count = %d, want 1", call, got)

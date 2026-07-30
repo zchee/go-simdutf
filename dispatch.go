@@ -74,16 +74,24 @@ func selectVariant[T any](input selectionInput, candidates ...variant[T]) T {
 }
 
 type implementation struct {
-	validateUTF8            func([]byte) bool
-	validateUTF8WithErrors  func([]byte) Result
-	countUTF8               func([]byte) int
-	latin1LengthFromUTF8    func([]byte) int
-	utf16LengthFromUTF8     func([]byte) int
-	utf32LengthFromUTF8     func([]byte) int
-	validateASCII           func([]byte) bool
-	validateASCIIWithErrors func([]byte) Result
-	validateUTF16LEAsASCII  func([]uint16) bool
-	validateUTF16BEAsASCII  func([]uint16) bool
+	validateUTF8              func([]byte) bool
+	validateUTF8WithErrors    func([]byte) Result
+	countUTF8                 func([]byte) int
+	latin1LengthFromUTF8      func([]byte) int
+	utf16LengthFromUTF8       func([]byte) int
+	utf32LengthFromUTF8       func([]byte) int
+	validateASCII             func([]byte) bool
+	validateASCIIWithErrors   func([]byte) Result
+	validateUTF16LEAsASCII    func([]uint16) bool
+	validateUTF16BEAsASCII    func([]uint16) bool
+	validateUTF16LE           func([]uint16) bool
+	validateUTF16BE           func([]uint16) bool
+	validateUTF16LEWithErrors func([]uint16) Result
+	validateUTF16BEWithErrors func([]uint16) Result
+	toWellFormedUTF16LE       func([]uint16, []uint16)
+	toWellFormedUTF16BE       func([]uint16, []uint16)
+	validateUTF32             func([]uint32) bool
+	validateUTF32WithErrors   func([]uint32) Result
 }
 
 var activeImplementation = makeImplementation(detectSelectionInput())

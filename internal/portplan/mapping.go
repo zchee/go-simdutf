@@ -114,14 +114,11 @@ func ParseReviewedExistingMembersV1(data []byte, manifest []ManifestRowV1, ledge
 	if len(lines)-1 != 30 {
 		return nil, fmt.Errorf("reviewed existing members: got %d data rows, want 30", len(lines)-1)
 	}
-	implemented := make([]ManifestRowV1, 0, 30)
+	implementedBySymbol := make(map[string]ManifestRowV1, len(manifest))
 	for _, row := range manifest {
 		if row.Cells[manifestStatusIndex] == "implemented" {
-			implemented = append(implemented, row)
+			implementedBySymbol[row.Cells[manifestGoSymbolIndex]] = row
 		}
-	}
-	if len(implemented) != 30 {
-		return nil, fmt.Errorf("manifest: got %d implemented rows, want 30", len(implemented))
 	}
 	out := make([]ExistingMemberV1, 0, 30)
 	seen := map[string]bool{}
@@ -130,7 +127,9 @@ func ParseReviewedExistingMembersV1(data []byte, manifest []ManifestRowV1, ledge
 		if e != nil {
 			return nil, e
 		}
-		if f[0] != "v1" || f[1] == "" || f[2] == "" || f[3] == "" || f[1] != implemented[i].Cells[manifestGoSymbolIndex] {
+		row, ok := implementedBySymbol[f[1]]
+		if f[0] != "v1" || f[1] == "" || f[2] == "" || f[3] == "" || !ok ||
+			row.Cells[manifestGoSymbolIndex] != f[1] {
 			return nil, fmt.Errorf("reviewed existing members line %d: manifest join mismatch", i+2)
 		}
 		if seen[f[1]] {

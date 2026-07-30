@@ -62,5 +62,13 @@ func makeImplementation(input selectionInput) implementation {
 		validateUTF16BEAsASCII: selectVariant(input,
 			variant[func([]uint16) bool]{value: validateUTF16BEAsASCIIScalar, kind: implementationScalar, available: true},
 		),
+		validateUTF16LE:           validateUTF16LEScalar,
+		validateUTF16BE:           validateUTF16BEScalar,
+		validateUTF16LEWithErrors: validateUTF16LEWithErrorsScalar,
+		validateUTF16BEWithErrors: validateUTF16BEWithErrorsScalar,
+		toWellFormedUTF16LE:       toWellFormedUTF16LEScalar,
+		toWellFormedUTF16BE:       toWellFormedUTF16BEScalar,
+		validateUTF32:             validateUTF32Scalar,
+		validateUTF32WithErrors:   validateUTF32WithErrorsScalar,
 	}
 }

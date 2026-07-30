@@ -171,7 +171,6 @@ func validateMembershipInputs(reviewed []ReviewedMappingV1, manifest, planned []
 		return fmt.Errorf("membership inputs require 164 manifest rows, 125 reviewed/planned rows, 23 ledger rows, 30 existing members, and 125 canonical ranks")
 	}
 	manifestRows, implemented := map[string]ManifestRowV1{}, map[string]bool{}
-	plannedRows := map[string]bool{}
 	implementedCount, plannedCount, excludedCount := 0, 0, 0
 	for _, row := range manifest {
 		fields := manifestComposite(row.Cells)
@@ -189,16 +188,15 @@ func validateMembershipInputs(reviewed []ReviewedMappingV1, manifest, planned []
 			}
 			implemented[row.Cells[manifestGoSymbolIndex]] = true
 		}
-		if row.Cells[manifestStatusIndex] == "planned" && row.Cells[manifestMilestoneIndex] == "future-upstream-api" {
+		if row.Cells[manifestStatusIndex] == "planned" {
 			plannedCount++
-			plannedRows[row.RowKeyV1] = true
 		}
 		if row.Cells[manifestStatusIndex] == "excluded" {
 			excludedCount++
 		}
 	}
-	if implementedCount != 30 || plannedCount != 125 || excludedCount != 9 || len(implemented) != 30 || len(plannedRows) != 125 {
-		return fmt.Errorf("manifest requires exactly 30 implemented, 125 planned, and 9 excluded members")
+	if implementedCount+plannedCount != 155 || implementedCount < len(existing) || excludedCount != 9 || len(implemented) != implementedCount {
+		return fmt.Errorf("manifest requires 155 published or planned members, including 30 initial implemented members, and 9 excluded members")
 	}
 	seenRows, seenRanks, seenExisting := map[string]bool{}, map[int]bool{}, map[string]bool{}
 	kernelByBackendName := map[string]string{}
@@ -213,10 +211,9 @@ func validateMembershipInputs(reviewed []ReviewedMappingV1, manifest, planned []
 			return fmt.Errorf("planned row %d has noncanonical row key", i+1)
 		}
 		manifestRow, ok := manifestRows[p.RowKeyV1]
-		if !ok || manifestRow.Cells != p.Cells || !plannedRows[p.RowKeyV1] {
-			return fmt.Errorf("planned row %d does not exactly join manifest", i+1)
+		if !ok || !sameManifestContractV1(manifestRow, p) {
+			return fmt.Errorf("planned row %d does not join the evolving manifest", i+1)
 		}
-		delete(plannedRows, p.RowKeyV1)
 		if _, ok := familyWave(r.FamilyContractDisplayID); !ok {
 			return fmt.Errorf("reviewed row %d has unknown family %q", i+1, r.FamilyContractDisplayID)
 		}
@@ -273,7 +270,7 @@ func validateMembershipInputs(reviewed []ReviewedMappingV1, manifest, planned []
 			return fmt.Errorf("row %d has canonical kernel without eligible backend", i+1)
 		}
 	}
-	if len(seenRows) != 125 || len(seenRanks) != 125 || len(plannedRows) != 0 {
+	if len(seenRows) != 125 || len(seenRanks) != 125 {
 		return fmt.Errorf("planned rows or canonical ranks are incomplete")
 	}
 	for i, l := range ledger {
@@ -293,10 +290,24 @@ func validateMembershipInputs(reviewed []ReviewedMappingV1, manifest, planned []
 			}
 		}
 	}
-	if len(seenExisting) != len(implemented) {
-		return fmt.Errorf("existing members do not exactly join implemented rows")
+	if len(seenExisting) != len(existing) {
+		return fmt.Errorf("existing members do not join the initial implemented rows")
 	}
 	return nil
+}
+
+func sameManifestContractV1(current, frozen ManifestRowV1) bool {
+	for index := range current.Cells {
+		if index == manifestStatusIndex || index == manifestMilestoneIndex {
+			continue
+		}
+		if current.Cells[index] != frozen.Cells[index] {
+			return false
+		}
+	}
+	status, milestone := current.Cells[manifestStatusIndex], current.Cells[manifestMilestoneIndex]
+	return status == "planned" && milestone == "future-upstream-api" ||
+		status == "implemented" && milestone == "611becc-current-api"
 }
 
 func validateMembershipEmission(m MembershipV1, ledger []ISARowV1, existing []ExistingMemberV1) error {

@@ -19,8 +19,8 @@ import (
 	"testing"
 )
 
-// Hand-authored Go-only tests for the exact ten-field implementation-table
-// shape, selected function identities, and all-or-none archsimd providers. The
+// Hand-authored Go-only tests for the exact implementation-table shape,
+// selected function identities, and all-or-none archsimd providers. The
 // dispatch contract is pinned to
 // simdutf/simdutf@611becc2a08c27a4edc77d9a45ff74c97130129b:src/implementation.cpp
 // and the per-symbol ISA/object-proof policy in
@@ -43,6 +43,14 @@ func TestImplementationTableExactFields(t *testing.T) {
 		{name: "validateASCIIWithErrors", typ: reflect.TypeFor[func([]byte) Result]()},
 		{name: "validateUTF16LEAsASCII", typ: reflect.TypeFor[func([]uint16) bool]()},
 		{name: "validateUTF16BEAsASCII", typ: reflect.TypeFor[func([]uint16) bool]()},
+		{name: "validateUTF16LE", typ: reflect.TypeFor[func([]uint16) bool]()},
+		{name: "validateUTF16BE", typ: reflect.TypeFor[func([]uint16) bool]()},
+		{name: "validateUTF16LEWithErrors", typ: reflect.TypeFor[func([]uint16) Result]()},
+		{name: "validateUTF16BEWithErrors", typ: reflect.TypeFor[func([]uint16) Result]()},
+		{name: "toWellFormedUTF16LE", typ: reflect.TypeFor[func([]uint16, []uint16)]()},
+		{name: "toWellFormedUTF16BE", typ: reflect.TypeFor[func([]uint16, []uint16)]()},
+		{name: "validateUTF32", typ: reflect.TypeFor[func([]uint32) bool]()},
+		{name: "validateUTF32WithErrors", typ: reflect.TypeFor[func([]uint32) Result]()},
 	}
 	if typ.NumField() != len(want) {
 		t.Fatalf("implementation has %d fields, want exactly %d", typ.NumField(), len(want))
