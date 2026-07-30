@@ -1,0 +1,106 @@
+{
+  "family_contract_id": "FC-v1-helper-validation",
+  "generated_at": "2026-07-30T17:38:58Z",
+  "head": "bc38231",
+  "host": "linux-amd64-debian-13-xeon-platinum-8481c",
+  "incumbent": "scalar",
+  "lane": "linux-amd64-none",
+  "notes": [
+    "Terminal dispositions match public dispatch selection after UTF validation qualification.",
+    "Object/disassembly evidence: w01-darwin-neon-{nm,objdump}.txt and w01-linux-amd64-{none,simd}-{nm,objdump}.txt.",
+    "Ledger evidence: steering_accepted b03f432a-9207-4074-bab1-04c696ef92fb."
+  ],
+  "ops": {
+    "CountUTF8": {
+      "disposition": "direct_only",
+      "reasons": [
+        "qualification_fail_or_inconclusive_or_not_promoted"
+      ]
+    },
+    "ToWellFormedUTF16BE": {
+      "disposition": "direct_only",
+      "reasons": [
+        "qualification_fail_or_inconclusive_or_not_promoted"
+      ]
+    },
+    "ToWellFormedUTF16LE": {
+      "disposition": "direct_only",
+      "reasons": [
+        "qualification_fail_or_inconclusive_or_not_promoted"
+      ]
+    },
+    "ValidateASCII": {
+      "disposition": "direct_only",
+      "reasons": [
+        "qualification_fail_or_inconclusive_or_not_promoted"
+      ]
+    },
+    "ValidateASCIIWithErrors": {
+      "disposition": "direct_only",
+      "reasons": [
+        "qualification_fail_or_inconclusive_or_not_promoted"
+      ]
+    },
+    "ValidateUTF16BE": {
+      "disposition": "direct_only",
+      "reasons": [
+        "qualification_fail_or_inconclusive_or_not_promoted"
+      ]
+    },
+    "ValidateUTF16BEWithErrors": {
+      "disposition": "direct_only",
+      "reasons": [
+        "qualification_fail_or_inconclusive_or_not_promoted"
+      ]
+    },
+    "ValidateUTF16LE": {
+      "disposition": "direct_only",
+      "reasons": [
+        "qualification_fail_or_inconclusive_or_not_promoted"
+      ]
+    },
+    "ValidateUTF16LEWithErrors": {
+      "disposition": "direct_only",
+      "reasons": [
+        "qualification_fail_or_inconclusive_or_not_promoted"
+      ]
+    },
+    "ValidateUTF32": {
+      "disposition": "direct_only",
+      "reasons": [
+        "qualification_fail_or_inconclusive_or_not_promoted"
+      ]
+    },
+    "ValidateUTF32WithErrors": {
+      "disposition": "selected",
+      "reasons": [
+        "bulk_win_and_protected_ok"
+      ]
+    },
+    "ValidateUTF8": {
+      "disposition": "direct_only",
+      "reasons": [
+        "qualification_fail_or_inconclusive_or_not_promoted"
+      ]
+    },
+    "ValidateUTF8WithErrors": {
+      "disposition": "direct_only",
+      "reasons": [
+        "qualification_fail_or_inconclusive_or_not_promoted"
+      ]
+    }
+  },
+  "provider_candidate": "haswell",
+  "schema": "simdutf-w01-qualification-disposition-v1",
+  "source_files": [
+    "w01-darwin-neon-dispositions-v1.json",
+    "w01-darwin-neon-nm.txt",
+    "w01-darwin-neon-objdump.txt",
+    "w01-linux-amd64-none-nm.txt",
+    "w01-linux-amd64-none-objdump.txt",
+    "w01-linux-amd64-simd-nm.txt",
+    "w01-linux-amd64-simd-objdump.txt",
+    "w01-linux-westmere-dispositions-v1.json"
+  ],
+  "version": 1
+}

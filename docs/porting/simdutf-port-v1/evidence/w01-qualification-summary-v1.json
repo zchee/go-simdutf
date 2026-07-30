@@ -1,0 +1,137 @@
+{
+  "family_contract_id": "FC-v1-helper-validation",
+  "generated_at": "2026-07-30T17:38:58Z",
+  "head": "bc38231",
+  "lanes": {
+    "darwin-arm64-nosimd-neon": {
+      "host": "darwin-arm64-apple-m3-max",
+      "incumbent": "scalar",
+      "lane": "darwin-arm64-nosimd",
+      "ops": {
+        "CountUTF8": "direct_only",
+        "ToWellFormedUTF16BE": "direct_only",
+        "ToWellFormedUTF16LE": "direct_only",
+        "ValidateASCII": "direct_only",
+        "ValidateASCIIWithErrors": "direct_only",
+        "ValidateUTF16BE": "direct_only",
+        "ValidateUTF16BEWithErrors": "direct_only",
+        "ValidateUTF16LE": "direct_only",
+        "ValidateUTF16LEWithErrors": "direct_only",
+        "ValidateUTF32": "direct_only",
+        "ValidateUTF32WithErrors": "direct_only",
+        "ValidateUTF8": "direct_only",
+        "ValidateUTF8WithErrors": "direct_only"
+      },
+      "provider_candidate": "neon",
+      "source": "w01-darwin-neon-dispositions-v1.json"
+    },
+    "linux-amd64-none-haswell": {
+      "host": "linux-amd64-debian-13-xeon-platinum-8481c",
+      "incumbent": "scalar",
+      "lane": "linux-amd64-none",
+      "ops": {
+        "CountUTF8": "direct_only",
+        "ToWellFormedUTF16BE": "direct_only",
+        "ToWellFormedUTF16LE": "direct_only",
+        "ValidateASCII": "direct_only",
+        "ValidateASCIIWithErrors": "direct_only",
+        "ValidateUTF16BE": "direct_only",
+        "ValidateUTF16BEWithErrors": "direct_only",
+        "ValidateUTF16LE": "direct_only",
+        "ValidateUTF16LEWithErrors": "direct_only",
+        "ValidateUTF32": "direct_only",
+        "ValidateUTF32WithErrors": "selected",
+        "ValidateUTF8": "direct_only",
+        "ValidateUTF8WithErrors": "direct_only"
+      },
+      "provider_candidate": "haswell",
+      "source": "w01-linux-haswell-dispositions-v1.json"
+    },
+    "linux-amd64-none-westmere": {
+      "host": "linux-amd64-debian-13-xeon-platinum-8481c",
+      "incumbent": "scalar",
+      "lane": "linux-amd64-none",
+      "ops": {
+        "CountUTF8": "direct_only",
+        "ToWellFormedUTF16BE": "selected",
+        "ToWellFormedUTF16LE": "direct_only",
+        "ValidateASCII": "direct_only",
+        "ValidateASCIIWithErrors": "direct_only",
+        "ValidateUTF16BE": "direct_only",
+        "ValidateUTF16BEWithErrors": "direct_only",
+        "ValidateUTF16LE": "direct_only",
+        "ValidateUTF16LEWithErrors": "direct_only",
+        "ValidateUTF32": "direct_only",
+        "ValidateUTF32WithErrors": "direct_only",
+        "ValidateUTF8": "direct_only",
+        "ValidateUTF8WithErrors": "direct_only"
+      },
+      "provider_candidate": "westmere",
+      "source": "w01-linux-westmere-dispositions-v1.json"
+    },
+    "linux-amd64-simd-archsimd": {
+      "host": "linux-amd64-debian-13-xeon-platinum-8481c",
+      "incumbent": "scalar",
+      "lane": "linux-amd64-simd",
+      "ops": {
+        "CountUTF8": "direct_only",
+        "ToWellFormedUTF16BE": "direct_only",
+        "ToWellFormedUTF16LE": "direct_only",
+        "ValidateASCII": "direct_only",
+        "ValidateASCIIWithErrors": "direct_only",
+        "ValidateUTF16BE": "direct_only",
+        "ValidateUTF16BEWithErrors": "direct_only",
+        "ValidateUTF16LE": "direct_only",
+        "ValidateUTF16LEWithErrors": "selected",
+        "ValidateUTF32": "selected",
+        "ValidateUTF32WithErrors": "direct_only",
+        "ValidateUTF8": "direct_only",
+        "ValidateUTF8WithErrors": "direct_only"
+      },
+      "provider_candidate": "archsimd",
+      "source": "w01-linux-archsimd-dispositions-v1.json"
+    }
+  },
+  "notes": [
+    "Promote only selected providers ahead of scalar in public dispatch order.",
+    "Direct-only providers remain registered after scalar and forceable via SIMDUTF_FORCE_PROVIDER / SIMDUTF_BENCH_EXPECT_TIER.",
+    "Darwin NEON W01 providers all direct_only due protected short/boundary regressions.",
+    "linux-amd64-none selected westmere ToWellFormedUTF16BE and haswell ValidateUTF32WithErrors.",
+    "linux-amd64-simd selected archsimd ValidateUTF16LEWithErrors and ValidateUTF32."
+  ],
+  "pending_lanes": [],
+  "public_selection": {
+    "darwin-arm64": {
+      "CountUTF8": "scalar",
+      "ToWellFormedUTF16BE": "scalar",
+      "ToWellFormedUTF16LE": "scalar",
+      "ValidateASCII": "scalar",
+      "ValidateASCIIWithErrors": "scalar",
+      "ValidateUTF16BE": "scalar",
+      "ValidateUTF16BEWithErrors": "scalar",
+      "ValidateUTF16LE": "scalar",
+      "ValidateUTF16LEWithErrors": "scalar",
+      "ValidateUTF32": "scalar",
+      "ValidateUTF32WithErrors": "scalar",
+      "ValidateUTF8": "scalar",
+      "ValidateUTF8WithErrors": "scalar"
+    },
+    "linux-amd64": {
+      "CountUTF8": "scalar",
+      "ToWellFormedUTF16BE": "westmere",
+      "ToWellFormedUTF16LE": "scalar",
+      "ValidateASCII": "scalar",
+      "ValidateASCIIWithErrors": "scalar",
+      "ValidateUTF16BE": "scalar",
+      "ValidateUTF16BEWithErrors": "scalar",
+      "ValidateUTF16LE": "scalar",
+      "ValidateUTF16LEWithErrors": "archsimd",
+      "ValidateUTF32": "archsimd",
+      "ValidateUTF32WithErrors": "haswell",
+      "ValidateUTF8": "scalar",
+      "ValidateUTF8WithErrors": "scalar"
+    }
+  },
+  "schema": "simdutf-w01-qualification-summary-v1",
+  "version": 1
+}
