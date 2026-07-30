@@ -28,3 +28,10 @@ func archsimdConvertUTF16LEToLatin1WithErrors() func([]uint16, []byte) Result { 
 func archsimdConvertUTF16BEToLatin1WithErrors() func([]uint16, []byte) Result { return nil }
 func archsimdConvertValidUTF16LEToLatin1() func([]uint16, []byte) int         { return nil }
 func archsimdConvertValidUTF16BEToLatin1() func([]uint16, []byte) int         { return nil }
+
+func archsimdConvertUTF16LEToUTF32() func([]uint16, []uint32) int              { return nil }
+func archsimdConvertUTF16BEToUTF32() func([]uint16, []uint32) int              { return nil }
+func archsimdConvertUTF16LEToUTF32WithErrors() func([]uint16, []uint32) Result { return nil }
+func archsimdConvertUTF16BEToUTF32WithErrors() func([]uint16, []uint32) Result { return nil }
+func archsimdConvertValidUTF16LEToUTF32() func([]uint16, []uint32) int         { return nil }
+func archsimdConvertValidUTF16BEToUTF32() func([]uint16, []uint32) int         { return nil }

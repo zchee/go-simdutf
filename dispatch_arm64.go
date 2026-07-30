@@ -206,26 +206,32 @@ func makeImplementation(input selectionInput) implementation {
 		convertUTF16LEToUTF32: selectVariant(
 			input,
 			variant[func([]uint16, []uint32) int]{value: convertUTF16LEToUTF32Scalar, kind: implementationScalar, available: true},
+			variant[func([]uint16, []uint32) int]{value: convertUTF16LEToUTF32NEON, kind: implementationNEON, required: cpuNEON, available: true},
 		),
 		convertUTF16BEToUTF32: selectVariant(
 			input,
 			variant[func([]uint16, []uint32) int]{value: convertUTF16BEToUTF32Scalar, kind: implementationScalar, available: true},
+			variant[func([]uint16, []uint32) int]{value: convertUTF16BEToUTF32NEON, kind: implementationNEON, required: cpuNEON, available: true},
 		),
 		convertUTF16LEToUTF32WithErrors: selectVariant(
 			input,
 			variant[func([]uint16, []uint32) Result]{value: convertUTF16LEToUTF32WithErrorsScalar, kind: implementationScalar, available: true},
+			variant[func([]uint16, []uint32) Result]{value: convertUTF16LEToUTF32WithErrorsNEON, kind: implementationNEON, required: cpuNEON, available: true},
 		),
 		convertUTF16BEToUTF32WithErrors: selectVariant(
 			input,
 			variant[func([]uint16, []uint32) Result]{value: convertUTF16BEToUTF32WithErrorsScalar, kind: implementationScalar, available: true},
+			variant[func([]uint16, []uint32) Result]{value: convertUTF16BEToUTF32WithErrorsNEON, kind: implementationNEON, required: cpuNEON, available: true},
 		),
 		convertValidUTF16LEToUTF32: selectVariant(
 			input,
 			variant[func([]uint16, []uint32) int]{value: convertValidUTF16LEToUTF32Scalar, kind: implementationScalar, available: true},
+			variant[func([]uint16, []uint32) int]{value: convertValidUTF16LEToUTF32NEON, kind: implementationNEON, required: cpuNEON, available: true},
 		),
 		convertValidUTF16BEToUTF32: selectVariant(
 			input,
 			variant[func([]uint16, []uint32) int]{value: convertValidUTF16BEToUTF32Scalar, kind: implementationScalar, available: true},
+			variant[func([]uint16, []uint32) int]{value: convertValidUTF16BEToUTF32NEON, kind: implementationNEON, required: cpuNEON, available: true},
 		),
 		utf32LengthFromUTF16LE: selectVariant(
 			input,

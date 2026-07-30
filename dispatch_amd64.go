@@ -64,6 +64,12 @@ func makeImplementation(input selectionInput) implementation {
 	archsimdUTF16Latin1BEErr := archsimdConvertUTF16BEToLatin1WithErrors()
 	archsimdValidUTF16Latin1LE := archsimdConvertValidUTF16LEToLatin1()
 	archsimdValidUTF16Latin1BE := archsimdConvertValidUTF16BEToLatin1()
+	archsimdUTF16UTF32LE := archsimdConvertUTF16LEToUTF32()
+	archsimdUTF16UTF32BE := archsimdConvertUTF16BEToUTF32()
+	archsimdUTF16UTF32LEErr := archsimdConvertUTF16LEToUTF32WithErrors()
+	archsimdUTF16UTF32BEErr := archsimdConvertUTF16BEToUTF32WithErrors()
+	archsimdValidUTF16UTF32LE := archsimdConvertValidUTF16LEToUTF32()
+	archsimdValidUTF16UTF32BE := archsimdConvertValidUTF16BEToUTF32()
 	countUTF8 := selectVariant(
 		input,
 		variant[func([]byte) int]{value: archsimdCount, kind: implementationArchsimd, required: cpuAVX2, available: archsimdCount != nil},
@@ -317,26 +323,44 @@ func makeImplementation(input selectionInput) implementation {
 		convertUTF16LEToUTF32: selectVariant(
 			input,
 			variant[func([]uint16, []uint32) int]{value: convertUTF16LEToUTF32Scalar, kind: implementationScalar, available: true},
+			variant[func([]uint16, []uint32) int]{value: archsimdUTF16UTF32LE, kind: implementationArchsimd, required: cpuAVX2, available: archsimdUTF16UTF32LE != nil},
+			variant[func([]uint16, []uint32) int]{value: convertUTF16LEToUTF32Haswell, kind: implementationHaswell, required: cpuAVX2, available: true},
+			variant[func([]uint16, []uint32) int]{value: convertUTF16LEToUTF32Westmere, kind: implementationWestmere, required: cpuSSSE3, available: true},
 		),
 		convertUTF16BEToUTF32: selectVariant(
 			input,
 			variant[func([]uint16, []uint32) int]{value: convertUTF16BEToUTF32Scalar, kind: implementationScalar, available: true},
+			variant[func([]uint16, []uint32) int]{value: archsimdUTF16UTF32BE, kind: implementationArchsimd, required: cpuAVX2, available: archsimdUTF16UTF32BE != nil},
+			variant[func([]uint16, []uint32) int]{value: convertUTF16BEToUTF32Haswell, kind: implementationHaswell, required: cpuAVX2, available: true},
+			variant[func([]uint16, []uint32) int]{value: convertUTF16BEToUTF32Westmere, kind: implementationWestmere, required: cpuSSSE3, available: true},
 		),
 		convertUTF16LEToUTF32WithErrors: selectVariant(
 			input,
 			variant[func([]uint16, []uint32) Result]{value: convertUTF16LEToUTF32WithErrorsScalar, kind: implementationScalar, available: true},
+			variant[func([]uint16, []uint32) Result]{value: archsimdUTF16UTF32LEErr, kind: implementationArchsimd, required: cpuAVX2, available: archsimdUTF16UTF32LEErr != nil},
+			variant[func([]uint16, []uint32) Result]{value: convertUTF16LEToUTF32WithErrorsHaswell, kind: implementationHaswell, required: cpuAVX2, available: true},
+			variant[func([]uint16, []uint32) Result]{value: convertUTF16LEToUTF32WithErrorsWestmere, kind: implementationWestmere, required: cpuSSSE3, available: true},
 		),
 		convertUTF16BEToUTF32WithErrors: selectVariant(
 			input,
 			variant[func([]uint16, []uint32) Result]{value: convertUTF16BEToUTF32WithErrorsScalar, kind: implementationScalar, available: true},
+			variant[func([]uint16, []uint32) Result]{value: archsimdUTF16UTF32BEErr, kind: implementationArchsimd, required: cpuAVX2, available: archsimdUTF16UTF32BEErr != nil},
+			variant[func([]uint16, []uint32) Result]{value: convertUTF16BEToUTF32WithErrorsHaswell, kind: implementationHaswell, required: cpuAVX2, available: true},
+			variant[func([]uint16, []uint32) Result]{value: convertUTF16BEToUTF32WithErrorsWestmere, kind: implementationWestmere, required: cpuSSSE3, available: true},
 		),
 		convertValidUTF16LEToUTF32: selectVariant(
 			input,
 			variant[func([]uint16, []uint32) int]{value: convertValidUTF16LEToUTF32Scalar, kind: implementationScalar, available: true},
+			variant[func([]uint16, []uint32) int]{value: archsimdValidUTF16UTF32LE, kind: implementationArchsimd, required: cpuAVX2, available: archsimdValidUTF16UTF32LE != nil},
+			variant[func([]uint16, []uint32) int]{value: convertValidUTF16LEToUTF32Haswell, kind: implementationHaswell, required: cpuAVX2, available: true},
+			variant[func([]uint16, []uint32) int]{value: convertValidUTF16LEToUTF32Westmere, kind: implementationWestmere, required: cpuSSSE3, available: true},
 		),
 		convertValidUTF16BEToUTF32: selectVariant(
 			input,
 			variant[func([]uint16, []uint32) int]{value: convertValidUTF16BEToUTF32Scalar, kind: implementationScalar, available: true},
+			variant[func([]uint16, []uint32) int]{value: archsimdValidUTF16UTF32BE, kind: implementationArchsimd, required: cpuAVX2, available: archsimdValidUTF16UTF32BE != nil},
+			variant[func([]uint16, []uint32) int]{value: convertValidUTF16BEToUTF32Haswell, kind: implementationHaswell, required: cpuAVX2, available: true},
+			variant[func([]uint16, []uint32) int]{value: convertValidUTF16BEToUTF32Westmere, kind: implementationWestmere, required: cpuSSSE3, available: true},
 		),
 		utf32LengthFromUTF16LE: selectVariant(
 			input,

@@ -286,3 +286,25 @@ func TestMakeImplementationAMD64UTF16Latin1QualificationSelection(t *testing.T) 
 		}
 	}
 }
+
+func TestMakeImplementationAMD64UTF16UTF32QualificationSelection(t *testing.T) {
+	// UTF-16→UTF-32 providers are forceable but remain scalar-first until
+	// qualification dispositions promote selected backends.
+	for _, input := range []selectionInput{
+		{},
+		{features: cpuSSSE3},
+		{features: cpuAVX2},
+		{features: cpuSSSE3 | cpuAVX2},
+		{features: cpuSSSE3 | cpuAVX2, archsimdAVX2: true},
+	} {
+		got := makeImplementation(input)
+		if !sameFunction(got.convertUTF16LEToUTF32, convertUTF16LEToUTF32Scalar) ||
+			!sameFunction(got.convertUTF16BEToUTF32, convertUTF16BEToUTF32Scalar) ||
+			!sameFunction(got.convertUTF16LEToUTF32WithErrors, convertUTF16LEToUTF32WithErrorsScalar) ||
+			!sameFunction(got.convertUTF16BEToUTF32WithErrors, convertUTF16BEToUTF32WithErrorsScalar) ||
+			!sameFunction(got.convertValidUTF16LEToUTF32, convertValidUTF16LEToUTF32Scalar) ||
+			!sameFunction(got.convertValidUTF16BEToUTF32, convertValidUTF16BEToUTF32Scalar) {
+			t.Fatalf("UTF-16→UTF-32 providers leaked ahead of scalar-first qualification gate for %#v", input)
+		}
+	}
+}
