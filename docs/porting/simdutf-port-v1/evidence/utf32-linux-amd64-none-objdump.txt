@@ -1,0 +1,950 @@
+TEXT github.com/zchee/go-simdutf.utf8LengthFromUTF32Scalar(SB) /Users/zchee/go/src/github.com/zchee/go-simdutf/utf32_convert_scalar.go
+  utf32_convert_scalar.go:31	0x6f0980		4889442408		MOVQ AX, 0x8(SP)	
+  utf32_convert_scalar.go:33	0x6f0985		31c9			XORL CX, CX		
+  utf32_convert_scalar.go:33	0x6f0987		31d2			XORL DX, DX		
+  utf32_convert_scalar.go:33	0x6f0989		eb38			JMP 0x6f09c3		
+  utf32_convert_scalar.go:33	0x6f098b		8b3488			MOVL 0(AX)(CX*4), SI	
+  utf32_convert_scalar.go:34	0x6f098e		488d7a01		LEAQ 0x1(DX), DI	
+  utf32_convert_scalar.go:36	0x6f0992		4c8d4202		LEAQ 0x2(DX), R8	
+  utf32_convert_scalar.go:33	0x6f0996		48ffc1			INCQ CX			
+  utf32_convert_scalar.go:35	0x6f0999		83fe7f			CMPL SI, $0x7f		
+  utf32_convert_scalar.go:38	0x6f099c		490f47f8		CMOVA R8, DI		
+  utf32_convert_scalar.go:38	0x6f09a0		81feff070000		CMPL SI, $0x7ff		
+  utf32_convert_scalar.go:38	0x6f09a6		410f97c0		SETA R8			
+  utf32_convert_scalar.go:41	0x6f09aa		450fb6c0		MOVZX R8, R8		
+  utf32_convert_scalar.go:41	0x6f09ae		4c01c7			ADDQ R8, DI		
+  utf32_convert_scalar.go:41	0x6f09b1		81feffff0000		CMPL SI, $0xffff	
+  utf32_convert_scalar.go:41	0x6f09b7		400f97c6		SETA SI			
+  utf32_convert_scalar.go:41	0x6f09bb		400fb6f6		MOVZX SI, SI		
+  utf32_convert_scalar.go:41	0x6f09bf		488d1437		LEAQ 0(DI)(SI*1), DX	
+  utf32_convert_scalar.go:33	0x6f09c3		4839cb			CMPQ BX, CX		
+  utf32_convert_scalar.go:33	0x6f09c6		7fc3			JG 0x6f098b		
+  utf32_convert_scalar.go:45	0x6f09c8		4889d0			MOVQ DX, AX		
+  utf32_convert_scalar.go:45	0x6f09cb		c3			RET			
+
+TEXT github.com/zchee/go-simdutf.utf16LengthFromUTF32Scalar(SB) /Users/zchee/go/src/github.com/zchee/go-simdutf/utf32_convert_scalar.go
+  utf32_convert_scalar.go:48	0x6f09e0		4889442408		MOVQ AX, 0x8(SP)	
+  utf32_convert_scalar.go:50	0x6f09e5		31c9			XORL CX, CX		
+  utf32_convert_scalar.go:50	0x6f09e7		31d2			XORL DX, DX		
+  utf32_convert_scalar.go:50	0x6f09e9		eb1b			JMP 0x6f0a06		
+  utf32_convert_scalar.go:50	0x6f09eb		8b3488			MOVL 0(AX)(CX*4), SI	
+  utf32_convert_scalar.go:51	0x6f09ee		488d7a01		LEAQ 0x1(DX), DI	
+  utf32_convert_scalar.go:53	0x6f09f2		4c8d4202		LEAQ 0x2(DX), R8	
+  utf32_convert_scalar.go:50	0x6f09f6		48ffc1			INCQ CX			
+  utf32_convert_scalar.go:50	0x6f09f9		81feffff0000		CMPL SI, $0xffff	
+  utf32_convert_scalar.go:50	0x6f09ff		490f47f8		CMOVA R8, DI		
+  utf32_convert_scalar.go:50	0x6f0a03		4889fa			MOVQ DI, DX		
+  utf32_convert_scalar.go:50	0x6f0a06		4839cb			CMPQ BX, CX		
+  utf32_convert_scalar.go:50	0x6f0a09		7fe0			JG 0x6f09eb		
+  utf32_convert_scalar.go:56	0x6f0a0b		4889d0			MOVQ DX, AX		
+  utf32_convert_scalar.go:56	0x6f0a0e		c3			RET			
+
+TEXT github.com/zchee/go-simdutf.convertUTF32ToLatin1Scalar(SB) /Users/zchee/go/src/github.com/zchee/go-simdutf/utf32_convert_scalar.go
+  utf32_convert_scalar.go:59	0x6f0a20		493b6610		CMPQ SP, 0x10(R14)						
+  utf32_convert_scalar.go:59	0x6f0a24		766c			JBE 0x6f0a92							
+  utf32_convert_scalar.go:59	0x6f0a26		55			PUSHQ BP							
+  utf32_convert_scalar.go:59	0x6f0a27		4889e5			MOVQ SP, BP							
+  utf32_convert_scalar.go:59	0x6f0a2a		4883ec10		SUBQ $0x10, SP							
+  utf32_convert_scalar.go:59	0x6f0a2e		4889442420		MOVQ AX, 0x20(SP)						
+  utf32_convert_scalar.go:59	0x6f0a33		48897c2438		MOVQ DI, 0x38(SP)						
+  utf32_convert_scalar.go:60	0x6f0a38		4839de			CMPQ SI, BX							
+  utf32_convert_scalar.go:60	0x6f0a3b		7c41			JL 0x6f0a7e							
+  utf32_convert_scalar.go:60	0x6f0a3d		0f1f00			NOPL 0(AX)							
+  utf32_convert_scalar.go:63	0x6f0a40		4885db			TESTQ BX, BX							
+  utf32_convert_scalar.go:63	0x6f0a43		7406			JE 0x6f0a4b							
+  utf32_convert_scalar.go:63	0x6f0a45		31c9			XORL CX, CX							
+  utf32_convert_scalar.go:63	0x6f0a47		31d2			XORL DX, DX							
+  utf32_convert_scalar.go:67	0x6f0a49		eb15			JMP 0x6f0a60							
+  utf32_convert_scalar.go:64	0x6f0a4b		31c0			XORL AX, AX							
+  utf32_convert_scalar.go:64	0x6f0a4d		4883c410		ADDQ $0x10, SP							
+  utf32_convert_scalar.go:64	0x6f0a51		5d			POPQ BP								
+  utf32_convert_scalar.go:64	0x6f0a52		c3			RET								
+  utf32_convert_scalar.go:67	0x6f0a53		8b3488			MOVL 0(AX)(CX*4), SI						
+  utf32_convert_scalar.go:69	0x6f0a56		4088340f		MOVB SI, 0(DI)(CX*1)						
+  utf32_convert_scalar.go:68	0x6f0a5a		09f2			ORL SI, DX							
+  utf32_convert_scalar.go:67	0x6f0a5c		48ffc1			INCQ CX								
+  utf32_convert_scalar.go:67	0x6f0a5f		90			NOPL								
+  utf32_convert_scalar.go:67	0x6f0a60		4839cb			CMPQ BX, CX							
+  utf32_convert_scalar.go:67	0x6f0a63		7fee			JG 0x6f0a53							
+  utf32_convert_scalar.go:71	0x6f0a65		f7c200ffffff		TESTL $-0x100, DX						
+  utf32_convert_scalar.go:71	0x6f0a6b		7408			JE 0x6f0a75							
+  utf32_convert_scalar.go:72	0x6f0a6d		31c0			XORL AX, AX							
+  utf32_convert_scalar.go:72	0x6f0a6f		4883c410		ADDQ $0x10, SP							
+  utf32_convert_scalar.go:72	0x6f0a73		5d			POPQ BP								
+  utf32_convert_scalar.go:72	0x6f0a74		c3			RET								
+  utf32_convert_scalar.go:74	0x6f0a75		4889d8			MOVQ BX, AX							
+  utf32_convert_scalar.go:74	0x6f0a78		4883c410		ADDQ $0x10, SP							
+  utf32_convert_scalar.go:74	0x6f0a7c		5d			POPQ BP								
+  utf32_convert_scalar.go:74	0x6f0a7d		c3			RET								
+  utf32_convert_scalar.go:61	0x6f0a7e		488d05fb9e0c00		LEAQ 0xc9efb(IP), AX						
+  utf32_convert_scalar.go:61	0x6f0a85		488d1d246f1800		LEAQ 0x186f24(IP), BX						
+  utf32_convert_scalar.go:61	0x6f0a8c		e8af1ed9ff		CALL runtime.gopanic(SB)					
+  utf32_convert_scalar.go:61	0x6f0a91		90			NOPL								
+  utf32_convert_scalar.go:59	0x6f0a92		4889442408		MOVQ AX, 0x8(SP)						
+  utf32_convert_scalar.go:59	0x6f0a97		48895c2410		MOVQ BX, 0x10(SP)						
+  utf32_convert_scalar.go:59	0x6f0a9c		48894c2418		MOVQ CX, 0x18(SP)						
+  utf32_convert_scalar.go:59	0x6f0aa1		48897c2420		MOVQ DI, 0x20(SP)						
+  utf32_convert_scalar.go:59	0x6f0aa6		4889742428		MOVQ SI, 0x28(SP)						
+  utf32_convert_scalar.go:59	0x6f0aab		4c89442430		MOVQ R8, 0x30(SP)						
+  utf32_convert_scalar.go:59	0x6f0ab0		e8cb7dd9ff		CALL runtime.morestack_noctxt.abi0(SB)				
+  utf32_convert_scalar.go:59	0x6f0ab5		488b442408		MOVQ 0x8(SP), AX						
+  utf32_convert_scalar.go:59	0x6f0aba		488b5c2410		MOVQ 0x10(SP), BX						
+  utf32_convert_scalar.go:59	0x6f0abf		488b4c2418		MOVQ 0x18(SP), CX						
+  utf32_convert_scalar.go:59	0x6f0ac4		488b7c2420		MOVQ 0x20(SP), DI						
+  utf32_convert_scalar.go:59	0x6f0ac9		488b742428		MOVQ 0x28(SP), SI						
+  utf32_convert_scalar.go:59	0x6f0ace		4c8b442430		MOVQ 0x30(SP), R8						
+  utf32_convert_scalar.go:59	0x6f0ad3		e948ffffff		JMP github.com/zchee/go-simdutf.convertUTF32ToLatin1Scalar(SB)	
+
+TEXT github.com/zchee/go-simdutf.convertUTF32ToLatin1WithErrorsScalar(SB) /Users/zchee/go/src/github.com/zchee/go-simdutf/utf32_convert_scalar.go
+  utf32_convert_scalar.go:77	0x6f0ae0		493b6610		CMPQ SP, 0x10(R14)								
+  utf32_convert_scalar.go:77	0x6f0ae4		7660			JBE 0x6f0b46									
+  utf32_convert_scalar.go:77	0x6f0ae6		55			PUSHQ BP									
+  utf32_convert_scalar.go:77	0x6f0ae7		4889e5			MOVQ SP, BP									
+  utf32_convert_scalar.go:77	0x6f0aea		4883ec10		SUBQ $0x10, SP									
+  utf32_convert_scalar.go:77	0x6f0aee		4889442420		MOVQ AX, 0x20(SP)								
+  utf32_convert_scalar.go:77	0x6f0af3		48897c2438		MOVQ DI, 0x38(SP)								
+  utf32_convert_scalar.go:78	0x6f0af8		4839de			CMPQ SI, BX									
+  utf32_convert_scalar.go:78	0x6f0afb		7c31			JL 0x6f0b2e									
+  utf32_convert_scalar.go:78	0x6f0afd		31c9			XORL CX, CX									
+  utf32_convert_scalar.go:78	0x6f0aff		90			NOPL										
+  utf32_convert_scalar.go:81	0x6f0b00		eb06			JMP 0x6f0b08									
+  utf32_convert_scalar.go:85	0x6f0b02		88140f			MOVB DL, 0(DI)(CX*1)								
+  utf32_convert_scalar.go:81	0x6f0b05		48ffc1			INCQ CX										
+  utf32_convert_scalar.go:81	0x6f0b08		4839cb			CMPQ BX, CX									
+  utf32_convert_scalar.go:81	0x6f0b0b		7e19			JLE 0x6f0b26									
+  utf32_convert_scalar.go:81	0x6f0b0d		8b1488			MOVL 0(AX)(CX*4), DX								
+  utf32_convert_scalar.go:82	0x6f0b10		f7c200ffffff		TESTL $-0x100, DX								
+  utf32_convert_scalar.go:82	0x6f0b16		74ea			JE 0x6f0b02									
+  utf32_convert_scalar.go:83	0x6f0b18		b805000000		MOVL $0x5, AX									
+  utf32_convert_scalar.go:83	0x6f0b1d		4889cb			MOVQ CX, BX									
+  utf32_convert_scalar.go:83	0x6f0b20		4883c410		ADDQ $0x10, SP									
+  utf32_convert_scalar.go:83	0x6f0b24		5d			POPQ BP										
+  utf32_convert_scalar.go:83	0x6f0b25		c3			RET										
+  utf32_convert_scalar.go:87	0x6f0b26		31c0			XORL AX, AX									
+  utf32_convert_scalar.go:87	0x6f0b28		4883c410		ADDQ $0x10, SP									
+  utf32_convert_scalar.go:87	0x6f0b2c		5d			POPQ BP										
+  utf32_convert_scalar.go:87	0x6f0b2d		c3			RET										
+  utf32_convert_scalar.go:79	0x6f0b2e		488d054b9e0c00		LEAQ 0xc9e4b(IP), AX								
+  utf32_convert_scalar.go:79	0x6f0b35		488d1d746e1800		LEAQ 0x186e74(IP), BX								
+  utf32_convert_scalar.go:79	0x6f0b3c		0f1f4000		NOPL 0(AX)									
+  utf32_convert_scalar.go:79	0x6f0b40		e8fb1dd9ff		CALL runtime.gopanic(SB)							
+  utf32_convert_scalar.go:79	0x6f0b45		90			NOPL										
+  utf32_convert_scalar.go:77	0x6f0b46		4889442408		MOVQ AX, 0x8(SP)								
+  utf32_convert_scalar.go:77	0x6f0b4b		48895c2410		MOVQ BX, 0x10(SP)								
+  utf32_convert_scalar.go:77	0x6f0b50		48894c2418		MOVQ CX, 0x18(SP)								
+  utf32_convert_scalar.go:77	0x6f0b55		48897c2420		MOVQ DI, 0x20(SP)								
+  utf32_convert_scalar.go:77	0x6f0b5a		4889742428		MOVQ SI, 0x28(SP)								
+  utf32_convert_scalar.go:77	0x6f0b5f		4c89442430		MOVQ R8, 0x30(SP)								
+  utf32_convert_scalar.go:77	0x6f0b64		e8177dd9ff		CALL runtime.morestack_noctxt.abi0(SB)						
+  utf32_convert_scalar.go:77	0x6f0b69		488b442408		MOVQ 0x8(SP), AX								
+  utf32_convert_scalar.go:77	0x6f0b6e		488b5c2410		MOVQ 0x10(SP), BX								
+  utf32_convert_scalar.go:77	0x6f0b73		488b4c2418		MOVQ 0x18(SP), CX								
+  utf32_convert_scalar.go:77	0x6f0b78		488b7c2420		MOVQ 0x20(SP), DI								
+  utf32_convert_scalar.go:77	0x6f0b7d		488b742428		MOVQ 0x28(SP), SI								
+  utf32_convert_scalar.go:77	0x6f0b82		4c8b442430		MOVQ 0x30(SP), R8								
+  utf32_convert_scalar.go:77	0x6f0b87		e954ffffff		JMP github.com/zchee/go-simdutf.convertUTF32ToLatin1WithErrorsScalar(SB)	
+
+TEXT github.com/zchee/go-simdutf.convertValidUTF32ToLatin1Scalar(SB) /Users/zchee/go/src/github.com/zchee/go-simdutf/utf32_convert_scalar.go
+  utf32_convert_scalar.go:90	0x6f0ba0		493b6610		CMPQ SP, 0x10(R14)							
+  utf32_convert_scalar.go:90	0x6f0ba4		7658			JBE 0x6f0bfe								
+  utf32_convert_scalar.go:90	0x6f0ba6		55			PUSHQ BP								
+  utf32_convert_scalar.go:90	0x6f0ba7		4889e5			MOVQ SP, BP								
+  utf32_convert_scalar.go:90	0x6f0baa		4883ec10		SUBQ $0x10, SP								
+  utf32_convert_scalar.go:90	0x6f0bae		4889442420		MOVQ AX, 0x20(SP)							
+  utf32_convert_scalar.go:90	0x6f0bb3		48897c2438		MOVQ DI, 0x38(SP)							
+  utf32_convert_scalar.go:91	0x6f0bb8		4839de			CMPQ SI, BX								
+  utf32_convert_scalar.go:91	0x6f0bbb		7c2d			JL 0x6f0bea								
+  utf32_convert_scalar.go:91	0x6f0bbd		31c9			XORL CX, CX								
+  utf32_convert_scalar.go:91	0x6f0bbf		90			NOPL									
+  utf32_convert_scalar.go:94	0x6f0bc0		eb06			JMP 0x6f0bc8								
+  utf32_convert_scalar.go:98	0x6f0bc2		88140f			MOVB DL, 0(DI)(CX*1)							
+  utf32_convert_scalar.go:94	0x6f0bc5		48ffc1			INCQ CX									
+  utf32_convert_scalar.go:94	0x6f0bc8		4839cb			CMPQ BX, CX								
+  utf32_convert_scalar.go:94	0x6f0bcb		7e14			JLE 0x6f0be1								
+  utf32_convert_scalar.go:94	0x6f0bcd		8b1488			MOVL 0(AX)(CX*4), DX							
+  utf32_convert_scalar.go:95	0x6f0bd0		f7c200ffffff		TESTL $-0x100, DX							
+  utf32_convert_scalar.go:95	0x6f0bd6		74ea			JE 0x6f0bc2								
+  utf32_convert_scalar.go:96	0x6f0bd8		31c0			XORL AX, AX								
+  utf32_convert_scalar.go:96	0x6f0bda		4883c410		ADDQ $0x10, SP								
+  utf32_convert_scalar.go:96	0x6f0bde		5d			POPQ BP									
+  utf32_convert_scalar.go:96	0x6f0bdf		90			NOPL									
+  utf32_convert_scalar.go:96	0x6f0be0		c3			RET									
+  utf32_convert_scalar.go:100	0x6f0be1		4889d8			MOVQ BX, AX								
+  utf32_convert_scalar.go:100	0x6f0be4		4883c410		ADDQ $0x10, SP								
+  utf32_convert_scalar.go:100	0x6f0be8		5d			POPQ BP									
+  utf32_convert_scalar.go:100	0x6f0be9		c3			RET									
+  utf32_convert_scalar.go:92	0x6f0bea		488d058f9d0c00		LEAQ 0xc9d8f(IP), AX							
+  utf32_convert_scalar.go:92	0x6f0bf1		488d1db86d1800		LEAQ 0x186db8(IP), BX							
+  utf32_convert_scalar.go:92	0x6f0bf8		e8431dd9ff		CALL runtime.gopanic(SB)						
+  utf32_convert_scalar.go:92	0x6f0bfd		90			NOPL									
+  utf32_convert_scalar.go:90	0x6f0bfe		4889442408		MOVQ AX, 0x8(SP)							
+  utf32_convert_scalar.go:90	0x6f0c03		48895c2410		MOVQ BX, 0x10(SP)							
+  utf32_convert_scalar.go:90	0x6f0c08		48894c2418		MOVQ CX, 0x18(SP)							
+  utf32_convert_scalar.go:90	0x6f0c0d		48897c2420		MOVQ DI, 0x20(SP)							
+  utf32_convert_scalar.go:90	0x6f0c12		4889742428		MOVQ SI, 0x28(SP)							
+  utf32_convert_scalar.go:90	0x6f0c17		4c89442430		MOVQ R8, 0x30(SP)							
+  utf32_convert_scalar.go:90	0x6f0c1c		0f1f4000		NOPL 0(AX)								
+  utf32_convert_scalar.go:90	0x6f0c20		e85b7cd9ff		CALL runtime.morestack_noctxt.abi0(SB)					
+  utf32_convert_scalar.go:90	0x6f0c25		488b442408		MOVQ 0x8(SP), AX							
+  utf32_convert_scalar.go:90	0x6f0c2a		488b5c2410		MOVQ 0x10(SP), BX							
+  utf32_convert_scalar.go:90	0x6f0c2f		488b4c2418		MOVQ 0x18(SP), CX							
+  utf32_convert_scalar.go:90	0x6f0c34		488b7c2420		MOVQ 0x20(SP), DI							
+  utf32_convert_scalar.go:90	0x6f0c39		488b742428		MOVQ 0x28(SP), SI							
+  utf32_convert_scalar.go:90	0x6f0c3e		4c8b442430		MOVQ 0x30(SP), R8							
+  utf32_convert_scalar.go:90	0x6f0c43		e958ffffff		JMP github.com/zchee/go-simdutf.convertValidUTF32ToLatin1Scalar(SB)	
+
+TEXT github.com/zchee/go-simdutf.convertUTF32ToUTF8Scalar(SB) /Users/zchee/go/src/github.com/zchee/go-simdutf/utf32_convert_scalar.go
+  utf32_convert_scalar.go:103	0x6f0c60		493b6610		CMPQ SP, 0x10(R14)							
+  utf32_convert_scalar.go:103	0x6f0c64		762f			JBE 0x6f0c95								
+  utf32_convert_scalar.go:103	0x6f0c66		55			PUSHQ BP								
+  utf32_convert_scalar.go:103	0x6f0c67		4889e5			MOVQ SP, BP								
+  utf32_convert_scalar.go:103	0x6f0c6a		4883ec30		SUBQ $0x30, SP								
+  utf32_convert_scalar.go:103	0x6f0c6e		4889442440		MOVQ AX, 0x40(SP)							
+  utf32_convert_scalar.go:103	0x6f0c73		48897c2458		MOVQ DI, 0x58(SP)							
+  utf32_convert_scalar.go:104	0x6f0c78		e863000000		CALL github.com/zchee/go-simdutf.convertUTF32ToUTF8WithErrorsScalar(SB)	
+  utf32_convert_scalar.go:104	0x6f0c7d		0f1f00			NOPL 0(AX)								
+  utf32_convert_scalar.go:105	0x6f0c80		84c0			TESTL AL, AL								
+  utf32_convert_scalar.go:105	0x6f0c82		7408			JE 0x6f0c8c								
+  utf32_convert_scalar.go:106	0x6f0c84		31c0			XORL AX, AX								
+  utf32_convert_scalar.go:106	0x6f0c86		4883c430		ADDQ $0x30, SP								
+  utf32_convert_scalar.go:106	0x6f0c8a		5d			POPQ BP									
+  utf32_convert_scalar.go:106	0x6f0c8b		c3			RET									
+  utf32_convert_scalar.go:108	0x6f0c8c		4889d8			MOVQ BX, AX								
+  utf32_convert_scalar.go:108	0x6f0c8f		4883c430		ADDQ $0x30, SP								
+  utf32_convert_scalar.go:108	0x6f0c93		5d			POPQ BP									
+  utf32_convert_scalar.go:108	0x6f0c94		c3			RET									
+  utf32_convert_scalar.go:103	0x6f0c95		4889442408		MOVQ AX, 0x8(SP)							
+  utf32_convert_scalar.go:103	0x6f0c9a		48895c2410		MOVQ BX, 0x10(SP)							
+  utf32_convert_scalar.go:103	0x6f0c9f		48894c2418		MOVQ CX, 0x18(SP)							
+  utf32_convert_scalar.go:103	0x6f0ca4		48897c2420		MOVQ DI, 0x20(SP)							
+  utf32_convert_scalar.go:103	0x6f0ca9		4889742428		MOVQ SI, 0x28(SP)							
+  utf32_convert_scalar.go:103	0x6f0cae		4c89442430		MOVQ R8, 0x30(SP)							
+  utf32_convert_scalar.go:103	0x6f0cb3		e8c87bd9ff		CALL runtime.morestack_noctxt.abi0(SB)					
+  utf32_convert_scalar.go:103	0x6f0cb8		488b442408		MOVQ 0x8(SP), AX							
+  utf32_convert_scalar.go:103	0x6f0cbd		488b5c2410		MOVQ 0x10(SP), BX							
+  utf32_convert_scalar.go:103	0x6f0cc2		488b4c2418		MOVQ 0x18(SP), CX							
+  utf32_convert_scalar.go:103	0x6f0cc7		488b7c2420		MOVQ 0x20(SP), DI							
+  utf32_convert_scalar.go:103	0x6f0ccc		488b742428		MOVQ 0x28(SP), SI							
+  utf32_convert_scalar.go:103	0x6f0cd1		4c8b442430		MOVQ 0x30(SP), R8							
+  utf32_convert_scalar.go:103	0x6f0cd6		eb88			JMP github.com/zchee/go-simdutf.convertUTF32ToUTF8Scalar(SB)		
+
+TEXT github.com/zchee/go-simdutf.convertUTF32ToUTF8WithErrorsScalar(SB) /Users/zchee/go/src/github.com/zchee/go-simdutf/utf32_convert_scalar.go
+  utf32_convert_scalar.go:111	0x6f0ce0		493b6610		CMPQ SP, 0x10(R14)							
+  utf32_convert_scalar.go:111	0x6f0ce4		0f867e020000		JBE 0x6f0f68								
+  utf32_convert_scalar.go:111	0x6f0cea		55			PUSHQ BP								
+  utf32_convert_scalar.go:111	0x6f0ceb		4889e5			MOVQ SP, BP								
+  utf32_convert_scalar.go:111	0x6f0cee		4883ec10		SUBQ $0x10, SP								
+  utf32_convert_scalar.go:111	0x6f0cf2		4889442420		MOVQ AX, 0x20(SP)							
+  utf32_convert_scalar.go:111	0x6f0cf7		48897c2438		MOVQ DI, 0x38(SP)							
+  utf32_convert_scalar.go:112	0x6f0cfc		31c9			XORL CX, CX								
+  utf32_convert_scalar.go:112	0x6f0cfe		31d2			XORL DX, DX								
+  utf32_convert_scalar.go:33	0x6f0d00		eb3e			JMP 0x6f0d40								
+  utf32_convert_scalar.go:33	0x6f0d02		448b0488		MOVL 0(AX)(CX*4), R8							
+  utf32_convert_scalar.go:34	0x6f0d06		4c8d4a01		LEAQ 0x1(DX), R9							
+  utf32_convert_scalar.go:36	0x6f0d0a		4c8d5202		LEAQ 0x2(DX), R10							
+  utf32_convert_scalar.go:33	0x6f0d0e		48ffc1			INCQ CX									
+  utf32_convert_scalar.go:35	0x6f0d11		4183f87f		CMPL R8, $0x7f								
+  utf32_convert_scalar.go:38	0x6f0d15		4d0f47ca		CMOVA R10, R9								
+  utf32_convert_scalar.go:38	0x6f0d19		4181f8ff070000		CMPL R8, $0x7ff								
+  utf32_convert_scalar.go:38	0x6f0d20		410f97c2		SETA R10								
+  utf32_convert_scalar.go:41	0x6f0d24		450fb6d2		MOVZX R10, R10								
+  utf32_convert_scalar.go:41	0x6f0d28		4d01d1			ADDQ R10, R9								
+  utf32_convert_scalar.go:41	0x6f0d2b		4181f8ffff0000		CMPL R8, $0xffff							
+  utf32_convert_scalar.go:41	0x6f0d32		410f97c0		SETA R8									
+  utf32_convert_scalar.go:41	0x6f0d36		450fb6c0		MOVZX R8, R8								
+  utf32_convert_scalar.go:41	0x6f0d3a		4b8d1401		LEAQ 0(R9)(R8*1), DX							
+  utf32_convert_scalar.go:41	0x6f0d3e		6690			NOPW									
+  utf32_convert_scalar.go:33	0x6f0d40		4839cb			CMPQ BX, CX								
+  utf32_convert_scalar.go:33	0x6f0d43		7fbd			JG 0x6f0d02								
+  utf32_convert_scalar.go:112	0x6f0d45		4839d6			CMPQ SI, DX								
+  utf32_convert_scalar.go:112	0x6f0d48		0f8c06020000		JL 0x6f0f54								
+  utf32_convert_scalar.go:112	0x6f0d4e		31c9			XORL CX, CX								
+  utf32_convert_scalar.go:112	0x6f0d50		31d2			XORL DX, DX								
+  utf32_convert_scalar.go:117	0x6f0d52		4839cb			CMPQ BX, CX								
+  utf32_convert_scalar.go:117	0x6f0d55		0f8eb2010000		JLE 0x6f0f0d								
+  utf32_convert_scalar.go:117	0x6f0d5b		0f1f440000		NOPL 0(AX)(AX*1)							
+  utf32_convert_scalar.go:118	0x6f0d60		0f86e9010000		JBE 0x6f0f4f								
+  utf32_convert_scalar.go:118	0x6f0d66		448b0488		MOVL 0(AX)(CX*4), R8							
+  utf32_convert_scalar.go:120	0x6f0d6a		41f7c080ffffff		TESTL $-0x80, R8							
+  utf32_convert_scalar.go:120	0x6f0d71		7515			JNE 0x6f0d88								
+  utf32_convert_scalar.go:121	0x6f0d73		4839d6			CMPQ SI, DX								
+  utf32_convert_scalar.go:121	0x6f0d76		0f86ce010000		JBE 0x6f0f4a								
+  utf32_convert_scalar.go:121	0x6f0d7c		44880417		MOVB R8, 0(DI)(DX*1)							
+  utf32_convert_scalar.go:122	0x6f0d80		48ffc2			INCQ DX									
+  utf32_convert_scalar.go:123	0x6f0d83		48ffc1			INCQ CX									
+  utf32_convert_scalar.go:123	0x6f0d86		ebca			JMP 0x6f0d52								
+  utf32_convert_scalar.go:124	0x6f0d88		41f7c000f8ffff		TESTL $-0x800, R8							
+  utf32_convert_scalar.go:124	0x6f0d8f		7541			JNE 0x6f0dd2								
+  utf32_convert_scalar.go:125	0x6f0d91		4839d6			CMPQ SI, DX								
+  utf32_convert_scalar.go:125	0x6f0d94		0f86ab010000		JBE 0x6f0f45								
+  utf32_convert_scalar.go:125	0x6f0d9a		4589c1			MOVL R8, R9								
+  utf32_convert_scalar.go:125	0x6f0d9d		41c1e806		SHRL $0x6, R8								
+  utf32_convert_scalar.go:125	0x6f0da1		4181c8c0000000		ORL $0xc0, R8								
+  utf32_convert_scalar.go:125	0x6f0da8		44880417		MOVB R8, 0(DI)(DX*1)							
+  utf32_convert_scalar.go:126	0x6f0dac		4c8d4201		LEAQ 0x1(DX), R8							
+  utf32_convert_scalar.go:126	0x6f0db0		4c39c6			CMPQ SI, R8								
+  utf32_convert_scalar.go:126	0x6f0db3		0f8685010000		JBE 0x6f0f3e								
+  utf32_convert_scalar.go:126	0x6f0db9		4183e13f		ANDL $0x3f, R9								
+  utf32_convert_scalar.go:126	0x6f0dbd		4181c980000000		ORL $0x80, R9								
+  utf32_convert_scalar.go:126	0x6f0dc4		44884c3a01		MOVB R9, 0x1(DX)(DI*1)							
+  utf32_convert_scalar.go:127	0x6f0dc9		4883c202		ADDQ $0x2, DX								
+  utf32_convert_scalar.go:128	0x6f0dcd		48ffc1			INCQ CX									
+  utf32_convert_scalar.go:128	0x6f0dd0		eb80			JMP 0x6f0d52								
+  utf32_convert_scalar.go:129	0x6f0dd2		41f7c00000ffff		TESTL $-0x10000, R8							
+  utf32_convert_scalar.go:129	0x6f0dd9		0f8581000000		JNE 0x6f0e60								
+  utf32_convert_scalar.go:130	0x6f0ddf		458d880028ffff		LEAL 0xffff2800(R8), R9							
+  utf32_convert_scalar.go:130	0x6f0de6		4181f9ff070000		CMPL R9, $0x7ff								
+  utf32_convert_scalar.go:130	0x6f0ded		0f86fe000000		JBE 0x6f0ef1								
+  utf32_convert_scalar.go:133	0x6f0df3		4839d6			CMPQ SI, DX								
+  utf32_convert_scalar.go:133	0x6f0df6		0f863d010000		JBE 0x6f0f39								
+  utf32_convert_scalar.go:133	0x6f0dfc		4589c1			MOVL R8, R9								
+  utf32_convert_scalar.go:133	0x6f0dff		41c1e80c		SHRL $0xc, R8								
+  utf32_convert_scalar.go:133	0x6f0e03		4181c8e0000000		ORL $0xe0, R8								
+  utf32_convert_scalar.go:133	0x6f0e0a		44880417		MOVB R8, 0(DI)(DX*1)							
+  utf32_convert_scalar.go:134	0x6f0e0e		4c8d4201		LEAQ 0x1(DX), R8							
+  utf32_convert_scalar.go:134	0x6f0e12		4c39c6			CMPQ SI, R8								
+  utf32_convert_scalar.go:134	0x6f0e15		0f8619010000		JBE 0x6f0f34								
+  utf32_convert_scalar.go:134	0x6f0e1b		4589c8			MOVL R9, R8								
+  utf32_convert_scalar.go:134	0x6f0e1e		41c1e906		SHRL $0x6, R9								
+  utf32_convert_scalar.go:134	0x6f0e22		4183e13f		ANDL $0x3f, R9								
+  utf32_convert_scalar.go:134	0x6f0e26		4181c980000000		ORL $0x80, R9								
+  utf32_convert_scalar.go:134	0x6f0e2d		44884c3a01		MOVB R9, 0x1(DX)(DI*1)							
+  utf32_convert_scalar.go:135	0x6f0e32		4c8d4a02		LEAQ 0x2(DX), R9							
+  utf32_convert_scalar.go:135	0x6f0e36		4c39ce			CMPQ SI, R9								
+  utf32_convert_scalar.go:135	0x6f0e39		0f86f0000000		JBE 0x6f0f2f								
+  utf32_convert_scalar.go:135	0x6f0e3f		4183e03f		ANDL $0x3f, R8								
+  utf32_convert_scalar.go:135	0x6f0e43		4181c880000000		ORL $0x80, R8								
+  utf32_convert_scalar.go:135	0x6f0e4a		4488443a02		MOVB R8, 0x2(DX)(DI*1)							
+  utf32_convert_scalar.go:136	0x6f0e4f		4883c203		ADDQ $0x3, DX								
+  utf32_convert_scalar.go:137	0x6f0e53		48ffc1			INCQ CX									
+  utf32_convert_scalar.go:137	0x6f0e56		e9f7feffff		JMP 0x6f0d52								
+  utf32_convert_scalar.go:137	0x6f0e5b		0f1f440000		NOPL 0(AX)(AX*1)							
+  utf32_convert_scalar.go:139	0x6f0e60		4181f8ffff1000		CMPL R8, $0x10ffff							
+  utf32_convert_scalar.go:139	0x6f0e67		0f8792000000		JA 0x6f0eff								
+  utf32_convert_scalar.go:142	0x6f0e6d		4839d6			CMPQ SI, DX								
+  utf32_convert_scalar.go:142	0x6f0e70		0f86b4000000		JBE 0x6f0f2a								
+  utf32_convert_scalar.go:142	0x6f0e76		4589c1			MOVL R8, R9								
+  utf32_convert_scalar.go:142	0x6f0e79		41c1e812		SHRL $0x12, R8								
+  utf32_convert_scalar.go:142	0x6f0e7d		4181c8f0000000		ORL $0xf0, R8								
+  utf32_convert_scalar.go:142	0x6f0e84		44880417		MOVB R8, 0(DI)(DX*1)							
+  utf32_convert_scalar.go:143	0x6f0e88		4c8d4201		LEAQ 0x1(DX), R8							
+  utf32_convert_scalar.go:143	0x6f0e8c		4c39c6			CMPQ SI, R8								
+  utf32_convert_scalar.go:143	0x6f0e8f		0f8690000000		JBE 0x6f0f25								
+  utf32_convert_scalar.go:143	0x6f0e95		4589c8			MOVL R9, R8								
+  utf32_convert_scalar.go:143	0x6f0e98		41c1e90c		SHRL $0xc, R9								
+  utf32_convert_scalar.go:143	0x6f0e9c		4183e13f		ANDL $0x3f, R9								
+  utf32_convert_scalar.go:143	0x6f0ea0		4181c980000000		ORL $0x80, R9								
+  utf32_convert_scalar.go:143	0x6f0ea7		44884c3a01		MOVB R9, 0x1(DX)(DI*1)							
+  utf32_convert_scalar.go:144	0x6f0eac		4c8d4a02		LEAQ 0x2(DX), R9							
+  utf32_convert_scalar.go:144	0x6f0eb0		4c39ce			CMPQ SI, R9								
+  utf32_convert_scalar.go:144	0x6f0eb3		7668			JBE 0x6f0f1d								
+  utf32_convert_scalar.go:144	0x6f0eb5		4589c1			MOVL R8, R9								
+  utf32_convert_scalar.go:144	0x6f0eb8		41c1e806		SHRL $0x6, R8								
+  utf32_convert_scalar.go:144	0x6f0ebc		4183e03f		ANDL $0x3f, R8								
+  utf32_convert_scalar.go:144	0x6f0ec0		4181c880000000		ORL $0x80, R8								
+  utf32_convert_scalar.go:144	0x6f0ec7		4488443a02		MOVB R8, 0x2(DX)(DI*1)							
+  utf32_convert_scalar.go:145	0x6f0ecc		4c8d4203		LEAQ 0x3(DX), R8							
+  utf32_convert_scalar.go:145	0x6f0ed0		4c39c6			CMPQ SI, R8								
+  utf32_convert_scalar.go:145	0x6f0ed3		7643			JBE 0x6f0f18								
+  utf32_convert_scalar.go:145	0x6f0ed5		4183e13f		ANDL $0x3f, R9								
+  utf32_convert_scalar.go:145	0x6f0ed9		4181c980000000		ORL $0x80, R9								
+  utf32_convert_scalar.go:145	0x6f0ee0		44884c3a03		MOVB R9, 0x3(DX)(DI*1)							
+  utf32_convert_scalar.go:146	0x6f0ee5		4883c204		ADDQ $0x4, DX								
+  utf32_convert_scalar.go:147	0x6f0ee9		48ffc1			INCQ CX									
+  utf32_convert_scalar.go:147	0x6f0eec		e961feffff		JMP 0x6f0d52								
+  utf32_convert_scalar.go:131	0x6f0ef1		b806000000		MOVL $0x6, AX								
+  utf32_convert_scalar.go:131	0x6f0ef6		4889cb			MOVQ CX, BX								
+  utf32_convert_scalar.go:131	0x6f0ef9		4883c410		ADDQ $0x10, SP								
+  utf32_convert_scalar.go:131	0x6f0efd		5d			POPQ BP									
+  utf32_convert_scalar.go:131	0x6f0efe		c3			RET									
+  utf32_convert_scalar.go:140	0x6f0eff		b805000000		MOVL $0x5, AX								
+  utf32_convert_scalar.go:140	0x6f0f04		4889cb			MOVQ CX, BX								
+  utf32_convert_scalar.go:140	0x6f0f07		4883c410		ADDQ $0x10, SP								
+  utf32_convert_scalar.go:140	0x6f0f0b		5d			POPQ BP									
+  utf32_convert_scalar.go:140	0x6f0f0c		c3			RET									
+  utf32_convert_scalar.go:150	0x6f0f0d		31c0			XORL AX, AX								
+  utf32_convert_scalar.go:150	0x6f0f0f		4889d3			MOVQ DX, BX								
+  utf32_convert_scalar.go:150	0x6f0f12		4883c410		ADDQ $0x10, SP								
+  utf32_convert_scalar.go:150	0x6f0f16		5d			POPQ BP									
+  utf32_convert_scalar.go:150	0x6f0f17		c3			RET									
+  utf32_convert_scalar.go:145	0x6f0f18		e88396d9ff		CALL runtime.panicBounds(SB)						
+  utf32_convert_scalar.go:144	0x6f0f1d		0f1f00			NOPL 0(AX)								
+  utf32_convert_scalar.go:144	0x6f0f20		e87b96d9ff		CALL runtime.panicBounds(SB)						
+  utf32_convert_scalar.go:143	0x6f0f25		e87696d9ff		CALL runtime.panicBounds(SB)						
+  utf32_convert_scalar.go:142	0x6f0f2a		e87196d9ff		CALL runtime.panicBounds(SB)						
+  utf32_convert_scalar.go:135	0x6f0f2f		e86c96d9ff		CALL runtime.panicBounds(SB)						
+  utf32_convert_scalar.go:134	0x6f0f34		e86796d9ff		CALL runtime.panicBounds(SB)						
+  utf32_convert_scalar.go:133	0x6f0f39		e86296d9ff		CALL runtime.panicBounds(SB)						
+  utf32_convert_scalar.go:126	0x6f0f3e		6690			NOPW									
+  utf32_convert_scalar.go:126	0x6f0f40		e85b96d9ff		CALL runtime.panicBounds(SB)						
+  utf32_convert_scalar.go:125	0x6f0f45		e85696d9ff		CALL runtime.panicBounds(SB)						
+  utf32_convert_scalar.go:121	0x6f0f4a		e85196d9ff		CALL runtime.panicBounds(SB)						
+  utf32_convert_scalar.go:118	0x6f0f4f		e84c96d9ff		CALL runtime.panicBounds(SB)						
+  utf32_convert_scalar.go:113	0x6f0f54		488d05259a0c00		LEAQ 0xc9a25(IP), AX							
+  utf32_convert_scalar.go:113	0x6f0f5b		488d1d4e6a1800		LEAQ 0x186a4e(IP), BX							
+  utf32_convert_scalar.go:113	0x6f0f62		e8d919d9ff		CALL runtime.gopanic(SB)						
+  utf32_convert_scalar.go:113	0x6f0f67		90			NOPL									
+  utf32_convert_scalar.go:111	0x6f0f68		4889442408		MOVQ AX, 0x8(SP)							
+  utf32_convert_scalar.go:111	0x6f0f6d		48895c2410		MOVQ BX, 0x10(SP)							
+  utf32_convert_scalar.go:111	0x6f0f72		48894c2418		MOVQ CX, 0x18(SP)							
+  utf32_convert_scalar.go:111	0x6f0f77		48897c2420		MOVQ DI, 0x20(SP)							
+  utf32_convert_scalar.go:111	0x6f0f7c		4889742428		MOVQ SI, 0x28(SP)							
+  utf32_convert_scalar.go:111	0x6f0f81		4c89442430		MOVQ R8, 0x30(SP)							
+  utf32_convert_scalar.go:111	0x6f0f86		e8f578d9ff		CALL runtime.morestack_noctxt.abi0(SB)					
+  utf32_convert_scalar.go:111	0x6f0f8b		488b442408		MOVQ 0x8(SP), AX							
+  utf32_convert_scalar.go:111	0x6f0f90		488b5c2410		MOVQ 0x10(SP), BX							
+  utf32_convert_scalar.go:111	0x6f0f95		488b4c2418		MOVQ 0x18(SP), CX							
+  utf32_convert_scalar.go:111	0x6f0f9a		488b7c2420		MOVQ 0x20(SP), DI							
+  utf32_convert_scalar.go:111	0x6f0f9f		488b742428		MOVQ 0x28(SP), SI							
+  utf32_convert_scalar.go:111	0x6f0fa4		4c8b442430		MOVQ 0x30(SP), R8							
+  utf32_convert_scalar.go:111	0x6f0fa9		e932fdffff		JMP github.com/zchee/go-simdutf.convertUTF32ToUTF8WithErrorsScalar(SB)	
+
+TEXT github.com/zchee/go-simdutf.convertValidUTF32ToUTF8Scalar(SB) /Users/zchee/go/src/github.com/zchee/go-simdutf/utf32_convert_scalar.go
+  utf32_convert_scalar.go:153	0x6f0fc0		493b6610		CMPQ SP, 0x10(R14)							
+  utf32_convert_scalar.go:153	0x6f0fc4		0f863c020000		JBE 0x6f1206								
+  utf32_convert_scalar.go:153	0x6f0fca		55			PUSHQ BP								
+  utf32_convert_scalar.go:153	0x6f0fcb		4889e5			MOVQ SP, BP								
+  utf32_convert_scalar.go:153	0x6f0fce		4883ec10		SUBQ $0x10, SP								
+  utf32_convert_scalar.go:153	0x6f0fd2		4889442420		MOVQ AX, 0x20(SP)							
+  utf32_convert_scalar.go:153	0x6f0fd7		48897c2438		MOVQ DI, 0x38(SP)							
+  utf32_convert_scalar.go:154	0x6f0fdc		31c9			XORL CX, CX								
+  utf32_convert_scalar.go:154	0x6f0fde		31d2			XORL DX, DX								
+  utf32_convert_scalar.go:33	0x6f0fe0		eb3e			JMP 0x6f1020								
+  utf32_convert_scalar.go:33	0x6f0fe2		448b0488		MOVL 0(AX)(CX*4), R8							
+  utf32_convert_scalar.go:34	0x6f0fe6		4c8d4a01		LEAQ 0x1(DX), R9							
+  utf32_convert_scalar.go:36	0x6f0fea		4c8d5202		LEAQ 0x2(DX), R10							
+  utf32_convert_scalar.go:33	0x6f0fee		48ffc1			INCQ CX									
+  utf32_convert_scalar.go:35	0x6f0ff1		4183f87f		CMPL R8, $0x7f								
+  utf32_convert_scalar.go:38	0x6f0ff5		4d0f47ca		CMOVA R10, R9								
+  utf32_convert_scalar.go:38	0x6f0ff9		4181f8ff070000		CMPL R8, $0x7ff								
+  utf32_convert_scalar.go:38	0x6f1000		410f97c2		SETA R10								
+  utf32_convert_scalar.go:41	0x6f1004		450fb6d2		MOVZX R10, R10								
+  utf32_convert_scalar.go:41	0x6f1008		4d01d1			ADDQ R10, R9								
+  utf32_convert_scalar.go:41	0x6f100b		4181f8ffff0000		CMPL R8, $0xffff							
+  utf32_convert_scalar.go:41	0x6f1012		410f97c0		SETA R8									
+  utf32_convert_scalar.go:41	0x6f1016		450fb6c0		MOVZX R8, R8								
+  utf32_convert_scalar.go:41	0x6f101a		4b8d1401		LEAQ 0(R9)(R8*1), DX							
+  utf32_convert_scalar.go:41	0x6f101e		6690			NOPW									
+  utf32_convert_scalar.go:33	0x6f1020		4839cb			CMPQ BX, CX								
+  utf32_convert_scalar.go:33	0x6f1023		7fbd			JG 0x6f0fe2								
+  utf32_convert_scalar.go:154	0x6f1025		4839d6			CMPQ SI, DX								
+  utf32_convert_scalar.go:154	0x6f1028		0f8cc1010000		JL 0x6f11ef								
+  utf32_convert_scalar.go:154	0x6f102e		31c9			XORL CX, CX								
+  utf32_convert_scalar.go:154	0x6f1030		31d2			XORL DX, DX								
+  utf32_convert_scalar.go:159	0x6f1032		4839cb			CMPQ BX, CX								
+  utf32_convert_scalar.go:159	0x6f1035		0f8e6e010000		JLE 0x6f11a9								
+  utf32_convert_scalar.go:159	0x6f103b		0f1f440000		NOPL 0(AX)(AX*1)							
+  utf32_convert_scalar.go:160	0x6f1040		0f86a4010000		JBE 0x6f11ea								
+  utf32_convert_scalar.go:160	0x6f1046		448b0488		MOVL 0(AX)(CX*4), R8							
+  utf32_convert_scalar.go:162	0x6f104a		41f7c080ffffff		TESTL $-0x80, R8							
+  utf32_convert_scalar.go:162	0x6f1051		7515			JNE 0x6f1068								
+  utf32_convert_scalar.go:163	0x6f1053		4839d6			CMPQ SI, DX								
+  utf32_convert_scalar.go:163	0x6f1056		0f8689010000		JBE 0x6f11e5								
+  utf32_convert_scalar.go:163	0x6f105c		44880417		MOVB R8, 0(DI)(DX*1)							
+  utf32_convert_scalar.go:164	0x6f1060		48ffc2			INCQ DX									
+  utf32_convert_scalar.go:165	0x6f1063		48ffc1			INCQ CX									
+  utf32_convert_scalar.go:165	0x6f1066		ebca			JMP 0x6f1032								
+  utf32_convert_scalar.go:166	0x6f1068		41f7c000f8ffff		TESTL $-0x800, R8							
+  utf32_convert_scalar.go:166	0x6f106f		7541			JNE 0x6f10b2								
+  utf32_convert_scalar.go:167	0x6f1071		4839d6			CMPQ SI, DX								
+  utf32_convert_scalar.go:167	0x6f1074		0f8664010000		JBE 0x6f11de								
+  utf32_convert_scalar.go:167	0x6f107a		4589c1			MOVL R8, R9								
+  utf32_convert_scalar.go:167	0x6f107d		41c1e806		SHRL $0x6, R8								
+  utf32_convert_scalar.go:167	0x6f1081		4181c8c0000000		ORL $0xc0, R8								
+  utf32_convert_scalar.go:167	0x6f1088		44880417		MOVB R8, 0(DI)(DX*1)							
+  utf32_convert_scalar.go:168	0x6f108c		4c8d4201		LEAQ 0x1(DX), R8							
+  utf32_convert_scalar.go:168	0x6f1090		4c39c6			CMPQ SI, R8								
+  utf32_convert_scalar.go:168	0x6f1093		0f8640010000		JBE 0x6f11d9								
+  utf32_convert_scalar.go:168	0x6f1099		4183e13f		ANDL $0x3f, R9								
+  utf32_convert_scalar.go:168	0x6f109d		4181c980000000		ORL $0x80, R9								
+  utf32_convert_scalar.go:168	0x6f10a4		44884c3a01		MOVB R9, 0x1(DX)(DI*1)							
+  utf32_convert_scalar.go:169	0x6f10a9		4883c202		ADDQ $0x2, DX								
+  utf32_convert_scalar.go:170	0x6f10ad		48ffc1			INCQ CX									
+  utf32_convert_scalar.go:170	0x6f10b0		eb80			JMP 0x6f1032								
+  utf32_convert_scalar.go:171	0x6f10b2		41f7c00000ffff		TESTL $-0x10000, R8							
+  utf32_convert_scalar.go:171	0x6f10b9		756e			JNE 0x6f1129								
+  utf32_convert_scalar.go:171	0x6f10bb		0f1f440000		NOPL 0(AX)(AX*1)							
+  utf32_convert_scalar.go:172	0x6f10c0		4839d6			CMPQ SI, DX								
+  utf32_convert_scalar.go:172	0x6f10c3		0f860b010000		JBE 0x6f11d4								
+  utf32_convert_scalar.go:172	0x6f10c9		4589c1			MOVL R8, R9								
+  utf32_convert_scalar.go:172	0x6f10cc		41c1e80c		SHRL $0xc, R8								
+  utf32_convert_scalar.go:172	0x6f10d0		4181c8e0000000		ORL $0xe0, R8								
+  utf32_convert_scalar.go:172	0x6f10d7		44880417		MOVB R8, 0(DI)(DX*1)							
+  utf32_convert_scalar.go:173	0x6f10db		4c8d4201		LEAQ 0x1(DX), R8							
+  utf32_convert_scalar.go:173	0x6f10df		90			NOPL									
+  utf32_convert_scalar.go:173	0x6f10e0		4c39c6			CMPQ SI, R8								
+  utf32_convert_scalar.go:173	0x6f10e3		0f86e6000000		JBE 0x6f11cf								
+  utf32_convert_scalar.go:173	0x6f10e9		4589c8			MOVL R9, R8								
+  utf32_convert_scalar.go:173	0x6f10ec		41c1e906		SHRL $0x6, R9								
+  utf32_convert_scalar.go:173	0x6f10f0		4183e13f		ANDL $0x3f, R9								
+  utf32_convert_scalar.go:173	0x6f10f4		4181c980000000		ORL $0x80, R9								
+  utf32_convert_scalar.go:173	0x6f10fb		44884c3a01		MOVB R9, 0x1(DX)(DI*1)							
+  utf32_convert_scalar.go:174	0x6f1100		4c8d4a02		LEAQ 0x2(DX), R9							
+  utf32_convert_scalar.go:174	0x6f1104		4c39ce			CMPQ SI, R9								
+  utf32_convert_scalar.go:174	0x6f1107		0f86bd000000		JBE 0x6f11ca								
+  utf32_convert_scalar.go:174	0x6f110d		4183e03f		ANDL $0x3f, R8								
+  utf32_convert_scalar.go:174	0x6f1111		4181c880000000		ORL $0x80, R8								
+  utf32_convert_scalar.go:174	0x6f1118		4488443a02		MOVB R8, 0x2(DX)(DI*1)							
+  utf32_convert_scalar.go:175	0x6f111d		4883c203		ADDQ $0x3, DX								
+  utf32_convert_scalar.go:176	0x6f1121		48ffc1			INCQ CX									
+  utf32_convert_scalar.go:176	0x6f1124		e909ffffff		JMP 0x6f1032								
+  utf32_convert_scalar.go:178	0x6f1129		4839d6			CMPQ SI, DX								
+  utf32_convert_scalar.go:178	0x6f112c		0f8693000000		JBE 0x6f11c5								
+  utf32_convert_scalar.go:178	0x6f1132		4589c1			MOVL R8, R9								
+  utf32_convert_scalar.go:178	0x6f1135		41c1e812		SHRL $0x12, R8								
+  utf32_convert_scalar.go:178	0x6f1139		4181c8f0000000		ORL $0xf0, R8								
+  utf32_convert_scalar.go:178	0x6f1140		44880417		MOVB R8, 0(DI)(DX*1)							
+  utf32_convert_scalar.go:179	0x6f1144		4c8d4201		LEAQ 0x1(DX), R8							
+  utf32_convert_scalar.go:179	0x6f1148		4c39c6			CMPQ SI, R8								
+  utf32_convert_scalar.go:179	0x6f114b		766f			JBE 0x6f11bc								
+  utf32_convert_scalar.go:179	0x6f114d		4589c8			MOVL R9, R8								
+  utf32_convert_scalar.go:179	0x6f1150		41c1e90c		SHRL $0xc, R9								
+  utf32_convert_scalar.go:179	0x6f1154		4183e13f		ANDL $0x3f, R9								
+  utf32_convert_scalar.go:179	0x6f1158		4181c980000000		ORL $0x80, R9								
+  utf32_convert_scalar.go:179	0x6f115f		44884c3a01		MOVB R9, 0x1(DX)(DI*1)							
+  utf32_convert_scalar.go:180	0x6f1164		4c8d4a02		LEAQ 0x2(DX), R9							
+  utf32_convert_scalar.go:180	0x6f1168		4c39ce			CMPQ SI, R9								
+  utf32_convert_scalar.go:180	0x6f116b		764a			JBE 0x6f11b7								
+  utf32_convert_scalar.go:180	0x6f116d		4589c1			MOVL R8, R9								
+  utf32_convert_scalar.go:180	0x6f1170		41c1e806		SHRL $0x6, R8								
+  utf32_convert_scalar.go:180	0x6f1174		4183e03f		ANDL $0x3f, R8								
+  utf32_convert_scalar.go:180	0x6f1178		4181c880000000		ORL $0x80, R8								
+  utf32_convert_scalar.go:180	0x6f117f		4488443a02		MOVB R8, 0x2(DX)(DI*1)							
+  utf32_convert_scalar.go:181	0x6f1184		4c8d4203		LEAQ 0x3(DX), R8							
+  utf32_convert_scalar.go:181	0x6f1188		4c39c6			CMPQ SI, R8								
+  utf32_convert_scalar.go:181	0x6f118b		7625			JBE 0x6f11b2								
+  utf32_convert_scalar.go:181	0x6f118d		4183e13f		ANDL $0x3f, R9								
+  utf32_convert_scalar.go:181	0x6f1191		4181c980000000		ORL $0x80, R9								
+  utf32_convert_scalar.go:181	0x6f1198		44884c3a03		MOVB R9, 0x3(DX)(DI*1)							
+  utf32_convert_scalar.go:182	0x6f119d		4883c204		ADDQ $0x4, DX								
+  utf32_convert_scalar.go:183	0x6f11a1		48ffc1			INCQ CX									
+  utf32_convert_scalar.go:183	0x6f11a4		e989feffff		JMP 0x6f1032								
+  utf32_convert_scalar.go:186	0x6f11a9		4889d0			MOVQ DX, AX								
+  utf32_convert_scalar.go:186	0x6f11ac		4883c410		ADDQ $0x10, SP								
+  utf32_convert_scalar.go:186	0x6f11b0		5d			POPQ BP									
+  utf32_convert_scalar.go:186	0x6f11b1		c3			RET									
+  utf32_convert_scalar.go:181	0x6f11b2		e8e993d9ff		CALL runtime.panicBounds(SB)						
+  utf32_convert_scalar.go:180	0x6f11b7		e8e493d9ff		CALL runtime.panicBounds(SB)						
+  utf32_convert_scalar.go:179	0x6f11bc		0f1f4000		NOPL 0(AX)								
+  utf32_convert_scalar.go:179	0x6f11c0		e8db93d9ff		CALL runtime.panicBounds(SB)						
+  utf32_convert_scalar.go:178	0x6f11c5		e8d693d9ff		CALL runtime.panicBounds(SB)						
+  utf32_convert_scalar.go:174	0x6f11ca		e8d193d9ff		CALL runtime.panicBounds(SB)						
+  utf32_convert_scalar.go:173	0x6f11cf		e8cc93d9ff		CALL runtime.panicBounds(SB)						
+  utf32_convert_scalar.go:172	0x6f11d4		e8c793d9ff		CALL runtime.panicBounds(SB)						
+  utf32_convert_scalar.go:168	0x6f11d9		e8c293d9ff		CALL runtime.panicBounds(SB)						
+  utf32_convert_scalar.go:167	0x6f11de		6690			NOPW									
+  utf32_convert_scalar.go:167	0x6f11e0		e8bb93d9ff		CALL runtime.panicBounds(SB)						
+  utf32_convert_scalar.go:163	0x6f11e5		e8b693d9ff		CALL runtime.panicBounds(SB)						
+  utf32_convert_scalar.go:160	0x6f11ea		e8b193d9ff		CALL runtime.panicBounds(SB)						
+  utf32_convert_scalar.go:155	0x6f11ef		488d058a970c00		LEAQ 0xc978a(IP), AX							
+  utf32_convert_scalar.go:155	0x6f11f6		488d1db3671800		LEAQ 0x1867b3(IP), BX							
+  utf32_convert_scalar.go:155	0x6f11fd		0f1f00			NOPL 0(AX)								
+  utf32_convert_scalar.go:155	0x6f1200		e83b17d9ff		CALL runtime.gopanic(SB)						
+  utf32_convert_scalar.go:155	0x6f1205		90			NOPL									
+  utf32_convert_scalar.go:153	0x6f1206		4889442408		MOVQ AX, 0x8(SP)							
+  utf32_convert_scalar.go:153	0x6f120b		48895c2410		MOVQ BX, 0x10(SP)							
+  utf32_convert_scalar.go:153	0x6f1210		48894c2418		MOVQ CX, 0x18(SP)							
+  utf32_convert_scalar.go:153	0x6f1215		48897c2420		MOVQ DI, 0x20(SP)							
+  utf32_convert_scalar.go:153	0x6f121a		4889742428		MOVQ SI, 0x28(SP)							
+  utf32_convert_scalar.go:153	0x6f121f		4c89442430		MOVQ R8, 0x30(SP)							
+  utf32_convert_scalar.go:153	0x6f1224		e85776d9ff		CALL runtime.morestack_noctxt.abi0(SB)					
+  utf32_convert_scalar.go:153	0x6f1229		488b442408		MOVQ 0x8(SP), AX							
+  utf32_convert_scalar.go:153	0x6f122e		488b5c2410		MOVQ 0x10(SP), BX							
+  utf32_convert_scalar.go:153	0x6f1233		488b4c2418		MOVQ 0x18(SP), CX							
+  utf32_convert_scalar.go:153	0x6f1238		488b7c2420		MOVQ 0x20(SP), DI							
+  utf32_convert_scalar.go:153	0x6f123d		488b742428		MOVQ 0x28(SP), SI							
+  utf32_convert_scalar.go:153	0x6f1242		4c8b442430		MOVQ 0x30(SP), R8							
+  utf32_convert_scalar.go:153	0x6f1247		e974fdffff		JMP github.com/zchee/go-simdutf.convertValidUTF32ToUTF8Scalar(SB)	
+
+TEXT github.com/zchee/go-simdutf.convertUTF32ToUTF16LEScalar(SB) /Users/zchee/go/src/github.com/zchee/go-simdutf/utf32_convert_scalar.go
+  utf32_convert_scalar.go:189	0x6f1260		493b6610		CMPQ SP, 0x10(R14)								
+  utf32_convert_scalar.go:189	0x6f1264		7633			JBE 0x6f1299									
+  utf32_convert_scalar.go:189	0x6f1266		55			PUSHQ BP									
+  utf32_convert_scalar.go:189	0x6f1267		4889e5			MOVQ SP, BP									
+  utf32_convert_scalar.go:189	0x6f126a		4883ec38		SUBQ $0x38, SP									
+  utf32_convert_scalar.go:189	0x6f126e		4889442448		MOVQ AX, 0x48(SP)								
+  utf32_convert_scalar.go:189	0x6f1273		48897c2460		MOVQ DI, 0x60(SP)								
+  utf32_convert_scalar.go:198	0x6f1278		41b901000000		MOVL $0x1, R9									
+  utf32_convert_scalar.go:198	0x6f127e		6690			NOPW										
+  utf32_convert_scalar.go:198	0x6f1280		e8db010000		CALL github.com/zchee/go-simdutf.convertUTF32ToUTF16WithErrorsScalar(SB)	
+  utf32_convert_scalar.go:199	0x6f1285		84c0			TESTL AL, AL									
+  utf32_convert_scalar.go:190	0x6f1287		ba00000000		MOVL $0x0, DX									
+  utf32_convert_scalar.go:190	0x6f128c		480f45da		CMOVNE DX, BX									
+  utf32_convert_scalar.go:190	0x6f1290		4889d8			MOVQ BX, AX									
+  utf32_convert_scalar.go:199	0x6f1293		4883c438		ADDQ $0x38, SP									
+  utf32_convert_scalar.go:199	0x6f1297		5d			POPQ BP										
+  utf32_convert_scalar.go:199	0x6f1298		c3			RET										
+  utf32_convert_scalar.go:189	0x6f1299		4889442408		MOVQ AX, 0x8(SP)								
+  utf32_convert_scalar.go:189	0x6f129e		48895c2410		MOVQ BX, 0x10(SP)								
+  utf32_convert_scalar.go:189	0x6f12a3		48894c2418		MOVQ CX, 0x18(SP)								
+  utf32_convert_scalar.go:189	0x6f12a8		48897c2420		MOVQ DI, 0x20(SP)								
+  utf32_convert_scalar.go:189	0x6f12ad		4889742428		MOVQ SI, 0x28(SP)								
+  utf32_convert_scalar.go:189	0x6f12b2		4c89442430		MOVQ R8, 0x30(SP)								
+  utf32_convert_scalar.go:189	0x6f12b7		e8c475d9ff		CALL runtime.morestack_noctxt.abi0(SB)						
+  utf32_convert_scalar.go:189	0x6f12bc		488b442408		MOVQ 0x8(SP), AX								
+  utf32_convert_scalar.go:189	0x6f12c1		488b5c2410		MOVQ 0x10(SP), BX								
+  utf32_convert_scalar.go:189	0x6f12c6		488b4c2418		MOVQ 0x18(SP), CX								
+  utf32_convert_scalar.go:189	0x6f12cb		488b7c2420		MOVQ 0x20(SP), DI								
+  utf32_convert_scalar.go:189	0x6f12d0		488b742428		MOVQ 0x28(SP), SI								
+  utf32_convert_scalar.go:189	0x6f12d5		4c8b442430		MOVQ 0x30(SP), R8								
+  utf32_convert_scalar.go:189	0x6f12da		eb84			JMP github.com/zchee/go-simdutf.convertUTF32ToUTF16LEScalar(SB)			
+
+TEXT github.com/zchee/go-simdutf.convertUTF32ToUTF16BEScalar(SB) /Users/zchee/go/src/github.com/zchee/go-simdutf/utf32_convert_scalar.go
+  utf32_convert_scalar.go:193	0x6f12e0		493b6610		CMPQ SP, 0x10(R14)								
+  utf32_convert_scalar.go:193	0x6f12e4		7633			JBE 0x6f1319									
+  utf32_convert_scalar.go:193	0x6f12e6		55			PUSHQ BP									
+  utf32_convert_scalar.go:193	0x6f12e7		4889e5			MOVQ SP, BP									
+  utf32_convert_scalar.go:193	0x6f12ea		4883ec38		SUBQ $0x38, SP									
+  utf32_convert_scalar.go:193	0x6f12ee		4889442448		MOVQ AX, 0x48(SP)								
+  utf32_convert_scalar.go:193	0x6f12f3		48897c2460		MOVQ DI, 0x60(SP)								
+  utf32_convert_scalar.go:198	0x6f12f8		4531c9			XORL R9, R9									
+  utf32_convert_scalar.go:198	0x6f12fb		0f1f440000		NOPL 0(AX)(AX*1)								
+  utf32_convert_scalar.go:198	0x6f1300		e85b010000		CALL github.com/zchee/go-simdutf.convertUTF32ToUTF16WithErrorsScalar(SB)	
+  utf32_convert_scalar.go:199	0x6f1305		84c0			TESTL AL, AL									
+  utf32_convert_scalar.go:194	0x6f1307		ba00000000		MOVL $0x0, DX									
+  utf32_convert_scalar.go:194	0x6f130c		480f45da		CMOVNE DX, BX									
+  utf32_convert_scalar.go:194	0x6f1310		4889d8			MOVQ BX, AX									
+  utf32_convert_scalar.go:199	0x6f1313		4883c438		ADDQ $0x38, SP									
+  utf32_convert_scalar.go:199	0x6f1317		5d			POPQ BP										
+  utf32_convert_scalar.go:199	0x6f1318		c3			RET										
+  utf32_convert_scalar.go:193	0x6f1319		4889442408		MOVQ AX, 0x8(SP)								
+  utf32_convert_scalar.go:193	0x6f131e		48895c2410		MOVQ BX, 0x10(SP)								
+  utf32_convert_scalar.go:193	0x6f1323		48894c2418		MOVQ CX, 0x18(SP)								
+  utf32_convert_scalar.go:193	0x6f1328		48897c2420		MOVQ DI, 0x20(SP)								
+  utf32_convert_scalar.go:193	0x6f132d		4889742428		MOVQ SI, 0x28(SP)								
+  utf32_convert_scalar.go:193	0x6f1332		4c89442430		MOVQ R8, 0x30(SP)								
+  utf32_convert_scalar.go:193	0x6f1337		e84475d9ff		CALL runtime.morestack_noctxt.abi0(SB)						
+  utf32_convert_scalar.go:193	0x6f133c		488b442408		MOVQ 0x8(SP), AX								
+  utf32_convert_scalar.go:193	0x6f1341		488b5c2410		MOVQ 0x10(SP), BX								
+  utf32_convert_scalar.go:193	0x6f1346		488b4c2418		MOVQ 0x18(SP), CX								
+  utf32_convert_scalar.go:193	0x6f134b		488b7c2420		MOVQ 0x20(SP), DI								
+  utf32_convert_scalar.go:193	0x6f1350		488b742428		MOVQ 0x28(SP), SI								
+  utf32_convert_scalar.go:193	0x6f1355		4c8b442430		MOVQ 0x30(SP), R8								
+  utf32_convert_scalar.go:193	0x6f135a		eb84			JMP github.com/zchee/go-simdutf.convertUTF32ToUTF16BEScalar(SB)			
+
+TEXT github.com/zchee/go-simdutf.convertUTF32ToUTF16LEWithErrorsScalar(SB) /Users/zchee/go/src/github.com/zchee/go-simdutf/utf32_convert_scalar.go
+  utf32_convert_scalar.go:205	0x6f1360		493b6610		CMPQ SP, 0x10(R14)								
+  utf32_convert_scalar.go:205	0x6f1364		7625			JBE 0x6f138b									
+  utf32_convert_scalar.go:205	0x6f1366		55			PUSHQ BP									
+  utf32_convert_scalar.go:205	0x6f1367		4889e5			MOVQ SP, BP									
+  utf32_convert_scalar.go:205	0x6f136a		4883ec38		SUBQ $0x38, SP									
+  utf32_convert_scalar.go:205	0x6f136e		4889442448		MOVQ AX, 0x48(SP)								
+  utf32_convert_scalar.go:205	0x6f1373		48897c2460		MOVQ DI, 0x60(SP)								
+  utf32_convert_scalar.go:206	0x6f1378		41b901000000		MOVL $0x1, R9									
+  utf32_convert_scalar.go:206	0x6f137e		6690			NOPW										
+  utf32_convert_scalar.go:206	0x6f1380		e8db000000		CALL github.com/zchee/go-simdutf.convertUTF32ToUTF16WithErrorsScalar(SB)	
+  utf32_convert_scalar.go:206	0x6f1385		4883c438		ADDQ $0x38, SP									
+  utf32_convert_scalar.go:206	0x6f1389		5d			POPQ BP										
+  utf32_convert_scalar.go:206	0x6f138a		c3			RET										
+  utf32_convert_scalar.go:205	0x6f138b		4889442408		MOVQ AX, 0x8(SP)								
+  utf32_convert_scalar.go:205	0x6f1390		48895c2410		MOVQ BX, 0x10(SP)								
+  utf32_convert_scalar.go:205	0x6f1395		48894c2418		MOVQ CX, 0x18(SP)								
+  utf32_convert_scalar.go:205	0x6f139a		48897c2420		MOVQ DI, 0x20(SP)								
+  utf32_convert_scalar.go:205	0x6f139f		4889742428		MOVQ SI, 0x28(SP)								
+  utf32_convert_scalar.go:205	0x6f13a4		4c89442430		MOVQ R8, 0x30(SP)								
+  utf32_convert_scalar.go:205	0x6f13a9		e8d274d9ff		CALL runtime.morestack_noctxt.abi0(SB)						
+  utf32_convert_scalar.go:205	0x6f13ae		488b442408		MOVQ 0x8(SP), AX								
+  utf32_convert_scalar.go:205	0x6f13b3		488b5c2410		MOVQ 0x10(SP), BX								
+  utf32_convert_scalar.go:205	0x6f13b8		488b4c2418		MOVQ 0x18(SP), CX								
+  utf32_convert_scalar.go:205	0x6f13bd		488b7c2420		MOVQ 0x20(SP), DI								
+  utf32_convert_scalar.go:205	0x6f13c2		488b742428		MOVQ 0x28(SP), SI								
+  utf32_convert_scalar.go:205	0x6f13c7		4c8b442430		MOVQ 0x30(SP), R8								
+  utf32_convert_scalar.go:205	0x6f13cc		eb92			JMP github.com/zchee/go-simdutf.convertUTF32ToUTF16LEWithErrorsScalar(SB)	
+
+TEXT github.com/zchee/go-simdutf.convertUTF32ToUTF16BEWithErrorsScalar(SB) /Users/zchee/go/src/github.com/zchee/go-simdutf/utf32_convert_scalar.go
+  utf32_convert_scalar.go:209	0x6f13e0		493b6610		CMPQ SP, 0x10(R14)								
+  utf32_convert_scalar.go:209	0x6f13e4		7625			JBE 0x6f140b									
+  utf32_convert_scalar.go:209	0x6f13e6		55			PUSHQ BP									
+  utf32_convert_scalar.go:209	0x6f13e7		4889e5			MOVQ SP, BP									
+  utf32_convert_scalar.go:209	0x6f13ea		4883ec38		SUBQ $0x38, SP									
+  utf32_convert_scalar.go:209	0x6f13ee		4889442448		MOVQ AX, 0x48(SP)								
+  utf32_convert_scalar.go:209	0x6f13f3		48897c2460		MOVQ DI, 0x60(SP)								
+  utf32_convert_scalar.go:210	0x6f13f8		4531c9			XORL R9, R9									
+  utf32_convert_scalar.go:210	0x6f13fb		0f1f440000		NOPL 0(AX)(AX*1)								
+  utf32_convert_scalar.go:210	0x6f1400		e85b000000		CALL github.com/zchee/go-simdutf.convertUTF32ToUTF16WithErrorsScalar(SB)	
+  utf32_convert_scalar.go:210	0x6f1405		4883c438		ADDQ $0x38, SP									
+  utf32_convert_scalar.go:210	0x6f1409		5d			POPQ BP										
+  utf32_convert_scalar.go:210	0x6f140a		c3			RET										
+  utf32_convert_scalar.go:209	0x6f140b		4889442408		MOVQ AX, 0x8(SP)								
+  utf32_convert_scalar.go:209	0x6f1410		48895c2410		MOVQ BX, 0x10(SP)								
+  utf32_convert_scalar.go:209	0x6f1415		48894c2418		MOVQ CX, 0x18(SP)								
+  utf32_convert_scalar.go:209	0x6f141a		48897c2420		MOVQ DI, 0x20(SP)								
+  utf32_convert_scalar.go:209	0x6f141f		4889742428		MOVQ SI, 0x28(SP)								
+  utf32_convert_scalar.go:209	0x6f1424		4c89442430		MOVQ R8, 0x30(SP)								
+  utf32_convert_scalar.go:209	0x6f1429		e85274d9ff		CALL runtime.morestack_noctxt.abi0(SB)						
+  utf32_convert_scalar.go:209	0x6f142e		488b442408		MOVQ 0x8(SP), AX								
+  utf32_convert_scalar.go:209	0x6f1433		488b5c2410		MOVQ 0x10(SP), BX								
+  utf32_convert_scalar.go:209	0x6f1438		488b4c2418		MOVQ 0x18(SP), CX								
+  utf32_convert_scalar.go:209	0x6f143d		488b7c2420		MOVQ 0x20(SP), DI								
+  utf32_convert_scalar.go:209	0x6f1442		488b742428		MOVQ 0x28(SP), SI								
+  utf32_convert_scalar.go:209	0x6f1447		4c8b442430		MOVQ 0x30(SP), R8								
+  utf32_convert_scalar.go:209	0x6f144c		eb92			JMP github.com/zchee/go-simdutf.convertUTF32ToUTF16BEWithErrorsScalar(SB)	
+
+TEXT github.com/zchee/go-simdutf.convertUTF32ToUTF16WithErrorsScalar(SB) /Users/zchee/go/src/github.com/zchee/go-simdutf/utf32_convert_scalar.go
+  utf32_convert_scalar.go:213	0x6f1460		493b6610		CMPQ SP, 0x10(R14)							
+  utf32_convert_scalar.go:213	0x6f1464		0f865c010000		JBE 0x6f15c6								
+  utf32_convert_scalar.go:213	0x6f146a		55			PUSHQ BP								
+  utf32_convert_scalar.go:213	0x6f146b		4889e5			MOVQ SP, BP								
+  utf32_convert_scalar.go:213	0x6f146e		4883ec10		SUBQ $0x10, SP								
+  utf32_convert_scalar.go:213	0x6f1472		4889442420		MOVQ AX, 0x20(SP)							
+  utf32_convert_scalar.go:213	0x6f1477		48897c2438		MOVQ DI, 0x38(SP)							
+  utf32_convert_scalar.go:214	0x6f147c		31c9			XORL CX, CX								
+  utf32_convert_scalar.go:214	0x6f147e		31d2			XORL DX, DX								
+  utf32_convert_scalar.go:50	0x6f1480		eb1e			JMP 0x6f14a0								
+  utf32_convert_scalar.go:50	0x6f1482		448b0488		MOVL 0(AX)(CX*4), R8							
+  utf32_convert_scalar.go:51	0x6f1486		4c8d5201		LEAQ 0x1(DX), R10							
+  utf32_convert_scalar.go:53	0x6f148a		4c8d5a02		LEAQ 0x2(DX), R11							
+  utf32_convert_scalar.go:50	0x6f148e		48ffc1			INCQ CX									
+  utf32_convert_scalar.go:50	0x6f1491		4181f8ffff0000		CMPL R8, $0xffff							
+  utf32_convert_scalar.go:50	0x6f1498		4d0f47d3		CMOVA R11, R10								
+  utf32_convert_scalar.go:50	0x6f149c		4c89d2			MOVQ R10, DX								
+  utf32_convert_scalar.go:50	0x6f149f		90			NOPL									
+  utf32_convert_scalar.go:50	0x6f14a0		4839cb			CMPQ BX, CX								
+  utf32_convert_scalar.go:50	0x6f14a3		7fdd			JG 0x6f1482								
+  utf32_convert_scalar.go:214	0x6f14a5		4839d6			CMPQ SI, DX								
+  utf32_convert_scalar.go:214	0x6f14a8		0f8c03010000		JL 0x6f15b1								
+  utf32_convert_scalar.go:214	0x6f14ae		31c9			XORL CX, CX								
+  utf32_convert_scalar.go:214	0x6f14b0		31d2			XORL DX, DX								
+  utf32_convert_scalar.go:214	0x6f14b2		eb0c			JMP 0x6f14c0								
+  utf32_convert_scalar.go:238	0x6f14b4		48ffc1			INCQ CX									
+  utf32_convert_scalar.go:238	0x6f14b7		660f1f840000000000	NOPW 0(AX)(AX*1)							
+  utf32_convert_scalar.go:219	0x6f14c0		4839cb			CMPQ BX, CX								
+  utf32_convert_scalar.go:219	0x6f14c3		0f8ece000000		JLE 0x6f1597								
+  utf32_convert_scalar.go:220	0x6f14c9		448b0488		MOVL 0(AX)(CX*4), R8							
+  utf32_convert_scalar.go:221	0x6f14cd		41f7c00000ffff		TESTL $-0x10000, R8							
+  utf32_convert_scalar.go:221	0x6f14d4		753d			JNE 0x6f1513								
+  utf32_convert_scalar.go:222	0x6f14d6		458d900028ffff		LEAL 0xffff2800(R8), R10						
+  utf32_convert_scalar.go:222	0x6f14dd		0f1f00			NOPL 0(AX)								
+  utf32_convert_scalar.go:222	0x6f14e0		4181faff070000		CMPL R10, $0x7ff							
+  utf32_convert_scalar.go:222	0x6f14e7		0f868e000000		JBE 0x6f157b								
+  utf32_convert_scalar.go:50	0x6f14ed		4584c9			TESTL R9, R9								
+  utf16_scalar.go:122		0x6f14f0		750e			JNE 0x6f1500								
+  utf16_scalar.go:123		0x6f14f2		90			NOPL									
+  bits.go:277			0x6f14f3		6641c1c008		ROLW $0x8, R8								
+  bits.go:277			0x6f14f8		0f1f840000000000	NOPL 0(AX)(AX*1)							
+  utf32_convert_scalar.go:225	0x6f1500		4839d6			CMPQ SI, DX								
+  utf32_convert_scalar.go:225	0x6f1503		0f86a3000000		JBE 0x6f15ac								
+  utf32_convert_scalar.go:225	0x6f1509		6644890457		MOVW R8, 0(DI)(DX*2)							
+  utf32_convert_scalar.go:226	0x6f150e		48ffc2			INCQ DX									
+  utf32_convert_scalar.go:226	0x6f1511		eba1			JMP 0x6f14b4								
+  utf32_convert_scalar.go:228	0x6f1513		4181f8ffff1000		CMPL R8, $0x10ffff							
+  utf32_convert_scalar.go:228	0x6f151a		776d			JA 0x6f1589								
+  utf32_convert_scalar.go:231	0x6f151c		4181c00000ffff		ADDL $-0x10000, R8							
+  utf32_convert_scalar.go:232	0x6f1523		4589c2			MOVL R8, R10								
+  utf32_convert_scalar.go:232	0x6f1526		41c1e80a		SHRL $0xa, R8								
+  utf32_convert_scalar.go:232	0x6f152a		4181c000d80000		ADDL $0xd800, R8							
+  utf32_convert_scalar.go:50	0x6f1531		4584c9			TESTL R9, R9								
+  utf16_scalar.go:122		0x6f1534		750a			JNE 0x6f1540								
+  utf16_scalar.go:123		0x6f1536		90			NOPL									
+  bits.go:277			0x6f1537		6641c1c008		ROLW $0x8, R8								
+  bits.go:277			0x6f153c		0f1f4000		NOPL 0(AX)								
+  utf32_convert_scalar.go:234	0x6f1540		4839d6			CMPQ SI, DX								
+  utf32_convert_scalar.go:234	0x6f1543		7662			JBE 0x6f15a7								
+  utf32_convert_scalar.go:234	0x6f1545		6644890457		MOVW R8, 0(DI)(DX*2)							
+  utf32_convert_scalar.go:233	0x6f154a		4181e2ff030000		ANDL $0x3ff, R10							
+  utf32_convert_scalar.go:233	0x6f1551		458d8200dc0000		LEAL 0xdc00(R10), R8							
+  utf32_convert_scalar.go:50	0x6f1558		4584c9			TESTL R9, R9								
+  utf16_scalar.go:122		0x6f155b		7506			JNE 0x6f1563								
+  utf16_scalar.go:123		0x6f155d		90			NOPL									
+  bits.go:277			0x6f155e		6641c1c008		ROLW $0x8, R8								
+  utf32_convert_scalar.go:235	0x6f1563		4c8d5201		LEAQ 0x1(DX), R10							
+  utf32_convert_scalar.go:235	0x6f1567		4c39d6			CMPQ SI, R10								
+  utf32_convert_scalar.go:235	0x6f156a		7636			JBE 0x6f15a2								
+  utf32_convert_scalar.go:235	0x6f156c		664489445702		MOVW R8, 0x2(DI)(DX*2)							
+  utf32_convert_scalar.go:236	0x6f1572		4883c202		ADDQ $0x2, DX								
+  utf32_convert_scalar.go:236	0x6f1576		e939ffffff		JMP 0x6f14b4								
+  utf32_convert_scalar.go:223	0x6f157b		b806000000		MOVL $0x6, AX								
+  utf32_convert_scalar.go:223	0x6f1580		4889cb			MOVQ CX, BX								
+  utf32_convert_scalar.go:223	0x6f1583		4883c410		ADDQ $0x10, SP								
+  utf32_convert_scalar.go:223	0x6f1587		5d			POPQ BP									
+  utf32_convert_scalar.go:223	0x6f1588		c3			RET									
+  utf32_convert_scalar.go:229	0x6f1589		b805000000		MOVL $0x5, AX								
+  utf32_convert_scalar.go:229	0x6f158e		4889cb			MOVQ CX, BX								
+  utf32_convert_scalar.go:229	0x6f1591		4883c410		ADDQ $0x10, SP								
+  utf32_convert_scalar.go:229	0x6f1595		5d			POPQ BP									
+  utf32_convert_scalar.go:229	0x6f1596		c3			RET									
+  utf32_convert_scalar.go:240	0x6f1597		31c0			XORL AX, AX								
+  utf32_convert_scalar.go:240	0x6f1599		4889d3			MOVQ DX, BX								
+  utf32_convert_scalar.go:240	0x6f159c		4883c410		ADDQ $0x10, SP								
+  utf32_convert_scalar.go:240	0x6f15a0		5d			POPQ BP									
+  utf32_convert_scalar.go:240	0x6f15a1		c3			RET									
+  utf32_convert_scalar.go:235	0x6f15a2		e8f98fd9ff		CALL runtime.panicBounds(SB)						
+  utf32_convert_scalar.go:234	0x6f15a7		e8f48fd9ff		CALL runtime.panicBounds(SB)						
+  utf32_convert_scalar.go:225	0x6f15ac		e8ef8fd9ff		CALL runtime.panicBounds(SB)						
+  utf32_convert_scalar.go:215	0x6f15b1		488d05c8930c00		LEAQ 0xc93c8(IP), AX							
+  utf32_convert_scalar.go:215	0x6f15b8		488d1df1631800		LEAQ 0x1863f1(IP), BX							
+  utf32_convert_scalar.go:215	0x6f15bf		90			NOPL									
+  utf32_convert_scalar.go:215	0x6f15c0		e87b13d9ff		CALL runtime.gopanic(SB)						
+  utf32_convert_scalar.go:215	0x6f15c5		90			NOPL									
+  utf32_convert_scalar.go:213	0x6f15c6		4889442408		MOVQ AX, 0x8(SP)							
+  utf32_convert_scalar.go:213	0x6f15cb		48895c2410		MOVQ BX, 0x10(SP)							
+  utf32_convert_scalar.go:213	0x6f15d0		48894c2418		MOVQ CX, 0x18(SP)							
+  utf32_convert_scalar.go:213	0x6f15d5		48897c2420		MOVQ DI, 0x20(SP)							
+  utf32_convert_scalar.go:213	0x6f15da		4889742428		MOVQ SI, 0x28(SP)							
+  utf32_convert_scalar.go:213	0x6f15df		4c89442430		MOVQ R8, 0x30(SP)							
+  utf32_convert_scalar.go:213	0x6f15e4		44884c2438		MOVB R9, 0x38(SP)							
+  utf32_convert_scalar.go:213	0x6f15e9		e89272d9ff		CALL runtime.morestack_noctxt.abi0(SB)					
+  utf32_convert_scalar.go:213	0x6f15ee		488b442408		MOVQ 0x8(SP), AX							
+  utf32_convert_scalar.go:213	0x6f15f3		488b5c2410		MOVQ 0x10(SP), BX							
+  utf32_convert_scalar.go:213	0x6f15f8		488b4c2418		MOVQ 0x18(SP), CX							
+  utf32_convert_scalar.go:213	0x6f15fd		488b7c2420		MOVQ 0x20(SP), DI							
+  utf32_convert_scalar.go:213	0x6f1602		488b742428		MOVQ 0x28(SP), SI							
+  utf32_convert_scalar.go:213	0x6f1607		4c8b442430		MOVQ 0x30(SP), R8							
+  utf32_convert_scalar.go:213	0x6f160c		440fb64c2438		MOVZX 0x38(SP), R9							
+  utf32_convert_scalar.go:213	0x6f1612		e949feffff		JMP github.com/zchee/go-simdutf.convertUTF32ToUTF16WithErrorsScalar(SB)	
+
+TEXT github.com/zchee/go-simdutf.convertValidUTF32ToUTF16LEScalar(SB) /Users/zchee/go/src/github.com/zchee/go-simdutf/utf32_convert_scalar.go
+  utf32_convert_scalar.go:243	0x6f1620		493b6610		CMPQ SP, 0x10(R14)							
+  utf32_convert_scalar.go:243	0x6f1624		7625			JBE 0x6f164b								
+  utf32_convert_scalar.go:243	0x6f1626		55			PUSHQ BP								
+  utf32_convert_scalar.go:243	0x6f1627		4889e5			MOVQ SP, BP								
+  utf32_convert_scalar.go:243	0x6f162a		4883ec38		SUBQ $0x38, SP								
+  utf32_convert_scalar.go:243	0x6f162e		4889442448		MOVQ AX, 0x48(SP)							
+  utf32_convert_scalar.go:243	0x6f1633		48897c2460		MOVQ DI, 0x60(SP)							
+  utf32_convert_scalar.go:244	0x6f1638		41b901000000		MOVL $0x1, R9								
+  utf32_convert_scalar.go:244	0x6f163e		6690			NOPW									
+  utf32_convert_scalar.go:244	0x6f1640		e8db000000		CALL github.com/zchee/go-simdutf.convertValidUTF32ToUTF16Scalar(SB)	
+  utf32_convert_scalar.go:244	0x6f1645		4883c438		ADDQ $0x38, SP								
+  utf32_convert_scalar.go:244	0x6f1649		5d			POPQ BP									
+  utf32_convert_scalar.go:244	0x6f164a		c3			RET									
+  utf32_convert_scalar.go:243	0x6f164b		4889442408		MOVQ AX, 0x8(SP)							
+  utf32_convert_scalar.go:243	0x6f1650		48895c2410		MOVQ BX, 0x10(SP)							
+  utf32_convert_scalar.go:243	0x6f1655		48894c2418		MOVQ CX, 0x18(SP)							
+  utf32_convert_scalar.go:243	0x6f165a		48897c2420		MOVQ DI, 0x20(SP)							
+  utf32_convert_scalar.go:243	0x6f165f		4889742428		MOVQ SI, 0x28(SP)							
+  utf32_convert_scalar.go:243	0x6f1664		4c89442430		MOVQ R8, 0x30(SP)							
+  utf32_convert_scalar.go:243	0x6f1669		e81272d9ff		CALL runtime.morestack_noctxt.abi0(SB)					
+  utf32_convert_scalar.go:243	0x6f166e		488b442408		MOVQ 0x8(SP), AX							
+  utf32_convert_scalar.go:243	0x6f1673		488b5c2410		MOVQ 0x10(SP), BX							
+  utf32_convert_scalar.go:243	0x6f1678		488b4c2418		MOVQ 0x18(SP), CX							
+  utf32_convert_scalar.go:243	0x6f167d		488b7c2420		MOVQ 0x20(SP), DI							
+  utf32_convert_scalar.go:243	0x6f1682		488b742428		MOVQ 0x28(SP), SI							
+  utf32_convert_scalar.go:243	0x6f1687		4c8b442430		MOVQ 0x30(SP), R8							
+  utf32_convert_scalar.go:243	0x6f168c		eb92			JMP github.com/zchee/go-simdutf.convertValidUTF32ToUTF16LEScalar(SB)	
+
+TEXT github.com/zchee/go-simdutf.convertValidUTF32ToUTF16BEScalar(SB) /Users/zchee/go/src/github.com/zchee/go-simdutf/utf32_convert_scalar.go
+  utf32_convert_scalar.go:247	0x6f16a0		493b6610		CMPQ SP, 0x10(R14)							
+  utf32_convert_scalar.go:247	0x6f16a4		7625			JBE 0x6f16cb								
+  utf32_convert_scalar.go:247	0x6f16a6		55			PUSHQ BP								
+  utf32_convert_scalar.go:247	0x6f16a7		4889e5			MOVQ SP, BP								
+  utf32_convert_scalar.go:247	0x6f16aa		4883ec38		SUBQ $0x38, SP								
+  utf32_convert_scalar.go:247	0x6f16ae		4889442448		MOVQ AX, 0x48(SP)							
+  utf32_convert_scalar.go:247	0x6f16b3		48897c2460		MOVQ DI, 0x60(SP)							
+  utf32_convert_scalar.go:248	0x6f16b8		4531c9			XORL R9, R9								
+  utf32_convert_scalar.go:248	0x6f16bb		0f1f440000		NOPL 0(AX)(AX*1)							
+  utf32_convert_scalar.go:248	0x6f16c0		e85b000000		CALL github.com/zchee/go-simdutf.convertValidUTF32ToUTF16Scalar(SB)	
+  utf32_convert_scalar.go:248	0x6f16c5		4883c438		ADDQ $0x38, SP								
+  utf32_convert_scalar.go:248	0x6f16c9		5d			POPQ BP									
+  utf32_convert_scalar.go:248	0x6f16ca		c3			RET									
+  utf32_convert_scalar.go:247	0x6f16cb		4889442408		MOVQ AX, 0x8(SP)							
+  utf32_convert_scalar.go:247	0x6f16d0		48895c2410		MOVQ BX, 0x10(SP)							
+  utf32_convert_scalar.go:247	0x6f16d5		48894c2418		MOVQ CX, 0x18(SP)							
+  utf32_convert_scalar.go:247	0x6f16da		48897c2420		MOVQ DI, 0x20(SP)							
+  utf32_convert_scalar.go:247	0x6f16df		4889742428		MOVQ SI, 0x28(SP)							
+  utf32_convert_scalar.go:247	0x6f16e4		4c89442430		MOVQ R8, 0x30(SP)							
+  utf32_convert_scalar.go:247	0x6f16e9		e89271d9ff		CALL runtime.morestack_noctxt.abi0(SB)					
+  utf32_convert_scalar.go:247	0x6f16ee		488b442408		MOVQ 0x8(SP), AX							
+  utf32_convert_scalar.go:247	0x6f16f3		488b5c2410		MOVQ 0x10(SP), BX							
+  utf32_convert_scalar.go:247	0x6f16f8		488b4c2418		MOVQ 0x18(SP), CX							
+  utf32_convert_scalar.go:247	0x6f16fd		488b7c2420		MOVQ 0x20(SP), DI							
+  utf32_convert_scalar.go:247	0x6f1702		488b742428		MOVQ 0x28(SP), SI							
+  utf32_convert_scalar.go:247	0x6f1707		4c8b442430		MOVQ 0x30(SP), R8							
+  utf32_convert_scalar.go:247	0x6f170c		eb92			JMP github.com/zchee/go-simdutf.convertValidUTF32ToUTF16BEScalar(SB)	
+
+TEXT github.com/zchee/go-simdutf.convertValidUTF32ToUTF16Scalar(SB) /Users/zchee/go/src/github.com/zchee/go-simdutf/utf32_convert_scalar.go
+  utf32_convert_scalar.go:251	0x6f1720		493b6610		CMPQ SP, 0x10(R14)							
+  utf32_convert_scalar.go:251	0x6f1724		0f861f010000		JBE 0x6f1849								
+  utf32_convert_scalar.go:251	0x6f172a		55			PUSHQ BP								
+  utf32_convert_scalar.go:251	0x6f172b		4889e5			MOVQ SP, BP								
+  utf32_convert_scalar.go:251	0x6f172e		4883ec10		SUBQ $0x10, SP								
+  utf32_convert_scalar.go:251	0x6f1732		4889442420		MOVQ AX, 0x20(SP)							
+  utf32_convert_scalar.go:251	0x6f1737		48897c2438		MOVQ DI, 0x38(SP)							
+  utf32_convert_scalar.go:252	0x6f173c		31c9			XORL CX, CX								
+  utf32_convert_scalar.go:252	0x6f173e		31d2			XORL DX, DX								
+  utf32_convert_scalar.go:50	0x6f1740		eb1e			JMP 0x6f1760								
+  utf32_convert_scalar.go:50	0x6f1742		448b0488		MOVL 0(AX)(CX*4), R8							
+  utf32_convert_scalar.go:51	0x6f1746		4c8d5201		LEAQ 0x1(DX), R10							
+  utf32_convert_scalar.go:53	0x6f174a		4c8d5a02		LEAQ 0x2(DX), R11							
+  utf32_convert_scalar.go:50	0x6f174e		48ffc1			INCQ CX									
+  utf32_convert_scalar.go:50	0x6f1751		4181f8ffff0000		CMPL R8, $0xffff							
+  utf32_convert_scalar.go:50	0x6f1758		4d0f47d3		CMOVA R11, R10								
+  utf32_convert_scalar.go:50	0x6f175c		4c89d2			MOVQ R10, DX								
+  utf32_convert_scalar.go:50	0x6f175f		90			NOPL									
+  utf32_convert_scalar.go:50	0x6f1760		4839cb			CMPQ BX, CX								
+  utf32_convert_scalar.go:50	0x6f1763		7fdd			JG 0x6f1742								
+  utf32_convert_scalar.go:252	0x6f1765		4839d6			CMPQ SI, DX								
+  utf32_convert_scalar.go:252	0x6f1768		0f8cc7000000		JL 0x6f1835								
+  utf32_convert_scalar.go:252	0x6f176e		31c9			XORL CX, CX								
+  utf32_convert_scalar.go:252	0x6f1770		31d2			XORL DX, DX								
+  utf32_convert_scalar.go:257	0x6f1772		4839cb			CMPQ BX, CX								
+  utf32_convert_scalar.go:257	0x6f1775		0f8e9c000000		JLE 0x6f1817								
+  utf32_convert_scalar.go:257	0x6f177b		0f1f440000		NOPL 0(AX)(AX*1)							
+  utf32_convert_scalar.go:258	0x6f1780		0f86aa000000		JBE 0x6f1830								
+  utf32_convert_scalar.go:258	0x6f1786		448b0488		MOVL 0(AX)(CX*4), R8							
+  utf32_convert_scalar.go:259	0x6f178a		41f7c00000ffff		TESTL $-0x10000, R8							
+  utf32_convert_scalar.go:259	0x6f1791		7523			JNE 0x6f17b6								
+  utf32_convert_scalar.go:50	0x6f1793		4584c9			TESTL R9, R9								
+  utf16_scalar.go:122		0x6f1796		7508			JNE 0x6f17a0								
+  utf16_scalar.go:123		0x6f1798		90			NOPL									
+  bits.go:277			0x6f1799		6641c1c008		ROLW $0x8, R8								
+  bits.go:277			0x6f179e		6690			NOPW									
+  utf32_convert_scalar.go:260	0x6f17a0		4839d6			CMPQ SI, DX								
+  utf32_convert_scalar.go:260	0x6f17a3		0f8682000000		JBE 0x6f182b								
+  utf32_convert_scalar.go:260	0x6f17a9		6644890457		MOVW R8, 0(DI)(DX*2)							
+  utf32_convert_scalar.go:261	0x6f17ae		48ffc2			INCQ DX									
+  utf32_convert_scalar.go:262	0x6f17b1		48ffc1			INCQ CX									
+  utf32_convert_scalar.go:263	0x6f17b4		ebbc			JMP 0x6f1772								
+  utf32_convert_scalar.go:265	0x6f17b6		4181c00000ffff		ADDL $-0x10000, R8							
+  utf32_convert_scalar.go:266	0x6f17bd		4589c2			MOVL R8, R10								
+  utf32_convert_scalar.go:266	0x6f17c0		41c1e80a		SHRL $0xa, R8								
+  utf32_convert_scalar.go:266	0x6f17c4		4181c000d80000		ADDL $0xd800, R8							
+  utf32_convert_scalar.go:50	0x6f17cb		4584c9			TESTL R9, R9								
+  utf16_scalar.go:122		0x6f17ce		7506			JNE 0x6f17d6								
+  utf16_scalar.go:123		0x6f17d0		90			NOPL									
+  bits.go:277			0x6f17d1		6641c1c008		ROLW $0x8, R8								
+  utf32_convert_scalar.go:268	0x6f17d6		4839d6			CMPQ SI, DX								
+  utf32_convert_scalar.go:268	0x6f17d9		764b			JBE 0x6f1826								
+  utf32_convert_scalar.go:268	0x6f17db		6644890457		MOVW R8, 0(DI)(DX*2)							
+  utf32_convert_scalar.go:267	0x6f17e0		4181e2ff030000		ANDL $0x3ff, R10							
+  utf32_convert_scalar.go:267	0x6f17e7		458d8200dc0000		LEAL 0xdc00(R10), R8							
+  utf32_convert_scalar.go:50	0x6f17ee		4584c9			TESTL R9, R9								
+  utf16_scalar.go:122		0x6f17f1		7506			JNE 0x6f17f9								
+  utf16_scalar.go:123		0x6f17f3		90			NOPL									
+  bits.go:277			0x6f17f4		6641c1c008		ROLW $0x8, R8								
+  utf32_convert_scalar.go:269	0x6f17f9		4c8d5201		LEAQ 0x1(DX), R10							
+  utf32_convert_scalar.go:269	0x6f17fd		0f1f00			NOPL 0(AX)								
+  utf32_convert_scalar.go:269	0x6f1800		4c39d6			CMPQ SI, R10								
+  utf32_convert_scalar.go:269	0x6f1803		761c			JBE 0x6f1821								
+  utf32_convert_scalar.go:269	0x6f1805		664489445702		MOVW R8, 0x2(DI)(DX*2)							
+  utf32_convert_scalar.go:270	0x6f180b		4883c202		ADDQ $0x2, DX								
+  utf32_convert_scalar.go:271	0x6f180f		48ffc1			INCQ CX									
+  utf32_convert_scalar.go:271	0x6f1812		e95bffffff		JMP 0x6f1772								
+  utf32_convert_scalar.go:273	0x6f1817		4889d0			MOVQ DX, AX								
+  utf32_convert_scalar.go:273	0x6f181a		4883c410		ADDQ $0x10, SP								
+  utf32_convert_scalar.go:273	0x6f181e		5d			POPQ BP									
+  utf32_convert_scalar.go:273	0x6f181f		90			NOPL									
+  utf32_convert_scalar.go:273	0x6f1820		c3			RET									
+  utf32_convert_scalar.go:269	0x6f1821		e87a8dd9ff		CALL runtime.panicBounds(SB)						
+  utf32_convert_scalar.go:268	0x6f1826		e8758dd9ff		CALL runtime.panicBounds(SB)						
+  utf32_convert_scalar.go:260	0x6f182b		e8708dd9ff		CALL runtime.panicBounds(SB)						
+  utf32_convert_scalar.go:258	0x6f1830		e86b8dd9ff		CALL runtime.panicBounds(SB)						
+  utf32_convert_scalar.go:253	0x6f1835		488d0544910c00		LEAQ 0xc9144(IP), AX							
+  utf32_convert_scalar.go:253	0x6f183c		488d1d6d611800		LEAQ 0x18616d(IP), BX							
+  utf32_convert_scalar.go:253	0x6f1843		e8f810d9ff		CALL runtime.gopanic(SB)						
+  utf32_convert_scalar.go:253	0x6f1848		90			NOPL									
+  utf32_convert_scalar.go:251	0x6f1849		4889442408		MOVQ AX, 0x8(SP)							
+  utf32_convert_scalar.go:251	0x6f184e		48895c2410		MOVQ BX, 0x10(SP)							
+  utf32_convert_scalar.go:251	0x6f1853		48894c2418		MOVQ CX, 0x18(SP)							
+  utf32_convert_scalar.go:251	0x6f1858		48897c2420		MOVQ DI, 0x20(SP)							
+  utf32_convert_scalar.go:251	0x6f185d		4889742428		MOVQ SI, 0x28(SP)							
+  utf32_convert_scalar.go:251	0x6f1862		4c89442430		MOVQ R8, 0x30(SP)							
+  utf32_convert_scalar.go:251	0x6f1867		44884c2438		MOVB R9, 0x38(SP)							
+  utf32_convert_scalar.go:251	0x6f186c		e80f70d9ff		CALL runtime.morestack_noctxt.abi0(SB)					
+  utf32_convert_scalar.go:251	0x6f1871		488b442408		MOVQ 0x8(SP), AX							
+  utf32_convert_scalar.go:251	0x6f1876		488b5c2410		MOVQ 0x10(SP), BX							
+  utf32_convert_scalar.go:251	0x6f187b		488b4c2418		MOVQ 0x18(SP), CX							
+  utf32_convert_scalar.go:251	0x6f1880		488b7c2420		MOVQ 0x20(SP), DI							
+  utf32_convert_scalar.go:251	0x6f1885		488b742428		MOVQ 0x28(SP), SI							
+  utf32_convert_scalar.go:251	0x6f188a		4c8b442430		MOVQ 0x30(SP), R8							
+  utf32_convert_scalar.go:251	0x6f188f		440fb64c2438		MOVZX 0x38(SP), R9							
+  utf32_convert_scalar.go:251	0x6f1895		e986feffff		JMP github.com/zchee/go-simdutf.convertValidUTF32ToUTF16Scalar(SB)	

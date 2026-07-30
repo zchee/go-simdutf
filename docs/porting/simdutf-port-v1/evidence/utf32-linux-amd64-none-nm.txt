@@ -1,0 +1,16 @@
+00000000006f0980 T github.com/zchee/go-simdutf.utf8LengthFromUTF32Scalar
+00000000006f09e0 T github.com/zchee/go-simdutf.utf16LengthFromUTF32Scalar
+00000000006f0a20 T github.com/zchee/go-simdutf.convertUTF32ToLatin1Scalar
+00000000006f0ae0 T github.com/zchee/go-simdutf.convertUTF32ToLatin1WithErrorsScalar
+00000000006f0ba0 T github.com/zchee/go-simdutf.convertValidUTF32ToLatin1Scalar
+00000000006f0c60 T github.com/zchee/go-simdutf.convertUTF32ToUTF8Scalar
+00000000006f0ce0 T github.com/zchee/go-simdutf.convertUTF32ToUTF8WithErrorsScalar
+00000000006f0fc0 T github.com/zchee/go-simdutf.convertValidUTF32ToUTF8Scalar
+00000000006f1260 T github.com/zchee/go-simdutf.convertUTF32ToUTF16LEScalar
+00000000006f12e0 T github.com/zchee/go-simdutf.convertUTF32ToUTF16BEScalar
+00000000006f1360 T github.com/zchee/go-simdutf.convertUTF32ToUTF16LEWithErrorsScalar
+00000000006f13e0 T github.com/zchee/go-simdutf.convertUTF32ToUTF16BEWithErrorsScalar
+00000000006f1460 T github.com/zchee/go-simdutf.convertUTF32ToUTF16WithErrorsScalar
+00000000006f1620 T github.com/zchee/go-simdutf.convertValidUTF32ToUTF16LEScalar
+00000000006f16a0 T github.com/zchee/go-simdutf.convertValidUTF32ToUTF16BEScalar
+00000000006f1720 T github.com/zchee/go-simdutf.convertValidUTF32ToUTF16Scalar

@@ -1,0 +1,2566 @@
+TEXT github.com/zchee/go-simdutf.convertUTF32ToLatin1Westmere(SB) /Users/zchee/go/src/github.com/zchee/go-simdutf/utf32_convert_amd64.go
+  utf32_convert_amd64.go:59	0x6f7ae0		493b6610		CMPQ SP, 0x10(R14)							
+  utf32_convert_amd64.go:59	0x6f7ae4		7631			JBE 0x6f7b17								
+  utf32_convert_amd64.go:59	0x6f7ae6		55			PUSHQ BP								
+  utf32_convert_amd64.go:59	0x6f7ae7		4889e5			MOVQ SP, BP								
+  utf32_convert_amd64.go:59	0x6f7aea		4883ec48		SUBQ $0x48, SP								
+  utf32_convert_amd64.go:59	0x6f7aee		4889442458		MOVQ AX, 0x58(SP)							
+  utf32_convert_amd64.go:59	0x6f7af3		48897c2470		MOVQ DI, 0x70(SP)							
+  utf32_convert_amd64.go:60	0x6f7af8		4c8d0da1931a00		LEAQ 0x1a93a1(IP), R9							
+  utf32_convert_amd64.go:60	0x6f7aff		4c8d15928d1a00		LEAQ 0x1a8d92(IP), R10							
+  utf32_convert_amd64.go:60	0x6f7b06		41bb04000000		MOVL $0x4, R11								
+  utf32_convert_amd64.go:60	0x6f7b0c		e8cf020000		CALL github.com/zchee/go-simdutf.convertUTF32ToLatin1AMD64(SB)		
+  utf32_convert_amd64.go:60	0x6f7b11		4883c448		ADDQ $0x48, SP								
+  utf32_convert_amd64.go:60	0x6f7b15		5d			POPQ BP									
+  utf32_convert_amd64.go:60	0x6f7b16		c3			RET									
+  utf32_convert_amd64.go:59	0x6f7b17		4889442408		MOVQ AX, 0x8(SP)							
+  utf32_convert_amd64.go:59	0x6f7b1c		48895c2410		MOVQ BX, 0x10(SP)							
+  utf32_convert_amd64.go:59	0x6f7b21		48894c2418		MOVQ CX, 0x18(SP)							
+  utf32_convert_amd64.go:59	0x6f7b26		48897c2420		MOVQ DI, 0x20(SP)							
+  utf32_convert_amd64.go:59	0x6f7b2b		4889742428		MOVQ SI, 0x28(SP)							
+  utf32_convert_amd64.go:59	0x6f7b30		4c89442430		MOVQ R8, 0x30(SP)							
+  utf32_convert_amd64.go:59	0x6f7b35		e8664dd9ff		CALL runtime.morestack_noctxt.abi0(SB)					
+  utf32_convert_amd64.go:59	0x6f7b3a		488b442408		MOVQ 0x8(SP), AX							
+  utf32_convert_amd64.go:59	0x6f7b3f		488b5c2410		MOVQ 0x10(SP), BX							
+  utf32_convert_amd64.go:59	0x6f7b44		488b4c2418		MOVQ 0x18(SP), CX							
+  utf32_convert_amd64.go:59	0x6f7b49		488b7c2420		MOVQ 0x20(SP), DI							
+  utf32_convert_amd64.go:59	0x6f7b4e		488b742428		MOVQ 0x28(SP), SI							
+  utf32_convert_amd64.go:59	0x6f7b53		4c8b442430		MOVQ 0x30(SP), R8							
+  utf32_convert_amd64.go:59	0x6f7b58		eb86			JMP github.com/zchee/go-simdutf.convertUTF32ToLatin1Westmere(SB)	
+
+TEXT github.com/zchee/go-simdutf.convertUTF32ToLatin1Haswell(SB) /Users/zchee/go/src/github.com/zchee/go-simdutf/utf32_convert_amd64.go
+  utf32_convert_amd64.go:63	0x6f7b60		493b6610		CMPQ SP, 0x10(R14)						
+  utf32_convert_amd64.go:63	0x6f7b64		7631			JBE 0x6f7b97							
+  utf32_convert_amd64.go:63	0x6f7b66		55			PUSHQ BP							
+  utf32_convert_amd64.go:63	0x6f7b67		4889e5			MOVQ SP, BP							
+  utf32_convert_amd64.go:63	0x6f7b6a		4883ec48		SUBQ $0x48, SP							
+  utf32_convert_amd64.go:63	0x6f7b6e		4889442458		MOVQ AX, 0x58(SP)						
+  utf32_convert_amd64.go:63	0x6f7b73		48897c2470		MOVQ DI, 0x70(SP)						
+  utf32_convert_amd64.go:64	0x6f7b78		4c8d0d19931a00		LEAQ 0x1a9319(IP), R9						
+  utf32_convert_amd64.go:64	0x6f7b7f		4c8d15128d1a00		LEAQ 0x1a8d12(IP), R10						
+  utf32_convert_amd64.go:64	0x6f7b86		41bb08000000		MOVL $0x8, R11							
+  utf32_convert_amd64.go:64	0x6f7b8c		e84f020000		CALL github.com/zchee/go-simdutf.convertUTF32ToLatin1AMD64(SB)	
+  utf32_convert_amd64.go:64	0x6f7b91		4883c448		ADDQ $0x48, SP							
+  utf32_convert_amd64.go:64	0x6f7b95		5d			POPQ BP								
+  utf32_convert_amd64.go:64	0x6f7b96		c3			RET								
+  utf32_convert_amd64.go:63	0x6f7b97		4889442408		MOVQ AX, 0x8(SP)						
+  utf32_convert_amd64.go:63	0x6f7b9c		48895c2410		MOVQ BX, 0x10(SP)						
+  utf32_convert_amd64.go:63	0x6f7ba1		48894c2418		MOVQ CX, 0x18(SP)						
+  utf32_convert_amd64.go:63	0x6f7ba6		48897c2420		MOVQ DI, 0x20(SP)						
+  utf32_convert_amd64.go:63	0x6f7bab		4889742428		MOVQ SI, 0x28(SP)						
+  utf32_convert_amd64.go:63	0x6f7bb0		4c89442430		MOVQ R8, 0x30(SP)						
+  utf32_convert_amd64.go:63	0x6f7bb5		e8e64cd9ff		CALL runtime.morestack_noctxt.abi0(SB)				
+  utf32_convert_amd64.go:63	0x6f7bba		488b442408		MOVQ 0x8(SP), AX						
+  utf32_convert_amd64.go:63	0x6f7bbf		488b5c2410		MOVQ 0x10(SP), BX						
+  utf32_convert_amd64.go:63	0x6f7bc4		488b4c2418		MOVQ 0x18(SP), CX						
+  utf32_convert_amd64.go:63	0x6f7bc9		488b7c2420		MOVQ 0x20(SP), DI						
+  utf32_convert_amd64.go:63	0x6f7bce		488b742428		MOVQ 0x28(SP), SI						
+  utf32_convert_amd64.go:63	0x6f7bd3		4c8b442430		MOVQ 0x30(SP), R8						
+  utf32_convert_amd64.go:63	0x6f7bd8		eb86			JMP github.com/zchee/go-simdutf.convertUTF32ToLatin1Haswell(SB)	
+
+TEXT github.com/zchee/go-simdutf.convertUTF32ToLatin1WithErrorsWestmere(SB) /Users/zchee/go/src/github.com/zchee/go-simdutf/utf32_convert_amd64.go
+  utf32_convert_amd64.go:67	0x6f7be0		493b6610		CMPQ SP, 0x10(R14)								
+  utf32_convert_amd64.go:67	0x6f7be4		7631			JBE 0x6f7c17									
+  utf32_convert_amd64.go:67	0x6f7be6		55			PUSHQ BP									
+  utf32_convert_amd64.go:67	0x6f7be7		4889e5			MOVQ SP, BP									
+  utf32_convert_amd64.go:67	0x6f7bea		4883ec48		SUBQ $0x48, SP									
+  utf32_convert_amd64.go:67	0x6f7bee		4889442458		MOVQ AX, 0x58(SP)								
+  utf32_convert_amd64.go:67	0x6f7bf3		48897c2470		MOVQ DI, 0x70(SP)								
+  utf32_convert_amd64.go:68	0x6f7bf8		4c8d0da1921a00		LEAQ 0x1a92a1(IP), R9								
+  utf32_convert_amd64.go:68	0x6f7bff		4c8d15b28c1a00		LEAQ 0x1a8cb2(IP), R10								
+  utf32_convert_amd64.go:68	0x6f7c06		41bb04000000		MOVL $0x4, R11									
+  utf32_convert_amd64.go:68	0x6f7c0c		e86f030000		CALL github.com/zchee/go-simdutf.convertUTF32ToLatin1WithErrorsAMD64(SB)	
+  utf32_convert_amd64.go:68	0x6f7c11		4883c448		ADDQ $0x48, SP									
+  utf32_convert_amd64.go:68	0x6f7c15		5d			POPQ BP										
+  utf32_convert_amd64.go:68	0x6f7c16		c3			RET										
+  utf32_convert_amd64.go:67	0x6f7c17		4889442408		MOVQ AX, 0x8(SP)								
+  utf32_convert_amd64.go:67	0x6f7c1c		48895c2410		MOVQ BX, 0x10(SP)								
+  utf32_convert_amd64.go:67	0x6f7c21		48894c2418		MOVQ CX, 0x18(SP)								
+  utf32_convert_amd64.go:67	0x6f7c26		48897c2420		MOVQ DI, 0x20(SP)								
+  utf32_convert_amd64.go:67	0x6f7c2b		4889742428		MOVQ SI, 0x28(SP)								
+  utf32_convert_amd64.go:67	0x6f7c30		4c89442430		MOVQ R8, 0x30(SP)								
+  utf32_convert_amd64.go:67	0x6f7c35		e8664cd9ff		CALL runtime.morestack_noctxt.abi0(SB)						
+  utf32_convert_amd64.go:67	0x6f7c3a		488b442408		MOVQ 0x8(SP), AX								
+  utf32_convert_amd64.go:67	0x6f7c3f		488b5c2410		MOVQ 0x10(SP), BX								
+  utf32_convert_amd64.go:67	0x6f7c44		488b4c2418		MOVQ 0x18(SP), CX								
+  utf32_convert_amd64.go:67	0x6f7c49		488b7c2420		MOVQ 0x20(SP), DI								
+  utf32_convert_amd64.go:67	0x6f7c4e		488b742428		MOVQ 0x28(SP), SI								
+  utf32_convert_amd64.go:67	0x6f7c53		4c8b442430		MOVQ 0x30(SP), R8								
+  utf32_convert_amd64.go:67	0x6f7c58		eb86			JMP github.com/zchee/go-simdutf.convertUTF32ToLatin1WithErrorsWestmere(SB)	
+
+TEXT github.com/zchee/go-simdutf.convertUTF32ToLatin1WithErrorsHaswell(SB) /Users/zchee/go/src/github.com/zchee/go-simdutf/utf32_convert_amd64.go
+  utf32_convert_amd64.go:71	0x6f7c60		493b6610		CMPQ SP, 0x10(R14)								
+  utf32_convert_amd64.go:71	0x6f7c64		7631			JBE 0x6f7c97									
+  utf32_convert_amd64.go:71	0x6f7c66		55			PUSHQ BP									
+  utf32_convert_amd64.go:71	0x6f7c67		4889e5			MOVQ SP, BP									
+  utf32_convert_amd64.go:71	0x6f7c6a		4883ec48		SUBQ $0x48, SP									
+  utf32_convert_amd64.go:71	0x6f7c6e		4889442458		MOVQ AX, 0x58(SP)								
+  utf32_convert_amd64.go:71	0x6f7c73		48897c2470		MOVQ DI, 0x70(SP)								
+  utf32_convert_amd64.go:72	0x6f7c78		4c8d0d19921a00		LEAQ 0x1a9219(IP), R9								
+  utf32_convert_amd64.go:72	0x6f7c7f		4c8d15328c1a00		LEAQ 0x1a8c32(IP), R10								
+  utf32_convert_amd64.go:72	0x6f7c86		41bb08000000		MOVL $0x8, R11									
+  utf32_convert_amd64.go:72	0x6f7c8c		e8ef020000		CALL github.com/zchee/go-simdutf.convertUTF32ToLatin1WithErrorsAMD64(SB)	
+  utf32_convert_amd64.go:72	0x6f7c91		4883c448		ADDQ $0x48, SP									
+  utf32_convert_amd64.go:72	0x6f7c95		5d			POPQ BP										
+  utf32_convert_amd64.go:72	0x6f7c96		c3			RET										
+  utf32_convert_amd64.go:71	0x6f7c97		4889442408		MOVQ AX, 0x8(SP)								
+  utf32_convert_amd64.go:71	0x6f7c9c		48895c2410		MOVQ BX, 0x10(SP)								
+  utf32_convert_amd64.go:71	0x6f7ca1		48894c2418		MOVQ CX, 0x18(SP)								
+  utf32_convert_amd64.go:71	0x6f7ca6		48897c2420		MOVQ DI, 0x20(SP)								
+  utf32_convert_amd64.go:71	0x6f7cab		4889742428		MOVQ SI, 0x28(SP)								
+  utf32_convert_amd64.go:71	0x6f7cb0		4c89442430		MOVQ R8, 0x30(SP)								
+  utf32_convert_amd64.go:71	0x6f7cb5		e8e64bd9ff		CALL runtime.morestack_noctxt.abi0(SB)						
+  utf32_convert_amd64.go:71	0x6f7cba		488b442408		MOVQ 0x8(SP), AX								
+  utf32_convert_amd64.go:71	0x6f7cbf		488b5c2410		MOVQ 0x10(SP), BX								
+  utf32_convert_amd64.go:71	0x6f7cc4		488b4c2418		MOVQ 0x18(SP), CX								
+  utf32_convert_amd64.go:71	0x6f7cc9		488b7c2420		MOVQ 0x20(SP), DI								
+  utf32_convert_amd64.go:71	0x6f7cce		488b742428		MOVQ 0x28(SP), SI								
+  utf32_convert_amd64.go:71	0x6f7cd3		4c8b442430		MOVQ 0x30(SP), R8								
+  utf32_convert_amd64.go:71	0x6f7cd8		eb86			JMP github.com/zchee/go-simdutf.convertUTF32ToLatin1WithErrorsHaswell(SB)	
+
+TEXT github.com/zchee/go-simdutf.convertValidUTF32ToLatin1Westmere(SB) /Users/zchee/go/src/github.com/zchee/go-simdutf/utf32_convert_amd64.go
+  utf32_convert_amd64.go:75	0x6f7ce0		493b6610		CMPQ SP, 0x10(R14)							
+  utf32_convert_amd64.go:75	0x6f7ce4		7631			JBE 0x6f7d17								
+  utf32_convert_amd64.go:75	0x6f7ce6		55			PUSHQ BP								
+  utf32_convert_amd64.go:75	0x6f7ce7		4889e5			MOVQ SP, BP								
+  utf32_convert_amd64.go:75	0x6f7cea		4883ec48		SUBQ $0x48, SP								
+  utf32_convert_amd64.go:75	0x6f7cee		4889442458		MOVQ AX, 0x58(SP)							
+  utf32_convert_amd64.go:75	0x6f7cf3		48897c2470		MOVQ DI, 0x70(SP)							
+  utf32_convert_amd64.go:76	0x6f7cf8		4c8d0da1911a00		LEAQ 0x1a91a1(IP), R9							
+  utf32_convert_amd64.go:76	0x6f7cff		4c8d15528e1a00		LEAQ 0x1a8e52(IP), R10							
+  utf32_convert_amd64.go:76	0x6f7d06		41bb04000000		MOVL $0x4, R11								
+  utf32_convert_amd64.go:76	0x6f7d0c		e8ef030000		CALL github.com/zchee/go-simdutf.convertValidUTF32ToLatin1AMD64(SB)	
+  utf32_convert_amd64.go:76	0x6f7d11		4883c448		ADDQ $0x48, SP								
+  utf32_convert_amd64.go:76	0x6f7d15		5d			POPQ BP									
+  utf32_convert_amd64.go:76	0x6f7d16		c3			RET									
+  utf32_convert_amd64.go:75	0x6f7d17		4889442408		MOVQ AX, 0x8(SP)							
+  utf32_convert_amd64.go:75	0x6f7d1c		48895c2410		MOVQ BX, 0x10(SP)							
+  utf32_convert_amd64.go:75	0x6f7d21		48894c2418		MOVQ CX, 0x18(SP)							
+  utf32_convert_amd64.go:75	0x6f7d26		48897c2420		MOVQ DI, 0x20(SP)							
+  utf32_convert_amd64.go:75	0x6f7d2b		4889742428		MOVQ SI, 0x28(SP)							
+  utf32_convert_amd64.go:75	0x6f7d30		4c89442430		MOVQ R8, 0x30(SP)							
+  utf32_convert_amd64.go:75	0x6f7d35		e8664bd9ff		CALL runtime.morestack_noctxt.abi0(SB)					
+  utf32_convert_amd64.go:75	0x6f7d3a		488b442408		MOVQ 0x8(SP), AX							
+  utf32_convert_amd64.go:75	0x6f7d3f		488b5c2410		MOVQ 0x10(SP), BX							
+  utf32_convert_amd64.go:75	0x6f7d44		488b4c2418		MOVQ 0x18(SP), CX							
+  utf32_convert_amd64.go:75	0x6f7d49		488b7c2420		MOVQ 0x20(SP), DI							
+  utf32_convert_amd64.go:75	0x6f7d4e		488b742428		MOVQ 0x28(SP), SI							
+  utf32_convert_amd64.go:75	0x6f7d53		4c8b442430		MOVQ 0x30(SP), R8							
+  utf32_convert_amd64.go:75	0x6f7d58		eb86			JMP github.com/zchee/go-simdutf.convertValidUTF32ToLatin1Westmere(SB)	
+
+TEXT github.com/zchee/go-simdutf.convertValidUTF32ToLatin1Haswell(SB) /Users/zchee/go/src/github.com/zchee/go-simdutf/utf32_convert_amd64.go
+  utf32_convert_amd64.go:79	0x6f7d60		493b6610		CMPQ SP, 0x10(R14)							
+  utf32_convert_amd64.go:79	0x6f7d64		7631			JBE 0x6f7d97								
+  utf32_convert_amd64.go:79	0x6f7d66		55			PUSHQ BP								
+  utf32_convert_amd64.go:79	0x6f7d67		4889e5			MOVQ SP, BP								
+  utf32_convert_amd64.go:79	0x6f7d6a		4883ec48		SUBQ $0x48, SP								
+  utf32_convert_amd64.go:79	0x6f7d6e		4889442458		MOVQ AX, 0x58(SP)							
+  utf32_convert_amd64.go:79	0x6f7d73		48897c2470		MOVQ DI, 0x70(SP)							
+  utf32_convert_amd64.go:80	0x6f7d78		4c8d0d19911a00		LEAQ 0x1a9119(IP), R9							
+  utf32_convert_amd64.go:80	0x6f7d7f		4c8d15d28d1a00		LEAQ 0x1a8dd2(IP), R10							
+  utf32_convert_amd64.go:80	0x6f7d86		41bb08000000		MOVL $0x8, R11								
+  utf32_convert_amd64.go:80	0x6f7d8c		e86f030000		CALL github.com/zchee/go-simdutf.convertValidUTF32ToLatin1AMD64(SB)	
+  utf32_convert_amd64.go:80	0x6f7d91		4883c448		ADDQ $0x48, SP								
+  utf32_convert_amd64.go:80	0x6f7d95		5d			POPQ BP									
+  utf32_convert_amd64.go:80	0x6f7d96		c3			RET									
+  utf32_convert_amd64.go:79	0x6f7d97		4889442408		MOVQ AX, 0x8(SP)							
+  utf32_convert_amd64.go:79	0x6f7d9c		48895c2410		MOVQ BX, 0x10(SP)							
+  utf32_convert_amd64.go:79	0x6f7da1		48894c2418		MOVQ CX, 0x18(SP)							
+  utf32_convert_amd64.go:79	0x6f7da6		48897c2420		MOVQ DI, 0x20(SP)							
+  utf32_convert_amd64.go:79	0x6f7dab		4889742428		MOVQ SI, 0x28(SP)							
+  utf32_convert_amd64.go:79	0x6f7db0		4c89442430		MOVQ R8, 0x30(SP)							
+  utf32_convert_amd64.go:79	0x6f7db5		e8e64ad9ff		CALL runtime.morestack_noctxt.abi0(SB)					
+  utf32_convert_amd64.go:79	0x6f7dba		488b442408		MOVQ 0x8(SP), AX							
+  utf32_convert_amd64.go:79	0x6f7dbf		488b5c2410		MOVQ 0x10(SP), BX							
+  utf32_convert_amd64.go:79	0x6f7dc4		488b4c2418		MOVQ 0x18(SP), CX							
+  utf32_convert_amd64.go:79	0x6f7dc9		488b7c2420		MOVQ 0x20(SP), DI							
+  utf32_convert_amd64.go:79	0x6f7dce		488b742428		MOVQ 0x28(SP), SI							
+  utf32_convert_amd64.go:79	0x6f7dd3		4c8b442430		MOVQ 0x30(SP), R8							
+  utf32_convert_amd64.go:79	0x6f7dd8		eb86			JMP github.com/zchee/go-simdutf.convertValidUTF32ToLatin1Haswell(SB)	
+
+TEXT github.com/zchee/go-simdutf.convertUTF32ToUTF8Westmere(SB) /Users/zchee/go/src/github.com/zchee/go-simdutf/utf32_convert_amd64.go
+  utf32_convert_amd64.go:135	0x6f82a0		493b6610		CMPQ SP, 0x10(R14)						
+  utf32_convert_amd64.go:135	0x6f82a4		7631			JBE 0x6f82d7							
+  utf32_convert_amd64.go:135	0x6f82a6		55			PUSHQ BP							
+  utf32_convert_amd64.go:135	0x6f82a7		4889e5			MOVQ SP, BP							
+  utf32_convert_amd64.go:135	0x6f82aa		4883ec48		SUBQ $0x48, SP							
+  utf32_convert_amd64.go:135	0x6f82ae		4889442458		MOVQ AX, 0x58(SP)						
+  utf32_convert_amd64.go:135	0x6f82b3		48897c2470		MOVQ DI, 0x70(SP)						
+  utf32_convert_amd64.go:136	0x6f82b8		4c8d0d118c1a00		LEAQ 0x1a8c11(IP), R9						
+  utf32_convert_amd64.go:136	0x6f82bf		4c8d1592861a00		LEAQ 0x1a8692(IP), R10						
+  utf32_convert_amd64.go:136	0x6f82c6		41bb04000000		MOVL $0x4, R11							
+  utf32_convert_amd64.go:136	0x6f82cc		e8cf020000		CALL github.com/zchee/go-simdutf.convertUTF32ToUTF8AMD64(SB)	
+  utf32_convert_amd64.go:136	0x6f82d1		4883c448		ADDQ $0x48, SP							
+  utf32_convert_amd64.go:136	0x6f82d5		5d			POPQ BP								
+  utf32_convert_amd64.go:136	0x6f82d6		c3			RET								
+  utf32_convert_amd64.go:135	0x6f82d7		4889442408		MOVQ AX, 0x8(SP)						
+  utf32_convert_amd64.go:135	0x6f82dc		48895c2410		MOVQ BX, 0x10(SP)						
+  utf32_convert_amd64.go:135	0x6f82e1		48894c2418		MOVQ CX, 0x18(SP)						
+  utf32_convert_amd64.go:135	0x6f82e6		48897c2420		MOVQ DI, 0x20(SP)						
+  utf32_convert_amd64.go:135	0x6f82eb		4889742428		MOVQ SI, 0x28(SP)						
+  utf32_convert_amd64.go:135	0x6f82f0		4c89442430		MOVQ R8, 0x30(SP)						
+  utf32_convert_amd64.go:135	0x6f82f5		e8a645d9ff		CALL runtime.morestack_noctxt.abi0(SB)				
+  utf32_convert_amd64.go:135	0x6f82fa		488b442408		MOVQ 0x8(SP), AX						
+  utf32_convert_amd64.go:135	0x6f82ff		488b5c2410		MOVQ 0x10(SP), BX						
+  utf32_convert_amd64.go:135	0x6f8304		488b4c2418		MOVQ 0x18(SP), CX						
+  utf32_convert_amd64.go:135	0x6f8309		488b7c2420		MOVQ 0x20(SP), DI						
+  utf32_convert_amd64.go:135	0x6f830e		488b742428		MOVQ 0x28(SP), SI						
+  utf32_convert_amd64.go:135	0x6f8313		4c8b442430		MOVQ 0x30(SP), R8						
+  utf32_convert_amd64.go:135	0x6f8318		eb86			JMP github.com/zchee/go-simdutf.convertUTF32ToUTF8Westmere(SB)	
+
+TEXT github.com/zchee/go-simdutf.convertUTF32ToUTF8Haswell(SB) /Users/zchee/go/src/github.com/zchee/go-simdutf/utf32_convert_amd64.go
+  utf32_convert_amd64.go:139	0x6f8320		493b6610		CMPQ SP, 0x10(R14)						
+  utf32_convert_amd64.go:139	0x6f8324		7631			JBE 0x6f8357							
+  utf32_convert_amd64.go:139	0x6f8326		55			PUSHQ BP							
+  utf32_convert_amd64.go:139	0x6f8327		4889e5			MOVQ SP, BP							
+  utf32_convert_amd64.go:139	0x6f832a		4883ec48		SUBQ $0x48, SP							
+  utf32_convert_amd64.go:139	0x6f832e		4889442458		MOVQ AX, 0x58(SP)						
+  utf32_convert_amd64.go:139	0x6f8333		48897c2470		MOVQ DI, 0x70(SP)						
+  utf32_convert_amd64.go:140	0x6f8338		4c8d0d898b1a00		LEAQ 0x1a8b89(IP), R9						
+  utf32_convert_amd64.go:140	0x6f833f		4c8d1512861a00		LEAQ 0x1a8612(IP), R10						
+  utf32_convert_amd64.go:140	0x6f8346		41bb08000000		MOVL $0x8, R11							
+  utf32_convert_amd64.go:140	0x6f834c		e84f020000		CALL github.com/zchee/go-simdutf.convertUTF32ToUTF8AMD64(SB)	
+  utf32_convert_amd64.go:140	0x6f8351		4883c448		ADDQ $0x48, SP							
+  utf32_convert_amd64.go:140	0x6f8355		5d			POPQ BP								
+  utf32_convert_amd64.go:140	0x6f8356		c3			RET								
+  utf32_convert_amd64.go:139	0x6f8357		4889442408		MOVQ AX, 0x8(SP)						
+  utf32_convert_amd64.go:139	0x6f835c		48895c2410		MOVQ BX, 0x10(SP)						
+  utf32_convert_amd64.go:139	0x6f8361		48894c2418		MOVQ CX, 0x18(SP)						
+  utf32_convert_amd64.go:139	0x6f8366		48897c2420		MOVQ DI, 0x20(SP)						
+  utf32_convert_amd64.go:139	0x6f836b		4889742428		MOVQ SI, 0x28(SP)						
+  utf32_convert_amd64.go:139	0x6f8370		4c89442430		MOVQ R8, 0x30(SP)						
+  utf32_convert_amd64.go:139	0x6f8375		e82645d9ff		CALL runtime.morestack_noctxt.abi0(SB)				
+  utf32_convert_amd64.go:139	0x6f837a		488b442408		MOVQ 0x8(SP), AX						
+  utf32_convert_amd64.go:139	0x6f837f		488b5c2410		MOVQ 0x10(SP), BX						
+  utf32_convert_amd64.go:139	0x6f8384		488b4c2418		MOVQ 0x18(SP), CX						
+  utf32_convert_amd64.go:139	0x6f8389		488b7c2420		MOVQ 0x20(SP), DI						
+  utf32_convert_amd64.go:139	0x6f838e		488b742428		MOVQ 0x28(SP), SI						
+  utf32_convert_amd64.go:139	0x6f8393		4c8b442430		MOVQ 0x30(SP), R8						
+  utf32_convert_amd64.go:139	0x6f8398		eb86			JMP github.com/zchee/go-simdutf.convertUTF32ToUTF8Haswell(SB)	
+
+TEXT github.com/zchee/go-simdutf.convertUTF32ToUTF8WithErrorsWestmere(SB) /Users/zchee/go/src/github.com/zchee/go-simdutf/utf32_convert_amd64.go
+  utf32_convert_amd64.go:143	0x6f83a0		493b6610		CMPQ SP, 0x10(R14)								
+  utf32_convert_amd64.go:143	0x6f83a4		7631			JBE 0x6f83d7									
+  utf32_convert_amd64.go:143	0x6f83a6		55			PUSHQ BP									
+  utf32_convert_amd64.go:143	0x6f83a7		4889e5			MOVQ SP, BP									
+  utf32_convert_amd64.go:143	0x6f83aa		4883ec48		SUBQ $0x48, SP									
+  utf32_convert_amd64.go:143	0x6f83ae		4889442458		MOVQ AX, 0x58(SP)								
+  utf32_convert_amd64.go:143	0x6f83b3		48897c2470		MOVQ DI, 0x70(SP)								
+  utf32_convert_amd64.go:144	0x6f83b8		4c8d0d118b1a00		LEAQ 0x1a8b11(IP), R9								
+  utf32_convert_amd64.go:144	0x6f83bf		4c8d15b2851a00		LEAQ 0x1a85b2(IP), R10								
+  utf32_convert_amd64.go:144	0x6f83c6		41bb04000000		MOVL $0x4, R11									
+  utf32_convert_amd64.go:144	0x6f83cc		e8af030000		CALL github.com/zchee/go-simdutf.convertUTF32ToUTF8WithErrorsAMD64(SB)		
+  utf32_convert_amd64.go:144	0x6f83d1		4883c448		ADDQ $0x48, SP									
+  utf32_convert_amd64.go:144	0x6f83d5		5d			POPQ BP										
+  utf32_convert_amd64.go:144	0x6f83d6		c3			RET										
+  utf32_convert_amd64.go:143	0x6f83d7		4889442408		MOVQ AX, 0x8(SP)								
+  utf32_convert_amd64.go:143	0x6f83dc		48895c2410		MOVQ BX, 0x10(SP)								
+  utf32_convert_amd64.go:143	0x6f83e1		48894c2418		MOVQ CX, 0x18(SP)								
+  utf32_convert_amd64.go:143	0x6f83e6		48897c2420		MOVQ DI, 0x20(SP)								
+  utf32_convert_amd64.go:143	0x6f83eb		4889742428		MOVQ SI, 0x28(SP)								
+  utf32_convert_amd64.go:143	0x6f83f0		4c89442430		MOVQ R8, 0x30(SP)								
+  utf32_convert_amd64.go:143	0x6f83f5		e8a644d9ff		CALL runtime.morestack_noctxt.abi0(SB)						
+  utf32_convert_amd64.go:143	0x6f83fa		488b442408		MOVQ 0x8(SP), AX								
+  utf32_convert_amd64.go:143	0x6f83ff		488b5c2410		MOVQ 0x10(SP), BX								
+  utf32_convert_amd64.go:143	0x6f8404		488b4c2418		MOVQ 0x18(SP), CX								
+  utf32_convert_amd64.go:143	0x6f8409		488b7c2420		MOVQ 0x20(SP), DI								
+  utf32_convert_amd64.go:143	0x6f840e		488b742428		MOVQ 0x28(SP), SI								
+  utf32_convert_amd64.go:143	0x6f8413		4c8b442430		MOVQ 0x30(SP), R8								
+  utf32_convert_amd64.go:143	0x6f8418		eb86			JMP github.com/zchee/go-simdutf.convertUTF32ToUTF8WithErrorsWestmere(SB)	
+
+TEXT github.com/zchee/go-simdutf.convertUTF32ToUTF8WithErrorsHaswell(SB) /Users/zchee/go/src/github.com/zchee/go-simdutf/utf32_convert_amd64.go
+  utf32_convert_amd64.go:147	0x6f8420		493b6610		CMPQ SP, 0x10(R14)							
+  utf32_convert_amd64.go:147	0x6f8424		7631			JBE 0x6f8457								
+  utf32_convert_amd64.go:147	0x6f8426		55			PUSHQ BP								
+  utf32_convert_amd64.go:147	0x6f8427		4889e5			MOVQ SP, BP								
+  utf32_convert_amd64.go:147	0x6f842a		4883ec48		SUBQ $0x48, SP								
+  utf32_convert_amd64.go:147	0x6f842e		4889442458		MOVQ AX, 0x58(SP)							
+  utf32_convert_amd64.go:147	0x6f8433		48897c2470		MOVQ DI, 0x70(SP)							
+  utf32_convert_amd64.go:148	0x6f8438		4c8d0d898a1a00		LEAQ 0x1a8a89(IP), R9							
+  utf32_convert_amd64.go:148	0x6f843f		4c8d1532851a00		LEAQ 0x1a8532(IP), R10							
+  utf32_convert_amd64.go:148	0x6f8446		41bb08000000		MOVL $0x8, R11								
+  utf32_convert_amd64.go:148	0x6f844c		e82f030000		CALL github.com/zchee/go-simdutf.convertUTF32ToUTF8WithErrorsAMD64(SB)	
+  utf32_convert_amd64.go:148	0x6f8451		4883c448		ADDQ $0x48, SP								
+  utf32_convert_amd64.go:148	0x6f8455		5d			POPQ BP									
+  utf32_convert_amd64.go:148	0x6f8456		c3			RET									
+  utf32_convert_amd64.go:147	0x6f8457		4889442408		MOVQ AX, 0x8(SP)							
+  utf32_convert_amd64.go:147	0x6f845c		48895c2410		MOVQ BX, 0x10(SP)							
+  utf32_convert_amd64.go:147	0x6f8461		48894c2418		MOVQ CX, 0x18(SP)							
+  utf32_convert_amd64.go:147	0x6f8466		48897c2420		MOVQ DI, 0x20(SP)							
+  utf32_convert_amd64.go:147	0x6f846b		4889742428		MOVQ SI, 0x28(SP)							
+  utf32_convert_amd64.go:147	0x6f8470		4c89442430		MOVQ R8, 0x30(SP)							
+  utf32_convert_amd64.go:147	0x6f8475		e82644d9ff		CALL runtime.morestack_noctxt.abi0(SB)					
+  utf32_convert_amd64.go:147	0x6f847a		488b442408		MOVQ 0x8(SP), AX							
+  utf32_convert_amd64.go:147	0x6f847f		488b5c2410		MOVQ 0x10(SP), BX							
+  utf32_convert_amd64.go:147	0x6f8484		488b4c2418		MOVQ 0x18(SP), CX							
+  utf32_convert_amd64.go:147	0x6f8489		488b7c2420		MOVQ 0x20(SP), DI							
+  utf32_convert_amd64.go:147	0x6f848e		488b742428		MOVQ 0x28(SP), SI							
+  utf32_convert_amd64.go:147	0x6f8493		4c8b442430		MOVQ 0x30(SP), R8							
+  utf32_convert_amd64.go:147	0x6f8498		eb86			JMP github.com/zchee/go-simdutf.convertUTF32ToUTF8WithErrorsHaswell(SB)	
+
+TEXT github.com/zchee/go-simdutf.convertValidUTF32ToUTF8Westmere(SB) /Users/zchee/go/src/github.com/zchee/go-simdutf/utf32_convert_amd64.go
+  utf32_convert_amd64.go:151	0x6f84a0		493b6610		CMPQ SP, 0x10(R14)							
+  utf32_convert_amd64.go:151	0x6f84a4		7631			JBE 0x6f84d7								
+  utf32_convert_amd64.go:151	0x6f84a6		55			PUSHQ BP								
+  utf32_convert_amd64.go:151	0x6f84a7		4889e5			MOVQ SP, BP								
+  utf32_convert_amd64.go:151	0x6f84aa		4883ec48		SUBQ $0x48, SP								
+  utf32_convert_amd64.go:151	0x6f84ae		4889442458		MOVQ AX, 0x58(SP)							
+  utf32_convert_amd64.go:151	0x6f84b3		48897c2470		MOVQ DI, 0x70(SP)							
+  utf32_convert_amd64.go:152	0x6f84b8		4c8d0d118a1a00		LEAQ 0x1a8a11(IP), R9							
+  utf32_convert_amd64.go:152	0x6f84bf		4c8d15f2861a00		LEAQ 0x1a86f2(IP), R10							
+  utf32_convert_amd64.go:152	0x6f84c6		41bb04000000		MOVL $0x4, R11								
+  utf32_convert_amd64.go:152	0x6f84cc		e88f040000		CALL github.com/zchee/go-simdutf.convertValidUTF32ToUTF8AMD64(SB)	
+  utf32_convert_amd64.go:152	0x6f84d1		4883c448		ADDQ $0x48, SP								
+  utf32_convert_amd64.go:152	0x6f84d5		5d			POPQ BP									
+  utf32_convert_amd64.go:152	0x6f84d6		c3			RET									
+  utf32_convert_amd64.go:151	0x6f84d7		4889442408		MOVQ AX, 0x8(SP)							
+  utf32_convert_amd64.go:151	0x6f84dc		48895c2410		MOVQ BX, 0x10(SP)							
+  utf32_convert_amd64.go:151	0x6f84e1		48894c2418		MOVQ CX, 0x18(SP)							
+  utf32_convert_amd64.go:151	0x6f84e6		48897c2420		MOVQ DI, 0x20(SP)							
+  utf32_convert_amd64.go:151	0x6f84eb		4889742428		MOVQ SI, 0x28(SP)							
+  utf32_convert_amd64.go:151	0x6f84f0		4c89442430		MOVQ R8, 0x30(SP)							
+  utf32_convert_amd64.go:151	0x6f84f5		e8a643d9ff		CALL runtime.morestack_noctxt.abi0(SB)					
+  utf32_convert_amd64.go:151	0x6f84fa		488b442408		MOVQ 0x8(SP), AX							
+  utf32_convert_amd64.go:151	0x6f84ff		488b5c2410		MOVQ 0x10(SP), BX							
+  utf32_convert_amd64.go:151	0x6f8504		488b4c2418		MOVQ 0x18(SP), CX							
+  utf32_convert_amd64.go:151	0x6f8509		488b7c2420		MOVQ 0x20(SP), DI							
+  utf32_convert_amd64.go:151	0x6f850e		488b742428		MOVQ 0x28(SP), SI							
+  utf32_convert_amd64.go:151	0x6f8513		4c8b442430		MOVQ 0x30(SP), R8							
+  utf32_convert_amd64.go:151	0x6f8518		eb86			JMP github.com/zchee/go-simdutf.convertValidUTF32ToUTF8Westmere(SB)	
+
+TEXT github.com/zchee/go-simdutf.convertValidUTF32ToUTF8Haswell(SB) /Users/zchee/go/src/github.com/zchee/go-simdutf/utf32_convert_amd64.go
+  utf32_convert_amd64.go:155	0x6f8520		493b6610		CMPQ SP, 0x10(R14)							
+  utf32_convert_amd64.go:155	0x6f8524		7631			JBE 0x6f8557								
+  utf32_convert_amd64.go:155	0x6f8526		55			PUSHQ BP								
+  utf32_convert_amd64.go:155	0x6f8527		4889e5			MOVQ SP, BP								
+  utf32_convert_amd64.go:155	0x6f852a		4883ec48		SUBQ $0x48, SP								
+  utf32_convert_amd64.go:155	0x6f852e		4889442458		MOVQ AX, 0x58(SP)							
+  utf32_convert_amd64.go:155	0x6f8533		48897c2470		MOVQ DI, 0x70(SP)							
+  utf32_convert_amd64.go:156	0x6f8538		4c8d0d89891a00		LEAQ 0x1a8989(IP), R9							
+  utf32_convert_amd64.go:156	0x6f853f		4c8d1572861a00		LEAQ 0x1a8672(IP), R10							
+  utf32_convert_amd64.go:156	0x6f8546		41bb08000000		MOVL $0x8, R11								
+  utf32_convert_amd64.go:156	0x6f854c		e80f040000		CALL github.com/zchee/go-simdutf.convertValidUTF32ToUTF8AMD64(SB)	
+  utf32_convert_amd64.go:156	0x6f8551		4883c448		ADDQ $0x48, SP								
+  utf32_convert_amd64.go:156	0x6f8555		5d			POPQ BP									
+  utf32_convert_amd64.go:156	0x6f8556		c3			RET									
+  utf32_convert_amd64.go:155	0x6f8557		4889442408		MOVQ AX, 0x8(SP)							
+  utf32_convert_amd64.go:155	0x6f855c		48895c2410		MOVQ BX, 0x10(SP)							
+  utf32_convert_amd64.go:155	0x6f8561		48894c2418		MOVQ CX, 0x18(SP)							
+  utf32_convert_amd64.go:155	0x6f8566		48897c2420		MOVQ DI, 0x20(SP)							
+  utf32_convert_amd64.go:155	0x6f856b		4889742428		MOVQ SI, 0x28(SP)							
+  utf32_convert_amd64.go:155	0x6f8570		4c89442430		MOVQ R8, 0x30(SP)							
+  utf32_convert_amd64.go:155	0x6f8575		e82643d9ff		CALL runtime.morestack_noctxt.abi0(SB)					
+  utf32_convert_amd64.go:155	0x6f857a		488b442408		MOVQ 0x8(SP), AX							
+  utf32_convert_amd64.go:155	0x6f857f		488b5c2410		MOVQ 0x10(SP), BX							
+  utf32_convert_amd64.go:155	0x6f8584		488b4c2418		MOVQ 0x18(SP), CX							
+  utf32_convert_amd64.go:155	0x6f8589		488b7c2420		MOVQ 0x20(SP), DI							
+  utf32_convert_amd64.go:155	0x6f858e		488b742428		MOVQ 0x28(SP), SI							
+  utf32_convert_amd64.go:155	0x6f8593		4c8b442430		MOVQ 0x30(SP), R8							
+  utf32_convert_amd64.go:155	0x6f8598		eb86			JMP github.com/zchee/go-simdutf.convertValidUTF32ToUTF8Haswell(SB)	
+
+TEXT github.com/zchee/go-simdutf.convertUTF32ToUTF16LEWestmere(SB) /Users/zchee/go/src/github.com/zchee/go-simdutf/utf32_convert_amd64.go
+  utf32_convert_amd64.go:208	0x6f8b40		493b6610		CMPQ SP, 0x10(R14)							
+  utf32_convert_amd64.go:208	0x6f8b44		7631			JBE 0x6f8b77								
+  utf32_convert_amd64.go:208	0x6f8b46		55			PUSHQ BP								
+  utf32_convert_amd64.go:208	0x6f8b47		4889e5			MOVQ SP, BP								
+  utf32_convert_amd64.go:208	0x6f8b4a		4883ec48		SUBQ $0x48, SP								
+  utf32_convert_amd64.go:208	0x6f8b4e		4889442458		MOVQ AX, 0x58(SP)							
+  utf32_convert_amd64.go:208	0x6f8b53		48897c2470		MOVQ DI, 0x70(SP)							
+  utf32_convert_amd64.go:209	0x6f8b58		4c8d0d61831a00		LEAQ 0x1a8361(IP), R9							
+  utf32_convert_amd64.go:209	0x6f8b5f		4c8d15b27d1a00		LEAQ 0x1a7db2(IP), R10							
+  utf32_convert_amd64.go:209	0x6f8b66		41bb04000000		MOVL $0x4, R11								
+  utf32_convert_amd64.go:209	0x6f8b6c		e8cf050000		CALL github.com/zchee/go-simdutf.convertUTF32ToUTF16AMD64(SB)		
+  utf32_convert_amd64.go:209	0x6f8b71		4883c448		ADDQ $0x48, SP								
+  utf32_convert_amd64.go:209	0x6f8b75		5d			POPQ BP									
+  utf32_convert_amd64.go:209	0x6f8b76		c3			RET									
+  utf32_convert_amd64.go:208	0x6f8b77		4889442408		MOVQ AX, 0x8(SP)							
+  utf32_convert_amd64.go:208	0x6f8b7c		48895c2410		MOVQ BX, 0x10(SP)							
+  utf32_convert_amd64.go:208	0x6f8b81		48894c2418		MOVQ CX, 0x18(SP)							
+  utf32_convert_amd64.go:208	0x6f8b86		48897c2420		MOVQ DI, 0x20(SP)							
+  utf32_convert_amd64.go:208	0x6f8b8b		4889742428		MOVQ SI, 0x28(SP)							
+  utf32_convert_amd64.go:208	0x6f8b90		4c89442430		MOVQ R8, 0x30(SP)							
+  utf32_convert_amd64.go:208	0x6f8b95		e8063dd9ff		CALL runtime.morestack_noctxt.abi0(SB)					
+  utf32_convert_amd64.go:208	0x6f8b9a		488b442408		MOVQ 0x8(SP), AX							
+  utf32_convert_amd64.go:208	0x6f8b9f		488b5c2410		MOVQ 0x10(SP), BX							
+  utf32_convert_amd64.go:208	0x6f8ba4		488b4c2418		MOVQ 0x18(SP), CX							
+  utf32_convert_amd64.go:208	0x6f8ba9		488b7c2420		MOVQ 0x20(SP), DI							
+  utf32_convert_amd64.go:208	0x6f8bae		488b742428		MOVQ 0x28(SP), SI							
+  utf32_convert_amd64.go:208	0x6f8bb3		4c8b442430		MOVQ 0x30(SP), R8							
+  utf32_convert_amd64.go:208	0x6f8bb8		eb86			JMP github.com/zchee/go-simdutf.convertUTF32ToUTF16LEWestmere(SB)	
+
+TEXT github.com/zchee/go-simdutf.convertUTF32ToUTF16BEWestmere(SB) /Users/zchee/go/src/github.com/zchee/go-simdutf/utf32_convert_amd64.go
+  utf32_convert_amd64.go:212	0x6f8bc0		493b6610		CMPQ SP, 0x10(R14)							
+  utf32_convert_amd64.go:212	0x6f8bc4		7631			JBE 0x6f8bf7								
+  utf32_convert_amd64.go:212	0x6f8bc6		55			PUSHQ BP								
+  utf32_convert_amd64.go:212	0x6f8bc7		4889e5			MOVQ SP, BP								
+  utf32_convert_amd64.go:212	0x6f8bca		4883ec48		SUBQ $0x48, SP								
+  utf32_convert_amd64.go:212	0x6f8bce		4889442458		MOVQ AX, 0x58(SP)							
+  utf32_convert_amd64.go:212	0x6f8bd3		48897c2470		MOVQ DI, 0x70(SP)							
+  utf32_convert_amd64.go:213	0x6f8bd8		4c8d0dd1821a00		LEAQ 0x1a82d1(IP), R9							
+  utf32_convert_amd64.go:213	0x6f8bdf		4c8d15f27c1a00		LEAQ 0x1a7cf2(IP), R10							
+  utf32_convert_amd64.go:213	0x6f8be6		41bb04000000		MOVL $0x4, R11								
+  utf32_convert_amd64.go:213	0x6f8bec		e84f050000		CALL github.com/zchee/go-simdutf.convertUTF32ToUTF16AMD64(SB)		
+  utf32_convert_amd64.go:213	0x6f8bf1		4883c448		ADDQ $0x48, SP								
+  utf32_convert_amd64.go:213	0x6f8bf5		5d			POPQ BP									
+  utf32_convert_amd64.go:213	0x6f8bf6		c3			RET									
+  utf32_convert_amd64.go:212	0x6f8bf7		4889442408		MOVQ AX, 0x8(SP)							
+  utf32_convert_amd64.go:212	0x6f8bfc		48895c2410		MOVQ BX, 0x10(SP)							
+  utf32_convert_amd64.go:212	0x6f8c01		48894c2418		MOVQ CX, 0x18(SP)							
+  utf32_convert_amd64.go:212	0x6f8c06		48897c2420		MOVQ DI, 0x20(SP)							
+  utf32_convert_amd64.go:212	0x6f8c0b		4889742428		MOVQ SI, 0x28(SP)							
+  utf32_convert_amd64.go:212	0x6f8c10		4c89442430		MOVQ R8, 0x30(SP)							
+  utf32_convert_amd64.go:212	0x6f8c15		e8863cd9ff		CALL runtime.morestack_noctxt.abi0(SB)					
+  utf32_convert_amd64.go:212	0x6f8c1a		488b442408		MOVQ 0x8(SP), AX							
+  utf32_convert_amd64.go:212	0x6f8c1f		488b5c2410		MOVQ 0x10(SP), BX							
+  utf32_convert_amd64.go:212	0x6f8c24		488b4c2418		MOVQ 0x18(SP), CX							
+  utf32_convert_amd64.go:212	0x6f8c29		488b7c2420		MOVQ 0x20(SP), DI							
+  utf32_convert_amd64.go:212	0x6f8c2e		488b742428		MOVQ 0x28(SP), SI							
+  utf32_convert_amd64.go:212	0x6f8c33		4c8b442430		MOVQ 0x30(SP), R8							
+  utf32_convert_amd64.go:212	0x6f8c38		eb86			JMP github.com/zchee/go-simdutf.convertUTF32ToUTF16BEWestmere(SB)	
+
+TEXT github.com/zchee/go-simdutf.convertUTF32ToUTF16LEHaswell(SB) /Users/zchee/go/src/github.com/zchee/go-simdutf/utf32_convert_amd64.go
+  utf32_convert_amd64.go:216	0x6f8c40		493b6610		CMPQ SP, 0x10(R14)							
+  utf32_convert_amd64.go:216	0x6f8c44		7631			JBE 0x6f8c77								
+  utf32_convert_amd64.go:216	0x6f8c46		55			PUSHQ BP								
+  utf32_convert_amd64.go:216	0x6f8c47		4889e5			MOVQ SP, BP								
+  utf32_convert_amd64.go:216	0x6f8c4a		4883ec48		SUBQ $0x48, SP								
+  utf32_convert_amd64.go:216	0x6f8c4e		4889442458		MOVQ AX, 0x58(SP)							
+  utf32_convert_amd64.go:216	0x6f8c53		48897c2470		MOVQ DI, 0x70(SP)							
+  utf32_convert_amd64.go:217	0x6f8c58		4c8d0d59821a00		LEAQ 0x1a8259(IP), R9							
+  utf32_convert_amd64.go:217	0x6f8c5f		4c8d15b27c1a00		LEAQ 0x1a7cb2(IP), R10							
+  utf32_convert_amd64.go:217	0x6f8c66		41bb08000000		MOVL $0x8, R11								
+  utf32_convert_amd64.go:217	0x6f8c6c		e8cf040000		CALL github.com/zchee/go-simdutf.convertUTF32ToUTF16AMD64(SB)		
+  utf32_convert_amd64.go:217	0x6f8c71		4883c448		ADDQ $0x48, SP								
+  utf32_convert_amd64.go:217	0x6f8c75		5d			POPQ BP									
+  utf32_convert_amd64.go:217	0x6f8c76		c3			RET									
+  utf32_convert_amd64.go:216	0x6f8c77		4889442408		MOVQ AX, 0x8(SP)							
+  utf32_convert_amd64.go:216	0x6f8c7c		48895c2410		MOVQ BX, 0x10(SP)							
+  utf32_convert_amd64.go:216	0x6f8c81		48894c2418		MOVQ CX, 0x18(SP)							
+  utf32_convert_amd64.go:216	0x6f8c86		48897c2420		MOVQ DI, 0x20(SP)							
+  utf32_convert_amd64.go:216	0x6f8c8b		4889742428		MOVQ SI, 0x28(SP)							
+  utf32_convert_amd64.go:216	0x6f8c90		4c89442430		MOVQ R8, 0x30(SP)							
+  utf32_convert_amd64.go:216	0x6f8c95		e8063cd9ff		CALL runtime.morestack_noctxt.abi0(SB)					
+  utf32_convert_amd64.go:216	0x6f8c9a		488b442408		MOVQ 0x8(SP), AX							
+  utf32_convert_amd64.go:216	0x6f8c9f		488b5c2410		MOVQ 0x10(SP), BX							
+  utf32_convert_amd64.go:216	0x6f8ca4		488b4c2418		MOVQ 0x18(SP), CX							
+  utf32_convert_amd64.go:216	0x6f8ca9		488b7c2420		MOVQ 0x20(SP), DI							
+  utf32_convert_amd64.go:216	0x6f8cae		488b742428		MOVQ 0x28(SP), SI							
+  utf32_convert_amd64.go:216	0x6f8cb3		4c8b442430		MOVQ 0x30(SP), R8							
+  utf32_convert_amd64.go:216	0x6f8cb8		eb86			JMP github.com/zchee/go-simdutf.convertUTF32ToUTF16LEHaswell(SB)	
+
+TEXT github.com/zchee/go-simdutf.convertUTF32ToUTF16BEHaswell(SB) /Users/zchee/go/src/github.com/zchee/go-simdutf/utf32_convert_amd64.go
+  utf32_convert_amd64.go:220	0x6f8cc0		493b6610		CMPQ SP, 0x10(R14)							
+  utf32_convert_amd64.go:220	0x6f8cc4		7631			JBE 0x6f8cf7								
+  utf32_convert_amd64.go:220	0x6f8cc6		55			PUSHQ BP								
+  utf32_convert_amd64.go:220	0x6f8cc7		4889e5			MOVQ SP, BP								
+  utf32_convert_amd64.go:220	0x6f8cca		4883ec48		SUBQ $0x48, SP								
+  utf32_convert_amd64.go:220	0x6f8cce		4889442458		MOVQ AX, 0x58(SP)							
+  utf32_convert_amd64.go:220	0x6f8cd3		48897c2470		MOVQ DI, 0x70(SP)							
+  utf32_convert_amd64.go:221	0x6f8cd8		4c8d0dc9811a00		LEAQ 0x1a81c9(IP), R9							
+  utf32_convert_amd64.go:221	0x6f8cdf		4c8d15f27b1a00		LEAQ 0x1a7bf2(IP), R10							
+  utf32_convert_amd64.go:221	0x6f8ce6		41bb08000000		MOVL $0x8, R11								
+  utf32_convert_amd64.go:221	0x6f8cec		e84f040000		CALL github.com/zchee/go-simdutf.convertUTF32ToUTF16AMD64(SB)		
+  utf32_convert_amd64.go:221	0x6f8cf1		4883c448		ADDQ $0x48, SP								
+  utf32_convert_amd64.go:221	0x6f8cf5		5d			POPQ BP									
+  utf32_convert_amd64.go:221	0x6f8cf6		c3			RET									
+  utf32_convert_amd64.go:220	0x6f8cf7		4889442408		MOVQ AX, 0x8(SP)							
+  utf32_convert_amd64.go:220	0x6f8cfc		48895c2410		MOVQ BX, 0x10(SP)							
+  utf32_convert_amd64.go:220	0x6f8d01		48894c2418		MOVQ CX, 0x18(SP)							
+  utf32_convert_amd64.go:220	0x6f8d06		48897c2420		MOVQ DI, 0x20(SP)							
+  utf32_convert_amd64.go:220	0x6f8d0b		4889742428		MOVQ SI, 0x28(SP)							
+  utf32_convert_amd64.go:220	0x6f8d10		4c89442430		MOVQ R8, 0x30(SP)							
+  utf32_convert_amd64.go:220	0x6f8d15		e8863bd9ff		CALL runtime.morestack_noctxt.abi0(SB)					
+  utf32_convert_amd64.go:220	0x6f8d1a		488b442408		MOVQ 0x8(SP), AX							
+  utf32_convert_amd64.go:220	0x6f8d1f		488b5c2410		MOVQ 0x10(SP), BX							
+  utf32_convert_amd64.go:220	0x6f8d24		488b4c2418		MOVQ 0x18(SP), CX							
+  utf32_convert_amd64.go:220	0x6f8d29		488b7c2420		MOVQ 0x20(SP), DI							
+  utf32_convert_amd64.go:220	0x6f8d2e		488b742428		MOVQ 0x28(SP), SI							
+  utf32_convert_amd64.go:220	0x6f8d33		4c8b442430		MOVQ 0x30(SP), R8							
+  utf32_convert_amd64.go:220	0x6f8d38		eb86			JMP github.com/zchee/go-simdutf.convertUTF32ToUTF16BEHaswell(SB)	
+
+TEXT github.com/zchee/go-simdutf.convertUTF32ToUTF16LEWithErrorsWestmere(SB) /Users/zchee/go/src/github.com/zchee/go-simdutf/utf32_convert_amd64.go
+  utf32_convert_amd64.go:224	0x6f8d40		493b6610		CMPQ SP, 0x10(R14)								
+  utf32_convert_amd64.go:224	0x6f8d44		7631			JBE 0x6f8d77									
+  utf32_convert_amd64.go:224	0x6f8d46		55			PUSHQ BP									
+  utf32_convert_amd64.go:224	0x6f8d47		4889e5			MOVQ SP, BP									
+  utf32_convert_amd64.go:224	0x6f8d4a		4883ec48		SUBQ $0x48, SP									
+  utf32_convert_amd64.go:224	0x6f8d4e		4889442458		MOVQ AX, 0x58(SP)								
+  utf32_convert_amd64.go:224	0x6f8d53		48897c2470		MOVQ DI, 0x70(SP)								
+  utf32_convert_amd64.go:225	0x6f8d58		4c8d0d61811a00		LEAQ 0x1a8161(IP), R9								
+  utf32_convert_amd64.go:225	0x6f8d5f		4c8d15d27b1a00		LEAQ 0x1a7bd2(IP), R10								
+  utf32_convert_amd64.go:225	0x6f8d66		41bb04000000		MOVL $0x4, R11									
+  utf32_convert_amd64.go:225	0x6f8d6c		e88f050000		CALL github.com/zchee/go-simdutf.convertUTF32ToUTF16WithErrorsAMD64(SB)		
+  utf32_convert_amd64.go:225	0x6f8d71		4883c448		ADDQ $0x48, SP									
+  utf32_convert_amd64.go:225	0x6f8d75		5d			POPQ BP										
+  utf32_convert_amd64.go:225	0x6f8d76		c3			RET										
+  utf32_convert_amd64.go:224	0x6f8d77		4889442408		MOVQ AX, 0x8(SP)								
+  utf32_convert_amd64.go:224	0x6f8d7c		48895c2410		MOVQ BX, 0x10(SP)								
+  utf32_convert_amd64.go:224	0x6f8d81		48894c2418		MOVQ CX, 0x18(SP)								
+  utf32_convert_amd64.go:224	0x6f8d86		48897c2420		MOVQ DI, 0x20(SP)								
+  utf32_convert_amd64.go:224	0x6f8d8b		4889742428		MOVQ SI, 0x28(SP)								
+  utf32_convert_amd64.go:224	0x6f8d90		4c89442430		MOVQ R8, 0x30(SP)								
+  utf32_convert_amd64.go:224	0x6f8d95		e8063bd9ff		CALL runtime.morestack_noctxt.abi0(SB)						
+  utf32_convert_amd64.go:224	0x6f8d9a		488b442408		MOVQ 0x8(SP), AX								
+  utf32_convert_amd64.go:224	0x6f8d9f		488b5c2410		MOVQ 0x10(SP), BX								
+  utf32_convert_amd64.go:224	0x6f8da4		488b4c2418		MOVQ 0x18(SP), CX								
+  utf32_convert_amd64.go:224	0x6f8da9		488b7c2420		MOVQ 0x20(SP), DI								
+  utf32_convert_amd64.go:224	0x6f8dae		488b742428		MOVQ 0x28(SP), SI								
+  utf32_convert_amd64.go:224	0x6f8db3		4c8b442430		MOVQ 0x30(SP), R8								
+  utf32_convert_amd64.go:224	0x6f8db8		eb86			JMP github.com/zchee/go-simdutf.convertUTF32ToUTF16LEWithErrorsWestmere(SB)	
+
+TEXT github.com/zchee/go-simdutf.convertUTF32ToUTF16BEWithErrorsWestmere(SB) /Users/zchee/go/src/github.com/zchee/go-simdutf/utf32_convert_amd64.go
+  utf32_convert_amd64.go:228	0x6f8dc0		493b6610		CMPQ SP, 0x10(R14)								
+  utf32_convert_amd64.go:228	0x6f8dc4		7631			JBE 0x6f8df7									
+  utf32_convert_amd64.go:228	0x6f8dc6		55			PUSHQ BP									
+  utf32_convert_amd64.go:228	0x6f8dc7		4889e5			MOVQ SP, BP									
+  utf32_convert_amd64.go:228	0x6f8dca		4883ec48		SUBQ $0x48, SP									
+  utf32_convert_amd64.go:228	0x6f8dce		4889442458		MOVQ AX, 0x58(SP)								
+  utf32_convert_amd64.go:228	0x6f8dd3		48897c2470		MOVQ DI, 0x70(SP)								
+  utf32_convert_amd64.go:229	0x6f8dd8		4c8d0dd1801a00		LEAQ 0x1a80d1(IP), R9								
+  utf32_convert_amd64.go:229	0x6f8ddf		4c8d15127b1a00		LEAQ 0x1a7b12(IP), R10								
+  utf32_convert_amd64.go:229	0x6f8de6		41bb04000000		MOVL $0x4, R11									
+  utf32_convert_amd64.go:229	0x6f8dec		e80f050000		CALL github.com/zchee/go-simdutf.convertUTF32ToUTF16WithErrorsAMD64(SB)		
+  utf32_convert_amd64.go:229	0x6f8df1		4883c448		ADDQ $0x48, SP									
+  utf32_convert_amd64.go:229	0x6f8df5		5d			POPQ BP										
+  utf32_convert_amd64.go:229	0x6f8df6		c3			RET										
+  utf32_convert_amd64.go:228	0x6f8df7		4889442408		MOVQ AX, 0x8(SP)								
+  utf32_convert_amd64.go:228	0x6f8dfc		48895c2410		MOVQ BX, 0x10(SP)								
+  utf32_convert_amd64.go:228	0x6f8e01		48894c2418		MOVQ CX, 0x18(SP)								
+  utf32_convert_amd64.go:228	0x6f8e06		48897c2420		MOVQ DI, 0x20(SP)								
+  utf32_convert_amd64.go:228	0x6f8e0b		4889742428		MOVQ SI, 0x28(SP)								
+  utf32_convert_amd64.go:228	0x6f8e10		4c89442430		MOVQ R8, 0x30(SP)								
+  utf32_convert_amd64.go:228	0x6f8e15		e8863ad9ff		CALL runtime.morestack_noctxt.abi0(SB)						
+  utf32_convert_amd64.go:228	0x6f8e1a		488b442408		MOVQ 0x8(SP), AX								
+  utf32_convert_amd64.go:228	0x6f8e1f		488b5c2410		MOVQ 0x10(SP), BX								
+  utf32_convert_amd64.go:228	0x6f8e24		488b4c2418		MOVQ 0x18(SP), CX								
+  utf32_convert_amd64.go:228	0x6f8e29		488b7c2420		MOVQ 0x20(SP), DI								
+  utf32_convert_amd64.go:228	0x6f8e2e		488b742428		MOVQ 0x28(SP), SI								
+  utf32_convert_amd64.go:228	0x6f8e33		4c8b442430		MOVQ 0x30(SP), R8								
+  utf32_convert_amd64.go:228	0x6f8e38		eb86			JMP github.com/zchee/go-simdutf.convertUTF32ToUTF16BEWithErrorsWestmere(SB)	
+
+TEXT github.com/zchee/go-simdutf.convertUTF32ToUTF16LEWithErrorsHaswell(SB) /Users/zchee/go/src/github.com/zchee/go-simdutf/utf32_convert_amd64.go
+  utf32_convert_amd64.go:232	0x6f8e40		493b6610		CMPQ SP, 0x10(R14)								
+  utf32_convert_amd64.go:232	0x6f8e44		7631			JBE 0x6f8e77									
+  utf32_convert_amd64.go:232	0x6f8e46		55			PUSHQ BP									
+  utf32_convert_amd64.go:232	0x6f8e47		4889e5			MOVQ SP, BP									
+  utf32_convert_amd64.go:232	0x6f8e4a		4883ec48		SUBQ $0x48, SP									
+  utf32_convert_amd64.go:232	0x6f8e4e		4889442458		MOVQ AX, 0x58(SP)								
+  utf32_convert_amd64.go:232	0x6f8e53		48897c2470		MOVQ DI, 0x70(SP)								
+  utf32_convert_amd64.go:233	0x6f8e58		4c8d0d59801a00		LEAQ 0x1a8059(IP), R9								
+  utf32_convert_amd64.go:233	0x6f8e5f		4c8d15d27a1a00		LEAQ 0x1a7ad2(IP), R10								
+  utf32_convert_amd64.go:233	0x6f8e66		41bb08000000		MOVL $0x8, R11									
+  utf32_convert_amd64.go:233	0x6f8e6c		e88f040000		CALL github.com/zchee/go-simdutf.convertUTF32ToUTF16WithErrorsAMD64(SB)		
+  utf32_convert_amd64.go:233	0x6f8e71		4883c448		ADDQ $0x48, SP									
+  utf32_convert_amd64.go:233	0x6f8e75		5d			POPQ BP										
+  utf32_convert_amd64.go:233	0x6f8e76		c3			RET										
+  utf32_convert_amd64.go:232	0x6f8e77		4889442408		MOVQ AX, 0x8(SP)								
+  utf32_convert_amd64.go:232	0x6f8e7c		48895c2410		MOVQ BX, 0x10(SP)								
+  utf32_convert_amd64.go:232	0x6f8e81		48894c2418		MOVQ CX, 0x18(SP)								
+  utf32_convert_amd64.go:232	0x6f8e86		48897c2420		MOVQ DI, 0x20(SP)								
+  utf32_convert_amd64.go:232	0x6f8e8b		4889742428		MOVQ SI, 0x28(SP)								
+  utf32_convert_amd64.go:232	0x6f8e90		4c89442430		MOVQ R8, 0x30(SP)								
+  utf32_convert_amd64.go:232	0x6f8e95		e8063ad9ff		CALL runtime.morestack_noctxt.abi0(SB)						
+  utf32_convert_amd64.go:232	0x6f8e9a		488b442408		MOVQ 0x8(SP), AX								
+  utf32_convert_amd64.go:232	0x6f8e9f		488b5c2410		MOVQ 0x10(SP), BX								
+  utf32_convert_amd64.go:232	0x6f8ea4		488b4c2418		MOVQ 0x18(SP), CX								
+  utf32_convert_amd64.go:232	0x6f8ea9		488b7c2420		MOVQ 0x20(SP), DI								
+  utf32_convert_amd64.go:232	0x6f8eae		488b742428		MOVQ 0x28(SP), SI								
+  utf32_convert_amd64.go:232	0x6f8eb3		4c8b442430		MOVQ 0x30(SP), R8								
+  utf32_convert_amd64.go:232	0x6f8eb8		eb86			JMP github.com/zchee/go-simdutf.convertUTF32ToUTF16LEWithErrorsHaswell(SB)	
+
+TEXT github.com/zchee/go-simdutf.convertUTF32ToUTF16BEWithErrorsHaswell(SB) /Users/zchee/go/src/github.com/zchee/go-simdutf/utf32_convert_amd64.go
+  utf32_convert_amd64.go:236	0x6f8ec0		493b6610		CMPQ SP, 0x10(R14)								
+  utf32_convert_amd64.go:236	0x6f8ec4		7631			JBE 0x6f8ef7									
+  utf32_convert_amd64.go:236	0x6f8ec6		55			PUSHQ BP									
+  utf32_convert_amd64.go:236	0x6f8ec7		4889e5			MOVQ SP, BP									
+  utf32_convert_amd64.go:236	0x6f8eca		4883ec48		SUBQ $0x48, SP									
+  utf32_convert_amd64.go:236	0x6f8ece		4889442458		MOVQ AX, 0x58(SP)								
+  utf32_convert_amd64.go:236	0x6f8ed3		48897c2470		MOVQ DI, 0x70(SP)								
+  utf32_convert_amd64.go:237	0x6f8ed8		4c8d0dc97f1a00		LEAQ 0x1a7fc9(IP), R9								
+  utf32_convert_amd64.go:237	0x6f8edf		4c8d15127a1a00		LEAQ 0x1a7a12(IP), R10								
+  utf32_convert_amd64.go:237	0x6f8ee6		41bb08000000		MOVL $0x8, R11									
+  utf32_convert_amd64.go:237	0x6f8eec		e80f040000		CALL github.com/zchee/go-simdutf.convertUTF32ToUTF16WithErrorsAMD64(SB)		
+  utf32_convert_amd64.go:237	0x6f8ef1		4883c448		ADDQ $0x48, SP									
+  utf32_convert_amd64.go:237	0x6f8ef5		5d			POPQ BP										
+  utf32_convert_amd64.go:237	0x6f8ef6		c3			RET										
+  utf32_convert_amd64.go:236	0x6f8ef7		4889442408		MOVQ AX, 0x8(SP)								
+  utf32_convert_amd64.go:236	0x6f8efc		48895c2410		MOVQ BX, 0x10(SP)								
+  utf32_convert_amd64.go:236	0x6f8f01		48894c2418		MOVQ CX, 0x18(SP)								
+  utf32_convert_amd64.go:236	0x6f8f06		48897c2420		MOVQ DI, 0x20(SP)								
+  utf32_convert_amd64.go:236	0x6f8f0b		4889742428		MOVQ SI, 0x28(SP)								
+  utf32_convert_amd64.go:236	0x6f8f10		4c89442430		MOVQ R8, 0x30(SP)								
+  utf32_convert_amd64.go:236	0x6f8f15		e88639d9ff		CALL runtime.morestack_noctxt.abi0(SB)						
+  utf32_convert_amd64.go:236	0x6f8f1a		488b442408		MOVQ 0x8(SP), AX								
+  utf32_convert_amd64.go:236	0x6f8f1f		488b5c2410		MOVQ 0x10(SP), BX								
+  utf32_convert_amd64.go:236	0x6f8f24		488b4c2418		MOVQ 0x18(SP), CX								
+  utf32_convert_amd64.go:236	0x6f8f29		488b7c2420		MOVQ 0x20(SP), DI								
+  utf32_convert_amd64.go:236	0x6f8f2e		488b742428		MOVQ 0x28(SP), SI								
+  utf32_convert_amd64.go:236	0x6f8f33		4c8b442430		MOVQ 0x30(SP), R8								
+  utf32_convert_amd64.go:236	0x6f8f38		eb86			JMP github.com/zchee/go-simdutf.convertUTF32ToUTF16BEWithErrorsHaswell(SB)	
+
+TEXT github.com/zchee/go-simdutf.convertValidUTF32ToUTF16LEWestmere(SB) /Users/zchee/go/src/github.com/zchee/go-simdutf/utf32_convert_amd64.go
+  utf32_convert_amd64.go:240	0x6f8f40		493b6610		CMPQ SP, 0x10(R14)							
+  utf32_convert_amd64.go:240	0x6f8f44		7631			JBE 0x6f8f77								
+  utf32_convert_amd64.go:240	0x6f8f46		55			PUSHQ BP								
+  utf32_convert_amd64.go:240	0x6f8f47		4889e5			MOVQ SP, BP								
+  utf32_convert_amd64.go:240	0x6f8f4a		4883ec48		SUBQ $0x48, SP								
+  utf32_convert_amd64.go:240	0x6f8f4e		4889442458		MOVQ AX, 0x58(SP)							
+  utf32_convert_amd64.go:240	0x6f8f53		48897c2470		MOVQ DI, 0x70(SP)							
+  utf32_convert_amd64.go:241	0x6f8f58		4c8d0d617f1a00		LEAQ 0x1a7f61(IP), R9							
+  utf32_convert_amd64.go:241	0x6f8f5f		4c8d15327c1a00		LEAQ 0x1a7c32(IP), R10							
+  utf32_convert_amd64.go:241	0x6f8f66		41bb04000000		MOVL $0x4, R11								
+  utf32_convert_amd64.go:241	0x6f8f6c		e84f050000		CALL github.com/zchee/go-simdutf.convertValidUTF32ToUTF16AMD64(SB)	
+  utf32_convert_amd64.go:241	0x6f8f71		4883c448		ADDQ $0x48, SP								
+  utf32_convert_amd64.go:241	0x6f8f75		5d			POPQ BP									
+  utf32_convert_amd64.go:241	0x6f8f76		c3			RET									
+  utf32_convert_amd64.go:240	0x6f8f77		4889442408		MOVQ AX, 0x8(SP)							
+  utf32_convert_amd64.go:240	0x6f8f7c		48895c2410		MOVQ BX, 0x10(SP)							
+  utf32_convert_amd64.go:240	0x6f8f81		48894c2418		MOVQ CX, 0x18(SP)							
+  utf32_convert_amd64.go:240	0x6f8f86		48897c2420		MOVQ DI, 0x20(SP)							
+  utf32_convert_amd64.go:240	0x6f8f8b		4889742428		MOVQ SI, 0x28(SP)							
+  utf32_convert_amd64.go:240	0x6f8f90		4c89442430		MOVQ R8, 0x30(SP)							
+  utf32_convert_amd64.go:240	0x6f8f95		e80639d9ff		CALL runtime.morestack_noctxt.abi0(SB)					
+  utf32_convert_amd64.go:240	0x6f8f9a		488b442408		MOVQ 0x8(SP), AX							
+  utf32_convert_amd64.go:240	0x6f8f9f		488b5c2410		MOVQ 0x10(SP), BX							
+  utf32_convert_amd64.go:240	0x6f8fa4		488b4c2418		MOVQ 0x18(SP), CX							
+  utf32_convert_amd64.go:240	0x6f8fa9		488b7c2420		MOVQ 0x20(SP), DI							
+  utf32_convert_amd64.go:240	0x6f8fae		488b742428		MOVQ 0x28(SP), SI							
+  utf32_convert_amd64.go:240	0x6f8fb3		4c8b442430		MOVQ 0x30(SP), R8							
+  utf32_convert_amd64.go:240	0x6f8fb8		eb86			JMP github.com/zchee/go-simdutf.convertValidUTF32ToUTF16LEWestmere(SB)	
+
+TEXT github.com/zchee/go-simdutf.convertValidUTF32ToUTF16BEWestmere(SB) /Users/zchee/go/src/github.com/zchee/go-simdutf/utf32_convert_amd64.go
+  utf32_convert_amd64.go:244	0x6f8fc0		493b6610		CMPQ SP, 0x10(R14)							
+  utf32_convert_amd64.go:244	0x6f8fc4		7631			JBE 0x6f8ff7								
+  utf32_convert_amd64.go:244	0x6f8fc6		55			PUSHQ BP								
+  utf32_convert_amd64.go:244	0x6f8fc7		4889e5			MOVQ SP, BP								
+  utf32_convert_amd64.go:244	0x6f8fca		4883ec48		SUBQ $0x48, SP								
+  utf32_convert_amd64.go:244	0x6f8fce		4889442458		MOVQ AX, 0x58(SP)							
+  utf32_convert_amd64.go:244	0x6f8fd3		48897c2470		MOVQ DI, 0x70(SP)							
+  utf32_convert_amd64.go:245	0x6f8fd8		4c8d0dd17e1a00		LEAQ 0x1a7ed1(IP), R9							
+  utf32_convert_amd64.go:245	0x6f8fdf		4c8d15927b1a00		LEAQ 0x1a7b92(IP), R10							
+  utf32_convert_amd64.go:245	0x6f8fe6		41bb04000000		MOVL $0x4, R11								
+  utf32_convert_amd64.go:245	0x6f8fec		e8cf040000		CALL github.com/zchee/go-simdutf.convertValidUTF32ToUTF16AMD64(SB)	
+  utf32_convert_amd64.go:245	0x6f8ff1		4883c448		ADDQ $0x48, SP								
+  utf32_convert_amd64.go:245	0x6f8ff5		5d			POPQ BP									
+  utf32_convert_amd64.go:245	0x6f8ff6		c3			RET									
+  utf32_convert_amd64.go:244	0x6f8ff7		4889442408		MOVQ AX, 0x8(SP)							
+  utf32_convert_amd64.go:244	0x6f8ffc		48895c2410		MOVQ BX, 0x10(SP)							
+  utf32_convert_amd64.go:244	0x6f9001		48894c2418		MOVQ CX, 0x18(SP)							
+  utf32_convert_amd64.go:244	0x6f9006		48897c2420		MOVQ DI, 0x20(SP)							
+  utf32_convert_amd64.go:244	0x6f900b		4889742428		MOVQ SI, 0x28(SP)							
+  utf32_convert_amd64.go:244	0x6f9010		4c89442430		MOVQ R8, 0x30(SP)							
+  utf32_convert_amd64.go:244	0x6f9015		e88638d9ff		CALL runtime.morestack_noctxt.abi0(SB)					
+  utf32_convert_amd64.go:244	0x6f901a		488b442408		MOVQ 0x8(SP), AX							
+  utf32_convert_amd64.go:244	0x6f901f		488b5c2410		MOVQ 0x10(SP), BX							
+  utf32_convert_amd64.go:244	0x6f9024		488b4c2418		MOVQ 0x18(SP), CX							
+  utf32_convert_amd64.go:244	0x6f9029		488b7c2420		MOVQ 0x20(SP), DI							
+  utf32_convert_amd64.go:244	0x6f902e		488b742428		MOVQ 0x28(SP), SI							
+  utf32_convert_amd64.go:244	0x6f9033		4c8b442430		MOVQ 0x30(SP), R8							
+  utf32_convert_amd64.go:244	0x6f9038		eb86			JMP github.com/zchee/go-simdutf.convertValidUTF32ToUTF16BEWestmere(SB)	
+
+TEXT github.com/zchee/go-simdutf.convertValidUTF32ToUTF16LEHaswell(SB) /Users/zchee/go/src/github.com/zchee/go-simdutf/utf32_convert_amd64.go
+  utf32_convert_amd64.go:248	0x6f9040		493b6610		CMPQ SP, 0x10(R14)							
+  utf32_convert_amd64.go:248	0x6f9044		7631			JBE 0x6f9077								
+  utf32_convert_amd64.go:248	0x6f9046		55			PUSHQ BP								
+  utf32_convert_amd64.go:248	0x6f9047		4889e5			MOVQ SP, BP								
+  utf32_convert_amd64.go:248	0x6f904a		4883ec48		SUBQ $0x48, SP								
+  utf32_convert_amd64.go:248	0x6f904e		4889442458		MOVQ AX, 0x58(SP)							
+  utf32_convert_amd64.go:248	0x6f9053		48897c2470		MOVQ DI, 0x70(SP)							
+  utf32_convert_amd64.go:249	0x6f9058		4c8d0d597e1a00		LEAQ 0x1a7e59(IP), R9							
+  utf32_convert_amd64.go:249	0x6f905f		4c8d15327b1a00		LEAQ 0x1a7b32(IP), R10							
+  utf32_convert_amd64.go:249	0x6f9066		41bb08000000		MOVL $0x8, R11								
+  utf32_convert_amd64.go:249	0x6f906c		e84f040000		CALL github.com/zchee/go-simdutf.convertValidUTF32ToUTF16AMD64(SB)	
+  utf32_convert_amd64.go:249	0x6f9071		4883c448		ADDQ $0x48, SP								
+  utf32_convert_amd64.go:249	0x6f9075		5d			POPQ BP									
+  utf32_convert_amd64.go:249	0x6f9076		c3			RET									
+  utf32_convert_amd64.go:248	0x6f9077		4889442408		MOVQ AX, 0x8(SP)							
+  utf32_convert_amd64.go:248	0x6f907c		48895c2410		MOVQ BX, 0x10(SP)							
+  utf32_convert_amd64.go:248	0x6f9081		48894c2418		MOVQ CX, 0x18(SP)							
+  utf32_convert_amd64.go:248	0x6f9086		48897c2420		MOVQ DI, 0x20(SP)							
+  utf32_convert_amd64.go:248	0x6f908b		4889742428		MOVQ SI, 0x28(SP)							
+  utf32_convert_amd64.go:248	0x6f9090		4c89442430		MOVQ R8, 0x30(SP)							
+  utf32_convert_amd64.go:248	0x6f9095		e80638d9ff		CALL runtime.morestack_noctxt.abi0(SB)					
+  utf32_convert_amd64.go:248	0x6f909a		488b442408		MOVQ 0x8(SP), AX							
+  utf32_convert_amd64.go:248	0x6f909f		488b5c2410		MOVQ 0x10(SP), BX							
+  utf32_convert_amd64.go:248	0x6f90a4		488b4c2418		MOVQ 0x18(SP), CX							
+  utf32_convert_amd64.go:248	0x6f90a9		488b7c2420		MOVQ 0x20(SP), DI							
+  utf32_convert_amd64.go:248	0x6f90ae		488b742428		MOVQ 0x28(SP), SI							
+  utf32_convert_amd64.go:248	0x6f90b3		4c8b442430		MOVQ 0x30(SP), R8							
+  utf32_convert_amd64.go:248	0x6f90b8		eb86			JMP github.com/zchee/go-simdutf.convertValidUTF32ToUTF16LEHaswell(SB)	
+
+TEXT github.com/zchee/go-simdutf.convertValidUTF32ToUTF16BEHaswell(SB) /Users/zchee/go/src/github.com/zchee/go-simdutf/utf32_convert_amd64.go
+  utf32_convert_amd64.go:252	0x6f90c0		493b6610		CMPQ SP, 0x10(R14)							
+  utf32_convert_amd64.go:252	0x6f90c4		7631			JBE 0x6f90f7								
+  utf32_convert_amd64.go:252	0x6f90c6		55			PUSHQ BP								
+  utf32_convert_amd64.go:252	0x6f90c7		4889e5			MOVQ SP, BP								
+  utf32_convert_amd64.go:252	0x6f90ca		4883ec48		SUBQ $0x48, SP								
+  utf32_convert_amd64.go:252	0x6f90ce		4889442458		MOVQ AX, 0x58(SP)							
+  utf32_convert_amd64.go:252	0x6f90d3		48897c2470		MOVQ DI, 0x70(SP)							
+  utf32_convert_amd64.go:253	0x6f90d8		4c8d0dc97d1a00		LEAQ 0x1a7dc9(IP), R9							
+  utf32_convert_amd64.go:253	0x6f90df		4c8d15927a1a00		LEAQ 0x1a7a92(IP), R10							
+  utf32_convert_amd64.go:253	0x6f90e6		41bb08000000		MOVL $0x8, R11								
+  utf32_convert_amd64.go:253	0x6f90ec		e8cf030000		CALL github.com/zchee/go-simdutf.convertValidUTF32ToUTF16AMD64(SB)	
+  utf32_convert_amd64.go:253	0x6f90f1		4883c448		ADDQ $0x48, SP								
+  utf32_convert_amd64.go:253	0x6f90f5		5d			POPQ BP									
+  utf32_convert_amd64.go:253	0x6f90f6		c3			RET									
+  utf32_convert_amd64.go:252	0x6f90f7		4889442408		MOVQ AX, 0x8(SP)							
+  utf32_convert_amd64.go:252	0x6f90fc		48895c2410		MOVQ BX, 0x10(SP)							
+  utf32_convert_amd64.go:252	0x6f9101		48894c2418		MOVQ CX, 0x18(SP)							
+  utf32_convert_amd64.go:252	0x6f9106		48897c2420		MOVQ DI, 0x20(SP)							
+  utf32_convert_amd64.go:252	0x6f910b		4889742428		MOVQ SI, 0x28(SP)							
+  utf32_convert_amd64.go:252	0x6f9110		4c89442430		MOVQ R8, 0x30(SP)							
+  utf32_convert_amd64.go:252	0x6f9115		e88637d9ff		CALL runtime.morestack_noctxt.abi0(SB)					
+  utf32_convert_amd64.go:252	0x6f911a		488b442408		MOVQ 0x8(SP), AX							
+  utf32_convert_amd64.go:252	0x6f911f		488b5c2410		MOVQ 0x10(SP), BX							
+  utf32_convert_amd64.go:252	0x6f9124		488b4c2418		MOVQ 0x18(SP), CX							
+  utf32_convert_amd64.go:252	0x6f9129		488b7c2420		MOVQ 0x20(SP), DI							
+  utf32_convert_amd64.go:252	0x6f912e		488b742428		MOVQ 0x28(SP), SI							
+  utf32_convert_amd64.go:252	0x6f9133		4c8b442430		MOVQ 0x30(SP), R8							
+  utf32_convert_amd64.go:252	0x6f9138		eb86			JMP github.com/zchee/go-simdutf.convertValidUTF32ToUTF16BEHaswell(SB)	
+
+TEXT github.com/zchee/go-simdutf.utf8LengthFromUTF32Westmere(SB) /Users/zchee/go/src/github.com/zchee/go-simdutf/utf32_convert_amd64.go
+  utf32_convert_amd64.go:305	0x6f9680		4889442408		MOVQ AX, 0x8(SP)	
+  utf32_convert_amd64.go:306	0x6f9685		31c9			XORL CX, CX		
+  utf32_convert_amd64.go:306	0x6f9687		31d2			XORL DX, DX		
+  utf32_convert_scalar.go:33	0x6f9689		eb38			JMP 0x6f96c3		
+  utf32_convert_scalar.go:33	0x6f968b		8b3488			MOVL 0(AX)(CX*4), SI	
+  utf32_convert_scalar.go:34	0x6f968e		488d7a01		LEAQ 0x1(DX), DI	
+  utf32_convert_scalar.go:36	0x6f9692		4c8d4202		LEAQ 0x2(DX), R8	
+  utf32_convert_scalar.go:33	0x6f9696		48ffc1			INCQ CX			
+  utf32_convert_scalar.go:35	0x6f9699		83fe7f			CMPL SI, $0x7f		
+  utf32_convert_scalar.go:38	0x6f969c		490f47f8		CMOVA R8, DI		
+  utf32_convert_scalar.go:38	0x6f96a0		81feff070000		CMPL SI, $0x7ff		
+  utf32_convert_scalar.go:38	0x6f96a6		410f97c0		SETA R8			
+  utf32_convert_scalar.go:41	0x6f96aa		450fb6c0		MOVZX R8, R8		
+  utf32_convert_scalar.go:41	0x6f96ae		4c01c7			ADDQ R8, DI		
+  utf32_convert_scalar.go:41	0x6f96b1		81feffff0000		CMPL SI, $0xffff	
+  utf32_convert_scalar.go:41	0x6f96b7		400f97c6		SETA SI			
+  utf32_convert_scalar.go:41	0x6f96bb		400fb6f6		MOVZX SI, SI		
+  utf32_convert_scalar.go:41	0x6f96bf		488d1437		LEAQ 0(DI)(SI*1), DX	
+  utf32_convert_scalar.go:33	0x6f96c3		4839cb			CMPQ BX, CX		
+  utf32_convert_scalar.go:33	0x6f96c6		7fc3			JG 0x6f968b		
+  utf32_convert_amd64.go:306	0x6f96c8		4889d0			MOVQ DX, AX		
+  utf32_convert_amd64.go:306	0x6f96cb		c3			RET			
+
+TEXT github.com/zchee/go-simdutf.utf8LengthFromUTF32Haswell(SB) /Users/zchee/go/src/github.com/zchee/go-simdutf/utf32_convert_amd64.go
+  utf32_convert_amd64.go:309	0x6f96e0		4889442408		MOVQ AX, 0x8(SP)	
+  utf32_convert_amd64.go:310	0x6f96e5		31c9			XORL CX, CX		
+  utf32_convert_amd64.go:310	0x6f96e7		31d2			XORL DX, DX		
+  utf32_convert_scalar.go:33	0x6f96e9		eb38			JMP 0x6f9723		
+  utf32_convert_scalar.go:33	0x6f96eb		8b3488			MOVL 0(AX)(CX*4), SI	
+  utf32_convert_scalar.go:34	0x6f96ee		488d7a01		LEAQ 0x1(DX), DI	
+  utf32_convert_scalar.go:36	0x6f96f2		4c8d4202		LEAQ 0x2(DX), R8	
+  utf32_convert_scalar.go:33	0x6f96f6		48ffc1			INCQ CX			
+  utf32_convert_scalar.go:35	0x6f96f9		83fe7f			CMPL SI, $0x7f		
+  utf32_convert_scalar.go:38	0x6f96fc		490f47f8		CMOVA R8, DI		
+  utf32_convert_scalar.go:38	0x6f9700		81feff070000		CMPL SI, $0x7ff		
+  utf32_convert_scalar.go:38	0x6f9706		410f97c0		SETA R8			
+  utf32_convert_scalar.go:41	0x6f970a		450fb6c0		MOVZX R8, R8		
+  utf32_convert_scalar.go:41	0x6f970e		4c01c7			ADDQ R8, DI		
+  utf32_convert_scalar.go:41	0x6f9711		81feffff0000		CMPL SI, $0xffff	
+  utf32_convert_scalar.go:41	0x6f9717		400f97c6		SETA SI			
+  utf32_convert_scalar.go:41	0x6f971b		400fb6f6		MOVZX SI, SI		
+  utf32_convert_scalar.go:41	0x6f971f		488d1437		LEAQ 0(DI)(SI*1), DX	
+  utf32_convert_scalar.go:33	0x6f9723		4839cb			CMPQ BX, CX		
+  utf32_convert_scalar.go:33	0x6f9726		7fc3			JG 0x6f96eb		
+  utf32_convert_amd64.go:310	0x6f9728		4889d0			MOVQ DX, AX		
+  utf32_convert_amd64.go:310	0x6f972b		c3			RET			
+
+TEXT github.com/zchee/go-simdutf.utf16LengthFromUTF32Westmere(SB) /Users/zchee/go/src/github.com/zchee/go-simdutf/utf32_convert_amd64.go
+  utf32_convert_amd64.go:313	0x6f9740		4889442408		MOVQ AX, 0x8(SP)	
+  utf32_convert_amd64.go:314	0x6f9745		31c9			XORL CX, CX		
+  utf32_convert_amd64.go:314	0x6f9747		31d2			XORL DX, DX		
+  utf32_convert_scalar.go:50	0x6f9749		eb1b			JMP 0x6f9766		
+  utf32_convert_scalar.go:50	0x6f974b		8b3488			MOVL 0(AX)(CX*4), SI	
+  utf32_convert_scalar.go:51	0x6f974e		488d7a01		LEAQ 0x1(DX), DI	
+  utf32_convert_scalar.go:53	0x6f9752		4c8d4202		LEAQ 0x2(DX), R8	
+  utf32_convert_scalar.go:50	0x6f9756		48ffc1			INCQ CX			
+  utf32_convert_scalar.go:50	0x6f9759		81feffff0000		CMPL SI, $0xffff	
+  utf32_convert_scalar.go:50	0x6f975f		490f47f8		CMOVA R8, DI		
+  utf32_convert_scalar.go:50	0x6f9763		4889fa			MOVQ DI, DX		
+  utf32_convert_scalar.go:50	0x6f9766		4839cb			CMPQ BX, CX		
+  utf32_convert_scalar.go:50	0x6f9769		7fe0			JG 0x6f974b		
+  utf32_convert_amd64.go:314	0x6f976b		4889d0			MOVQ DX, AX		
+  utf32_convert_amd64.go:314	0x6f976e		c3			RET			
+
+TEXT github.com/zchee/go-simdutf.utf16LengthFromUTF32Haswell(SB) /Users/zchee/go/src/github.com/zchee/go-simdutf/utf32_convert_amd64.go
+  utf32_convert_amd64.go:317	0x6f9780		4889442408		MOVQ AX, 0x8(SP)	
+  utf32_convert_amd64.go:318	0x6f9785		31c9			XORL CX, CX		
+  utf32_convert_amd64.go:318	0x6f9787		31d2			XORL DX, DX		
+  utf32_convert_scalar.go:50	0x6f9789		eb1b			JMP 0x6f97a6		
+  utf32_convert_scalar.go:50	0x6f978b		8b3488			MOVL 0(AX)(CX*4), SI	
+  utf32_convert_scalar.go:51	0x6f978e		488d7a01		LEAQ 0x1(DX), DI	
+  utf32_convert_scalar.go:53	0x6f9792		4c8d4202		LEAQ 0x2(DX), R8	
+  utf32_convert_scalar.go:50	0x6f9796		48ffc1			INCQ CX			
+  utf32_convert_scalar.go:50	0x6f9799		81feffff0000		CMPL SI, $0xffff	
+  utf32_convert_scalar.go:50	0x6f979f		490f47f8		CMOVA R8, DI		
+  utf32_convert_scalar.go:50	0x6f97a3		4889fa			MOVQ DI, DX		
+  utf32_convert_scalar.go:50	0x6f97a6		4839cb			CMPQ BX, CX		
+  utf32_convert_scalar.go:50	0x6f97a9		7fe0			JG 0x6f978b		
+  utf32_convert_amd64.go:318	0x6f97ab		4889d0			MOVQ DX, AX		
+  utf32_convert_amd64.go:318	0x6f97ae		c3			RET			
+
+TEXT github.com/zchee/go-simdutf.convertUTF32ToLatin1Archsimd(SB) /Users/zchee/go/src/github.com/zchee/go-simdutf/utf32_convert_archsimd.go
+  utf32_convert_archsimd.go:75	0x6f97c0		493b6610		CMPQ SP, 0x10(R14)							
+  utf32_convert_archsimd.go:75	0x6f97c4		0f866c020000		JBE 0x6f9a36								
+  utf32_convert_archsimd.go:75	0x6f97ca		55			PUSHQ BP								
+  utf32_convert_archsimd.go:75	0x6f97cb		4889e5			MOVQ SP, BP								
+  utf32_convert_archsimd.go:75	0x6f97ce		4883ec50		SUBQ $0x50, SP								
+  utf32_convert_archsimd.go:75	0x6f97d2		4889442460		MOVQ AX, 0x60(SP)							
+  utf32_convert_archsimd.go:75	0x6f97d7		48897c2478		MOVQ DI, 0x78(SP)							
+  utf32_convert_archsimd.go:75	0x6f97dc		0f1f4000		NOPL 0(AX)								
+  utf32_convert_archsimd.go:76	0x6f97e0		4839f3			CMPQ BX, SI								
+  utf32_convert_archsimd.go:76	0x6f97e3		0f8f39020000		JG 0x6f9a22								
+  utf32_convert_archsimd.go:79	0x6f97e9		4883fb08		CMPQ BX, $0x8								
+  utf32_convert_archsimd.go:79	0x6f97ed		7d16			JGE 0x6f9805								
+  utf32_convert_scalar.go:63	0x6f97ef		4885db			TESTQ BX, BX								
+  utf32_convert_scalar.go:63	0x6f97f2		7409			JE 0x6f97fd								
+  utf32_convert_scalar.go:63	0x6f97f4		31c9			XORL CX, CX								
+  utf32_convert_scalar.go:63	0x6f97f6		31d2			XORL DX, DX								
+  utf32_convert_scalar.go:67	0x6f97f8		e90e020000		JMP 0x6f9a0b								
+  utf32_convert_scalar.go:67	0x6f97fd		31c0			XORL AX, AX								
+  utf32_convert_scalar.go:67	0x6f97ff		90			NOPL									
+  utf32_convert_archsimd.go:80	0x6f9800		e9f4010000		JMP 0x6f99f9								
+  utf32_convert_archsimd.go:76	0x6f9805		48897c2478		MOVQ DI, 0x78(SP)							
+  utf32_convert_archsimd.go:76	0x6f980a		4c89842488000000	MOVQ R8, 0x88(SP)							
+  utf32_convert_archsimd.go:76	0x6f9812		4889b42480000000	MOVQ SI, 0x80(SP)							
+  utf32_convert_archsimd.go:76	0x6f981a		48894c2470		MOVQ CX, 0x70(SP)							
+  utf32_convert_archsimd.go:76	0x6f981f		48895c2468		MOVQ BX, 0x68(SP)							
+  utf32_convert_archsimd.go:76	0x6f9824		4889442460		MOVQ AX, 0x60(SP)							
+  other_gen_amd64.go:157	0x6f9829		ba00ffffff		MOVL $-0x100, DX							
+  other_gen_amd64.go:157	0x6f982e		c5f96e			OUTSB DS:0(SI), DX							
+  other_gen_amd64.go:157	0x6f9831		ca90c4			LRET $0xc490								
+  other_gen_amd64.go:157	0x6f9834		e27d			LOOP 0x6f98b3								
+  other_gen_amd64.go:157	0x6f9836		58			POPQ AX									
+  other_gen_amd64.go:157	0x6f9837		c9			LEAVE									
+  other_gen_amd64.go:157	0x6f9838		c5fe7f4c2430		VMOVDQU X1, 0x30(SP)							
+  other_gen_amd64.go:157	0x6f983e		31d2			XORL DX, DX								
+  utf32_convert_archsimd.go:85	0x6f9840		eb48			JMP 0x6f988a								
+  utf32_convert_archsimd.go:85	0x6f9842		4c894c2428		MOVQ R9, 0x28(SP)							
+  utf32_convert_archsimd.go:90	0x6f9847		4c89c1			MOVQ R8, CX								
+  utf32_convert_archsimd.go:90	0x6f984a		4c29e1			SUBQ R12, CX								
+  utf32_convert_archsimd.go:90	0x6f984d		4a8d0427		LEAQ 0(DI)(R12*1), AX							
+  utf32_convert_archsimd.go:90	0x6f9851		bb08000000		MOVL $0x8, BX								
+  utf32_convert_archsimd.go:90	0x6f9856		e825bfecff		CALL simd/archsimd.Uint8x16.StoreSlicePart(SB)				
+  utf32_convert_archsimd.go:86	0x6f985b		488b442460		MOVQ 0x60(SP), AX							
+  utf32_convert_archsimd.go:86	0x6f9860		488b4c2470		MOVQ 0x70(SP), CX							
+  utf32_convert_archsimd.go:85	0x6f9865		488b5c2468		MOVQ 0x68(SP), BX							
+  utf32_convert_archsimd.go:96	0x6f986a		488bb42480000000	MOVQ 0x80(SP), SI							
+  utf32_convert_archsimd.go:90	0x6f9872		488b7c2478		MOVQ 0x78(SP), DI							
+  utf32_convert_archsimd.go:90	0x6f9877		4c8b842488000000	MOVQ 0x88(SP), R8							
+  utf32_convert_archsimd.go:87	0x6f987f		c5fe6f4c2430		VMOVDQU 0x30(SP), X1							
+  utf32_convert_archsimd.go:85	0x6f9885		488b542428		MOVQ 0x28(SP), DX							
+  utf32_convert_archsimd.go:85	0x6f988a		4c8d4a08		LEAQ 0x8(DX), R9							
+  utf32_convert_archsimd.go:85	0x6f988e		4c39cb			CMPQ BX, R9								
+  utf32_convert_archsimd.go:85	0x6f9891		0f8c97000000		JL 0x6f992e								
+  utf32_convert_archsimd.go:85	0x6f9897		660f1f840000000000	NOPW 0(AX)(AX*1)							
+  utf32_convert_archsimd.go:86	0x6f98a0		4839d3			CMPQ BX, DX								
+  utf32_convert_archsimd.go:86	0x6f98a3		0f824b010000		JB 0x6f99f4								
+  utf32_convert_archsimd.go:86	0x6f98a9		4989da			MOVQ BX, R10								
+  utf32_convert_archsimd.go:86	0x6f98ac		4829d3			SUBQ DX, BX								
+  utf32_convert_archsimd.go:86	0x6f98af		4989d3			MOVQ DX, R11								
+  utf32_convert_archsimd.go:86	0x6f98b2		4829ca			SUBQ CX, DX								
+  utf32_convert_archsimd.go:86	0x6f98b5		4d89dc			MOVQ R11, R12								
+  utf32_convert_archsimd.go:86	0x6f98b8		49c1e302		SHLQ $0x2, R11								
+  utf32_convert_archsimd.go:86	0x6f98bc		48c1fa3f		SARQ $0x3f, DX								
+  utf32_convert_archsimd.go:86	0x6f98c0		4921d3			ANDQ DX, R11								
+  utf32_convert_archsimd.go:86	0x6f98c3		4a8d1418		LEAQ 0(AX)(R11*1), DX							
+  slice_gen_amd64.go:171	0x6f98c7		4883fb08		CMPQ BX, $0x8								
+  slice_gen_amd64.go:171	0x6f98cb		0f821e010000		JB 0x6f99ef								
+  slice_gen_amd64.go:171	0x6f98d1		c5fe6f12		VMOVDQU 0(DX), X2							
+  utf32_convert_archsimd.go:87	0x6f98d5		c4			?									
+  utf32_convert_archsimd.go:87	0x6f98d6		e27d			LOOP 0x6f9955								
+  utf32_convert_archsimd.go:87	0x6f98d8		17			?									
+  utf32_convert_archsimd.go:87	0x6f98d9		ca7558			LRET $0x5875								
+  utf32_convert_archsimd.go:55	0x6f98dc		c5fa6f1dac724600	VMOVDQU github.com/zchee/go-simdutf.utf32Latin1PackIdx(SB), X3		
+  utf32_convert_archsimd.go:56	0x6f98e4		c4e37d39d4		CMPL SP, DX								
+  utf32_convert_archsimd.go:56	0x6f98e9		00c4			ADDL AL, AH								
+  utf32_convert_archsimd.go:56	0x6f98eb		e259			LOOP 0x6f9946								
+  utf32_convert_archsimd.go:56	0x6f98ed		00e3			ADDL AH, BL								
+  utf32_convert_archsimd.go:57	0x6f98ef		c4e37d39d2		CMPL DX, DX								
+  utf32_convert_archsimd.go:57	0x6f98f4		01c4			ADDL AX, SP								
+  utf32_convert_archsimd.go:57	0x6f98f6		e269			LOOP 0x6f9961								
+  utf32_convert_archsimd.go:57	0x6f98f8		00d3			ADDL DL, BL								
+  other_gen_amd64.go:49		0x6f98fa		31d2			XORL DX, DX								
+  other_gen_amd64.go:49		0x6f98fc		c4e1f96e		OUTSB DS:0(SI), DX							
+  other_gen_amd64.go:49		0x6f9900		dac4			FCMOVB F4, F0								
+  other_gen_amd64.go:49		0x6f9902		e279			LOOP 0x6f997d								
+  other_gen_amd64.go:49		0x6f9904		78db			JS 0x6f98e1								
+  utf32_convert_archsimd.go:60	0x6f9906		c4e3690fd30cc5d9ebc24d	PSRLQ 0x4dc2ebd9(AX*8), X1						
+  utf32_convert_archsimd.go:90	0x6f9911		39c8			CMPL AX, CX								
+  utf32_convert_archsimd.go:90	0x6f9913		0f82d1000000		JB 0x6f99ea								
+  utf32_convert_archsimd.go:90	0x6f9919		0f1f8000000000		NOPL 0(AX)								
+  utf32_convert_archsimd.go:90	0x6f9920		4d39cc			CMPQ R12, R9								
+  utf32_convert_archsimd.go:90	0x6f9923		0f8619ffffff		JBE 0x6f9842								
+  utf32_convert_archsimd.go:90	0x6f9929		e9b7000000		JMP 0x6f99e5								
+  utf32_convert_archsimd.go:93	0x6f992e		4989da			MOVQ BX, R10								
+  utf32_convert_archsimd.go:93	0x6f9931		4989d4			MOVQ DX, R12								
+  utf32_convert_archsimd.go:92	0x6f9934		c5f877			VZEROUPPER								
+  utf32_convert_archsimd.go:93	0x6f9937		4d39e2			CMPQ R10, R12								
+  utf32_convert_archsimd.go:93	0x6f993a		744b			JE 0x6f9987								
+  utf32_convert_archsimd.go:93	0x6f993c		0f1f4000		NOPL 0(AX)								
+  utf32_convert_archsimd.go:96	0x6f9940		0f8295000000		JB 0x6f99db								
+  utf32_convert_archsimd.go:96	0x6f9946		4d29e2			SUBQ R12, R10								
+  utf32_convert_archsimd.go:96	0x6f9949		4c89e2			MOVQ R12, DX								
+  utf32_convert_archsimd.go:96	0x6f994c		4929cc			SUBQ CX, R12								
+  utf32_convert_archsimd.go:96	0x6f994f		4889d1			MOVQ DX, CX								
+  utf32_convert_archsimd.go:96	0x6f9952		48c1e202		SHLQ $0x2, DX								
+  utf32_convert_archsimd.go:96	0x6f9956		49c1fc3f		SARQ $0x3f, R12								
+  utf32_convert_archsimd.go:96	0x6f995a		4c21e2			ANDQ R12, DX								
+  utf32_convert_archsimd.go:96	0x6f995d		4989c9			MOVQ CX, R9								
+  utf32_convert_archsimd.go:96	0x6f9960		4c29c1			SUBQ R8, CX								
+  utf32_convert_archsimd.go:96	0x6f9963		4c29ce			SUBQ R9, SI								
+  utf32_convert_archsimd.go:96	0x6f9966		48c1f93f		SARQ $0x3f, CX								
+  utf32_convert_archsimd.go:96	0x6f996a		4c21c9			ANDQ R9, CX								
+  utf32_convert_archsimd.go:96	0x6f996d		4801c2			ADDQ AX, DX								
+  utf32_convert_archsimd.go:96	0x6f9970		4801f9			ADDQ DI, CX								
+  utf32_convert_scalar.go:60	0x6f9973		4c39d6			CMPQ SI, R10								
+  utf32_convert_scalar.go:60	0x6f9976		7c50			JL 0x6f99c8								
+  utf32_convert_scalar.go:63	0x6f9978		4d85d2			TESTQ R10, R10								
+  utf32_convert_scalar.go:63	0x6f997b		7406			JE 0x6f9983								
+  utf32_convert_scalar.go:63	0x6f997d		31c0			XORL AX, AX								
+  utf32_convert_scalar.go:63	0x6f997f		31db			XORL BX, BX								
+  utf32_convert_scalar.go:67	0x6f9981		eb2f			JMP 0x6f99b2								
+  utf32_convert_scalar.go:67	0x6f9983		31c0			XORL AX, AX								
+  utf32_convert_archsimd.go:96	0x6f9985		eb09			JMP 0x6f9990								
+  utf32_convert_archsimd.go:94	0x6f9987		4c89e0			MOVQ R12, AX								
+  utf32_convert_archsimd.go:94	0x6f998a		4883c450		ADDQ $0x50, SP								
+  utf32_convert_archsimd.go:94	0x6f998e		5d			POPQ BP									
+  utf32_convert_archsimd.go:94	0x6f998f		c3			RET									
+  utf32_convert_archsimd.go:97	0x6f9990		4885c0			TESTQ AX, AX								
+  utf32_convert_archsimd.go:97	0x6f9993		7508			JNE 0x6f999d								
+  utf32_convert_archsimd.go:98	0x6f9995		31c0			XORL AX, AX								
+  utf32_convert_archsimd.go:98	0x6f9997		4883c450		ADDQ $0x50, SP								
+  utf32_convert_archsimd.go:98	0x6f999b		5d			POPQ BP									
+  utf32_convert_archsimd.go:98	0x6f999c		c3			RET									
+  utf32_convert_archsimd.go:100	0x6f999d		4c01c8			ADDQ R9, AX								
+  utf32_convert_archsimd.go:100	0x6f99a0		4883c450		ADDQ $0x50, SP								
+  utf32_convert_archsimd.go:100	0x6f99a4		5d			POPQ BP									
+  utf32_convert_archsimd.go:100	0x6f99a5		c3			RET									
+  utf32_convert_scalar.go:67	0x6f99a6		8b3482			MOVL 0(DX)(AX*4), SI							
+  utf32_convert_scalar.go:69	0x6f99a9		40883401		MOVB SI, 0(CX)(AX*1)							
+  utf32_convert_scalar.go:68	0x6f99ad		09f3			ORL SI, BX								
+  utf32_convert_scalar.go:67	0x6f99af		48ffc0			INCQ AX									
+  utf32_convert_scalar.go:67	0x6f99b2		4c39d0			CMPQ AX, R10								
+  utf32_convert_scalar.go:67	0x6f99b5		7cef			JL 0x6f99a6								
+  utf32_convert_scalar.go:71	0x6f99b7		f7c300ffffff		TESTL $-0x100, BX							
+  utf32_convert_scalar.go:71	0x6f99bd		7404			JE 0x6f99c3								
+  utf32_convert_scalar.go:71	0x6f99bf		31c0			XORL AX, AX								
+  utf32_convert_archsimd.go:96	0x6f99c1		ebcd			JMP 0x6f9990								
+  utf32_convert_archsimd.go:96	0x6f99c3		4c89d0			MOVQ R10, AX								
+  utf32_convert_archsimd.go:96	0x6f99c6		ebc8			JMP 0x6f9990								
+  utf32_convert_scalar.go:61	0x6f99c8		488d0511a20e00		LEAQ 0xea211(IP), AX							
+  utf32_convert_scalar.go:61	0x6f99cf		488d1d1aa11a00		LEAQ 0x1aa11a(IP), BX							
+  utf32_convert_scalar.go:61	0x6f99d6		e885cfd8ff		CALL runtime.gopanic(SB)						
+  utf32_convert_archsimd.go:96	0x6f99db		0f1f440000		NOPL 0(AX)(AX*1)							
+  utf32_convert_archsimd.go:96	0x6f99e0		e8db4bd9ff		CALL runtime.panicBounds(SB)						
+  utf32_convert_archsimd.go:90	0x6f99e5		e8d64bd9ff		CALL runtime.panicBounds(SB)						
+  utf32_convert_archsimd.go:90	0x6f99ea		e8d14bd9ff		CALL runtime.panicBounds(SB)						
+  slice_gen_amd64.go:171	0x6f99ef		e8cc4bd9ff		CALL runtime.panicBounds(SB)						
+  utf32_convert_archsimd.go:86	0x6f99f4		e8c74bd9ff		CALL runtime.panicBounds(SB)						
+  utf32_convert_archsimd.go:80	0x6f99f9		4883c450		ADDQ $0x50, SP								
+  utf32_convert_archsimd.go:80	0x6f99fd		5d			POPQ BP									
+  utf32_convert_archsimd.go:80	0x6f99fe		c3			RET									
+  utf32_convert_scalar.go:67	0x6f99ff		8b3488			MOVL 0(AX)(CX*4), SI							
+  utf32_convert_scalar.go:69	0x6f9a02		4088340f		MOVB SI, 0(DI)(CX*1)							
+  utf32_convert_scalar.go:68	0x6f9a06		09f2			ORL SI, DX								
+  utf32_convert_scalar.go:67	0x6f9a08		48ffc1			INCQ CX									
+  utf32_convert_scalar.go:67	0x6f9a0b		4839cb			CMPQ BX, CX								
+  utf32_convert_scalar.go:67	0x6f9a0e		7fef			JG 0x6f99ff								
+  utf32_convert_scalar.go:71	0x6f9a10		f7c200ffffff		TESTL $-0x100, DX							
+  utf32_convert_scalar.go:71	0x6f9a16		7404			JE 0x6f9a1c								
+  utf32_convert_scalar.go:71	0x6f9a18		31c0			XORL AX, AX								
+  utf32_convert_archsimd.go:80	0x6f9a1a		ebdd			JMP 0x6f99f9								
+  utf32_convert_archsimd.go:80	0x6f9a1c		4889d8			MOVQ BX, AX								
+  utf32_convert_archsimd.go:80	0x6f9a1f		90			NOPL									
+  utf32_convert_archsimd.go:80	0x6f9a20		ebd7			JMP 0x6f99f9								
+  utf32_convert_archsimd.go:77	0x6f9a22		488d05b7a10e00		LEAQ 0xea1b7(IP), AX							
+  utf32_convert_archsimd.go:77	0x6f9a29		488d1dc0a01a00		LEAQ 0x1aa0c0(IP), BX							
+  utf32_convert_archsimd.go:77	0x6f9a30		e82bcfd8ff		CALL runtime.gopanic(SB)						
+  utf32_convert_archsimd.go:77	0x6f9a35		90			NOPL									
+  utf32_convert_archsimd.go:75	0x6f9a36		4889442408		MOVQ AX, 0x8(SP)							
+  utf32_convert_archsimd.go:75	0x6f9a3b		48895c2410		MOVQ BX, 0x10(SP)							
+  utf32_convert_archsimd.go:75	0x6f9a40		48894c2418		MOVQ CX, 0x18(SP)							
+  utf32_convert_archsimd.go:75	0x6f9a45		48897c2420		MOVQ DI, 0x20(SP)							
+  utf32_convert_archsimd.go:75	0x6f9a4a		4889742428		MOVQ SI, 0x28(SP)							
+  utf32_convert_archsimd.go:75	0x6f9a4f		4c89442430		MOVQ R8, 0x30(SP)							
+  utf32_convert_archsimd.go:75	0x6f9a54		e8472ed9ff		CALL runtime.morestack_noctxt.abi0(SB)					
+  utf32_convert_archsimd.go:75	0x6f9a59		488b442408		MOVQ 0x8(SP), AX							
+  utf32_convert_archsimd.go:75	0x6f9a5e		488b5c2410		MOVQ 0x10(SP), BX							
+  utf32_convert_archsimd.go:75	0x6f9a63		488b4c2418		MOVQ 0x18(SP), CX							
+  utf32_convert_archsimd.go:75	0x6f9a68		488b7c2420		MOVQ 0x20(SP), DI							
+  utf32_convert_archsimd.go:75	0x6f9a6d		488b742428		MOVQ 0x28(SP), SI							
+  utf32_convert_archsimd.go:75	0x6f9a72		4c8b442430		MOVQ 0x30(SP), R8							
+  utf32_convert_archsimd.go:75	0x6f9a77		e944fdffff		JMP github.com/zchee/go-simdutf.convertUTF32ToLatin1Archsimd(SB)	
+
+TEXT github.com/zchee/go-simdutf.convertUTF32ToLatin1WithErrorsArchsimd(SB) /Users/zchee/go/src/github.com/zchee/go-simdutf/utf32_convert_archsimd.go
+  utf32_convert_archsimd.go:103	0x6f9a80		493b6610		CMPQ SP, 0x10(R14)								
+  utf32_convert_archsimd.go:103	0x6f9a84		0f8647020000		JBE 0x6f9cd1									
+  utf32_convert_archsimd.go:103	0x6f9a8a		55			PUSHQ BP									
+  utf32_convert_archsimd.go:103	0x6f9a8b		4889e5			MOVQ SP, BP									
+  utf32_convert_archsimd.go:103	0x6f9a8e		4883ec50		SUBQ $0x50, SP									
+  utf32_convert_archsimd.go:103	0x6f9a92		4889442460		MOVQ AX, 0x60(SP)								
+  utf32_convert_archsimd.go:103	0x6f9a97		48897c2478		MOVQ DI, 0x78(SP)								
+  utf32_convert_archsimd.go:103	0x6f9a9c		0f1f4000		NOPL 0(AX)									
+  utf32_convert_archsimd.go:104	0x6f9aa0		4839f3			CMPQ BX, SI									
+  utf32_convert_archsimd.go:104	0x6f9aa3		0f8f14020000		JG 0x6f9cbd									
+  utf32_convert_archsimd.go:107	0x6f9aa9		4883fb08		CMPQ BX, $0x8									
+  utf32_convert_archsimd.go:107	0x6f9aad		7d07			JGE 0x6f9ab6									
+  utf32_convert_archsimd.go:108	0x6f9aaf		31c9			XORL CX, CX									
+  utf32_convert_scalar.go:81	0x6f9ab1		e9df010000		JMP 0x6f9c95									
+  utf32_convert_archsimd.go:104	0x6f9ab6		4c89842488000000	MOVQ R8, 0x88(SP)								
+  utf32_convert_archsimd.go:104	0x6f9abe		4889b42480000000	MOVQ SI, 0x80(SP)								
+  utf32_convert_archsimd.go:104	0x6f9ac6		48897c2478		MOVQ DI, 0x78(SP)								
+  utf32_convert_archsimd.go:104	0x6f9acb		48894c2470		MOVQ CX, 0x70(SP)								
+  utf32_convert_archsimd.go:104	0x6f9ad0		48895c2468		MOVQ BX, 0x68(SP)								
+  utf32_convert_archsimd.go:104	0x6f9ad5		4889442460		MOVQ AX, 0x60(SP)								
+  other_gen_amd64.go:157	0x6f9ada		ba00ffffff		MOVL $-0x100, DX								
+  other_gen_amd64.go:157	0x6f9adf		c5f96e			OUTSB DS:0(SI), DX								
+  other_gen_amd64.go:157	0x6f9ae2		ca90c4			LRET $0xc490									
+  other_gen_amd64.go:157	0x6f9ae5		e27d			LOOP 0x6f9b64									
+  other_gen_amd64.go:157	0x6f9ae7		58			POPQ AX										
+  other_gen_amd64.go:157	0x6f9ae8		c9			LEAVE										
+  other_gen_amd64.go:157	0x6f9ae9		c5fe7f4c2430		VMOVDQU X1, 0x30(SP)								
+  other_gen_amd64.go:157	0x6f9aef		31d2			XORL DX, DX									
+  utf32_convert_archsimd.go:113	0x6f9af1		eb48			JMP 0x6f9b3b									
+  utf32_convert_archsimd.go:113	0x6f9af3		4c894c2428		MOVQ R9, 0x28(SP)								
+  utf32_convert_archsimd.go:118	0x6f9af8		4c89c1			MOVQ R8, CX									
+  utf32_convert_archsimd.go:118	0x6f9afb		4c29e1			SUBQ R12, CX									
+  utf32_convert_archsimd.go:118	0x6f9afe		4a8d0427		LEAQ 0(DI)(R12*1), AX								
+  utf32_convert_archsimd.go:118	0x6f9b02		bb08000000		MOVL $0x8, BX									
+  utf32_convert_archsimd.go:118	0x6f9b07		e874bcecff		CALL simd/archsimd.Uint8x16.StoreSlicePart(SB)					
+  utf32_convert_archsimd.go:114	0x6f9b0c		488b442460		MOVQ 0x60(SP), AX								
+  utf32_convert_archsimd.go:114	0x6f9b11		488b4c2470		MOVQ 0x70(SP), CX								
+  utf32_convert_archsimd.go:113	0x6f9b16		488b5c2468		MOVQ 0x68(SP), BX								
+  utf32_convert_archsimd.go:124	0x6f9b1b		488bb42480000000	MOVQ 0x80(SP), SI								
+  utf32_convert_archsimd.go:118	0x6f9b23		488b7c2478		MOVQ 0x78(SP), DI								
+  utf32_convert_archsimd.go:118	0x6f9b28		4c8b842488000000	MOVQ 0x88(SP), R8								
+  utf32_convert_archsimd.go:115	0x6f9b30		c5fe6f4c2430		VMOVDQU 0x30(SP), X1								
+  utf32_convert_archsimd.go:113	0x6f9b36		488b542428		MOVQ 0x28(SP), DX								
+  utf32_convert_archsimd.go:113	0x6f9b3b		4c8d4a08		LEAQ 0x8(DX), R9								
+  utf32_convert_archsimd.go:113	0x6f9b3f		90			NOPL										
+  utf32_convert_archsimd.go:113	0x6f9b40		4c39cb			CMPQ BX, R9									
+  utf32_convert_archsimd.go:113	0x6f9b43		0f8c8e000000		JL 0x6f9bd7									
+  utf32_convert_archsimd.go:114	0x6f9b49		4839d3			CMPQ BX, DX									
+  utf32_convert_archsimd.go:114	0x6f9b4c		0f8238010000		JB 0x6f9c8a									
+  utf32_convert_archsimd.go:114	0x6f9b52		4989da			MOVQ BX, R10									
+  utf32_convert_archsimd.go:114	0x6f9b55		4829d3			SUBQ DX, BX									
+  utf32_convert_archsimd.go:114	0x6f9b58		4989d3			MOVQ DX, R11									
+  utf32_convert_archsimd.go:114	0x6f9b5b		4829ca			SUBQ CX, DX									
+  utf32_convert_archsimd.go:114	0x6f9b5e		4d89dc			MOVQ R11, R12									
+  utf32_convert_archsimd.go:114	0x6f9b61		49c1e302		SHLQ $0x2, R11									
+  utf32_convert_archsimd.go:114	0x6f9b65		48c1fa3f		SARQ $0x3f, DX									
+  utf32_convert_archsimd.go:114	0x6f9b69		4921d3			ANDQ DX, R11									
+  utf32_convert_archsimd.go:114	0x6f9b6c		4a8d1418		LEAQ 0(AX)(R11*1), DX								
+  slice_gen_amd64.go:171	0x6f9b70		4883fb08		CMPQ BX, $0x8									
+  slice_gen_amd64.go:171	0x6f9b74		0f820b010000		JB 0x6f9c85									
+  slice_gen_amd64.go:171	0x6f9b7a		c5fe6f12		VMOVDQU 0(DX), X2								
+  utf32_convert_archsimd.go:115	0x6f9b7e		c4			?										
+  utf32_convert_archsimd.go:115	0x6f9b7f		e27d			LOOP 0x6f9bfe									
+  utf32_convert_archsimd.go:115	0x6f9b81		17			?										
+  utf32_convert_archsimd.go:115	0x6f9b82		ca7558			LRET $0x5875									
+  utf32_convert_archsimd.go:55	0x6f9b85		c5fa6f1d03704600	VMOVDQU github.com/zchee/go-simdutf.utf32Latin1PackIdx(SB), X3			
+  utf32_convert_archsimd.go:56	0x6f9b8d		c4e37d39d4		CMPL SP, DX									
+  utf32_convert_archsimd.go:56	0x6f9b92		00c4			ADDL AL, AH									
+  utf32_convert_archsimd.go:56	0x6f9b94		e259			LOOP 0x6f9bef									
+  utf32_convert_archsimd.go:56	0x6f9b96		00e3			ADDL AH, BL									
+  utf32_convert_archsimd.go:57	0x6f9b98		c4e37d39d2		CMPL DX, DX									
+  utf32_convert_archsimd.go:57	0x6f9b9d		01c4			ADDL AX, SP									
+  utf32_convert_archsimd.go:57	0x6f9b9f		e269			LOOP 0x6f9c0a									
+  utf32_convert_archsimd.go:57	0x6f9ba1		00d3			ADDL DL, BL									
+  other_gen_amd64.go:49		0x6f9ba3		31d2			XORL DX, DX									
+  other_gen_amd64.go:49		0x6f9ba5		c4e1f96e		OUTSB DS:0(SI), DX								
+  other_gen_amd64.go:49		0x6f9ba9		dac4			FCMOVB F4, F0									
+  other_gen_amd64.go:49		0x6f9bab		e279			LOOP 0x6f9c26									
+  other_gen_amd64.go:49		0x6f9bad		78db			JS 0x6f9b8a									
+  utf32_convert_archsimd.go:60	0x6f9baf		c4e3690fd30cc5d9ebc20f	PSRLQ 0xfc2ebd9(AX*8), X1							
+  utf32_convert_archsimd.go:61	0x6f9bba		1f			?										
+  utf32_convert_archsimd.go:61	0x6f9bbb		800000			ADDB $0x0, 0(AX)								
+  utf32_convert_archsimd.go:61	0x6f9bbe		0000			ADDB AL, 0(AX)									
+  utf32_convert_archsimd.go:118	0x6f9bc0		4d39c8			CMPQ R8, R9									
+  utf32_convert_archsimd.go:118	0x6f9bc3		0f82b5000000		JB 0x6f9c7e									
+  utf32_convert_archsimd.go:118	0x6f9bc9		4d39cc			CMPQ R12, R9									
+  utf32_convert_archsimd.go:118	0x6f9bcc		0f8621ffffff		JBE 0x6f9af3									
+  utf32_convert_archsimd.go:118	0x6f9bd2		e9a2000000		JMP 0x6f9c79									
+  utf32_convert_archsimd.go:121	0x6f9bd7		4989da			MOVQ BX, R10									
+  utf32_convert_archsimd.go:121	0x6f9bda		4989d4			MOVQ DX, R12									
+  utf32_convert_archsimd.go:120	0x6f9bdd		c5f877			VZEROUPPER									
+  utf32_convert_archsimd.go:121	0x6f9be0		4d39e2			CMPQ R10, R12									
+  utf32_convert_archsimd.go:121	0x6f9be3		743d			JE 0x6f9c22									
+  utf32_convert_archsimd.go:124	0x6f9be5		0f8289000000		JB 0x6f9c74									
+  utf32_convert_archsimd.go:124	0x6f9beb		4d29e2			SUBQ R12, R10									
+  utf32_convert_archsimd.go:124	0x6f9bee		4c89e2			MOVQ R12, DX									
+  utf32_convert_archsimd.go:124	0x6f9bf1		4929cc			SUBQ CX, R12									
+  utf32_convert_archsimd.go:124	0x6f9bf4		4889d1			MOVQ DX, CX									
+  utf32_convert_archsimd.go:124	0x6f9bf7		48c1e202		SHLQ $0x2, DX									
+  utf32_convert_archsimd.go:124	0x6f9bfb		49c1fc3f		SARQ $0x3f, R12									
+  utf32_convert_archsimd.go:124	0x6f9bff		4c21e2			ANDQ R12, DX									
+  utf32_convert_archsimd.go:124	0x6f9c02		4829ce			SUBQ CX, SI									
+  utf32_convert_archsimd.go:124	0x6f9c05		4989c9			MOVQ CX, R9									
+  utf32_convert_archsimd.go:124	0x6f9c08		4c29c1			SUBQ R8, CX									
+  utf32_convert_archsimd.go:124	0x6f9c0b		48c1f93f		SARQ $0x3f, CX									
+  utf32_convert_archsimd.go:124	0x6f9c0f		4c21c9			ANDQ R9, CX									
+  utf32_convert_archsimd.go:124	0x6f9c12		4801c2			ADDQ AX, DX									
+  utf32_convert_archsimd.go:124	0x6f9c15		4801f9			ADDQ DI, CX									
+  utf32_convert_scalar.go:78	0x6f9c18		4c39d6			CMPQ SI, R10									
+  utf32_convert_scalar.go:78	0x6f9c1b		7c44			JL 0x6f9c61									
+  utf32_convert_scalar.go:78	0x6f9c1d		31c0			XORL AX, AX									
+  utf32_convert_scalar.go:78	0x6f9c1f		90			NOPL										
+  utf32_convert_scalar.go:81	0x6f9c20		eb12			JMP 0x6f9c34									
+  utf32_convert_archsimd.go:122	0x6f9c22		31c0			XORL AX, AX									
+  utf32_convert_archsimd.go:122	0x6f9c24		4c89e3			MOVQ R12, BX									
+  utf32_convert_archsimd.go:122	0x6f9c27		4883c450		ADDQ $0x50, SP									
+  utf32_convert_archsimd.go:122	0x6f9c2b		5d			POPQ BP										
+  utf32_convert_archsimd.go:122	0x6f9c2c		c3			RET										
+  utf32_convert_scalar.go:85	0x6f9c2d		40883401		MOVB SI, 0(CX)(AX*1)								
+  utf32_convert_scalar.go:81	0x6f9c31		48ffc0			INCQ AX										
+  utf32_convert_scalar.go:81	0x6f9c34		4c39d0			CMPQ AX, R10									
+  utf32_convert_scalar.go:81	0x6f9c37		7d16			JGE 0x6f9c4f									
+  utf32_convert_scalar.go:81	0x6f9c39		8b3482			MOVL 0(DX)(AX*4), SI								
+  utf32_convert_scalar.go:81	0x6f9c3c		0f1f4000		NOPL 0(AX)									
+  utf32_convert_scalar.go:82	0x6f9c40		f7c600ffffff		TESTL $-0x100, SI								
+  utf32_convert_scalar.go:82	0x6f9c46		74e5			JE 0x6f9c2d									
+  utf32_convert_scalar.go:82	0x6f9c48		b905000000		MOVL $0x5, CX									
+  utf32_convert_archsimd.go:124	0x6f9c4d		eb05			JMP 0x6f9c54									
+  utf32_convert_archsimd.go:124	0x6f9c4f		31c9			XORL CX, CX									
+  utf32_convert_archsimd.go:124	0x6f9c51		4c89d0			MOVQ R10, AX									
+  utf32_convert_archsimd.go:125	0x6f9c54		4a8d1c08		LEAQ 0(AX)(R9*1), BX								
+  utf32_convert_archsimd.go:126	0x6f9c58		89c8			MOVL CX, AX									
+  utf32_convert_archsimd.go:126	0x6f9c5a		4883c450		ADDQ $0x50, SP									
+  utf32_convert_archsimd.go:126	0x6f9c5e		5d			POPQ BP										
+  utf32_convert_archsimd.go:126	0x6f9c5f		90			NOPL										
+  utf32_convert_archsimd.go:126	0x6f9c60		c3			RET										
+  utf32_convert_scalar.go:79	0x6f9c61		488d05789f0e00		LEAQ 0xe9f78(IP), AX								
+  utf32_convert_scalar.go:79	0x6f9c68		488d1d819e1a00		LEAQ 0x1a9e81(IP), BX								
+  utf32_convert_scalar.go:79	0x6f9c6f		e8ecccd8ff		CALL runtime.gopanic(SB)							
+  utf32_convert_archsimd.go:124	0x6f9c74		e84749d9ff		CALL runtime.panicBounds(SB)							
+  utf32_convert_archsimd.go:118	0x6f9c79		e84249d9ff		CALL runtime.panicBounds(SB)							
+  utf32_convert_archsimd.go:118	0x6f9c7e		6690			NOPW										
+  utf32_convert_archsimd.go:118	0x6f9c80		e83b49d9ff		CALL runtime.panicBounds(SB)							
+  slice_gen_amd64.go:171	0x6f9c85		e83649d9ff		CALL runtime.panicBounds(SB)							
+  utf32_convert_archsimd.go:114	0x6f9c8a		e83149d9ff		CALL runtime.panicBounds(SB)							
+  utf32_convert_scalar.go:85	0x6f9c8f		88140f			MOVB DL, 0(DI)(CX*1)								
+  utf32_convert_scalar.go:81	0x6f9c92		48ffc1			INCQ CX										
+  utf32_convert_scalar.go:81	0x6f9c95		4839cb			CMPQ BX, CX									
+  utf32_convert_scalar.go:81	0x6f9c98		7e15			JLE 0x6f9caf									
+  utf32_convert_scalar.go:81	0x6f9c9a		8b1488			MOVL 0(AX)(CX*4), DX								
+  utf32_convert_scalar.go:81	0x6f9c9d		0f1f00			NOPL 0(AX)									
+  utf32_convert_scalar.go:82	0x6f9ca0		f7c200ffffff		TESTL $-0x100, DX								
+  utf32_convert_scalar.go:82	0x6f9ca6		74e7			JE 0x6f9c8f									
+  utf32_convert_scalar.go:82	0x6f9ca8		b805000000		MOVL $0x5, AX									
+  utf32_convert_archsimd.go:108	0x6f9cad		eb05			JMP 0x6f9cb4									
+  utf32_convert_archsimd.go:108	0x6f9caf		31c0			XORL AX, AX									
+  utf32_convert_archsimd.go:108	0x6f9cb1		4889d9			MOVQ BX, CX									
+  utf32_convert_archsimd.go:108	0x6f9cb4		4889cb			MOVQ CX, BX									
+  utf32_convert_archsimd.go:108	0x6f9cb7		4883c450		ADDQ $0x50, SP									
+  utf32_convert_archsimd.go:108	0x6f9cbb		5d			POPQ BP										
+  utf32_convert_archsimd.go:108	0x6f9cbc		c3			RET										
+  utf32_convert_archsimd.go:105	0x6f9cbd		488d051c9f0e00		LEAQ 0xe9f1c(IP), AX								
+  utf32_convert_archsimd.go:105	0x6f9cc4		488d1d259e1a00		LEAQ 0x1a9e25(IP), BX								
+  utf32_convert_archsimd.go:105	0x6f9ccb		e890ccd8ff		CALL runtime.gopanic(SB)							
+  utf32_convert_archsimd.go:105	0x6f9cd0		90			NOPL										
+  utf32_convert_archsimd.go:103	0x6f9cd1		4889442408		MOVQ AX, 0x8(SP)								
+  utf32_convert_archsimd.go:103	0x6f9cd6		48895c2410		MOVQ BX, 0x10(SP)								
+  utf32_convert_archsimd.go:103	0x6f9cdb		48894c2418		MOVQ CX, 0x18(SP)								
+  utf32_convert_archsimd.go:103	0x6f9ce0		48897c2420		MOVQ DI, 0x20(SP)								
+  utf32_convert_archsimd.go:103	0x6f9ce5		4889742428		MOVQ SI, 0x28(SP)								
+  utf32_convert_archsimd.go:103	0x6f9cea		4c89442430		MOVQ R8, 0x30(SP)								
+  utf32_convert_archsimd.go:103	0x6f9cef		e8ac2bd9ff		CALL runtime.morestack_noctxt.abi0(SB)						
+  utf32_convert_archsimd.go:103	0x6f9cf4		488b442408		MOVQ 0x8(SP), AX								
+  utf32_convert_archsimd.go:103	0x6f9cf9		488b5c2410		MOVQ 0x10(SP), BX								
+  utf32_convert_archsimd.go:103	0x6f9cfe		488b4c2418		MOVQ 0x18(SP), CX								
+  utf32_convert_archsimd.go:103	0x6f9d03		488b7c2420		MOVQ 0x20(SP), DI								
+  utf32_convert_archsimd.go:103	0x6f9d08		488b742428		MOVQ 0x28(SP), SI								
+  utf32_convert_archsimd.go:103	0x6f9d0d		4c8b442430		MOVQ 0x30(SP), R8								
+  utf32_convert_archsimd.go:103	0x6f9d12		e969fdffff		JMP github.com/zchee/go-simdutf.convertUTF32ToLatin1WithErrorsArchsimd(SB)	
+
+TEXT github.com/zchee/go-simdutf.convertValidUTF32ToLatin1Archsimd(SB) /Users/zchee/go/src/github.com/zchee/go-simdutf/utf32_convert_archsimd.go
+  utf32_convert_archsimd.go:129	0x6f9d20		493b6610		CMPQ SP, 0x10(R14)							
+  utf32_convert_archsimd.go:129	0x6f9d24		0f86dd010000		JBE 0x6f9f07								
+  utf32_convert_archsimd.go:129	0x6f9d2a		55			PUSHQ BP								
+  utf32_convert_archsimd.go:129	0x6f9d2b		4889e5			MOVQ SP, BP								
+  utf32_convert_archsimd.go:129	0x6f9d2e		4883ec30		SUBQ $0x30, SP								
+  utf32_convert_archsimd.go:129	0x6f9d32		4889442440		MOVQ AX, 0x40(SP)							
+  utf32_convert_archsimd.go:129	0x6f9d37		48897c2458		MOVQ DI, 0x58(SP)							
+  utf32_convert_archsimd.go:129	0x6f9d3c		0f1f4000		NOPL 0(AX)								
+  utf32_convert_archsimd.go:130	0x6f9d40		4839f3			CMPQ BX, SI								
+  utf32_convert_archsimd.go:130	0x6f9d43		0f8faa010000		JG 0x6f9ef3								
+  utf32_convert_archsimd.go:133	0x6f9d49		4883fb08		CMPQ BX, $0x8								
+  utf32_convert_archsimd.go:133	0x6f9d4d		7d07			JGE 0x6f9d56								
+  utf32_convert_archsimd.go:134	0x6f9d4f		31c9			XORL CX, CX								
+  utf32_convert_scalar.go:94	0x6f9d51		e97f010000		JMP 0x6f9ed5								
+  utf32_convert_archsimd.go:130	0x6f9d56		4c89442468		MOVQ R8, 0x68(SP)							
+  utf32_convert_archsimd.go:130	0x6f9d5b		4889742460		MOVQ SI, 0x60(SP)							
+  utf32_convert_archsimd.go:130	0x6f9d60		48894c2450		MOVQ CX, 0x50(SP)							
+  utf32_convert_archsimd.go:130	0x6f9d65		48897c2458		MOVQ DI, 0x58(SP)							
+  utf32_convert_archsimd.go:130	0x6f9d6a		48895c2448		MOVQ BX, 0x48(SP)							
+  utf32_convert_archsimd.go:130	0x6f9d6f		4889442440		MOVQ AX, 0x40(SP)							
+  utf32_convert_archsimd.go:130	0x6f9d74		31d2			XORL DX, DX								
+  utf32_convert_archsimd.go:133	0x6f9d76		eb3c			JMP 0x6f9db4								
+  utf32_convert_archsimd.go:138	0x6f9d78		4c894c2428		MOVQ R9, 0x28(SP)							
+  utf32_convert_archsimd.go:140	0x6f9d7d		4c89c1			MOVQ R8, CX								
+  utf32_convert_archsimd.go:140	0x6f9d80		4c29e1			SUBQ R12, CX								
+  utf32_convert_archsimd.go:140	0x6f9d83		4a8d0427		LEAQ 0(DI)(R12*1), AX							
+  utf32_convert_archsimd.go:140	0x6f9d87		bb08000000		MOVL $0x8, BX								
+  utf32_convert_archsimd.go:140	0x6f9d8c		e8efb9ecff		CALL simd/archsimd.Uint8x16.StoreSlicePart(SB)				
+  utf32_convert_archsimd.go:139	0x6f9d91		488b442440		MOVQ 0x40(SP), AX							
+  utf32_convert_archsimd.go:139	0x6f9d96		488b4c2450		MOVQ 0x50(SP), CX							
+  utf32_convert_archsimd.go:138	0x6f9d9b		488b5c2448		MOVQ 0x48(SP), BX							
+  utf32_convert_archsimd.go:143	0x6f9da0		488b742460		MOVQ 0x60(SP), SI							
+  utf32_convert_archsimd.go:140	0x6f9da5		488b7c2458		MOVQ 0x58(SP), DI							
+  utf32_convert_archsimd.go:140	0x6f9daa		4c8b442468		MOVQ 0x68(SP), R8							
+  utf32_convert_archsimd.go:138	0x6f9daf		488b542428		MOVQ 0x28(SP), DX							
+  utf32_convert_archsimd.go:138	0x6f9db4		4c8d4a08		LEAQ 0x8(DX), R9							
+  utf32_convert_archsimd.go:138	0x6f9db8		4c39cb			CMPQ BX, R9								
+  utf32_convert_archsimd.go:138	0x6f9dbb		7c7d			JL 0x6f9e3a								
+  utf32_convert_archsimd.go:138	0x6f9dbd		0f1f00			NOPL 0(AX)								
+  utf32_convert_archsimd.go:139	0x6f9dc0		4839d3			CMPQ BX, DX								
+  utf32_convert_archsimd.go:139	0x6f9dc3		0f8201010000		JB 0x6f9eca								
+  utf32_convert_archsimd.go:139	0x6f9dc9		4829d3			SUBQ DX, BX								
+  utf32_convert_archsimd.go:139	0x6f9dcc		4989d3			MOVQ DX, R11								
+  utf32_convert_archsimd.go:139	0x6f9dcf		4829ca			SUBQ CX, DX								
+  utf32_convert_archsimd.go:139	0x6f9dd2		4d89dc			MOVQ R11, R12								
+  utf32_convert_archsimd.go:139	0x6f9dd5		49c1e302		SHLQ $0x2, R11								
+  utf32_convert_archsimd.go:139	0x6f9dd9		48c1fa3f		SARQ $0x3f, DX								
+  utf32_convert_archsimd.go:139	0x6f9ddd		4921d3			ANDQ DX, R11								
+  utf32_convert_archsimd.go:139	0x6f9de0		4a8d1418		LEAQ 0(AX)(R11*1), DX							
+  slice_gen_amd64.go:171	0x6f9de4		4883fb08		CMPQ BX, $0x8								
+  slice_gen_amd64.go:171	0x6f9de8		0f82d7000000		JB 0x6f9ec5								
+  slice_gen_amd64.go:171	0x6f9dee		c5fe6f0a		VMOVDQU 0(DX), X1							
+  utf32_convert_archsimd.go:55	0x6f9df2		c5fa6f15966d4600	VMOVDQU github.com/zchee/go-simdutf.utf32Latin1PackIdx(SB), X2		
+  utf32_convert_archsimd.go:56	0x6f9dfa		c4e37d39cb		CMPL BX, CX								
+  utf32_convert_archsimd.go:56	0x6f9dff		00c4			ADDL AL, AH								
+  utf32_convert_archsimd.go:56	0x6f9e01		e261			LOOP 0x6f9e64								
+  utf32_convert_archsimd.go:56	0x6f9e03		00da			ADDL BL, DL								
+  utf32_convert_archsimd.go:57	0x6f9e05		c4e37d39c9		CMPL CX, CX								
+  utf32_convert_archsimd.go:57	0x6f9e0a		01c4			ADDL AX, SP								
+  utf32_convert_archsimd.go:57	0x6f9e0c		e271			LOOP 0x6f9e7f								
+  utf32_convert_archsimd.go:57	0x6f9e0e		00ca			ADDL CL, DL								
+  other_gen_amd64.go:49		0x6f9e10		31d2			XORL DX, DX								
+  other_gen_amd64.go:49		0x6f9e12		c4e1f96e		OUTSB DS:0(SI), DX							
+  other_gen_amd64.go:49		0x6f9e16		d2c4			ROLL CL, AH								
+  other_gen_amd64.go:49		0x6f9e18		e279			LOOP 0x6f9e93								
+  other_gen_amd64.go:49		0x6f9e1a		78d2			JS 0x6f9dee								
+  utf32_convert_archsimd.go:60	0x6f9e1c		c4e3710fca		BSWAP DX								
+  utf32_convert_archsimd.go:60	0x6f9e21		0cc5			ORL $0xc5, AL								
+  utf32_convert_archsimd.go:61	0x6f9e23		e1eb			LOOPE 0x6f9e10								
+  utf32_convert_archsimd.go:61	0x6f9e25		c14d39c8		RORL $0xc8, 0x39(BP)							
+  utf32_convert_archsimd.go:140	0x6f9e29		0f828f000000		JB 0x6f9ebe								
+  utf32_convert_archsimd.go:140	0x6f9e2f		4d39cc			CMPQ R12, R9								
+  utf32_convert_archsimd.go:140	0x6f9e32		0f8640ffffff		JBE 0x6f9d78								
+  utf32_convert_archsimd.go:140	0x6f9e38		eb7f			JMP 0x6f9eb9								
+  utf32_convert_archsimd.go:142	0x6f9e3a		c5f877			VZEROUPPER								
+  utf32_convert_archsimd.go:142	0x6f9e3d		0f1f00			NOPL 0(AX)								
+  utf32_convert_archsimd.go:143	0x6f9e40		4839d3			CMPQ BX, DX								
+  utf32_convert_archsimd.go:143	0x6f9e43		726f			JB 0x6f9eb4								
+  utf32_convert_archsimd.go:143	0x6f9e45		4829d3			SUBQ DX, BX								
+  utf32_convert_archsimd.go:143	0x6f9e48		4989d1			MOVQ DX, R9								
+  utf32_convert_archsimd.go:143	0x6f9e4b		4829ca			SUBQ CX, DX								
+  utf32_convert_archsimd.go:143	0x6f9e4e		4c89c9			MOVQ R9, CX								
+  utf32_convert_archsimd.go:143	0x6f9e51		49c1e102		SHLQ $0x2, R9								
+  utf32_convert_archsimd.go:143	0x6f9e55		48c1fa3f		SARQ $0x3f, DX								
+  utf32_convert_archsimd.go:143	0x6f9e59		4921d1			ANDQ DX, R9								
+  utf32_convert_archsimd.go:143	0x6f9e5c		4829ce			SUBQ CX, SI								
+  utf32_convert_archsimd.go:143	0x6f9e5f		4889ca			MOVQ CX, DX								
+  utf32_convert_archsimd.go:143	0x6f9e62		4c29c1			SUBQ R8, CX								
+  utf32_convert_archsimd.go:143	0x6f9e65		48c1f93f		SARQ $0x3f, CX								
+  utf32_convert_archsimd.go:143	0x6f9e69		4821d1			ANDQ DX, CX								
+  utf32_convert_archsimd.go:143	0x6f9e6c		4e8d0408		LEAQ 0(AX)(R9*1), R8							
+  utf32_convert_archsimd.go:143	0x6f9e70		4801f9			ADDQ DI, CX								
+  utf32_convert_scalar.go:91	0x6f9e73		4839de			CMPQ SI, BX								
+  utf32_convert_scalar.go:91	0x6f9e76		7c29			JL 0x6f9ea1								
+  utf32_convert_scalar.go:91	0x6f9e78		31c0			XORL AX, AX								
+  utf32_convert_scalar.go:94	0x6f9e7a		eb07			JMP 0x6f9e83								
+  utf32_convert_scalar.go:98	0x6f9e7c		40883401		MOVB SI, 0(CX)(AX*1)							
+  utf32_convert_scalar.go:94	0x6f9e80		48ffc0			INCQ AX									
+  utf32_convert_scalar.go:94	0x6f9e83		4839d8			CMPQ AX, BX								
+  utf32_convert_scalar.go:94	0x6f9e86		7d0e			JGE 0x6f9e96								
+  utf32_convert_scalar.go:94	0x6f9e88		418b3480		MOVL 0(R8)(AX*4), SI							
+  utf32_convert_scalar.go:95	0x6f9e8c		f7c600ffffff		TESTL $-0x100, SI							
+  utf32_convert_scalar.go:95	0x6f9e92		74e8			JE 0x6f9e7c								
+  utf32_convert_scalar.go:95	0x6f9e94		31db			XORL BX, BX								
+  utf32_convert_archsimd.go:143	0x6f9e96		488d0413		LEAQ 0(BX)(DX*1), AX							
+  utf32_convert_archsimd.go:143	0x6f9e9a		4883c430		ADDQ $0x30, SP								
+  utf32_convert_archsimd.go:143	0x6f9e9e		5d			POPQ BP									
+  utf32_convert_archsimd.go:143	0x6f9e9f		90			NOPL									
+  utf32_convert_archsimd.go:143	0x6f9ea0		c3			RET									
+  utf32_convert_scalar.go:92	0x6f9ea1		488d05389d0e00		LEAQ 0xe9d38(IP), AX							
+  utf32_convert_scalar.go:92	0x6f9ea8		488d1d419c1a00		LEAQ 0x1a9c41(IP), BX							
+  utf32_convert_scalar.go:92	0x6f9eaf		e8accad8ff		CALL runtime.gopanic(SB)						
+  utf32_convert_archsimd.go:143	0x6f9eb4		e80747d9ff		CALL runtime.panicBounds(SB)						
+  utf32_convert_archsimd.go:140	0x6f9eb9		e80247d9ff		CALL runtime.panicBounds(SB)						
+  utf32_convert_archsimd.go:140	0x6f9ebe		6690			NOPW									
+  utf32_convert_archsimd.go:140	0x6f9ec0		e8fb46d9ff		CALL runtime.panicBounds(SB)						
+  slice_gen_amd64.go:171	0x6f9ec5		e8f646d9ff		CALL runtime.panicBounds(SB)						
+  utf32_convert_archsimd.go:139	0x6f9eca		e8f146d9ff		CALL runtime.panicBounds(SB)						
+  utf32_convert_scalar.go:98	0x6f9ecf		88140f			MOVB DL, 0(DI)(CX*1)							
+  utf32_convert_scalar.go:94	0x6f9ed2		48ffc1			INCQ CX									
+  utf32_convert_scalar.go:94	0x6f9ed5		4839cb			CMPQ BX, CX								
+  utf32_convert_scalar.go:94	0x6f9ed8		7e10			JLE 0x6f9eea								
+  utf32_convert_scalar.go:94	0x6f9eda		8b1488			MOVL 0(AX)(CX*4), DX							
+  utf32_convert_scalar.go:94	0x6f9edd		0f1f00			NOPL 0(AX)								
+  utf32_convert_scalar.go:95	0x6f9ee0		f7c200ffffff		TESTL $-0x100, DX							
+  utf32_convert_scalar.go:95	0x6f9ee6		74e7			JE 0x6f9ecf								
+  utf32_convert_scalar.go:95	0x6f9ee8		31db			XORL BX, BX								
+  utf32_convert_archsimd.go:134	0x6f9eea		4889d8			MOVQ BX, AX								
+  utf32_convert_archsimd.go:134	0x6f9eed		4883c430		ADDQ $0x30, SP								
+  utf32_convert_archsimd.go:134	0x6f9ef1		5d			POPQ BP									
+  utf32_convert_archsimd.go:134	0x6f9ef2		c3			RET									
+  utf32_convert_archsimd.go:131	0x6f9ef3		488d05e69c0e00		LEAQ 0xe9ce6(IP), AX							
+  utf32_convert_archsimd.go:131	0x6f9efa		488d1def9b1a00		LEAQ 0x1a9bef(IP), BX							
+  utf32_convert_archsimd.go:131	0x6f9f01		e85acad8ff		CALL runtime.gopanic(SB)						
+  utf32_convert_archsimd.go:131	0x6f9f06		90			NOPL									
+  utf32_convert_archsimd.go:129	0x6f9f07		4889442408		MOVQ AX, 0x8(SP)							
+  utf32_convert_archsimd.go:129	0x6f9f0c		48895c2410		MOVQ BX, 0x10(SP)							
+  utf32_convert_archsimd.go:129	0x6f9f11		48894c2418		MOVQ CX, 0x18(SP)							
+  utf32_convert_archsimd.go:129	0x6f9f16		48897c2420		MOVQ DI, 0x20(SP)							
+  utf32_convert_archsimd.go:129	0x6f9f1b		4889742428		MOVQ SI, 0x28(SP)							
+  utf32_convert_archsimd.go:129	0x6f9f20		4c89442430		MOVQ R8, 0x30(SP)							
+  utf32_convert_archsimd.go:129	0x6f9f25		e87629d9ff		CALL runtime.morestack_noctxt.abi0(SB)					
+  utf32_convert_archsimd.go:129	0x6f9f2a		488b442408		MOVQ 0x8(SP), AX							
+  utf32_convert_archsimd.go:129	0x6f9f2f		488b5c2410		MOVQ 0x10(SP), BX							
+  utf32_convert_archsimd.go:129	0x6f9f34		488b4c2418		MOVQ 0x18(SP), CX							
+  utf32_convert_archsimd.go:129	0x6f9f39		488b7c2420		MOVQ 0x20(SP), DI							
+  utf32_convert_archsimd.go:129	0x6f9f3e		488b742428		MOVQ 0x28(SP), SI							
+  utf32_convert_archsimd.go:129	0x6f9f43		4c8b442430		MOVQ 0x30(SP), R8							
+  utf32_convert_archsimd.go:129	0x6f9f48		e9d3fdffff		JMP github.com/zchee/go-simdutf.convertValidUTF32ToLatin1Archsimd(SB)	
+
+TEXT github.com/zchee/go-simdutf.convertUTF32ToUTF8Archsimd(SB) /Users/zchee/go/src/github.com/zchee/go-simdutf/utf32_convert_archsimd.go
+  utf32_convert_archsimd.go:146	0x6f9f60		493b6610		CMPQ SP, 0x10(R14)								
+  utf32_convert_archsimd.go:146	0x6f9f64		0f866f010000		JBE 0x6fa0d9									
+  utf32_convert_archsimd.go:146	0x6f9f6a		55			PUSHQ BP									
+  utf32_convert_archsimd.go:146	0x6f9f6b		4889e5			MOVQ SP, BP									
+  utf32_convert_archsimd.go:146	0x6f9f6e		4883ec38		SUBQ $0x38, SP									
+  utf32_convert_archsimd.go:146	0x6f9f72		4889442448		MOVQ AX, 0x48(SP)								
+  utf32_convert_archsimd.go:146	0x6f9f77		48897c2460		MOVQ DI, 0x60(SP)								
+  utf32_convert_archsimd.go:147	0x6f9f7c		31d2			XORL DX, DX									
+  utf32_convert_archsimd.go:147	0x6f9f7e		4531c9			XORL R9, R9									
+  utf32_convert_scalar.go:33	0x6f9f81		eb3d			JMP 0x6f9fc0									
+  utf32_convert_scalar.go:33	0x6f9f83		448b1490		MOVL 0(AX)(DX*4), R10								
+  utf32_convert_scalar.go:34	0x6f9f87		4d8d5901		LEAQ 0x1(R9), R11								
+  utf32_convert_scalar.go:36	0x6f9f8b		4d8d6102		LEAQ 0x2(R9), R12								
+  utf32_convert_scalar.go:33	0x6f9f8f		48ffc2			INCQ DX										
+  utf32_convert_scalar.go:35	0x6f9f92		4183fa7f		CMPL R10, $0x7f									
+  utf32_convert_scalar.go:38	0x6f9f96		4d0f47dc		CMOVA R12, R11									
+  utf32_convert_scalar.go:38	0x6f9f9a		4181faff070000		CMPL R10, $0x7ff								
+  utf32_convert_scalar.go:38	0x6f9fa1		410f97c4		SETA R12									
+  utf32_convert_scalar.go:41	0x6f9fa5		450fb6e4		MOVZX R12, R12									
+  utf32_convert_scalar.go:41	0x6f9fa9		4d01e3			ADDQ R12, R11									
+  utf32_convert_scalar.go:41	0x6f9fac		4181faffff0000		CMPL R10, $0xffff								
+  utf32_convert_scalar.go:41	0x6f9fb3		410f97c2		SETA R10									
+  utf32_convert_scalar.go:41	0x6f9fb7		450fb6d2		MOVZX R10, R10									
+  utf32_convert_scalar.go:41	0x6f9fbb		4f8d0c13		LEAQ 0(R11)(R10*1), R9								
+  utf32_convert_scalar.go:41	0x6f9fbf		90			NOPL										
+  utf32_convert_scalar.go:33	0x6f9fc0		4839d3			CMPQ BX, DX									
+  utf32_convert_scalar.go:33	0x6f9fc3		7fbe			JG 0x6f9f83									
+  utf32_convert_archsimd.go:147	0x6f9fc5		4c39ce			CMPQ SI, R9									
+  utf32_convert_archsimd.go:147	0x6f9fc8		0f8cf7000000		JL 0x6fa0c5									
+  utf32_convert_archsimd.go:150	0x6f9fce		4883fb08		CMPQ BX, $0x8									
+  utf32_convert_archsimd.go:150	0x6f9fd2		0f8cc9000000		JL 0x6fa0a1									
+  utf32_convert_scalar.go:33	0x6f9fd8		4889442448		MOVQ AX, 0x48(SP)								
+  utf32_convert_scalar.go:33	0x6f9fdd		4c89442470		MOVQ R8, 0x70(SP)								
+  utf32_convert_scalar.go:33	0x6f9fe2		48894c2458		MOVQ CX, 0x58(SP)								
+  utf32_convert_scalar.go:33	0x6f9fe7		4889742468		MOVQ SI, 0x68(SP)								
+  utf32_convert_scalar.go:33	0x6f9fec		48895c2450		MOVQ BX, 0x50(SP)								
+  utf32_convert_scalar.go:33	0x6f9ff1		48897c2460		MOVQ DI, 0x60(SP)								
+  utf32_convert_archsimd.go:154	0x6f9ff6		e8250f0000		CALL github.com/zchee/go-simdutf.convertUTF32ToUTF8ASCIIBlocksArchsimd(SB)	
+  utf32_convert_archsimd.go:155	0x6f9ffb		488b5c2450		MOVQ 0x50(SP), BX								
+  utf32_convert_archsimd.go:155	0x6fa000		4839d8			CMPQ AX, BX									
+  utf32_convert_archsimd.go:155	0x6fa003		0f8491000000		JE 0x6fa09a									
+  utf32_convert_archsimd.go:158	0x6fa009		0f87b0000000		JA 0x6fa0bf									
+  utf32_convert_archsimd.go:158	0x6fa00f		488b4c2458		MOVQ 0x58(SP), CX								
+  utf32_convert_archsimd.go:158	0x6fa014		4829c1			SUBQ AX, CX									
+  utf32_convert_archsimd.go:158	0x6fa017		4889ca			MOVQ CX, DX									
+  utf32_convert_archsimd.go:158	0x6fa01a		48f7da			NEGQ DX										
+  utf32_convert_archsimd.go:158	0x6fa01d		4989c1			MOVQ AX, R9									
+  utf32_convert_archsimd.go:158	0x6fa020		48c1e002		SHLQ $0x2, AX									
+  utf32_convert_archsimd.go:158	0x6fa024		48c1fa3f		SARQ $0x3f, DX									
+  utf32_convert_archsimd.go:158	0x6fa028		4821d0			ANDQ DX, AX									
+  utf32_convert_archsimd.go:158	0x6fa02b		4c29cb			SUBQ R9, BX									
+  utf32_convert_archsimd.go:158	0x6fa02e		488b542448		MOVQ 0x48(SP), DX								
+  utf32_convert_archsimd.go:158	0x6fa033		4801d0			ADDQ DX, AX									
+  utf32_convert_archsimd.go:158	0x6fa036		488b742468		MOVQ 0x68(SP), SI								
+  utf32_convert_archsimd.go:158	0x6fa03b		0f1f440000		NOPL 0(AX)(AX*1)								
+  utf32_convert_archsimd.go:158	0x6fa040		4939f1			CMPQ R9, SI									
+  utf32_convert_archsimd.go:158	0x6fa043		7775			JA 0x6fa0ba									
+  utf32_convert_archsimd.go:154	0x6fa045		4c894c2430		MOVQ R9, 0x30(SP)								
+  utf32_convert_archsimd.go:158	0x6fa04a		4c8b442470		MOVQ 0x70(SP), R8								
+  utf32_convert_archsimd.go:158	0x6fa04f		4d29c8			SUBQ R9, R8									
+  utf32_convert_archsimd.go:158	0x6fa052		4c29ce			SUBQ R9, SI									
+  utf32_convert_archsimd.go:158	0x6fa055		4c89c2			MOVQ R8, DX									
+  utf32_convert_archsimd.go:158	0x6fa058		48f7da			NEGQ DX										
+  utf32_convert_archsimd.go:158	0x6fa05b		48c1fa3f		SARQ $0x3f, DX									
+  utf32_convert_archsimd.go:158	0x6fa05f		4c21ca			ANDQ R9, DX									
+  utf32_convert_archsimd.go:158	0x6fa062		4c8b4c2460		MOVQ 0x60(SP), R9								
+  utf32_convert_archsimd.go:158	0x6fa067		498d3c11		LEAQ 0(R9)(DX*1), DI								
+  utf32_convert_scalar.go:104	0x6fa06b		e830150000		CALL github.com/zchee/go-simdutf.convertUTF32ToUTF8WithErrorsScalar(SB)		
+  utf32_convert_scalar.go:105	0x6fa070		84c0			TESTL AL, AL									
+  utf32_convert_archsimd.go:158	0x6fa072		b800000000		MOVL $0x0, AX									
+  utf32_convert_archsimd.go:158	0x6fa077		480f45d8		CMOVNE AX, BX									
+  utf32_convert_archsimd.go:158	0x6fa07b		0f1f440000		NOPL 0(AX)(AX*1)								
+  utf32_convert_archsimd.go:159	0x6fa080		4885db			TESTQ BX, BX									
+  utf32_convert_scalar.go:105	0x6fa083		7506			JNE 0x6fa08b									
+  utf32_convert_archsimd.go:160	0x6fa085		4883c438		ADDQ $0x38, SP									
+  utf32_convert_archsimd.go:160	0x6fa089		5d			POPQ BP										
+  utf32_convert_archsimd.go:160	0x6fa08a		c3			RET										
+  utf32_convert_archsimd.go:162	0x6fa08b		488b4c2430		MOVQ 0x30(SP), CX								
+  utf32_convert_archsimd.go:162	0x6fa090		488d040b		LEAQ 0(BX)(CX*1), AX								
+  utf32_convert_archsimd.go:162	0x6fa094		4883c438		ADDQ $0x38, SP									
+  utf32_convert_archsimd.go:162	0x6fa098		5d			POPQ BP										
+  utf32_convert_archsimd.go:162	0x6fa099		c3			RET										
+  utf32_convert_archsimd.go:156	0x6fa09a		4883c438		ADDQ $0x38, SP									
+  utf32_convert_archsimd.go:156	0x6fa09e		5d			POPQ BP										
+  utf32_convert_archsimd.go:156	0x6fa09f		90			NOPL										
+  utf32_convert_archsimd.go:156	0x6fa0a0		c3			RET										
+  utf32_convert_scalar.go:104	0x6fa0a1		e8fa140000		CALL github.com/zchee/go-simdutf.convertUTF32ToUTF8WithErrorsScalar(SB)		
+  utf32_convert_scalar.go:105	0x6fa0a6		84c0			TESTL AL, AL									
+  utf32_convert_archsimd.go:151	0x6fa0a8		ba00000000		MOVL $0x0, DX									
+  utf32_convert_archsimd.go:151	0x6fa0ad		480f45da		CMOVNE DX, BX									
+  utf32_convert_archsimd.go:151	0x6fa0b1		4889d8			MOVQ BX, AX									
+  utf32_convert_scalar.go:105	0x6fa0b4		4883c438		ADDQ $0x38, SP									
+  utf32_convert_scalar.go:105	0x6fa0b8		5d			POPQ BP										
+  utf32_convert_scalar.go:105	0x6fa0b9		c3			RET										
+  utf32_convert_archsimd.go:158	0x6fa0ba		e80145d9ff		CALL runtime.panicBounds(SB)							
+  utf32_convert_archsimd.go:158	0x6fa0bf		90			NOPL										
+  utf32_convert_archsimd.go:158	0x6fa0c0		e8fb44d9ff		CALL runtime.panicBounds(SB)							
+  utf32_convert_archsimd.go:148	0x6fa0c5		488d05149b0e00		LEAQ 0xe9b14(IP), AX								
+  utf32_convert_archsimd.go:148	0x6fa0cc		488d1d1d9a1a00		LEAQ 0x1a9a1d(IP), BX								
+  utf32_convert_archsimd.go:148	0x6fa0d3		e888c8d8ff		CALL runtime.gopanic(SB)							
+  utf32_convert_archsimd.go:148	0x6fa0d8		90			NOPL										
+  utf32_convert_archsimd.go:146	0x6fa0d9		4889442408		MOVQ AX, 0x8(SP)								
+  utf32_convert_archsimd.go:146	0x6fa0de		48895c2410		MOVQ BX, 0x10(SP)								
+  utf32_convert_archsimd.go:146	0x6fa0e3		48894c2418		MOVQ CX, 0x18(SP)								
+  utf32_convert_archsimd.go:146	0x6fa0e8		48897c2420		MOVQ DI, 0x20(SP)								
+  utf32_convert_archsimd.go:146	0x6fa0ed		4889742428		MOVQ SI, 0x28(SP)								
+  utf32_convert_archsimd.go:146	0x6fa0f2		4c89442430		MOVQ R8, 0x30(SP)								
+  utf32_convert_archsimd.go:146	0x6fa0f7		e8a427d9ff		CALL runtime.morestack_noctxt.abi0(SB)						
+  utf32_convert_archsimd.go:146	0x6fa0fc		488b442408		MOVQ 0x8(SP), AX								
+  utf32_convert_archsimd.go:146	0x6fa101		488b5c2410		MOVQ 0x10(SP), BX								
+  utf32_convert_archsimd.go:146	0x6fa106		488b4c2418		MOVQ 0x18(SP), CX								
+  utf32_convert_archsimd.go:146	0x6fa10b		488b7c2420		MOVQ 0x20(SP), DI								
+  utf32_convert_archsimd.go:146	0x6fa110		488b742428		MOVQ 0x28(SP), SI								
+  utf32_convert_archsimd.go:146	0x6fa115		4c8b442430		MOVQ 0x30(SP), R8								
+  utf32_convert_archsimd.go:146	0x6fa11a		e941feffff		JMP github.com/zchee/go-simdutf.convertUTF32ToUTF8Archsimd(SB)			
+
+TEXT github.com/zchee/go-simdutf.convertUTF32ToUTF8WithErrorsArchsimd(SB) /Users/zchee/go/src/github.com/zchee/go-simdutf/utf32_convert_archsimd.go
+  utf32_convert_archsimd.go:165	0x6fa120		493b6610		CMPQ SP, 0x10(R14)								
+  utf32_convert_archsimd.go:165	0x6fa124		0f8640010000		JBE 0x6fa26a									
+  utf32_convert_archsimd.go:165	0x6fa12a		55			PUSHQ BP									
+  utf32_convert_archsimd.go:165	0x6fa12b		4889e5			MOVQ SP, BP									
+  utf32_convert_archsimd.go:165	0x6fa12e		4883ec38		SUBQ $0x38, SP									
+  utf32_convert_archsimd.go:165	0x6fa132		4889442448		MOVQ AX, 0x48(SP)								
+  utf32_convert_archsimd.go:165	0x6fa137		48897c2460		MOVQ DI, 0x60(SP)								
+  utf32_convert_archsimd.go:166	0x6fa13c		31d2			XORL DX, DX									
+  utf32_convert_archsimd.go:166	0x6fa13e		4531c9			XORL R9, R9									
+  utf32_convert_scalar.go:33	0x6fa141		eb3d			JMP 0x6fa180									
+  utf32_convert_scalar.go:33	0x6fa143		448b1490		MOVL 0(AX)(DX*4), R10								
+  utf32_convert_scalar.go:34	0x6fa147		4d8d5901		LEAQ 0x1(R9), R11								
+  utf32_convert_scalar.go:36	0x6fa14b		4d8d6102		LEAQ 0x2(R9), R12								
+  utf32_convert_scalar.go:33	0x6fa14f		48ffc2			INCQ DX										
+  utf32_convert_scalar.go:35	0x6fa152		4183fa7f		CMPL R10, $0x7f									
+  utf32_convert_scalar.go:38	0x6fa156		4d0f47dc		CMOVA R12, R11									
+  utf32_convert_scalar.go:38	0x6fa15a		4181faff070000		CMPL R10, $0x7ff								
+  utf32_convert_scalar.go:38	0x6fa161		410f97c4		SETA R12									
+  utf32_convert_scalar.go:41	0x6fa165		450fb6e4		MOVZX R12, R12									
+  utf32_convert_scalar.go:41	0x6fa169		4d01e3			ADDQ R12, R11									
+  utf32_convert_scalar.go:41	0x6fa16c		4181faffff0000		CMPL R10, $0xffff								
+  utf32_convert_scalar.go:41	0x6fa173		410f97c2		SETA R10									
+  utf32_convert_scalar.go:41	0x6fa177		450fb6d2		MOVZX R10, R10									
+  utf32_convert_scalar.go:41	0x6fa17b		4f8d0c13		LEAQ 0(R11)(R10*1), R9								
+  utf32_convert_scalar.go:41	0x6fa17f		90			NOPL										
+  utf32_convert_scalar.go:33	0x6fa180		4839d3			CMPQ BX, DX									
+  utf32_convert_scalar.go:33	0x6fa183		7fbe			JG 0x6fa143									
+  utf32_convert_archsimd.go:166	0x6fa185		4c39ce			CMPQ SI, R9									
+  utf32_convert_archsimd.go:166	0x6fa188		0f8cc8000000		JL 0x6fa256									
+  utf32_convert_archsimd.go:169	0x6fa18e		4883fb08		CMPQ BX, $0x8									
+  utf32_convert_archsimd.go:169	0x6fa192		0f8ca9000000		JL 0x6fa241									
+  utf32_convert_scalar.go:33	0x6fa198		4889442448		MOVQ AX, 0x48(SP)								
+  utf32_convert_scalar.go:33	0x6fa19d		4c89442470		MOVQ R8, 0x70(SP)								
+  utf32_convert_scalar.go:33	0x6fa1a2		48894c2458		MOVQ CX, 0x58(SP)								
+  utf32_convert_scalar.go:33	0x6fa1a7		4889742468		MOVQ SI, 0x68(SP)								
+  utf32_convert_scalar.go:33	0x6fa1ac		48895c2450		MOVQ BX, 0x50(SP)								
+  utf32_convert_scalar.go:33	0x6fa1b1		48897c2460		MOVQ DI, 0x60(SP)								
+  utf32_convert_archsimd.go:173	0x6fa1b6		e8650d0000		CALL github.com/zchee/go-simdutf.convertUTF32ToUTF8ASCIIBlocksArchsimd(SB)	
+  utf32_convert_archsimd.go:174	0x6fa1bb		488b5c2450		MOVQ 0x50(SP), BX								
+  utf32_convert_archsimd.go:174	0x6fa1c0		4839d8			CMPQ AX, BX									
+  utf32_convert_archsimd.go:174	0x6fa1c3		7470			JE 0x6fa235									
+  utf32_convert_archsimd.go:177	0x6fa1c5		0f8786000000		JA 0x6fa251									
+  utf32_convert_archsimd.go:177	0x6fa1cb		488b4c2458		MOVQ 0x58(SP), CX								
+  utf32_convert_archsimd.go:177	0x6fa1d0		4829c1			SUBQ AX, CX									
+  utf32_convert_archsimd.go:177	0x6fa1d3		4889ca			MOVQ CX, DX									
+  utf32_convert_archsimd.go:177	0x6fa1d6		48f7da			NEGQ DX										
+  utf32_convert_archsimd.go:177	0x6fa1d9		4989c1			MOVQ AX, R9									
+  utf32_convert_archsimd.go:177	0x6fa1dc		48c1e002		SHLQ $0x2, AX									
+  utf32_convert_archsimd.go:177	0x6fa1e0		48c1fa3f		SARQ $0x3f, DX									
+  utf32_convert_archsimd.go:177	0x6fa1e4		4821d0			ANDQ DX, AX									
+  utf32_convert_archsimd.go:177	0x6fa1e7		4c29cb			SUBQ R9, BX									
+  utf32_convert_archsimd.go:177	0x6fa1ea		488b542448		MOVQ 0x48(SP), DX								
+  utf32_convert_archsimd.go:177	0x6fa1ef		4801d0			ADDQ DX, AX									
+  utf32_convert_archsimd.go:177	0x6fa1f2		488b742468		MOVQ 0x68(SP), SI								
+  utf32_convert_archsimd.go:177	0x6fa1f7		4939f1			CMPQ R9, SI									
+  utf32_convert_archsimd.go:177	0x6fa1fa		7750			JA 0x6fa24c									
+  utf32_convert_archsimd.go:173	0x6fa1fc		4c894c2430		MOVQ R9, 0x30(SP)								
+  utf32_convert_archsimd.go:177	0x6fa201		4c8b442470		MOVQ 0x70(SP), R8								
+  utf32_convert_archsimd.go:177	0x6fa206		4d29c8			SUBQ R9, R8									
+  utf32_convert_archsimd.go:177	0x6fa209		4c29ce			SUBQ R9, SI									
+  utf32_convert_archsimd.go:177	0x6fa20c		4c89c2			MOVQ R8, DX									
+  utf32_convert_archsimd.go:177	0x6fa20f		48f7da			NEGQ DX										
+  utf32_convert_archsimd.go:177	0x6fa212		48c1fa3f		SARQ $0x3f, DX									
+  utf32_convert_archsimd.go:177	0x6fa216		4c21ca			ANDQ R9, DX									
+  utf32_convert_archsimd.go:177	0x6fa219		4c8b4c2460		MOVQ 0x60(SP), R9								
+  utf32_convert_archsimd.go:177	0x6fa21e		498d3c11		LEAQ 0(R9)(DX*1), DI								
+  utf32_convert_archsimd.go:177	0x6fa222		e879130000		CALL github.com/zchee/go-simdutf.convertUTF32ToUTF8WithErrorsScalar(SB)		
+  utf32_convert_archsimd.go:178	0x6fa227		488b542430		MOVQ 0x30(SP), DX								
+  utf32_convert_archsimd.go:178	0x6fa22c		4801d3			ADDQ DX, BX									
+  utf32_convert_archsimd.go:179	0x6fa22f		4883c438		ADDQ $0x38, SP									
+  utf32_convert_archsimd.go:179	0x6fa233		5d			POPQ BP										
+  utf32_convert_archsimd.go:179	0x6fa234		c3			RET										
+  utf32_convert_archsimd.go:175	0x6fa235		4889c3			MOVQ AX, BX									
+  utf32_convert_archsimd.go:175	0x6fa238		31c0			XORL AX, AX									
+  utf32_convert_archsimd.go:175	0x6fa23a		4883c438		ADDQ $0x38, SP									
+  utf32_convert_archsimd.go:175	0x6fa23e		5d			POPQ BP										
+  utf32_convert_archsimd.go:175	0x6fa23f		90			NOPL										
+  utf32_convert_archsimd.go:175	0x6fa240		c3			RET										
+  utf32_convert_archsimd.go:170	0x6fa241		e85a130000		CALL github.com/zchee/go-simdutf.convertUTF32ToUTF8WithErrorsScalar(SB)		
+  utf32_convert_archsimd.go:170	0x6fa246		4883c438		ADDQ $0x38, SP									
+  utf32_convert_archsimd.go:170	0x6fa24a		5d			POPQ BP										
+  utf32_convert_archsimd.go:170	0x6fa24b		c3			RET										
+  utf32_convert_archsimd.go:177	0x6fa24c		e86f43d9ff		CALL runtime.panicBounds(SB)							
+  utf32_convert_archsimd.go:177	0x6fa251		e86a43d9ff		CALL runtime.panicBounds(SB)							
+  utf32_convert_archsimd.go:167	0x6fa256		488d0583990e00		LEAQ 0xe9983(IP), AX								
+  utf32_convert_archsimd.go:167	0x6fa25d		488d1d8c981a00		LEAQ 0x1a988c(IP), BX								
+  utf32_convert_archsimd.go:167	0x6fa264		e8f7c6d8ff		CALL runtime.gopanic(SB)							
+  utf32_convert_archsimd.go:167	0x6fa269		90			NOPL										
+  utf32_convert_archsimd.go:165	0x6fa26a		4889442408		MOVQ AX, 0x8(SP)								
+  utf32_convert_archsimd.go:165	0x6fa26f		48895c2410		MOVQ BX, 0x10(SP)								
+  utf32_convert_archsimd.go:165	0x6fa274		48894c2418		MOVQ CX, 0x18(SP)								
+  utf32_convert_archsimd.go:165	0x6fa279		48897c2420		MOVQ DI, 0x20(SP)								
+  utf32_convert_archsimd.go:165	0x6fa27e		4889742428		MOVQ SI, 0x28(SP)								
+  utf32_convert_archsimd.go:165	0x6fa283		4c89442430		MOVQ R8, 0x30(SP)								
+  utf32_convert_archsimd.go:165	0x6fa288		e81326d9ff		CALL runtime.morestack_noctxt.abi0(SB)						
+  utf32_convert_archsimd.go:165	0x6fa28d		488b442408		MOVQ 0x8(SP), AX								
+  utf32_convert_archsimd.go:165	0x6fa292		488b5c2410		MOVQ 0x10(SP), BX								
+  utf32_convert_archsimd.go:165	0x6fa297		488b4c2418		MOVQ 0x18(SP), CX								
+  utf32_convert_archsimd.go:165	0x6fa29c		488b7c2420		MOVQ 0x20(SP), DI								
+  utf32_convert_archsimd.go:165	0x6fa2a1		488b742428		MOVQ 0x28(SP), SI								
+  utf32_convert_archsimd.go:165	0x6fa2a6		4c8b442430		MOVQ 0x30(SP), R8								
+  utf32_convert_archsimd.go:165	0x6fa2ab		e970feffff		JMP github.com/zchee/go-simdutf.convertUTF32ToUTF8WithErrorsArchsimd(SB)	
+
+TEXT github.com/zchee/go-simdutf.convertValidUTF32ToUTF8Archsimd(SB) /Users/zchee/go/src/github.com/zchee/go-simdutf/utf32_convert_archsimd.go
+  utf32_convert_archsimd.go:182	0x6fa2c0		493b6610		CMPQ SP, 0x10(R14)								
+  utf32_convert_archsimd.go:182	0x6fa2c4		0f863f010000		JBE 0x6fa409									
+  utf32_convert_archsimd.go:182	0x6fa2ca		55			PUSHQ BP									
+  utf32_convert_archsimd.go:182	0x6fa2cb		4889e5			MOVQ SP, BP									
+  utf32_convert_archsimd.go:182	0x6fa2ce		4883ec38		SUBQ $0x38, SP									
+  utf32_convert_archsimd.go:182	0x6fa2d2		4889442448		MOVQ AX, 0x48(SP)								
+  utf32_convert_archsimd.go:182	0x6fa2d7		48897c2460		MOVQ DI, 0x60(SP)								
+  utf32_convert_archsimd.go:183	0x6fa2dc		31d2			XORL DX, DX									
+  utf32_convert_archsimd.go:183	0x6fa2de		4531c9			XORL R9, R9									
+  utf32_convert_scalar.go:33	0x6fa2e1		eb3d			JMP 0x6fa320									
+  utf32_convert_scalar.go:33	0x6fa2e3		448b1490		MOVL 0(AX)(DX*4), R10								
+  utf32_convert_scalar.go:34	0x6fa2e7		4d8d5901		LEAQ 0x1(R9), R11								
+  utf32_convert_scalar.go:36	0x6fa2eb		4d8d6102		LEAQ 0x2(R9), R12								
+  utf32_convert_scalar.go:33	0x6fa2ef		48ffc2			INCQ DX										
+  utf32_convert_scalar.go:35	0x6fa2f2		4183fa7f		CMPL R10, $0x7f									
+  utf32_convert_scalar.go:38	0x6fa2f6		4d0f47dc		CMOVA R12, R11									
+  utf32_convert_scalar.go:38	0x6fa2fa		4181faff070000		CMPL R10, $0x7ff								
+  utf32_convert_scalar.go:38	0x6fa301		410f97c4		SETA R12									
+  utf32_convert_scalar.go:41	0x6fa305		450fb6e4		MOVZX R12, R12									
+  utf32_convert_scalar.go:41	0x6fa309		4d01e3			ADDQ R12, R11									
+  utf32_convert_scalar.go:41	0x6fa30c		4181faffff0000		CMPL R10, $0xffff								
+  utf32_convert_scalar.go:41	0x6fa313		410f97c2		SETA R10									
+  utf32_convert_scalar.go:41	0x6fa317		450fb6d2		MOVZX R10, R10									
+  utf32_convert_scalar.go:41	0x6fa31b		4f8d0c13		LEAQ 0(R11)(R10*1), R9								
+  utf32_convert_scalar.go:41	0x6fa31f		90			NOPL										
+  utf32_convert_scalar.go:33	0x6fa320		4839d3			CMPQ BX, DX									
+  utf32_convert_scalar.go:33	0x6fa323		7fbe			JG 0x6fa2e3									
+  utf32_convert_archsimd.go:183	0x6fa325		4c39ce			CMPQ SI, R9									
+  utf32_convert_archsimd.go:183	0x6fa328		0f8cc7000000		JL 0x6fa3f5									
+  utf32_convert_archsimd.go:186	0x6fa32e		4883fb08		CMPQ BX, $0x8									
+  utf32_convert_archsimd.go:186	0x6fa332		0f8ca3000000		JL 0x6fa3db									
+  utf32_convert_scalar.go:33	0x6fa338		4889442448		MOVQ AX, 0x48(SP)								
+  utf32_convert_scalar.go:33	0x6fa33d		4c89442470		MOVQ R8, 0x70(SP)								
+  utf32_convert_scalar.go:33	0x6fa342		48894c2458		MOVQ CX, 0x58(SP)								
+  utf32_convert_scalar.go:33	0x6fa347		4889742468		MOVQ SI, 0x68(SP)								
+  utf32_convert_scalar.go:33	0x6fa34c		48895c2450		MOVQ BX, 0x50(SP)								
+  utf32_convert_scalar.go:33	0x6fa351		48897c2460		MOVQ DI, 0x60(SP)								
+  utf32_convert_archsimd.go:190	0x6fa356		e8c50b0000		CALL github.com/zchee/go-simdutf.convertUTF32ToUTF8ASCIIBlocksArchsimd(SB)	
+  utf32_convert_archsimd.go:191	0x6fa35b		488b5c2450		MOVQ 0x50(SP), BX								
+  utf32_convert_archsimd.go:191	0x6fa360		4839d8			CMPQ AX, BX									
+  utf32_convert_archsimd.go:191	0x6fa363		7470			JE 0x6fa3d5									
+  utf32_convert_archsimd.go:194	0x6fa365		0f8785000000		JA 0x6fa3f0									
+  utf32_convert_archsimd.go:194	0x6fa36b		488b4c2458		MOVQ 0x58(SP), CX								
+  utf32_convert_archsimd.go:194	0x6fa370		4829c1			SUBQ AX, CX									
+  utf32_convert_archsimd.go:194	0x6fa373		4889ca			MOVQ CX, DX									
+  utf32_convert_archsimd.go:194	0x6fa376		48f7da			NEGQ DX										
+  utf32_convert_archsimd.go:194	0x6fa379		4989c1			MOVQ AX, R9									
+  utf32_convert_archsimd.go:194	0x6fa37c		48c1e002		SHLQ $0x2, AX									
+  utf32_convert_archsimd.go:194	0x6fa380		48c1fa3f		SARQ $0x3f, DX									
+  utf32_convert_archsimd.go:194	0x6fa384		4821d0			ANDQ DX, AX									
+  utf32_convert_archsimd.go:194	0x6fa387		4c29cb			SUBQ R9, BX									
+  utf32_convert_archsimd.go:194	0x6fa38a		488b542448		MOVQ 0x48(SP), DX								
+  utf32_convert_archsimd.go:194	0x6fa38f		4801d0			ADDQ DX, AX									
+  utf32_convert_archsimd.go:194	0x6fa392		488b742468		MOVQ 0x68(SP), SI								
+  utf32_convert_archsimd.go:194	0x6fa397		4939f1			CMPQ R9, SI									
+  utf32_convert_archsimd.go:194	0x6fa39a		774f			JA 0x6fa3eb									
+  utf32_convert_archsimd.go:190	0x6fa39c		4c894c2430		MOVQ R9, 0x30(SP)								
+  utf32_convert_archsimd.go:194	0x6fa3a1		4c8b442470		MOVQ 0x70(SP), R8								
+  utf32_convert_archsimd.go:194	0x6fa3a6		4d29c8			SUBQ R9, R8									
+  utf32_convert_archsimd.go:194	0x6fa3a9		4c29ce			SUBQ R9, SI									
+  utf32_convert_archsimd.go:194	0x6fa3ac		4c89c2			MOVQ R8, DX									
+  utf32_convert_archsimd.go:194	0x6fa3af		48f7da			NEGQ DX										
+  utf32_convert_archsimd.go:194	0x6fa3b2		48c1fa3f		SARQ $0x3f, DX									
+  utf32_convert_archsimd.go:194	0x6fa3b6		4c21ca			ANDQ R9, DX									
+  utf32_convert_archsimd.go:194	0x6fa3b9		4c8b4c2460		MOVQ 0x60(SP), R9								
+  utf32_convert_archsimd.go:194	0x6fa3be		498d3c11		LEAQ 0(R9)(DX*1), DI								
+  utf32_convert_archsimd.go:194	0x6fa3c2		e8b9140000		CALL github.com/zchee/go-simdutf.convertValidUTF32ToUTF8Scalar(SB)		
+  utf32_convert_archsimd.go:194	0x6fa3c7		488b542430		MOVQ 0x30(SP), DX								
+  utf32_convert_archsimd.go:194	0x6fa3cc		4801d0			ADDQ DX, AX									
+  utf32_convert_archsimd.go:194	0x6fa3cf		4883c438		ADDQ $0x38, SP									
+  utf32_convert_archsimd.go:194	0x6fa3d3		5d			POPQ BP										
+  utf32_convert_archsimd.go:194	0x6fa3d4		c3			RET										
+  utf32_convert_archsimd.go:192	0x6fa3d5		4883c438		ADDQ $0x38, SP									
+  utf32_convert_archsimd.go:192	0x6fa3d9		5d			POPQ BP										
+  utf32_convert_archsimd.go:192	0x6fa3da		c3			RET										
+  utf32_convert_archsimd.go:192	0x6fa3db		0f1f440000		NOPL 0(AX)(AX*1)								
+  utf32_convert_archsimd.go:187	0x6fa3e0		e89b140000		CALL github.com/zchee/go-simdutf.convertValidUTF32ToUTF8Scalar(SB)		
+  utf32_convert_archsimd.go:187	0x6fa3e5		4883c438		ADDQ $0x38, SP									
+  utf32_convert_archsimd.go:187	0x6fa3e9		5d			POPQ BP										
+  utf32_convert_archsimd.go:187	0x6fa3ea		c3			RET										
+  utf32_convert_archsimd.go:194	0x6fa3eb		e8d041d9ff		CALL runtime.panicBounds(SB)							
+  utf32_convert_archsimd.go:194	0x6fa3f0		e8cb41d9ff		CALL runtime.panicBounds(SB)							
+  utf32_convert_archsimd.go:184	0x6fa3f5		488d05e4970e00		LEAQ 0xe97e4(IP), AX								
+  utf32_convert_archsimd.go:184	0x6fa3fc		488d1ded961a00		LEAQ 0x1a96ed(IP), BX								
+  utf32_convert_archsimd.go:184	0x6fa403		e858c5d8ff		CALL runtime.gopanic(SB)							
+  utf32_convert_archsimd.go:184	0x6fa408		90			NOPL										
+  utf32_convert_archsimd.go:182	0x6fa409		4889442408		MOVQ AX, 0x8(SP)								
+  utf32_convert_archsimd.go:182	0x6fa40e		48895c2410		MOVQ BX, 0x10(SP)								
+  utf32_convert_archsimd.go:182	0x6fa413		48894c2418		MOVQ CX, 0x18(SP)								
+  utf32_convert_archsimd.go:182	0x6fa418		48897c2420		MOVQ DI, 0x20(SP)								
+  utf32_convert_archsimd.go:182	0x6fa41d		4889742428		MOVQ SI, 0x28(SP)								
+  utf32_convert_archsimd.go:182	0x6fa422		4c89442430		MOVQ R8, 0x30(SP)								
+  utf32_convert_archsimd.go:182	0x6fa427		e87424d9ff		CALL runtime.morestack_noctxt.abi0(SB)						
+  utf32_convert_archsimd.go:182	0x6fa42c		488b442408		MOVQ 0x8(SP), AX								
+  utf32_convert_archsimd.go:182	0x6fa431		488b5c2410		MOVQ 0x10(SP), BX								
+  utf32_convert_archsimd.go:182	0x6fa436		488b4c2418		MOVQ 0x18(SP), CX								
+  utf32_convert_archsimd.go:182	0x6fa43b		488b7c2420		MOVQ 0x20(SP), DI								
+  utf32_convert_archsimd.go:182	0x6fa440		488b742428		MOVQ 0x28(SP), SI								
+  utf32_convert_archsimd.go:182	0x6fa445		4c8b442430		MOVQ 0x30(SP), R8								
+  utf32_convert_archsimd.go:182	0x6fa44a		e971feffff		JMP github.com/zchee/go-simdutf.convertValidUTF32ToUTF8Archsimd(SB)		
+
+TEXT github.com/zchee/go-simdutf.convertUTF32ToUTF16LEArchsimd(SB) /Users/zchee/go/src/github.com/zchee/go-simdutf/utf32_convert_archsimd.go
+  utf32_convert_archsimd.go:197	0x6fa460		493b6610		CMPQ SP, 0x10(R14)							
+  utf32_convert_archsimd.go:197	0x6fa464		7625			JBE 0x6fa48b								
+  utf32_convert_archsimd.go:197	0x6fa466		55			PUSHQ BP								
+  utf32_convert_archsimd.go:197	0x6fa467		4889e5			MOVQ SP, BP								
+  utf32_convert_archsimd.go:197	0x6fa46a		4883ec38		SUBQ $0x38, SP								
+  utf32_convert_archsimd.go:197	0x6fa46e		4889442448		MOVQ AX, 0x48(SP)							
+  utf32_convert_archsimd.go:197	0x6fa473		48897c2460		MOVQ DI, 0x60(SP)							
+  utf32_convert_archsimd.go:198	0x6fa478		4531c9			XORL R9, R9								
+  utf32_convert_archsimd.go:198	0x6fa47b		0f1f440000		NOPL 0(AX)(AX*1)							
+  utf32_convert_archsimd.go:198	0x6fa480		e8db000000		CALL github.com/zchee/go-simdutf.convertUTF32ToUTF16Archsimd(SB)	
+  utf32_convert_archsimd.go:198	0x6fa485		4883c438		ADDQ $0x38, SP								
+  utf32_convert_archsimd.go:198	0x6fa489		5d			POPQ BP									
+  utf32_convert_archsimd.go:198	0x6fa48a		c3			RET									
+  utf32_convert_archsimd.go:197	0x6fa48b		4889442408		MOVQ AX, 0x8(SP)							
+  utf32_convert_archsimd.go:197	0x6fa490		48895c2410		MOVQ BX, 0x10(SP)							
+  utf32_convert_archsimd.go:197	0x6fa495		48894c2418		MOVQ CX, 0x18(SP)							
+  utf32_convert_archsimd.go:197	0x6fa49a		48897c2420		MOVQ DI, 0x20(SP)							
+  utf32_convert_archsimd.go:197	0x6fa49f		4889742428		MOVQ SI, 0x28(SP)							
+  utf32_convert_archsimd.go:197	0x6fa4a4		4c89442430		MOVQ R8, 0x30(SP)							
+  utf32_convert_archsimd.go:197	0x6fa4a9		e8f223d9ff		CALL runtime.morestack_noctxt.abi0(SB)					
+  utf32_convert_archsimd.go:197	0x6fa4ae		488b442408		MOVQ 0x8(SP), AX							
+  utf32_convert_archsimd.go:197	0x6fa4b3		488b5c2410		MOVQ 0x10(SP), BX							
+  utf32_convert_archsimd.go:197	0x6fa4b8		488b4c2418		MOVQ 0x18(SP), CX							
+  utf32_convert_archsimd.go:197	0x6fa4bd		488b7c2420		MOVQ 0x20(SP), DI							
+  utf32_convert_archsimd.go:197	0x6fa4c2		488b742428		MOVQ 0x28(SP), SI							
+  utf32_convert_archsimd.go:197	0x6fa4c7		4c8b442430		MOVQ 0x30(SP), R8							
+  utf32_convert_archsimd.go:197	0x6fa4cc		eb92			JMP github.com/zchee/go-simdutf.convertUTF32ToUTF16LEArchsimd(SB)	
+
+TEXT github.com/zchee/go-simdutf.convertUTF32ToUTF16BEArchsimd(SB) /Users/zchee/go/src/github.com/zchee/go-simdutf/utf32_convert_archsimd.go
+  utf32_convert_archsimd.go:201	0x6fa4e0		493b6610		CMPQ SP, 0x10(R14)							
+  utf32_convert_archsimd.go:201	0x6fa4e4		7625			JBE 0x6fa50b								
+  utf32_convert_archsimd.go:201	0x6fa4e6		55			PUSHQ BP								
+  utf32_convert_archsimd.go:201	0x6fa4e7		4889e5			MOVQ SP, BP								
+  utf32_convert_archsimd.go:201	0x6fa4ea		4883ec38		SUBQ $0x38, SP								
+  utf32_convert_archsimd.go:201	0x6fa4ee		4889442448		MOVQ AX, 0x48(SP)							
+  utf32_convert_archsimd.go:201	0x6fa4f3		48897c2460		MOVQ DI, 0x60(SP)							
+  utf32_convert_archsimd.go:202	0x6fa4f8		41b901000000		MOVL $0x1, R9								
+  utf32_convert_archsimd.go:202	0x6fa4fe		6690			NOPW									
+  utf32_convert_archsimd.go:202	0x6fa500		e85b000000		CALL github.com/zchee/go-simdutf.convertUTF32ToUTF16Archsimd(SB)	
+  utf32_convert_archsimd.go:202	0x6fa505		4883c438		ADDQ $0x38, SP								
+  utf32_convert_archsimd.go:202	0x6fa509		5d			POPQ BP									
+  utf32_convert_archsimd.go:202	0x6fa50a		c3			RET									
+  utf32_convert_archsimd.go:201	0x6fa50b		4889442408		MOVQ AX, 0x8(SP)							
+  utf32_convert_archsimd.go:201	0x6fa510		48895c2410		MOVQ BX, 0x10(SP)							
+  utf32_convert_archsimd.go:201	0x6fa515		48894c2418		MOVQ CX, 0x18(SP)							
+  utf32_convert_archsimd.go:201	0x6fa51a		48897c2420		MOVQ DI, 0x20(SP)							
+  utf32_convert_archsimd.go:201	0x6fa51f		4889742428		MOVQ SI, 0x28(SP)							
+  utf32_convert_archsimd.go:201	0x6fa524		4c89442430		MOVQ R8, 0x30(SP)							
+  utf32_convert_archsimd.go:201	0x6fa529		e87223d9ff		CALL runtime.morestack_noctxt.abi0(SB)					
+  utf32_convert_archsimd.go:201	0x6fa52e		488b442408		MOVQ 0x8(SP), AX							
+  utf32_convert_archsimd.go:201	0x6fa533		488b5c2410		MOVQ 0x10(SP), BX							
+  utf32_convert_archsimd.go:201	0x6fa538		488b4c2418		MOVQ 0x18(SP), CX							
+  utf32_convert_archsimd.go:201	0x6fa53d		488b7c2420		MOVQ 0x20(SP), DI							
+  utf32_convert_archsimd.go:201	0x6fa542		488b742428		MOVQ 0x28(SP), SI							
+  utf32_convert_archsimd.go:201	0x6fa547		4c8b442430		MOVQ 0x30(SP), R8							
+  utf32_convert_archsimd.go:201	0x6fa54c		eb92			JMP github.com/zchee/go-simdutf.convertUTF32ToUTF16BEArchsimd(SB)	
+
+TEXT github.com/zchee/go-simdutf.convertUTF32ToUTF16Archsimd(SB) /Users/zchee/go/src/github.com/zchee/go-simdutf/utf32_convert_archsimd.go
+  utf32_convert_archsimd.go:205	0x6fa560		493b6610		CMPQ SP, 0x10(R14)								
+  utf32_convert_archsimd.go:205	0x6fa564		0f86e9010000		JBE 0x6fa753									
+  utf32_convert_archsimd.go:205	0x6fa56a		55			PUSHQ BP									
+  utf32_convert_archsimd.go:205	0x6fa56b		4889e5			MOVQ SP, BP									
+  utf32_convert_archsimd.go:205	0x6fa56e		4883ec40		SUBQ $0x40, SP									
+  utf32_convert_archsimd.go:205	0x6fa572		4889442450		MOVQ AX, 0x50(SP)								
+  utf32_convert_archsimd.go:205	0x6fa577		48897c2468		MOVQ DI, 0x68(SP)								
+  utf32_convert_archsimd.go:206	0x6fa57c		31d2			XORL DX, DX									
+  utf32_convert_archsimd.go:206	0x6fa57e		4531d2			XORL R10, R10									
+  utf32_convert_scalar.go:50	0x6fa581		eb1d			JMP 0x6fa5a0									
+  utf32_convert_scalar.go:50	0x6fa583		448b1c90		MOVL 0(AX)(DX*4), R11								
+  utf32_convert_scalar.go:51	0x6fa587		4d8d6201		LEAQ 0x1(R10), R12								
+  utf32_convert_scalar.go:53	0x6fa58b		4d8d6a02		LEAQ 0x2(R10), R13								
+  utf32_convert_scalar.go:50	0x6fa58f		48ffc2			INCQ DX										
+  utf32_convert_scalar.go:50	0x6fa592		4181fbffff0000		CMPL R11, $0xffff								
+  utf32_convert_scalar.go:50	0x6fa599		4d0f47e5		CMOVA R13, R12									
+  utf32_convert_scalar.go:50	0x6fa59d		4d89e2			MOVQ R12, R10									
+  utf32_convert_scalar.go:50	0x6fa5a0		4839d3			CMPQ BX, DX									
+  utf32_convert_scalar.go:50	0x6fa5a3		7fde			JG 0x6fa583									
+  utf32_convert_archsimd.go:206	0x6fa5a5		4c39d6			CMPQ SI, R10									
+  utf32_convert_archsimd.go:206	0x6fa5a8		0f8c91010000		JL 0x6fa73f									
+  utf32_convert_archsimd.go:209	0x6fa5ae		4883fb08		CMPQ BX, $0x8									
+  utf32_convert_archsimd.go:209	0x6fa5b2		7d1b			JGE 0x6fa5cf									
+  utf32_convert_scalar.go:50	0x6fa5b4		4584c9			TESTL R9, R9									
+  utf32_convert_archsimd.go:210	0x6fa5b7		740b			JE 0x6fa5c4									
+  utf32_convert_archsimd.go:211	0x6fa5b9		e8e2150000		CALL github.com/zchee/go-simdutf.convertUTF32ToUTF16BEScalar(SB)		
+  utf32_convert_archsimd.go:211	0x6fa5be		4883c440		ADDQ $0x40, SP									
+  utf32_convert_archsimd.go:211	0x6fa5c2		5d			POPQ BP										
+  utf32_convert_archsimd.go:211	0x6fa5c3		c3			RET										
+  utf32_convert_archsimd.go:213	0x6fa5c4		e857150000		CALL github.com/zchee/go-simdutf.convertUTF32ToUTF16LEScalar(SB)		
+  utf32_convert_archsimd.go:213	0x6fa5c9		4883c440		ADDQ $0x40, SP									
+  utf32_convert_archsimd.go:213	0x6fa5cd		5d			POPQ BP										
+  utf32_convert_archsimd.go:213	0x6fa5ce		c3			RET										
+  utf32_convert_scalar.go:50	0x6fa5cf		44888c2480000000	MOVB R9, 0x80(SP)								
+  utf32_convert_scalar.go:50	0x6fa5d7		48894c2460		MOVQ CX, 0x60(SP)								
+  utf32_convert_scalar.go:50	0x6fa5dc		48895c2458		MOVQ BX, 0x58(SP)								
+  utf32_convert_scalar.go:50	0x6fa5e1		4c89442478		MOVQ R8, 0x78(SP)								
+  utf32_convert_scalar.go:50	0x6fa5e6		4889442450		MOVQ AX, 0x50(SP)								
+  utf32_convert_scalar.go:50	0x6fa5eb		48897c2468		MOVQ DI, 0x68(SP)								
+  utf32_convert_scalar.go:50	0x6fa5f0		4889742470		MOVQ SI, 0x70(SP)								
+  utf32_convert_archsimd.go:216	0x6fa5f5		41ba01000000		MOVL $0x1, R10									
+  utf32_convert_archsimd.go:216	0x6fa5fb		0f1f440000		NOPL 0(AX)(AX*1)								
+  utf32_convert_archsimd.go:216	0x6fa600		e89b0a0000		CALL github.com/zchee/go-simdutf.convertUTF32ToUTF16BMPBlocksArchsimd(SB)	
+  utf32_convert_archsimd.go:217	0x6fa605		488b542458		MOVQ 0x58(SP), DX								
+  utf32_convert_archsimd.go:217	0x6fa60a		4839d0			CMPQ AX, DX									
+  utf32_convert_archsimd.go:217	0x6fa60d		0f840f010000		JE 0x6fa722									
+  utf32_convert_archsimd.go:216	0x6fa613		48895c2438		MOVQ BX, 0x38(SP)								
+  utf32_convert_scalar.go:50	0x6fa618		440fb68c2480000000	MOVZX 0x80(SP), R9								
+  utf32_convert_scalar.go:50	0x6fa621		4584c9			TESTL R9, R9									
+  utf32_convert_archsimd.go:221	0x6fa624		747a			JE 0x6fa6a0									
+  utf32_convert_archsimd.go:217	0x6fa626		4839d0			CMPQ AX, DX									
+  utf32_convert_archsimd.go:222	0x6fa629		0f870b010000		JA 0x6fa73a									
+  utf32_convert_archsimd.go:222	0x6fa62f		488b4c2460		MOVQ 0x60(SP), CX								
+  utf32_convert_archsimd.go:222	0x6fa634		4829c1			SUBQ AX, CX									
+  utf32_convert_archsimd.go:222	0x6fa637		4989c9			MOVQ CX, R9									
+  utf32_convert_archsimd.go:222	0x6fa63a		49f7d9			NEGQ R9										
+  utf32_convert_archsimd.go:222	0x6fa63d		4989c2			MOVQ AX, R10									
+  utf32_convert_archsimd.go:222	0x6fa640		48c1e002		SHLQ $0x2, AX									
+  utf32_convert_archsimd.go:222	0x6fa644		49c1f93f		SARQ $0x3f, R9									
+  utf32_convert_archsimd.go:222	0x6fa648		4c21c8			ANDQ R9, AX									
+  utf32_convert_archsimd.go:222	0x6fa64b		4c29d2			SUBQ R10, DX									
+  utf32_convert_archsimd.go:222	0x6fa64e		4c8b4c2450		MOVQ 0x50(SP), R9								
+  utf32_convert_archsimd.go:222	0x6fa653		4c01c8			ADDQ R9, AX									
+  utf32_convert_archsimd.go:222	0x6fa656		488b742470		MOVQ 0x70(SP), SI								
+  utf32_convert_archsimd.go:222	0x6fa65b		0f1f440000		NOPL 0(AX)(AX*1)								
+  utf32_convert_archsimd.go:222	0x6fa660		4839f3			CMPQ BX, SI									
+  utf32_convert_archsimd.go:222	0x6fa663		0f87cc000000		JA 0x6fa735									
+  utf32_convert_archsimd.go:222	0x6fa669		4c8b442478		MOVQ 0x78(SP), R8								
+  utf32_convert_archsimd.go:222	0x6fa66e		4929d8			SUBQ BX, R8									
+  utf32_convert_archsimd.go:222	0x6fa671		4829de			SUBQ BX, SI									
+  utf32_convert_archsimd.go:222	0x6fa674		4c8d0c1b		LEAQ 0(BX)(BX*1), R9								
+  utf32_convert_archsimd.go:222	0x6fa678		4d89c2			MOVQ R8, R10									
+  utf32_convert_archsimd.go:222	0x6fa67b		49f7da			NEGQ R10									
+  utf32_convert_archsimd.go:222	0x6fa67e		49c1fa3f		SARQ $0x3f, R10									
+  utf32_convert_archsimd.go:222	0x6fa682		4d21d1			ANDQ R10, R9									
+  utf32_convert_archsimd.go:222	0x6fa685		4c8b542468		MOVQ 0x68(SP), R10								
+  utf32_convert_archsimd.go:222	0x6fa68a		4b8d3c0a		LEAQ 0(R10)(R9*1), DI								
+  utf32_convert_archsimd.go:222	0x6fa68e		4889d3			MOVQ DX, BX									
+  utf32_convert_archsimd.go:222	0x6fa691		e80a150000		CALL github.com/zchee/go-simdutf.convertUTF32ToUTF16BEScalar(SB)		
+  utf32_convert_archsimd.go:222	0x6fa696		eb6f			JMP 0x6fa707									
+  utf32_convert_archsimd.go:222	0x6fa698		0f1f840000000000	NOPL 0(AX)(AX*1)								
+  utf32_convert_archsimd.go:217	0x6fa6a0		4839d0			CMPQ AX, DX									
+  utf32_convert_archsimd.go:224	0x6fa6a3		0f8787000000		JA 0x6fa730									
+  utf32_convert_archsimd.go:224	0x6fa6a9		488b4c2460		MOVQ 0x60(SP), CX								
+  utf32_convert_archsimd.go:224	0x6fa6ae		4829c1			SUBQ AX, CX									
+  utf32_convert_archsimd.go:224	0x6fa6b1		4989c9			MOVQ CX, R9									
+  utf32_convert_archsimd.go:224	0x6fa6b4		49f7d9			NEGQ R9										
+  utf32_convert_archsimd.go:224	0x6fa6b7		4989c2			MOVQ AX, R10									
+  utf32_convert_archsimd.go:224	0x6fa6ba		48c1e002		SHLQ $0x2, AX									
+  utf32_convert_archsimd.go:224	0x6fa6be		49c1f93f		SARQ $0x3f, R9									
+  utf32_convert_archsimd.go:224	0x6fa6c2		4c21c8			ANDQ R9, AX									
+  utf32_convert_archsimd.go:224	0x6fa6c5		4c29d2			SUBQ R10, DX									
+  utf32_convert_archsimd.go:224	0x6fa6c8		4c8b4c2450		MOVQ 0x50(SP), R9								
+  utf32_convert_archsimd.go:224	0x6fa6cd		4c01c8			ADDQ R9, AX									
+  utf32_convert_archsimd.go:224	0x6fa6d0		488b742470		MOVQ 0x70(SP), SI								
+  utf32_convert_archsimd.go:224	0x6fa6d5		4839f3			CMPQ BX, SI									
+  utf32_convert_archsimd.go:224	0x6fa6d8		7751			JA 0x6fa72b									
+  utf32_convert_archsimd.go:224	0x6fa6da		4c8b442478		MOVQ 0x78(SP), R8								
+  utf32_convert_archsimd.go:224	0x6fa6df		4929d8			SUBQ BX, R8									
+  utf32_convert_archsimd.go:224	0x6fa6e2		4829de			SUBQ BX, SI									
+  utf32_convert_archsimd.go:224	0x6fa6e5		4c8d0c1b		LEAQ 0(BX)(BX*1), R9								
+  utf32_convert_archsimd.go:224	0x6fa6e9		4d89c2			MOVQ R8, R10									
+  utf32_convert_archsimd.go:224	0x6fa6ec		49f7da			NEGQ R10									
+  utf32_convert_archsimd.go:224	0x6fa6ef		49c1fa3f		SARQ $0x3f, R10									
+  utf32_convert_archsimd.go:224	0x6fa6f3		4d21d1			ANDQ R10, R9									
+  utf32_convert_archsimd.go:224	0x6fa6f6		4c8b542468		MOVQ 0x68(SP), R10								
+  utf32_convert_archsimd.go:224	0x6fa6fb		4b8d3c0a		LEAQ 0(R10)(R9*1), DI								
+  utf32_convert_archsimd.go:224	0x6fa6ff		4889d3			MOVQ DX, BX									
+  utf32_convert_archsimd.go:224	0x6fa702		e819140000		CALL github.com/zchee/go-simdutf.convertUTF32ToUTF16LEScalar(SB)		
+  utf32_convert_archsimd.go:226	0x6fa707		4885c0			TESTQ AX, AX									
+  utf32_convert_archsimd.go:226	0x6fa70a		7508			JNE 0x6fa714									
+  utf32_convert_archsimd.go:227	0x6fa70c		31c0			XORL AX, AX									
+  utf32_convert_archsimd.go:227	0x6fa70e		4883c440		ADDQ $0x40, SP									
+  utf32_convert_archsimd.go:227	0x6fa712		5d			POPQ BP										
+  utf32_convert_archsimd.go:227	0x6fa713		c3			RET										
+  utf32_convert_archsimd.go:229	0x6fa714		488b4c2438		MOVQ 0x38(SP), CX								
+  utf32_convert_archsimd.go:229	0x6fa719		4801c8			ADDQ CX, AX									
+  utf32_convert_archsimd.go:229	0x6fa71c		4883c440		ADDQ $0x40, SP									
+  utf32_convert_archsimd.go:229	0x6fa720		5d			POPQ BP										
+  utf32_convert_archsimd.go:229	0x6fa721		c3			RET										
+  utf32_convert_archsimd.go:218	0x6fa722		4889d8			MOVQ BX, AX									
+  utf32_convert_archsimd.go:218	0x6fa725		4883c440		ADDQ $0x40, SP									
+  utf32_convert_archsimd.go:218	0x6fa729		5d			POPQ BP										
+  utf32_convert_archsimd.go:218	0x6fa72a		c3			RET										
+  utf32_convert_archsimd.go:224	0x6fa72b		e8903ed9ff		CALL runtime.panicBounds(SB)							
+  utf32_convert_archsimd.go:224	0x6fa730		e88b3ed9ff		CALL runtime.panicBounds(SB)							
+  utf32_convert_archsimd.go:222	0x6fa735		e8863ed9ff		CALL runtime.panicBounds(SB)							
+  utf32_convert_archsimd.go:222	0x6fa73a		e8813ed9ff		CALL runtime.panicBounds(SB)							
+  utf32_convert_archsimd.go:207	0x6fa73f		488d059a940e00		LEAQ 0xe949a(IP), AX								
+  utf32_convert_archsimd.go:207	0x6fa746		488d1da3931a00		LEAQ 0x1a93a3(IP), BX								
+  utf32_convert_archsimd.go:207	0x6fa74d		e80ec2d8ff		CALL runtime.gopanic(SB)							
+  utf32_convert_archsimd.go:207	0x6fa752		90			NOPL										
+  utf32_convert_archsimd.go:205	0x6fa753		4889442408		MOVQ AX, 0x8(SP)								
+  utf32_convert_archsimd.go:205	0x6fa758		48895c2410		MOVQ BX, 0x10(SP)								
+  utf32_convert_archsimd.go:205	0x6fa75d		48894c2418		MOVQ CX, 0x18(SP)								
+  utf32_convert_archsimd.go:205	0x6fa762		48897c2420		MOVQ DI, 0x20(SP)								
+  utf32_convert_archsimd.go:205	0x6fa767		4889742428		MOVQ SI, 0x28(SP)								
+  utf32_convert_archsimd.go:205	0x6fa76c		4c89442430		MOVQ R8, 0x30(SP)								
+  utf32_convert_archsimd.go:205	0x6fa771		44884c2438		MOVB R9, 0x38(SP)								
+  utf32_convert_archsimd.go:205	0x6fa776		e82521d9ff		CALL runtime.morestack_noctxt.abi0(SB)						
+  utf32_convert_archsimd.go:205	0x6fa77b		488b442408		MOVQ 0x8(SP), AX								
+  utf32_convert_archsimd.go:205	0x6fa780		488b5c2410		MOVQ 0x10(SP), BX								
+  utf32_convert_archsimd.go:205	0x6fa785		488b4c2418		MOVQ 0x18(SP), CX								
+  utf32_convert_archsimd.go:205	0x6fa78a		488b7c2420		MOVQ 0x20(SP), DI								
+  utf32_convert_archsimd.go:205	0x6fa78f		488b742428		MOVQ 0x28(SP), SI								
+  utf32_convert_archsimd.go:205	0x6fa794		4c8b442430		MOVQ 0x30(SP), R8								
+  utf32_convert_archsimd.go:205	0x6fa799		440fb64c2438		MOVZX 0x38(SP), R9								
+  utf32_convert_archsimd.go:205	0x6fa79f		90			NOPL										
+  utf32_convert_archsimd.go:205	0x6fa7a0		e9bbfdffff		JMP github.com/zchee/go-simdutf.convertUTF32ToUTF16Archsimd(SB)			
+
+TEXT github.com/zchee/go-simdutf.convertUTF32ToUTF16LEWithErrorsArchsimd(SB) /Users/zchee/go/src/github.com/zchee/go-simdutf/utf32_convert_archsimd.go
+  utf32_convert_archsimd.go:232	0x6fa7c0		493b6610		CMPQ SP, 0x10(R14)								
+  utf32_convert_archsimd.go:232	0x6fa7c4		7625			JBE 0x6fa7eb									
+  utf32_convert_archsimd.go:232	0x6fa7c6		55			PUSHQ BP									
+  utf32_convert_archsimd.go:232	0x6fa7c7		4889e5			MOVQ SP, BP									
+  utf32_convert_archsimd.go:232	0x6fa7ca		4883ec38		SUBQ $0x38, SP									
+  utf32_convert_archsimd.go:232	0x6fa7ce		4889442448		MOVQ AX, 0x48(SP)								
+  utf32_convert_archsimd.go:232	0x6fa7d3		48897c2460		MOVQ DI, 0x60(SP)								
+  utf32_convert_archsimd.go:233	0x6fa7d8		4531c9			XORL R9, R9									
+  utf32_convert_archsimd.go:233	0x6fa7db		0f1f440000		NOPL 0(AX)(AX*1)								
+  utf32_convert_archsimd.go:233	0x6fa7e0		e8db000000		CALL github.com/zchee/go-simdutf.convertUTF32ToUTF16WithErrorsArchsimd(SB)	
+  utf32_convert_archsimd.go:233	0x6fa7e5		4883c438		ADDQ $0x38, SP									
+  utf32_convert_archsimd.go:233	0x6fa7e9		5d			POPQ BP										
+  utf32_convert_archsimd.go:233	0x6fa7ea		c3			RET										
+  utf32_convert_archsimd.go:232	0x6fa7eb		4889442408		MOVQ AX, 0x8(SP)								
+  utf32_convert_archsimd.go:232	0x6fa7f0		48895c2410		MOVQ BX, 0x10(SP)								
+  utf32_convert_archsimd.go:232	0x6fa7f5		48894c2418		MOVQ CX, 0x18(SP)								
+  utf32_convert_archsimd.go:232	0x6fa7fa		48897c2420		MOVQ DI, 0x20(SP)								
+  utf32_convert_archsimd.go:232	0x6fa7ff		4889742428		MOVQ SI, 0x28(SP)								
+  utf32_convert_archsimd.go:232	0x6fa804		4c89442430		MOVQ R8, 0x30(SP)								
+  utf32_convert_archsimd.go:232	0x6fa809		e89220d9ff		CALL runtime.morestack_noctxt.abi0(SB)						
+  utf32_convert_archsimd.go:232	0x6fa80e		488b442408		MOVQ 0x8(SP), AX								
+  utf32_convert_archsimd.go:232	0x6fa813		488b5c2410		MOVQ 0x10(SP), BX								
+  utf32_convert_archsimd.go:232	0x6fa818		488b4c2418		MOVQ 0x18(SP), CX								
+  utf32_convert_archsimd.go:232	0x6fa81d		488b7c2420		MOVQ 0x20(SP), DI								
+  utf32_convert_archsimd.go:232	0x6fa822		488b742428		MOVQ 0x28(SP), SI								
+  utf32_convert_archsimd.go:232	0x6fa827		4c8b442430		MOVQ 0x30(SP), R8								
+  utf32_convert_archsimd.go:232	0x6fa82c		eb92			JMP github.com/zchee/go-simdutf.convertUTF32ToUTF16LEWithErrorsArchsimd(SB)	
+
+TEXT github.com/zchee/go-simdutf.convertUTF32ToUTF16BEWithErrorsArchsimd(SB) /Users/zchee/go/src/github.com/zchee/go-simdutf/utf32_convert_archsimd.go
+  utf32_convert_archsimd.go:236	0x6fa840		493b6610		CMPQ SP, 0x10(R14)								
+  utf32_convert_archsimd.go:236	0x6fa844		7625			JBE 0x6fa86b									
+  utf32_convert_archsimd.go:236	0x6fa846		55			PUSHQ BP									
+  utf32_convert_archsimd.go:236	0x6fa847		4889e5			MOVQ SP, BP									
+  utf32_convert_archsimd.go:236	0x6fa84a		4883ec38		SUBQ $0x38, SP									
+  utf32_convert_archsimd.go:236	0x6fa84e		4889442448		MOVQ AX, 0x48(SP)								
+  utf32_convert_archsimd.go:236	0x6fa853		48897c2460		MOVQ DI, 0x60(SP)								
+  utf32_convert_archsimd.go:237	0x6fa858		41b901000000		MOVL $0x1, R9									
+  utf32_convert_archsimd.go:237	0x6fa85e		6690			NOPW										
+  utf32_convert_archsimd.go:237	0x6fa860		e85b000000		CALL github.com/zchee/go-simdutf.convertUTF32ToUTF16WithErrorsArchsimd(SB)	
+  utf32_convert_archsimd.go:237	0x6fa865		4883c438		ADDQ $0x38, SP									
+  utf32_convert_archsimd.go:237	0x6fa869		5d			POPQ BP										
+  utf32_convert_archsimd.go:237	0x6fa86a		c3			RET										
+  utf32_convert_archsimd.go:236	0x6fa86b		4889442408		MOVQ AX, 0x8(SP)								
+  utf32_convert_archsimd.go:236	0x6fa870		48895c2410		MOVQ BX, 0x10(SP)								
+  utf32_convert_archsimd.go:236	0x6fa875		48894c2418		MOVQ CX, 0x18(SP)								
+  utf32_convert_archsimd.go:236	0x6fa87a		48897c2420		MOVQ DI, 0x20(SP)								
+  utf32_convert_archsimd.go:236	0x6fa87f		4889742428		MOVQ SI, 0x28(SP)								
+  utf32_convert_archsimd.go:236	0x6fa884		4c89442430		MOVQ R8, 0x30(SP)								
+  utf32_convert_archsimd.go:236	0x6fa889		e81220d9ff		CALL runtime.morestack_noctxt.abi0(SB)						
+  utf32_convert_archsimd.go:236	0x6fa88e		488b442408		MOVQ 0x8(SP), AX								
+  utf32_convert_archsimd.go:236	0x6fa893		488b5c2410		MOVQ 0x10(SP), BX								
+  utf32_convert_archsimd.go:236	0x6fa898		488b4c2418		MOVQ 0x18(SP), CX								
+  utf32_convert_archsimd.go:236	0x6fa89d		488b7c2420		MOVQ 0x20(SP), DI								
+  utf32_convert_archsimd.go:236	0x6fa8a2		488b742428		MOVQ 0x28(SP), SI								
+  utf32_convert_archsimd.go:236	0x6fa8a7		4c8b442430		MOVQ 0x30(SP), R8								
+  utf32_convert_archsimd.go:236	0x6fa8ac		eb92			JMP github.com/zchee/go-simdutf.convertUTF32ToUTF16BEWithErrorsArchsimd(SB)	
+
+TEXT github.com/zchee/go-simdutf.convertUTF32ToUTF16WithErrorsArchsimd(SB) /Users/zchee/go/src/github.com/zchee/go-simdutf/utf32_convert_archsimd.go
+  utf32_convert_archsimd.go:240	0x6fa8c0		493b6610		CMPQ SP, 0x10(R14)								
+  utf32_convert_archsimd.go:240	0x6fa8c4		0f86fe010000		JBE 0x6faac8									
+  utf32_convert_archsimd.go:240	0x6fa8ca		55			PUSHQ BP									
+  utf32_convert_archsimd.go:240	0x6fa8cb		4889e5			MOVQ SP, BP									
+  utf32_convert_archsimd.go:240	0x6fa8ce		4883ec48		SUBQ $0x48, SP									
+  utf32_convert_archsimd.go:240	0x6fa8d2		4889442458		MOVQ AX, 0x58(SP)								
+  utf32_convert_archsimd.go:240	0x6fa8d7		48897c2470		MOVQ DI, 0x70(SP)								
+  utf32_convert_archsimd.go:241	0x6fa8dc		31d2			XORL DX, DX									
+  utf32_convert_archsimd.go:241	0x6fa8de		4531d2			XORL R10, R10									
+  utf32_convert_scalar.go:50	0x6fa8e1		eb1d			JMP 0x6fa900									
+  utf32_convert_scalar.go:50	0x6fa8e3		448b1c90		MOVL 0(AX)(DX*4), R11								
+  utf32_convert_scalar.go:51	0x6fa8e7		4d8d6201		LEAQ 0x1(R10), R12								
+  utf32_convert_scalar.go:53	0x6fa8eb		4d8d6a02		LEAQ 0x2(R10), R13								
+  utf32_convert_scalar.go:50	0x6fa8ef		48ffc2			INCQ DX										
+  utf32_convert_scalar.go:50	0x6fa8f2		4181fbffff0000		CMPL R11, $0xffff								
+  utf32_convert_scalar.go:50	0x6fa8f9		4d0f47e5		CMOVA R13, R12									
+  utf32_convert_scalar.go:50	0x6fa8fd		4d89e2			MOVQ R12, R10									
+  utf32_convert_scalar.go:50	0x6fa900		4839d3			CMPQ BX, DX									
+  utf32_convert_scalar.go:50	0x6fa903		7fde			JG 0x6fa8e3									
+  utf32_convert_archsimd.go:241	0x6fa905		4c39d6			CMPQ SI, R10									
+  utf32_convert_archsimd.go:241	0x6fa908		0f8ca6010000		JL 0x6faab4									
+  utf32_convert_archsimd.go:244	0x6fa90e		4883fb08		CMPQ BX, $0x8									
+  utf32_convert_archsimd.go:244	0x6fa912		7d28			JGE 0x6fa93c									
+  utf32_convert_scalar.go:50	0x6fa914		4584c9			TESTL R9, R9									
+  utf32_convert_archsimd.go:245	0x6fa917		7412			JE 0x6fa92b									
+  utf32_convert_scalar.go:210	0x6fa919		4531c9			XORL R9, R9									
+  utf32_convert_scalar.go:210	0x6fa91c		0f1f4000		NOPL 0(AX)									
+  utf32_convert_scalar.go:210	0x6fa920		e8fb130000		CALL github.com/zchee/go-simdutf.convertUTF32ToUTF16WithErrorsScalar(SB)	
+  utf32_convert_archsimd.go:246	0x6fa925		4883c448		ADDQ $0x48, SP									
+  utf32_convert_archsimd.go:246	0x6fa929		5d			POPQ BP										
+  utf32_convert_archsimd.go:246	0x6fa92a		c3			RET										
+  utf32_convert_scalar.go:206	0x6fa92b		41b901000000		MOVL $0x1, R9									
+  utf32_convert_scalar.go:206	0x6fa931		e8ea130000		CALL github.com/zchee/go-simdutf.convertUTF32ToUTF16WithErrorsScalar(SB)	
+  utf32_convert_archsimd.go:248	0x6fa936		4883c448		ADDQ $0x48, SP									
+  utf32_convert_archsimd.go:248	0x6fa93a		5d			POPQ BP										
+  utf32_convert_archsimd.go:248	0x6fa93b		c3			RET										
+  utf32_convert_scalar.go:50	0x6fa93c		44888c2488000000	MOVB R9, 0x88(SP)								
+  utf32_convert_scalar.go:50	0x6fa944		4889742478		MOVQ SI, 0x78(SP)								
+  utf32_convert_scalar.go:50	0x6fa949		48897c2470		MOVQ DI, 0x70(SP)								
+  utf32_convert_scalar.go:50	0x6fa94e		4c89842480000000	MOVQ R8, 0x80(SP)								
+  utf32_convert_scalar.go:50	0x6fa956		48894c2468		MOVQ CX, 0x68(SP)								
+  utf32_convert_scalar.go:50	0x6fa95b		4889442458		MOVQ AX, 0x58(SP)								
+  utf32_convert_scalar.go:50	0x6fa960		48895c2460		MOVQ BX, 0x60(SP)								
+  utf32_convert_archsimd.go:251	0x6fa965		41ba01000000		MOVL $0x1, R10									
+  utf32_convert_archsimd.go:251	0x6fa96b		e830070000		CALL github.com/zchee/go-simdutf.convertUTF32ToUTF16BMPBlocksArchsimd(SB)	
+  utf32_convert_archsimd.go:252	0x6fa970		488b542460		MOVQ 0x60(SP), DX								
+  utf32_convert_archsimd.go:252	0x6fa975		4839d0			CMPQ AX, DX									
+  utf32_convert_archsimd.go:252	0x6fa978		0f8419010000		JE 0x6faa97									
+  utf32_convert_archsimd.go:251	0x6fa97e		4889442440		MOVQ AX, 0x40(SP)								
+  utf32_convert_archsimd.go:251	0x6fa983		48895c2438		MOVQ BX, 0x38(SP)								
+  utf32_convert_scalar.go:50	0x6fa988		440fb6942488000000	MOVZX 0x88(SP), R10								
+  utf32_convert_scalar.go:50	0x6fa991		4584d2			TESTL R10, R10									
+  utf32_convert_archsimd.go:256	0x6fa994		7473			JE 0x6faa09									
+  utf32_convert_archsimd.go:252	0x6fa996		4839d0			CMPQ AX, DX									
+  utf32_convert_archsimd.go:257	0x6fa999		0f8710010000		JA 0x6faaaf									
+  utf32_convert_archsimd.go:257	0x6fa99f		488b4c2468		MOVQ 0x68(SP), CX								
+  utf32_convert_archsimd.go:257	0x6fa9a4		4829c1			SUBQ AX, CX									
+  utf32_convert_archsimd.go:257	0x6fa9a7		4989ca			MOVQ CX, R10									
+  utf32_convert_archsimd.go:257	0x6fa9aa		49f7da			NEGQ R10									
+  utf32_convert_archsimd.go:257	0x6fa9ad		4989c3			MOVQ AX, R11									
+  utf32_convert_archsimd.go:257	0x6fa9b0		48c1e002		SHLQ $0x2, AX									
+  utf32_convert_archsimd.go:257	0x6fa9b4		49c1fa3f		SARQ $0x3f, R10									
+  utf32_convert_archsimd.go:257	0x6fa9b8		4c21d0			ANDQ R10, AX									
+  utf32_convert_archsimd.go:257	0x6fa9bb		4c29da			SUBQ R11, DX									
+  utf32_convert_archsimd.go:257	0x6fa9be		4c8b542458		MOVQ 0x58(SP), R10								
+  utf32_convert_archsimd.go:257	0x6fa9c3		4c01d0			ADDQ R10, AX									
+  utf32_convert_archsimd.go:257	0x6fa9c6		488b742478		MOVQ 0x78(SP), SI								
+  utf32_convert_archsimd.go:257	0x6fa9cb		4839f3			CMPQ BX, SI									
+  utf32_convert_archsimd.go:257	0x6fa9ce		0f87d6000000		JA 0x6faaaa									
+  utf32_convert_archsimd.go:257	0x6fa9d4		4c8b842480000000	MOVQ 0x80(SP), R8								
+  utf32_convert_archsimd.go:257	0x6fa9dc		4929d8			SUBQ BX, R8									
+  utf32_convert_archsimd.go:257	0x6fa9df		4829de			SUBQ BX, SI									
+  utf32_convert_archsimd.go:257	0x6fa9e2		4c8d141b		LEAQ 0(BX)(BX*1), R10								
+  utf32_convert_archsimd.go:257	0x6fa9e6		4d89c3			MOVQ R8, R11									
+  utf32_convert_archsimd.go:257	0x6fa9e9		49f7db			NEGQ R11									
+  utf32_convert_archsimd.go:257	0x6fa9ec		49c1fb3f		SARQ $0x3f, R11									
+  utf32_convert_archsimd.go:257	0x6fa9f0		4d21da			ANDQ R11, R10									
+  utf32_convert_archsimd.go:257	0x6fa9f3		4c8b5c2470		MOVQ 0x70(SP), R11								
+  utf32_convert_archsimd.go:257	0x6fa9f8		4b8d3c13		LEAQ 0(R11)(R10*1), DI								
+  utf32_convert_scalar.go:210	0x6fa9fc		4889d3			MOVQ DX, BX									
+  utf32_convert_scalar.go:210	0x6fa9ff		4531c9			XORL R9, R9									
+  utf32_convert_scalar.go:210	0x6faa02		e819130000		CALL github.com/zchee/go-simdutf.convertUTF32ToUTF16WithErrorsScalar(SB)	
+  utf32_convert_archsimd.go:257	0x6faa07		eb72			JMP 0x6faa7b									
+  utf32_convert_archsimd.go:252	0x6faa09		4839d0			CMPQ AX, DX									
+  utf32_convert_archsimd.go:259	0x6faa0c		0f8793000000		JA 0x6faaa5									
+  utf32_convert_archsimd.go:259	0x6faa12		488b4c2468		MOVQ 0x68(SP), CX								
+  utf32_convert_archsimd.go:259	0x6faa17		4829c1			SUBQ AX, CX									
+  utf32_convert_archsimd.go:259	0x6faa1a		4989ca			MOVQ CX, R10									
+  utf32_convert_archsimd.go:259	0x6faa1d		49f7da			NEGQ R10									
+  utf32_convert_archsimd.go:259	0x6faa20		4989c3			MOVQ AX, R11									
+  utf32_convert_archsimd.go:259	0x6faa23		48c1e002		SHLQ $0x2, AX									
+  utf32_convert_archsimd.go:259	0x6faa27		49c1fa3f		SARQ $0x3f, R10									
+  utf32_convert_archsimd.go:259	0x6faa2b		4c21d0			ANDQ R10, AX									
+  utf32_convert_archsimd.go:259	0x6faa2e		4c29da			SUBQ R11, DX									
+  utf32_convert_archsimd.go:259	0x6faa31		4c8b542458		MOVQ 0x58(SP), R10								
+  utf32_convert_archsimd.go:259	0x6faa36		4c01d0			ADDQ R10, AX									
+  utf32_convert_archsimd.go:259	0x6faa39		488b742478		MOVQ 0x78(SP), SI								
+  utf32_convert_archsimd.go:259	0x6faa3e		6690			NOPW										
+  utf32_convert_archsimd.go:259	0x6faa40		4839f3			CMPQ BX, SI									
+  utf32_convert_archsimd.go:259	0x6faa43		775a			JA 0x6faa9f									
+  utf32_convert_archsimd.go:259	0x6faa45		4c8b842480000000	MOVQ 0x80(SP), R8								
+  utf32_convert_archsimd.go:259	0x6faa4d		4929d8			SUBQ BX, R8									
+  utf32_convert_archsimd.go:259	0x6faa50		4829de			SUBQ BX, SI									
+  utf32_convert_archsimd.go:259	0x6faa53		4c8d141b		LEAQ 0(BX)(BX*1), R10								
+  utf32_convert_archsimd.go:259	0x6faa57		4d89c3			MOVQ R8, R11									
+  utf32_convert_archsimd.go:259	0x6faa5a		49f7db			NEGQ R11									
+  utf32_convert_archsimd.go:259	0x6faa5d		49c1fb3f		SARQ $0x3f, R11									
+  utf32_convert_archsimd.go:259	0x6faa61		4d21da			ANDQ R11, R10									
+  utf32_convert_archsimd.go:259	0x6faa64		4c8b5c2470		MOVQ 0x70(SP), R11								
+  utf32_convert_archsimd.go:259	0x6faa69		4b8d3c13		LEAQ 0(R11)(R10*1), DI								
+  utf32_convert_scalar.go:206	0x6faa6d		4889d3			MOVQ DX, BX									
+  utf32_convert_scalar.go:206	0x6faa70		41b901000000		MOVL $0x1, R9									
+  utf32_convert_scalar.go:206	0x6faa76		e8a5120000		CALL github.com/zchee/go-simdutf.convertUTF32ToUTF16WithErrorsScalar(SB)	
+  utf32_convert_archsimd.go:262	0x6faa7b		488b4c2438		MOVQ 0x38(SP), CX								
+  utf32_convert_archsimd.go:262	0x6faa80		4801d9			ADDQ BX, CX									
+  utf32_convert_archsimd.go:264	0x6faa83		488b542440		MOVQ 0x40(SP), DX								
+  utf32_convert_archsimd.go:264	0x6faa88		4801d3			ADDQ DX, BX									
+  utf32_convert_archsimd.go:261	0x6faa8b		84c0			TESTL AL, AL									
+  utf32_convert_archsimd.go:266	0x6faa8d		480f44d9		CMOVE CX, BX									
+  utf32_convert_archsimd.go:261	0x6faa91		4883c448		ADDQ $0x48, SP									
+  utf32_convert_archsimd.go:261	0x6faa95		5d			POPQ BP										
+  utf32_convert_archsimd.go:261	0x6faa96		c3			RET										
+  utf32_convert_archsimd.go:253	0x6faa97		31c0			XORL AX, AX									
+  utf32_convert_archsimd.go:253	0x6faa99		4883c448		ADDQ $0x48, SP									
+  utf32_convert_archsimd.go:253	0x6faa9d		5d			POPQ BP										
+  utf32_convert_archsimd.go:253	0x6faa9e		c3			RET										
+  utf32_convert_archsimd.go:259	0x6faa9f		90			NOPL										
+  utf32_convert_archsimd.go:259	0x6faaa0		e81b3bd9ff		CALL runtime.panicBounds(SB)							
+  utf32_convert_archsimd.go:259	0x6faaa5		e8163bd9ff		CALL runtime.panicBounds(SB)							
+  utf32_convert_archsimd.go:257	0x6faaaa		e8113bd9ff		CALL runtime.panicBounds(SB)							
+  utf32_convert_archsimd.go:257	0x6faaaf		e80c3bd9ff		CALL runtime.panicBounds(SB)							
+  utf32_convert_archsimd.go:242	0x6faab4		488d0525910e00		LEAQ 0xe9125(IP), AX								
+  utf32_convert_archsimd.go:242	0x6faabb		488d1d2e901a00		LEAQ 0x1a902e(IP), BX								
+  utf32_convert_archsimd.go:242	0x6faac2		e899bed8ff		CALL runtime.gopanic(SB)							
+  utf32_convert_archsimd.go:242	0x6faac7		90			NOPL										
+  utf32_convert_archsimd.go:240	0x6faac8		4889442408		MOVQ AX, 0x8(SP)								
+  utf32_convert_archsimd.go:240	0x6faacd		48895c2410		MOVQ BX, 0x10(SP)								
+  utf32_convert_archsimd.go:240	0x6faad2		48894c2418		MOVQ CX, 0x18(SP)								
+  utf32_convert_archsimd.go:240	0x6faad7		48897c2420		MOVQ DI, 0x20(SP)								
+  utf32_convert_archsimd.go:240	0x6faadc		4889742428		MOVQ SI, 0x28(SP)								
+  utf32_convert_archsimd.go:240	0x6faae1		4c89442430		MOVQ R8, 0x30(SP)								
+  utf32_convert_archsimd.go:240	0x6faae6		44884c2438		MOVB R9, 0x38(SP)								
+  utf32_convert_archsimd.go:240	0x6faaeb		e8b01dd9ff		CALL runtime.morestack_noctxt.abi0(SB)						
+  utf32_convert_archsimd.go:240	0x6faaf0		488b442408		MOVQ 0x8(SP), AX								
+  utf32_convert_archsimd.go:240	0x6faaf5		488b5c2410		MOVQ 0x10(SP), BX								
+  utf32_convert_archsimd.go:240	0x6faafa		488b4c2418		MOVQ 0x18(SP), CX								
+  utf32_convert_archsimd.go:240	0x6faaff		488b7c2420		MOVQ 0x20(SP), DI								
+  utf32_convert_archsimd.go:240	0x6fab04		488b742428		MOVQ 0x28(SP), SI								
+  utf32_convert_archsimd.go:240	0x6fab09		4c8b442430		MOVQ 0x30(SP), R8								
+  utf32_convert_archsimd.go:240	0x6fab0e		440fb64c2438		MOVZX 0x38(SP), R9								
+  utf32_convert_archsimd.go:240	0x6fab14		e9a7fdffff		JMP github.com/zchee/go-simdutf.convertUTF32ToUTF16WithErrorsArchsimd(SB)	
+
+TEXT github.com/zchee/go-simdutf.convertValidUTF32ToUTF16LEArchsimd(SB) /Users/zchee/go/src/github.com/zchee/go-simdutf/utf32_convert_archsimd.go
+  utf32_convert_archsimd.go:269	0x6fab20		493b6610		CMPQ SP, 0x10(R14)							
+  utf32_convert_archsimd.go:269	0x6fab24		7625			JBE 0x6fab4b								
+  utf32_convert_archsimd.go:269	0x6fab26		55			PUSHQ BP								
+  utf32_convert_archsimd.go:269	0x6fab27		4889e5			MOVQ SP, BP								
+  utf32_convert_archsimd.go:269	0x6fab2a		4883ec38		SUBQ $0x38, SP								
+  utf32_convert_archsimd.go:269	0x6fab2e		4889442448		MOVQ AX, 0x48(SP)							
+  utf32_convert_archsimd.go:269	0x6fab33		48897c2460		MOVQ DI, 0x60(SP)							
+  utf32_convert_archsimd.go:270	0x6fab38		4531c9			XORL R9, R9								
+  utf32_convert_archsimd.go:270	0x6fab3b		0f1f440000		NOPL 0(AX)(AX*1)							
+  utf32_convert_archsimd.go:270	0x6fab40		e8db000000		CALL github.com/zchee/go-simdutf.convertValidUTF32ToUTF16Archsimd(SB)	
+  utf32_convert_archsimd.go:270	0x6fab45		4883c438		ADDQ $0x38, SP								
+  utf32_convert_archsimd.go:270	0x6fab49		5d			POPQ BP									
+  utf32_convert_archsimd.go:270	0x6fab4a		c3			RET									
+  utf32_convert_archsimd.go:269	0x6fab4b		4889442408		MOVQ AX, 0x8(SP)							
+  utf32_convert_archsimd.go:269	0x6fab50		48895c2410		MOVQ BX, 0x10(SP)							
+  utf32_convert_archsimd.go:269	0x6fab55		48894c2418		MOVQ CX, 0x18(SP)							
+  utf32_convert_archsimd.go:269	0x6fab5a		48897c2420		MOVQ DI, 0x20(SP)							
+  utf32_convert_archsimd.go:269	0x6fab5f		4889742428		MOVQ SI, 0x28(SP)							
+  utf32_convert_archsimd.go:269	0x6fab64		4c89442430		MOVQ R8, 0x30(SP)							
+  utf32_convert_archsimd.go:269	0x6fab69		e8321dd9ff		CALL runtime.morestack_noctxt.abi0(SB)					
+  utf32_convert_archsimd.go:269	0x6fab6e		488b442408		MOVQ 0x8(SP), AX							
+  utf32_convert_archsimd.go:269	0x6fab73		488b5c2410		MOVQ 0x10(SP), BX							
+  utf32_convert_archsimd.go:269	0x6fab78		488b4c2418		MOVQ 0x18(SP), CX							
+  utf32_convert_archsimd.go:269	0x6fab7d		488b7c2420		MOVQ 0x20(SP), DI							
+  utf32_convert_archsimd.go:269	0x6fab82		488b742428		MOVQ 0x28(SP), SI							
+  utf32_convert_archsimd.go:269	0x6fab87		4c8b442430		MOVQ 0x30(SP), R8							
+  utf32_convert_archsimd.go:269	0x6fab8c		eb92			JMP github.com/zchee/go-simdutf.convertValidUTF32ToUTF16LEArchsimd(SB)	
+
+TEXT github.com/zchee/go-simdutf.convertValidUTF32ToUTF16BEArchsimd(SB) /Users/zchee/go/src/github.com/zchee/go-simdutf/utf32_convert_archsimd.go
+  utf32_convert_archsimd.go:273	0x6faba0		493b6610		CMPQ SP, 0x10(R14)							
+  utf32_convert_archsimd.go:273	0x6faba4		7625			JBE 0x6fabcb								
+  utf32_convert_archsimd.go:273	0x6faba6		55			PUSHQ BP								
+  utf32_convert_archsimd.go:273	0x6faba7		4889e5			MOVQ SP, BP								
+  utf32_convert_archsimd.go:273	0x6fabaa		4883ec38		SUBQ $0x38, SP								
+  utf32_convert_archsimd.go:273	0x6fabae		4889442448		MOVQ AX, 0x48(SP)							
+  utf32_convert_archsimd.go:273	0x6fabb3		48897c2460		MOVQ DI, 0x60(SP)							
+  utf32_convert_archsimd.go:274	0x6fabb8		41b901000000		MOVL $0x1, R9								
+  utf32_convert_archsimd.go:274	0x6fabbe		6690			NOPW									
+  utf32_convert_archsimd.go:274	0x6fabc0		e85b000000		CALL github.com/zchee/go-simdutf.convertValidUTF32ToUTF16Archsimd(SB)	
+  utf32_convert_archsimd.go:274	0x6fabc5		4883c438		ADDQ $0x38, SP								
+  utf32_convert_archsimd.go:274	0x6fabc9		5d			POPQ BP									
+  utf32_convert_archsimd.go:274	0x6fabca		c3			RET									
+  utf32_convert_archsimd.go:273	0x6fabcb		4889442408		MOVQ AX, 0x8(SP)							
+  utf32_convert_archsimd.go:273	0x6fabd0		48895c2410		MOVQ BX, 0x10(SP)							
+  utf32_convert_archsimd.go:273	0x6fabd5		48894c2418		MOVQ CX, 0x18(SP)							
+  utf32_convert_archsimd.go:273	0x6fabda		48897c2420		MOVQ DI, 0x20(SP)							
+  utf32_convert_archsimd.go:273	0x6fabdf		4889742428		MOVQ SI, 0x28(SP)							
+  utf32_convert_archsimd.go:273	0x6fabe4		4c89442430		MOVQ R8, 0x30(SP)							
+  utf32_convert_archsimd.go:273	0x6fabe9		e8b21cd9ff		CALL runtime.morestack_noctxt.abi0(SB)					
+  utf32_convert_archsimd.go:273	0x6fabee		488b442408		MOVQ 0x8(SP), AX							
+  utf32_convert_archsimd.go:273	0x6fabf3		488b5c2410		MOVQ 0x10(SP), BX							
+  utf32_convert_archsimd.go:273	0x6fabf8		488b4c2418		MOVQ 0x18(SP), CX							
+  utf32_convert_archsimd.go:273	0x6fabfd		488b7c2420		MOVQ 0x20(SP), DI							
+  utf32_convert_archsimd.go:273	0x6fac02		488b742428		MOVQ 0x28(SP), SI							
+  utf32_convert_archsimd.go:273	0x6fac07		4c8b442430		MOVQ 0x30(SP), R8							
+  utf32_convert_archsimd.go:273	0x6fac0c		eb92			JMP github.com/zchee/go-simdutf.convertValidUTF32ToUTF16BEArchsimd(SB)	
+
+TEXT github.com/zchee/go-simdutf.convertValidUTF32ToUTF16Archsimd(SB) /Users/zchee/go/src/github.com/zchee/go-simdutf/utf32_convert_archsimd.go
+  utf32_convert_archsimd.go:277	0x6fac20		493b6610		CMPQ SP, 0x10(R14)								
+  utf32_convert_archsimd.go:277	0x6fac24		0f86ef010000		JBE 0x6fae19									
+  utf32_convert_archsimd.go:277	0x6fac2a		55			PUSHQ BP									
+  utf32_convert_archsimd.go:277	0x6fac2b		4889e5			MOVQ SP, BP									
+  utf32_convert_archsimd.go:277	0x6fac2e		4883ec40		SUBQ $0x40, SP									
+  utf32_convert_archsimd.go:277	0x6fac32		4889442450		MOVQ AX, 0x50(SP)								
+  utf32_convert_archsimd.go:277	0x6fac37		48897c2468		MOVQ DI, 0x68(SP)								
+  utf32_convert_archsimd.go:278	0x6fac3c		31d2			XORL DX, DX									
+  utf32_convert_archsimd.go:278	0x6fac3e		4531d2			XORL R10, R10									
+  utf32_convert_scalar.go:50	0x6fac41		eb1d			JMP 0x6fac60									
+  utf32_convert_scalar.go:50	0x6fac43		448b1c90		MOVL 0(AX)(DX*4), R11								
+  utf32_convert_scalar.go:51	0x6fac47		4d8d6201		LEAQ 0x1(R10), R12								
+  utf32_convert_scalar.go:53	0x6fac4b		4d8d6a02		LEAQ 0x2(R10), R13								
+  utf32_convert_scalar.go:50	0x6fac4f		48ffc2			INCQ DX										
+  utf32_convert_scalar.go:50	0x6fac52		4181fbffff0000		CMPL R11, $0xffff								
+  utf32_convert_scalar.go:50	0x6fac59		4d0f47e5		CMOVA R13, R12									
+  utf32_convert_scalar.go:50	0x6fac5d		4d89e2			MOVQ R12, R10									
+  utf32_convert_scalar.go:50	0x6fac60		4839d3			CMPQ BX, DX									
+  utf32_convert_scalar.go:50	0x6fac63		7fde			JG 0x6fac43									
+  utf32_convert_archsimd.go:278	0x6fac65		4c39d6			CMPQ SI, R10									
+  utf32_convert_archsimd.go:278	0x6fac68		0f8c97010000		JL 0x6fae05									
+  utf32_convert_archsimd.go:281	0x6fac6e		4883fb08		CMPQ BX, $0x8									
+  utf32_convert_archsimd.go:281	0x6fac72		7d28			JGE 0x6fac9c									
+  utf32_convert_scalar.go:50	0x6fac74		4584c9			TESTL R9, R9									
+  utf32_convert_archsimd.go:282	0x6fac77		7412			JE 0x6fac8b									
+  utf32_convert_scalar.go:248	0x6fac79		4531c9			XORL R9, R9									
+  utf32_convert_scalar.go:248	0x6fac7c		0f1f4000		NOPL 0(AX)									
+  utf32_convert_scalar.go:248	0x6fac80		e85b130000		CALL github.com/zchee/go-simdutf.convertValidUTF32ToUTF16Scalar(SB)		
+  utf32_convert_archsimd.go:283	0x6fac85		4883c440		ADDQ $0x40, SP									
+  utf32_convert_archsimd.go:283	0x6fac89		5d			POPQ BP										
+  utf32_convert_archsimd.go:283	0x6fac8a		c3			RET										
+  utf32_convert_scalar.go:244	0x6fac8b		41b901000000		MOVL $0x1, R9									
+  utf32_convert_scalar.go:244	0x6fac91		e84a130000		CALL github.com/zchee/go-simdutf.convertValidUTF32ToUTF16Scalar(SB)		
+  utf32_convert_archsimd.go:285	0x6fac96		4883c440		ADDQ $0x40, SP									
+  utf32_convert_archsimd.go:285	0x6fac9a		5d			POPQ BP										
+  utf32_convert_archsimd.go:285	0x6fac9b		c3			RET										
+  utf32_convert_scalar.go:50	0x6fac9c		44888c2480000000	MOVB R9, 0x80(SP)								
+  utf32_convert_scalar.go:50	0x6faca4		4889742470		MOVQ SI, 0x70(SP)								
+  utf32_convert_scalar.go:50	0x6faca9		48897c2468		MOVQ DI, 0x68(SP)								
+  utf32_convert_scalar.go:50	0x6facae		4c89442478		MOVQ R8, 0x78(SP)								
+  utf32_convert_scalar.go:50	0x6facb3		48895c2458		MOVQ BX, 0x58(SP)								
+  utf32_convert_scalar.go:50	0x6facb8		4889442450		MOVQ AX, 0x50(SP)								
+  utf32_convert_scalar.go:50	0x6facbd		48894c2460		MOVQ CX, 0x60(SP)								
+  utf32_convert_archsimd.go:288	0x6facc2		4531d2			XORL R10, R10									
+  utf32_convert_archsimd.go:288	0x6facc5		e8d6030000		CALL github.com/zchee/go-simdutf.convertUTF32ToUTF16BMPBlocksArchsimd(SB)	
+  utf32_convert_archsimd.go:289	0x6facca		488b542458		MOVQ 0x58(SP), DX								
+  utf32_convert_archsimd.go:289	0x6faccf		4839d0			CMPQ AX, DX									
+  utf32_convert_archsimd.go:289	0x6facd2		0f840e010000		JE 0x6fade6									
+  utf32_convert_archsimd.go:288	0x6facd8		48895c2438		MOVQ BX, 0x38(SP)								
+  utf32_convert_scalar.go:50	0x6facdd		440fb6942480000000	MOVZX 0x80(SP), R10								
+  utf32_convert_scalar.go:50	0x6face6		4584d2			TESTL R10, R10									
+  utf32_convert_archsimd.go:292	0x6face9		747c			JE 0x6fad67									
+  utf32_convert_archsimd.go:289	0x6faceb		4839d0			CMPQ AX, DX									
+  utf32_convert_archsimd.go:293	0x6facee		0f870a010000		JA 0x6fadfe									
+  utf32_convert_archsimd.go:293	0x6facf4		488b4c2460		MOVQ 0x60(SP), CX								
+  utf32_convert_archsimd.go:293	0x6facf9		4829c1			SUBQ AX, CX									
+  utf32_convert_archsimd.go:293	0x6facfc		4989ca			MOVQ CX, R10									
+  utf32_convert_archsimd.go:293	0x6facff		49f7da			NEGQ R10									
+  utf32_convert_archsimd.go:293	0x6fad02		4989c3			MOVQ AX, R11									
+  utf32_convert_archsimd.go:293	0x6fad05		48c1e002		SHLQ $0x2, AX									
+  utf32_convert_archsimd.go:293	0x6fad09		49c1fa3f		SARQ $0x3f, R10									
+  utf32_convert_archsimd.go:293	0x6fad0d		4c21d0			ANDQ R10, AX									
+  utf32_convert_archsimd.go:293	0x6fad10		4c29da			SUBQ R11, DX									
+  utf32_convert_archsimd.go:293	0x6fad13		4c8b542450		MOVQ 0x50(SP), R10								
+  utf32_convert_archsimd.go:293	0x6fad18		4c01d0			ADDQ R10, AX									
+  utf32_convert_archsimd.go:293	0x6fad1b		488b742470		MOVQ 0x70(SP), SI								
+  utf32_convert_archsimd.go:293	0x6fad20		4839f3			CMPQ BX, SI									
+  utf32_convert_archsimd.go:293	0x6fad23		0f87d0000000		JA 0x6fadf9									
+  utf32_convert_archsimd.go:293	0x6fad29		4c8b442478		MOVQ 0x78(SP), R8								
+  utf32_convert_archsimd.go:293	0x6fad2e		4929d8			SUBQ BX, R8									
+  utf32_convert_archsimd.go:293	0x6fad31		4829de			SUBQ BX, SI									
+  utf32_convert_archsimd.go:293	0x6fad34		4c8d141b		LEAQ 0(BX)(BX*1), R10								
+  utf32_convert_archsimd.go:293	0x6fad38		4d89c3			MOVQ R8, R11									
+  utf32_convert_archsimd.go:293	0x6fad3b		49f7db			NEGQ R11									
+  utf32_convert_archsimd.go:293	0x6fad3e		49c1fb3f		SARQ $0x3f, R11									
+  utf32_convert_archsimd.go:293	0x6fad42		4d21da			ANDQ R11, R10									
+  utf32_convert_archsimd.go:293	0x6fad45		4c8b5c2468		MOVQ 0x68(SP), R11								
+  utf32_convert_archsimd.go:293	0x6fad4a		4b8d3c13		LEAQ 0(R11)(R10*1), DI								
+  utf32_convert_scalar.go:248	0x6fad4e		4889d3			MOVQ DX, BX									
+  utf32_convert_scalar.go:248	0x6fad51		4531c9			XORL R9, R9									
+  utf32_convert_scalar.go:248	0x6fad54		e887120000		CALL github.com/zchee/go-simdutf.convertValidUTF32ToUTF16Scalar(SB)		
+  utf32_convert_archsimd.go:293	0x6fad59		488b542438		MOVQ 0x38(SP), DX								
+  utf32_convert_archsimd.go:293	0x6fad5e		4801d0			ADDQ DX, AX									
+  utf32_convert_archsimd.go:293	0x6fad61		4883c440		ADDQ $0x40, SP									
+  utf32_convert_archsimd.go:293	0x6fad65		5d			POPQ BP										
+  utf32_convert_archsimd.go:293	0x6fad66		c3			RET										
+  utf32_convert_archsimd.go:289	0x6fad67		4839d0			CMPQ AX, DX									
+  utf32_convert_archsimd.go:295	0x6fad6a		0f8784000000		JA 0x6fadf4									
+  utf32_convert_archsimd.go:295	0x6fad70		488b4c2460		MOVQ 0x60(SP), CX								
+  utf32_convert_archsimd.go:295	0x6fad75		4829c1			SUBQ AX, CX									
+  utf32_convert_archsimd.go:295	0x6fad78		4989ca			MOVQ CX, R10									
+  utf32_convert_archsimd.go:295	0x6fad7b		49f7da			NEGQ R10									
+  utf32_convert_archsimd.go:295	0x6fad7e		4989c3			MOVQ AX, R11									
+  utf32_convert_archsimd.go:295	0x6fad81		48c1e002		SHLQ $0x2, AX									
+  utf32_convert_archsimd.go:295	0x6fad85		49c1fa3f		SARQ $0x3f, R10									
+  utf32_convert_archsimd.go:295	0x6fad89		4c21d0			ANDQ R10, AX									
+  utf32_convert_archsimd.go:295	0x6fad8c		4c29da			SUBQ R11, DX									
+  utf32_convert_archsimd.go:295	0x6fad8f		4c8b542450		MOVQ 0x50(SP), R10								
+  utf32_convert_archsimd.go:295	0x6fad94		4c01d0			ADDQ R10, AX									
+  utf32_convert_archsimd.go:295	0x6fad97		488b742470		MOVQ 0x70(SP), SI								
+  utf32_convert_archsimd.go:295	0x6fad9c		0f1f4000		NOPL 0(AX)									
+  utf32_convert_archsimd.go:295	0x6fada0		4839f3			CMPQ BX, SI									
+  utf32_convert_archsimd.go:295	0x6fada3		774a			JA 0x6fadef									
+  utf32_convert_archsimd.go:295	0x6fada5		4c8b442478		MOVQ 0x78(SP), R8								
+  utf32_convert_archsimd.go:295	0x6fadaa		4929d8			SUBQ BX, R8									
+  utf32_convert_archsimd.go:295	0x6fadad		4829de			SUBQ BX, SI									
+  utf32_convert_archsimd.go:295	0x6fadb0		4c8d141b		LEAQ 0(BX)(BX*1), R10								
+  utf32_convert_archsimd.go:295	0x6fadb4		4d89c3			MOVQ R8, R11									
+  utf32_convert_archsimd.go:295	0x6fadb7		49f7db			NEGQ R11									
+  utf32_convert_archsimd.go:295	0x6fadba		49c1fb3f		SARQ $0x3f, R11									
+  utf32_convert_archsimd.go:295	0x6fadbe		4d21da			ANDQ R11, R10									
+  utf32_convert_archsimd.go:295	0x6fadc1		4c8b5c2468		MOVQ 0x68(SP), R11								
+  utf32_convert_archsimd.go:295	0x6fadc6		4b8d3c13		LEAQ 0(R11)(R10*1), DI								
+  utf32_convert_scalar.go:244	0x6fadca		4889d3			MOVQ DX, BX									
+  utf32_convert_scalar.go:244	0x6fadcd		41b901000000		MOVL $0x1, R9									
+  utf32_convert_scalar.go:244	0x6fadd3		e808120000		CALL github.com/zchee/go-simdutf.convertValidUTF32ToUTF16Scalar(SB)		
+  utf32_convert_archsimd.go:295	0x6fadd8		488b542438		MOVQ 0x38(SP), DX								
+  utf32_convert_archsimd.go:295	0x6faddd		4801d0			ADDQ DX, AX									
+  utf32_convert_archsimd.go:295	0x6fade0		4883c440		ADDQ $0x40, SP									
+  utf32_convert_archsimd.go:295	0x6fade4		5d			POPQ BP										
+  utf32_convert_archsimd.go:295	0x6fade5		c3			RET										
+  utf32_convert_archsimd.go:290	0x6fade6		4889d8			MOVQ BX, AX									
+  utf32_convert_archsimd.go:290	0x6fade9		4883c440		ADDQ $0x40, SP									
+  utf32_convert_archsimd.go:290	0x6faded		5d			POPQ BP										
+  utf32_convert_archsimd.go:290	0x6fadee		c3			RET										
+  utf32_convert_archsimd.go:295	0x6fadef		e8cc37d9ff		CALL runtime.panicBounds(SB)							
+  utf32_convert_archsimd.go:295	0x6fadf4		e8c737d9ff		CALL runtime.panicBounds(SB)							
+  utf32_convert_archsimd.go:293	0x6fadf9		e8c237d9ff		CALL runtime.panicBounds(SB)							
+  utf32_convert_archsimd.go:293	0x6fadfe		6690			NOPW										
+  utf32_convert_archsimd.go:293	0x6fae00		e8bb37d9ff		CALL runtime.panicBounds(SB)							
+  utf32_convert_archsimd.go:279	0x6fae05		488d05d48d0e00		LEAQ 0xe8dd4(IP), AX								
+  utf32_convert_archsimd.go:279	0x6fae0c		488d1ddd8c1a00		LEAQ 0x1a8cdd(IP), BX								
+  utf32_convert_archsimd.go:279	0x6fae13		e848bbd8ff		CALL runtime.gopanic(SB)							
+  utf32_convert_archsimd.go:279	0x6fae18		90			NOPL										
+  utf32_convert_archsimd.go:277	0x6fae19		4889442408		MOVQ AX, 0x8(SP)								
+  utf32_convert_archsimd.go:277	0x6fae1e		48895c2410		MOVQ BX, 0x10(SP)								
+  utf32_convert_archsimd.go:277	0x6fae23		48894c2418		MOVQ CX, 0x18(SP)								
+  utf32_convert_archsimd.go:277	0x6fae28		48897c2420		MOVQ DI, 0x20(SP)								
+  utf32_convert_archsimd.go:277	0x6fae2d		4889742428		MOVQ SI, 0x28(SP)								
+  utf32_convert_archsimd.go:277	0x6fae32		4c89442430		MOVQ R8, 0x30(SP)								
+  utf32_convert_archsimd.go:277	0x6fae37		44884c2438		MOVB R9, 0x38(SP)								
+  utf32_convert_archsimd.go:277	0x6fae3c		0f1f4000		NOPL 0(AX)									
+  utf32_convert_archsimd.go:277	0x6fae40		e85b1ad9ff		CALL runtime.morestack_noctxt.abi0(SB)						
+  utf32_convert_archsimd.go:277	0x6fae45		488b442408		MOVQ 0x8(SP), AX								
+  utf32_convert_archsimd.go:277	0x6fae4a		488b5c2410		MOVQ 0x10(SP), BX								
+  utf32_convert_archsimd.go:277	0x6fae4f		488b4c2418		MOVQ 0x18(SP), CX								
+  utf32_convert_archsimd.go:277	0x6fae54		488b7c2420		MOVQ 0x20(SP), DI								
+  utf32_convert_archsimd.go:277	0x6fae59		488b742428		MOVQ 0x28(SP), SI								
+  utf32_convert_archsimd.go:277	0x6fae5e		4c8b442430		MOVQ 0x30(SP), R8								
+  utf32_convert_archsimd.go:277	0x6fae63		440fb64c2438		MOVZX 0x38(SP), R9								
+  utf32_convert_archsimd.go:277	0x6fae69		e9b2fdffff		JMP github.com/zchee/go-simdutf.convertValidUTF32ToUTF16Archsimd(SB)		
+
+TEXT github.com/zchee/go-simdutf.utf8LengthFromUTF32Archsimd(SB) /Users/zchee/go/src/github.com/zchee/go-simdutf/utf32_convert_archsimd.go
+  utf32_convert_archsimd.go:298	0x6fae80		4889442408		MOVQ AX, 0x8(SP)	
+  utf32_convert_archsimd.go:299	0x6fae85		31c9			XORL CX, CX		
+  utf32_convert_archsimd.go:299	0x6fae87		31d2			XORL DX, DX		
+  utf32_convert_scalar.go:33	0x6fae89		eb38			JMP 0x6faec3		
+  utf32_convert_scalar.go:33	0x6fae8b		8b3488			MOVL 0(AX)(CX*4), SI	
+  utf32_convert_scalar.go:34	0x6fae8e		488d7a01		LEAQ 0x1(DX), DI	
+  utf32_convert_scalar.go:36	0x6fae92		4c8d4202		LEAQ 0x2(DX), R8	
+  utf32_convert_scalar.go:33	0x6fae96		48ffc1			INCQ CX			
+  utf32_convert_scalar.go:35	0x6fae99		83fe7f			CMPL SI, $0x7f		
+  utf32_convert_scalar.go:38	0x6fae9c		490f47f8		CMOVA R8, DI		
+  utf32_convert_scalar.go:38	0x6faea0		81feff070000		CMPL SI, $0x7ff		
+  utf32_convert_scalar.go:38	0x6faea6		410f97c0		SETA R8			
+  utf32_convert_scalar.go:41	0x6faeaa		450fb6c0		MOVZX R8, R8		
+  utf32_convert_scalar.go:41	0x6faeae		4c01c7			ADDQ R8, DI		
+  utf32_convert_scalar.go:41	0x6faeb1		81feffff0000		CMPL SI, $0xffff	
+  utf32_convert_scalar.go:41	0x6faeb7		400f97c6		SETA SI			
+  utf32_convert_scalar.go:41	0x6faebb		400fb6f6		MOVZX SI, SI		
+  utf32_convert_scalar.go:41	0x6faebf		488d1437		LEAQ 0(DI)(SI*1), DX	
+  utf32_convert_scalar.go:33	0x6faec3		4839cb			CMPQ BX, CX		
+  utf32_convert_scalar.go:33	0x6faec6		7fc3			JG 0x6fae8b		
+  utf32_convert_archsimd.go:299	0x6faec8		4889d0			MOVQ DX, AX		
+  utf32_convert_archsimd.go:299	0x6faecb		c3			RET			
+
+TEXT github.com/zchee/go-simdutf.utf16LengthFromUTF32Archsimd(SB) /Users/zchee/go/src/github.com/zchee/go-simdutf/utf32_convert_archsimd.go
+  utf32_convert_archsimd.go:302	0x6faee0		4889442408		MOVQ AX, 0x8(SP)	
+  utf32_convert_archsimd.go:303	0x6faee5		31c9			XORL CX, CX		
+  utf32_convert_archsimd.go:303	0x6faee7		31d2			XORL DX, DX		
+  utf32_convert_scalar.go:50	0x6faee9		eb1b			JMP 0x6faf06		
+  utf32_convert_scalar.go:50	0x6faeeb		8b3488			MOVL 0(AX)(CX*4), SI	
+  utf32_convert_scalar.go:51	0x6faeee		488d7a01		LEAQ 0x1(DX), DI	
+  utf32_convert_scalar.go:53	0x6faef2		4c8d4202		LEAQ 0x2(DX), R8	
+  utf32_convert_scalar.go:50	0x6faef6		48ffc1			INCQ CX			
+  utf32_convert_scalar.go:50	0x6faef9		81feffff0000		CMPL SI, $0xffff	
+  utf32_convert_scalar.go:50	0x6faeff		490f47f8		CMOVA R8, DI		
+  utf32_convert_scalar.go:50	0x6faf03		4889fa			MOVQ DI, DX		
+  utf32_convert_scalar.go:50	0x6faf06		4839cb			CMPQ BX, CX		
+  utf32_convert_scalar.go:50	0x6faf09		7fe0			JG 0x6faeeb		
+  utf32_convert_archsimd.go:303	0x6faf0b		4889d0			MOVQ DX, AX		
+  utf32_convert_archsimd.go:303	0x6faf0e		c3			RET			
+
+TEXT github.com/zchee/go-simdutf.convertUTF32ToUTF8ASCIIBlocksArchsimd(SB) /Users/zchee/go/src/github.com/zchee/go-simdutf/utf32_convert_archsimd.go
+  utf32_convert_archsimd.go:309	0x6faf20		493b6610		CMPQ SP, 0x10(R14)								
+  utf32_convert_archsimd.go:309	0x6faf24		0f862b010000		JBE 0x6fb055									
+  utf32_convert_archsimd.go:309	0x6faf2a		55			PUSHQ BP									
+  utf32_convert_archsimd.go:309	0x6faf2b		4889e5			MOVQ SP, BP									
+  utf32_convert_archsimd.go:309	0x6faf2e		4883ec50		SUBQ $0x50, SP									
+  utf32_convert_archsimd.go:312	0x6faf32		4889442460		MOVQ AX, 0x60(SP)								
+  utf32_convert_archsimd.go:312	0x6faf37		48895c2468		MOVQ BX, 0x68(SP)								
+  utf32_convert_archsimd.go:312	0x6faf3c		4c89842488000000	MOVQ R8, 0x88(SP)								
+  utf32_convert_archsimd.go:312	0x6faf44		48897c2478		MOVQ DI, 0x78(SP)								
+  utf32_convert_archsimd.go:312	0x6faf49		48894c2470		MOVQ CX, 0x70(SP)								
+  other_gen_amd64.go:157	0x6faf4e		ba80ffffff		MOVL $-0x80, DX									
+  other_gen_amd64.go:157	0x6faf53		c5f96e			OUTSB DS:0(SI), DX								
+  other_gen_amd64.go:157	0x6faf56		ca90c4			LRET $0xc490									
+  other_gen_amd64.go:157	0x6faf59		e27d			LOOP 0x6fafd8									
+  other_gen_amd64.go:157	0x6faf5b		58			POPQ AX										
+  other_gen_amd64.go:157	0x6faf5c		c9			LEAVE										
+  other_gen_amd64.go:157	0x6faf5d		c5fe7f4c2430		VMOVDQU X1, 0x30(SP)								
+  other_gen_amd64.go:157	0x6faf63		31d2			XORL DX, DX									
+  utf32_convert_archsimd.go:312	0x6faf65		eb45			JMP 0x6fafac									
+  utf32_convert_archsimd.go:312	0x6faf67		4889742428		MOVQ SI, 0x28(SP)								
+  utf32_convert_archsimd.go:317	0x6faf6c		4c89c1			MOVQ R8, CX									
+  utf32_convert_archsimd.go:317	0x6faf6f		4c29d9			SUBQ R11, CX									
+  utf32_convert_archsimd.go:317	0x6faf72		4a8d041f		LEAQ 0(DI)(R11*1), AX								
+  utf32_convert_archsimd.go:317	0x6faf76		bb08000000		MOVL $0x8, BX									
+  utf32_convert_archsimd.go:317	0x6faf7b		0f1f440000		NOPL 0(AX)(AX*1)								
+  utf32_convert_archsimd.go:317	0x6faf80		e8fba7ecff		CALL simd/archsimd.Uint8x16.StoreSlicePart(SB)					
+  utf32_convert_archsimd.go:313	0x6faf85		488b442460		MOVQ 0x60(SP), AX								
+  utf32_convert_archsimd.go:313	0x6faf8a		488b4c2470		MOVQ 0x70(SP), CX								
+  utf32_convert_archsimd.go:312	0x6faf8f		488b5c2468		MOVQ 0x68(SP), BX								
+  utf32_convert_archsimd.go:317	0x6faf94		488b7c2478		MOVQ 0x78(SP), DI								
+  utf32_convert_archsimd.go:317	0x6faf99		4c8b842488000000	MOVQ 0x88(SP), R8								
+  utf32_convert_archsimd.go:314	0x6fafa1		c5fe6f4c2430		VMOVDQU 0x30(SP), X1								
+  utf32_convert_archsimd.go:312	0x6fafa7		488b542428		MOVQ 0x28(SP), DX								
+  utf32_convert_archsimd.go:312	0x6fafac		488d7208		LEAQ 0x8(DX), SI								
+  utf32_convert_archsimd.go:312	0x6fafb0		4839f3			CMPQ BX, SI									
+  utf32_convert_archsimd.go:312	0x6fafb3		7c7b			JL 0x6fb030									
+  utf32_convert_archsimd.go:313	0x6fafb5		4839d3			CMPQ BX, DX									
+  utf32_convert_archsimd.go:313	0x6fafb8		0f8291000000		JB 0x6fb04f									
+  utf32_convert_archsimd.go:313	0x6fafbe		4829d3			SUBQ DX, BX									
+  utf32_convert_archsimd.go:313	0x6fafc1		4989d2			MOVQ DX, R10									
+  utf32_convert_archsimd.go:313	0x6fafc4		4829ca			SUBQ CX, DX									
+  utf32_convert_archsimd.go:313	0x6fafc7		4d89d3			MOVQ R10, R11									
+  utf32_convert_archsimd.go:313	0x6fafca		49c1e202		SHLQ $0x2, R10									
+  utf32_convert_archsimd.go:313	0x6fafce		48c1fa3f		SARQ $0x3f, DX									
+  utf32_convert_archsimd.go:313	0x6fafd2		4921d2			ANDQ DX, R10									
+  utf32_convert_archsimd.go:313	0x6fafd5		4a8d1410		LEAQ 0(AX)(R10*1), DX								
+  slice_gen_amd64.go:171	0x6fafd9		4883fb08		CMPQ BX, $0x8									
+  slice_gen_amd64.go:171	0x6fafdd		726b			JB 0x6fb04a									
+  slice_gen_amd64.go:171	0x6fafdf		c5fe6f12		VMOVDQU 0(DX), X2								
+  utf32_convert_archsimd.go:314	0x6fafe3		c4			?										
+  utf32_convert_archsimd.go:314	0x6fafe4		e27d			LOOP 0x6fb063									
+  utf32_convert_archsimd.go:314	0x6fafe6		17			?										
+  utf32_convert_archsimd.go:314	0x6fafe7		ca7549			LRET $0x4975									
+  utf32_convert_archsimd.go:55	0x6fafea		c5fa6f1d9e5b4600	VMOVDQU github.com/zchee/go-simdutf.utf32Latin1PackIdx(SB), X3			
+  utf32_convert_archsimd.go:56	0x6faff2		c4e37d39d4		CMPL SP, DX									
+  utf32_convert_archsimd.go:56	0x6faff7		00c4			ADDL AL, AH									
+  utf32_convert_archsimd.go:56	0x6faff9		e259			LOOP 0x6fb054									
+  utf32_convert_archsimd.go:56	0x6faffb		00e3			ADDL AH, BL									
+  utf32_convert_archsimd.go:57	0x6faffd		c4e37d39d2		CMPL DX, DX									
+  utf32_convert_archsimd.go:57	0x6fb002		01c4			ADDL AX, SP									
+  utf32_convert_archsimd.go:57	0x6fb004		e269			LOOP 0x6fb06f									
+  utf32_convert_archsimd.go:57	0x6fb006		00d3			ADDL DL, BL									
+  other_gen_amd64.go:49		0x6fb008		31d2			XORL DX, DX									
+  other_gen_amd64.go:49		0x6fb00a		c4e1f96e		OUTSB DS:0(SI), DX								
+  other_gen_amd64.go:49		0x6fb00e		dac4			FCMOVB F4, F0									
+  other_gen_amd64.go:49		0x6fb010		e279			LOOP 0x6fb08b									
+  other_gen_amd64.go:49		0x6fb012		78db			JS 0x6fafef									
+  utf32_convert_archsimd.go:60	0x6fb014		c4e3690fd30cc5d9ebc266	PSRLQ 0x66c2ebd9(AX*8), X1							
+  utf32_convert_archsimd.go:61	0x6fb01f		90			NOPL										
+  utf32_convert_archsimd.go:317	0x6fb020		4939f0			CMPQ R8, SI									
+  utf32_convert_archsimd.go:317	0x6fb023		7220			JB 0x6fb045									
+  utf32_convert_archsimd.go:317	0x6fb025		4939f3			CMPQ R11, SI									
+  utf32_convert_archsimd.go:317	0x6fb028		0f8639ffffff		JBE 0x6faf67									
+  utf32_convert_archsimd.go:317	0x6fb02e		eb0f			JMP 0x6fb03f									
+  utf32_convert_archsimd.go:320	0x6fb030		4989d3			MOVQ DX, R11									
+  utf32_convert_archsimd.go:319	0x6fb033		c5f877			VZEROUPPER									
+  utf32_convert_archsimd.go:320	0x6fb036		4c89d8			MOVQ R11, AX									
+  utf32_convert_archsimd.go:320	0x6fb039		4883c450		ADDQ $0x50, SP									
+  utf32_convert_archsimd.go:320	0x6fb03d		5d			POPQ BP										
+  utf32_convert_archsimd.go:320	0x6fb03e		c3			RET										
+  utf32_convert_archsimd.go:317	0x6fb03f		90			NOPL										
+  utf32_convert_archsimd.go:317	0x6fb040		e87b35d9ff		CALL runtime.panicBounds(SB)							
+  utf32_convert_archsimd.go:317	0x6fb045		e87635d9ff		CALL runtime.panicBounds(SB)							
+  slice_gen_amd64.go:171	0x6fb04a		e87135d9ff		CALL runtime.panicBounds(SB)							
+  utf32_convert_archsimd.go:313	0x6fb04f		e86c35d9ff		CALL runtime.panicBounds(SB)							
+  utf32_convert_archsimd.go:313	0x6fb054		90			NOPL										
+  utf32_convert_archsimd.go:309	0x6fb055		4889442408		MOVQ AX, 0x8(SP)								
+  utf32_convert_archsimd.go:309	0x6fb05a		48895c2410		MOVQ BX, 0x10(SP)								
+  utf32_convert_archsimd.go:309	0x6fb05f		48894c2418		MOVQ CX, 0x18(SP)								
+  utf32_convert_archsimd.go:309	0x6fb064		48897c2420		MOVQ DI, 0x20(SP)								
+  utf32_convert_archsimd.go:309	0x6fb069		4889742428		MOVQ SI, 0x28(SP)								
+  utf32_convert_archsimd.go:309	0x6fb06e		4c89442430		MOVQ R8, 0x30(SP)								
+  utf32_convert_archsimd.go:309	0x6fb073		e82818d9ff		CALL runtime.morestack_noctxt.abi0(SB)						
+  utf32_convert_archsimd.go:309	0x6fb078		488b442408		MOVQ 0x8(SP), AX								
+  utf32_convert_archsimd.go:309	0x6fb07d		488b5c2410		MOVQ 0x10(SP), BX								
+  utf32_convert_archsimd.go:309	0x6fb082		488b4c2418		MOVQ 0x18(SP), CX								
+  utf32_convert_archsimd.go:309	0x6fb087		488b7c2420		MOVQ 0x20(SP), DI								
+  utf32_convert_archsimd.go:309	0x6fb08c		488b742428		MOVQ 0x28(SP), SI								
+  utf32_convert_archsimd.go:309	0x6fb091		4c8b442430		MOVQ 0x30(SP), R8								
+  utf32_convert_archsimd.go:309	0x6fb096		e985feffff		JMP github.com/zchee/go-simdutf.convertUTF32ToUTF8ASCIIBlocksArchsimd(SB)	
+
+TEXT github.com/zchee/go-simdutf.convertUTF32ToUTF16BMPBlocksArchsimd(SB) /Users/zchee/go/src/github.com/zchee/go-simdutf/utf32_convert_archsimd.go
+  utf32_convert_archsimd.go:326	0x6fb0a0		55			PUSHQ BP							
+  utf32_convert_archsimd.go:326	0x6fb0a1		4889e5			MOVQ SP, BP							
+  utf32_convert_archsimd.go:326	0x6fb0a4		4883ec08		SUBQ $0x8, SP							
+  utf32_convert_archsimd.go:326	0x6fb0a8		4889442418		MOVQ AX, 0x18(SP)						
+  utf32_convert_archsimd.go:326	0x6fb0ad		48897c2430		MOVQ DI, 0x30(SP)						
+  utf32_convert_archsimd.go:329	0x6fb0b2		4c89442440		MOVQ R8, 0x40(SP)						
+  utf32_convert_archsimd.go:329	0x6fb0b7		4889742438		MOVQ SI, 0x38(SP)						
+  other_gen_amd64.go:157	0x6fb0bc		ba0000ffff		MOVL $-0x10000, DX						
+  other_gen_amd64.go:157	0x6fb0c1		c5f96e			OUTSB DS:0(SI), DX						
+  other_gen_amd64.go:157	0x6fb0c4		c290c4			RET $0xc490							
+  other_gen_amd64.go:157	0x6fb0c7		e27d			LOOP 0x6fb146							
+  other_gen_amd64.go:157	0x6fb0c9		58			POPQ AX								
+  other_gen_amd64.go:157	0x6fb0ca		c0			?								
+  other_gen_amd64.go:157	0x6fb0cb		31d2			XORL DX, DX							
+  utf32_convert_archsimd.go:329	0x6fb0cd		eb18			JMP 0x6fb0e7							
+  slice_gen_amd64.go:66		0x6fb0cf		c4c17a7f08		VMOVDQU X1, 0(AX)						
+  utf32_convert_archsimd.go:342	0x6fb0d4		488b742438		MOVQ 0x38(SP), SI						
+  utf32_convert_archsimd.go:342	0x6fb0d9		4c8b442440		MOVQ 0x40(SP), R8						
+  utf32_convert_archsimd.go:329	0x6fb0de		4189d9			MOVL BX, R9							
+  utf32_convert_archsimd.go:329	0x6fb0e1		4c89da			MOVQ R11, DX							
+  utf32_convert_archsimd.go:329	0x6fb0e4		4c89e3			MOVQ R12, BX							
+  utf32_convert_archsimd.go:329	0x6fb0e7		4c8d5a08		LEAQ 0x8(DX), R11						
+  utf32_convert_archsimd.go:329	0x6fb0eb		4c39db			CMPQ BX, R11							
+  utf32_convert_archsimd.go:329	0x6fb0ee		0f8c19010000		JL 0x6fb20d							
+  utf32_convert_archsimd.go:330	0x6fb0f4		4839d3			CMPQ BX, DX							
+  utf32_convert_archsimd.go:330	0x6fb0f7		0f8232010000		JB 0x6fb22f							
+  utf32_convert_archsimd.go:330	0x6fb0fd		4989dc			MOVQ BX, R12							
+  utf32_convert_archsimd.go:330	0x6fb100		4829d3			SUBQ DX, BX							
+  utf32_convert_archsimd.go:330	0x6fb103		4989d5			MOVQ DX, R13							
+  utf32_convert_archsimd.go:330	0x6fb106		4829ca			SUBQ CX, DX							
+  utf32_convert_archsimd.go:330	0x6fb109		4d89ef			MOVQ R13, R15							
+  utf32_convert_archsimd.go:330	0x6fb10c		49c1e502		SHLQ $0x2, R13							
+  utf32_convert_archsimd.go:330	0x6fb110		48c1fa3f		SARQ $0x3f, DX							
+  utf32_convert_archsimd.go:330	0x6fb114		4921d5			ANDQ DX, R13							
+  utf32_convert_archsimd.go:330	0x6fb117		4a8d1428		LEAQ 0(AX)(R13*1), DX						
+  utf32_convert_archsimd.go:330	0x6fb11b		0f1f440000		NOPL 0(AX)(AX*1)						
+  slice_gen_amd64.go:171	0x6fb120		4883fb08		CMPQ BX, $0x8							
+  slice_gen_amd64.go:171	0x6fb124		0f8200010000		JB 0x6fb22a							
+  slice_gen_amd64.go:171	0x6fb12a		c5fe6f0a		VMOVDQU 0(DX), X1						
+  utf32_convert_archsimd.go:331	0x6fb12e		c4			?								
+  utf32_convert_archsimd.go:331	0x6fb12f		e27d			LOOP 0x6fb1ae							
+  utf32_convert_archsimd.go:331	0x6fb131		17			?								
+  utf32_convert_archsimd.go:331	0x6fb132		c10f85			RORL $0x85, 0(DI)						
+  utf32_convert_archsimd.go:331	0x6fb135		d7			XLATB DS:0(BX)							
+  utf32_convert_archsimd.go:331	0x6fb136		0000			ADDB AL, 0(AX)							
+  utf32_convert_archsimd.go:331	0x6fb138		004584			ADDB AL, -0x7c(BP)						
+  utf32_convert_archsimd.go:329	0x6fb13b		d2			?								
+  utf32_convert_archsimd.go:334	0x6fb13c		7453			JE 0x6fb191							
+  other_gen_amd64.go:157	0x6fb13e		ba00d80000		MOVL $0xd800, DX						
+  other_gen_amd64.go:157	0x6fb143		c5f96e			OUTSB DS:0(SI), DX						
+  other_gen_amd64.go:157	0x6fb146		d2c4			ROLL CL, AH							
+  other_gen_amd64.go:157	0x6fb148		e27d			LOOP 0x6fb1c7							
+  other_gen_amd64.go:157	0x6fb14a		58			POPQ AX								
+  other_gen_amd64.go:157	0x6fb14b		d2c5			ROLL CL, CH							
+  compare_gen_amd64.go:570	0x6fb14d		f5			CMC								
+  compare_gen_amd64.go:570	0x6fb14e		76d9			JBE 0x6fb129							
+  compare_gen_amd64.go:571	0x6fb150		c5dd72f3		JB 0x6fb147							
+  compare_gen_amd64.go:571	0x6fb154		1f			?								
+  compare_gen_amd64.go:572	0x6fb155		c5ddef			OUTL AX, DX							
+  compare_gen_amd64.go:572	0x6fb158		d241bd			ROLB CL, -0x43(CX)						
+  other_gen_amd64.go:157	0x6fb15b		ff			?								
+  other_gen_amd64.go:157	0x6fb15c		df00			FILD 0(AX)							
+  other_gen_amd64.go:157	0x6fb15e		00c4			ADDL AL, AH							
+  other_gen_amd64.go:157	0x6fb160		c1796eed		SARL $0xed, 0x6e(CX)						
+  other_gen_amd64.go:157	0x6fb164		c4e27d58		POPQ AX								
+  other_gen_amd64.go:157	0x6fb168		ed			INL DX, AX							
+  compare_gen_amd64.go:582	0x6fb169		c5ddef			OUTL AX, DX							
+  compare_gen_amd64.go:582	0x6fb16c		f1			ICEBP								
+  compare_gen_amd64.go:572	0x6fb16d		c5			?								
+  compare_gen_amd64.go:572	0x6fb16e		ed			INL DX, AX							
+  compare_gen_amd64.go:572	0x6fb16f		66			?								
+  compare_gen_amd64.go:572	0x6fb170		d6			?								
+  compare_gen_amd64.go:572	0x6fb171		c5edef			OUTL AX, DX							
+  compare_gen_amd64.go:572	0x6fb174		d3c5			ROLL CL, BP							
+  compare_gen_amd64.go:582	0x6fb176		d5			?								
+  compare_gen_amd64.go:582	0x6fb177		ef			OUTL AX, DX							
+  compare_gen_amd64.go:582	0x6fb178		e4c5			INL $0xc5, AL							
+  compare_gen_amd64.go:582	0x6fb17a		cd66			INT $0x66							
+  compare_gen_amd64.go:582	0x6fb17c		e4c5			INL $0xc5, AL							
+  compare_gen_amd64.go:582	0x6fb17e		ddef			FUCOMP F7							
+  compare_gen_amd64.go:582	0x6fb180		dbc5			FCMOVNB F5, F0							
+  utf32_convert_archsimd.go:335	0x6fb182		ed			INL DX, AX							
+  utf32_convert_archsimd.go:335	0x6fb183		dbd3			FCMOVNBE F3, F0							
+  utf32_convert_archsimd.go:338	0x6fb185		c5fc50			PUSHQ AX							
+  utf32_convert_archsimd.go:338	0x6fb188		da909084db74		FICOM 0x74db8490(AX)						
+  utf32_convert_archsimd.go:338	0x6fb18e		0deb7fba00		ORL $0xba7feb, AX						
+  utf32_convert_archsimd.go:338	0x6fb193		d800			FADD 0(AX)							
+  utf32_convert_archsimd.go:338	0x6fb195		0041bd			ADDB AL, -0x43(CX)						
+  utf32_convert_archsimd.go:338	0x6fb198		ff			?								
+  utf32_convert_archsimd.go:338	0x6fb199		df00			FILD 0(AX)							
+  utf32_convert_archsimd.go:338	0x6fb19b		00c5			ADDL AL, CH							
+  utf32_convert_archsimd.go:65	0x6fb19d		fa			CLI								
+  utf32_convert_archsimd.go:65	0x6fb19e		6f			OUTSD DS:0(SI), DX						
+  utf32_convert_archsimd.go:65	0x6fb19f		15fc594600		ADCL $0x4659fc, AX						
+  utf32_convert_archsimd.go:329	0x6fb1a4		4584c9			TESTL R9, R9							
+  utf32_convert_archsimd.go:66	0x6fb1a7		7408			JE 0x6fb1b1							
+  utf32_convert_archsimd.go:67	0x6fb1a9		c5fa6f15ff594600	VMOVDQU github.com/zchee/go-simdutf.utf32UTF16BEPackIdx(SB), X2	
+  utf32_convert_archsimd.go:69	0x6fb1b1		c4e37d39cb		CMPL BX, CX							
+  utf32_convert_archsimd.go:69	0x6fb1b6		00c4			ADDL AL, AH							
+  utf32_convert_archsimd.go:69	0x6fb1b8		e261			LOOP 0x6fb21b							
+  utf32_convert_archsimd.go:69	0x6fb1ba		00da			ADDL BL, DL							
+  utf32_convert_archsimd.go:70	0x6fb1bc		c4e37d39c9		CMPL CX, CX							
+  utf32_convert_archsimd.go:70	0x6fb1c1		01c4			ADDL AX, SP							
+  utf32_convert_archsimd.go:70	0x6fb1c3		e271			LOOP 0x6fb236							
+  utf32_convert_archsimd.go:70	0x6fb1c5		00ca			ADDL CL, DL							
+  utf32_convert_archsimd.go:329	0x6fb1c7		4489cb			MOVL R9, BX							
+  other_gen_amd64.go:49		0x6fb1ca		4531c9			XORL R9, R9							
+  other_gen_amd64.go:49		0x6fb1cd		c4c1f96e		OUTSB DS:0(SI), DX						
+  other_gen_amd64.go:49		0x6fb1d1		d1c4			ROLL $0x1, SP							
+  other_gen_amd64.go:49		0x6fb1d3		e279			LOOP 0x6fb24e							
+  other_gen_amd64.go:49		0x6fb1d5		78d2			JS 0x6fb1a9							
+  utf32_convert_archsimd.go:71	0x6fb1d7		c4e3710fca		BSWAP DX							
+  utf32_convert_archsimd.go:71	0x6fb1dc		08c5			ORL AL, CH							
+  utf32_convert_archsimd.go:72	0x6fb1de		e1eb			LOOPE 0x6fb1cb							
+  utf32_convert_archsimd.go:72	0x6fb1e0		c9			LEAVE								
+  utf32_convert_archsimd.go:342	0x6fb1e1		4c39fe			CMPQ SI, R15							
+  utf32_convert_archsimd.go:342	0x6fb1e4		723f			JB 0x6fb225							
+  utf32_convert_archsimd.go:329	0x6fb1e6		4c893c24		MOVQ R15, 0(SP)							
+  utf32_convert_archsimd.go:342	0x6fb1ea		4c29fe			SUBQ R15, SI							
+  utf32_convert_archsimd.go:342	0x6fb1ed		4d29c7			SUBQ R8, R15							
+  utf32_convert_archsimd.go:342	0x6fb1f0		4c8b0424		MOVQ 0(SP), R8							
+  utf32_convert_archsimd.go:342	0x6fb1f4		4d01c0			ADDQ R8, R8							
+  utf32_convert_archsimd.go:342	0x6fb1f7		49c1ff3f		SARQ $0x3f, R15							
+  utf32_convert_archsimd.go:342	0x6fb1fb		4d21f8			ANDQ R15, R8							
+  utf32_convert_archsimd.go:342	0x6fb1fe		4901f8			ADDQ DI, R8							
+  slice_gen_amd64.go:66		0x6fb201		4883fe08		CMPQ SI, $0x8							
+  slice_gen_amd64.go:66		0x6fb205		0f83c4feffff		JAE 0x6fb0cf							
+  slice_gen_amd64.go:66		0x6fb20b		eb12			JMP 0x6fb21f							
+  utf32_convert_archsimd.go:346	0x6fb20d		4989d7			MOVQ DX, R15							
+  utf32_convert_archsimd.go:345	0x6fb210		c5f877			VZEROUPPER							
+  utf32_convert_archsimd.go:346	0x6fb213		4c89f8			MOVQ R15, AX							
+  utf32_convert_archsimd.go:346	0x6fb216		4889c3			MOVQ AX, BX							
+  utf32_convert_archsimd.go:346	0x6fb219		4883c408		ADDQ $0x8, SP							
+  utf32_convert_archsimd.go:346	0x6fb21d		5d			POPQ BP								
+  utf32_convert_archsimd.go:346	0x6fb21e		c3			RET								
+  slice_gen_amd64.go:66		0x6fb21f		90			NOPL								
+  slice_gen_amd64.go:66		0x6fb220		e89b33d9ff		CALL runtime.panicBounds(SB)					
+  utf32_convert_archsimd.go:342	0x6fb225		e89633d9ff		CALL runtime.panicBounds(SB)					
+  slice_gen_amd64.go:171	0x6fb22a		e89133d9ff		CALL runtime.panicBounds(SB)					
+  utf32_convert_archsimd.go:330	0x6fb22f		e88c33d9ff		CALL runtime.panicBounds(SB)					
+  utf32_convert_archsimd.go:330	0x6fb234		90			NOPL								

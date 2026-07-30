@@ -144,7 +144,7 @@ func loadDispatchQualificationArabicLipsum() []byte {
 func dispatchQualificationRows() []dispatchQualificationRow {
 	byteZero, _, uint16Zero, _, uint32Zero, latin1Ramp := materializeDispatchQualificationCorpora()
 	arabicLipsum := loadDispatchQualificationArabicLipsum()
-	rows := make([]dispatchQualificationRow, 0, 1054)
+	rows := make([]dispatchQualificationRow, 0, 1250)
 	for _, operation := range [...]string{"ValidateASCII", "ValidateASCIIWithErrors"} {
 		for _, input := range dispatchQualificationByteSizes {
 			rows = append(rows, dispatchQualificationRow{
@@ -321,6 +321,32 @@ func dispatchQualificationRows() []dispatchQualificationRow {
 				class:     input.class,
 				size:      input.size,
 				uint16s:   uint16Zero[:input.size],
+			})
+		}
+	}
+	for _, operation := range [...]string{
+		"ConvertUTF32ToLatin1",
+		"ConvertUTF32ToLatin1WithErrors",
+		"ConvertValidUTF32ToLatin1",
+		"ConvertUTF32ToUTF8",
+		"ConvertUTF32ToUTF8WithErrors",
+		"ConvertValidUTF32ToUTF8",
+		"ConvertUTF32ToUTF16LE",
+		"ConvertUTF32ToUTF16BE",
+		"ConvertUTF32ToUTF16LEWithErrors",
+		"ConvertUTF32ToUTF16BEWithErrors",
+		"ConvertValidUTF32ToUTF16LE",
+		"ConvertValidUTF32ToUTF16BE",
+		"UTF8LengthFromUTF32",
+		"UTF16LengthFromUTF32",
+	} {
+		for _, input := range dispatchQualificationUint32Sizes {
+			rows = append(rows, dispatchQualificationRow{
+				operation: operation,
+				corpus:    "Q-u32-zero",
+				class:     input.class,
+				size:      input.size,
+				uint32s:   uint32Zero[:input.size],
 			})
 		}
 	}
@@ -776,6 +802,104 @@ var dispatchQualificationProviderIdentifiers = map[string]map[string][]string{
 		"neon":     {"utf8LengthFromUTF16BEWithReplacementNEON"},
 		"archsimd": {"utf8LengthFromUTF16BEWithReplacementArchsimd"},
 	},
+	"ConvertUTF32ToLatin1": {
+		"scalar":   {"convertUTF32ToLatin1Scalar"},
+		"westmere": {"convertUTF32ToLatin1Westmere"},
+		"haswell":  {"convertUTF32ToLatin1Haswell"},
+		"neon":     {"convertUTF32ToLatin1NEON"},
+		"archsimd": {"convertUTF32ToLatin1Archsimd"},
+	},
+	"ConvertUTF32ToLatin1WithErrors": {
+		"scalar":   {"convertUTF32ToLatin1WithErrorsScalar"},
+		"westmere": {"convertUTF32ToLatin1WithErrorsWestmere"},
+		"haswell":  {"convertUTF32ToLatin1WithErrorsHaswell"},
+		"neon":     {"convertUTF32ToLatin1WithErrorsNEON"},
+		"archsimd": {"convertUTF32ToLatin1WithErrorsArchsimd"},
+	},
+	"ConvertValidUTF32ToLatin1": {
+		"scalar":   {"convertValidUTF32ToLatin1Scalar"},
+		"westmere": {"convertValidUTF32ToLatin1Westmere"},
+		"haswell":  {"convertValidUTF32ToLatin1Haswell"},
+		"neon":     {"convertValidUTF32ToLatin1NEON"},
+		"archsimd": {"convertValidUTF32ToLatin1Archsimd"},
+	},
+	"ConvertUTF32ToUTF8": {
+		"scalar":   {"convertUTF32ToUTF8Scalar"},
+		"westmere": {"convertUTF32ToUTF8Westmere"},
+		"haswell":  {"convertUTF32ToUTF8Haswell"},
+		"neon":     {"convertUTF32ToUTF8NEON"},
+		"archsimd": {"convertUTF32ToUTF8Archsimd"},
+	},
+	"ConvertUTF32ToUTF8WithErrors": {
+		"scalar":   {"convertUTF32ToUTF8WithErrorsScalar"},
+		"westmere": {"convertUTF32ToUTF8WithErrorsWestmere"},
+		"haswell":  {"convertUTF32ToUTF8WithErrorsHaswell"},
+		"neon":     {"convertUTF32ToUTF8WithErrorsNEON"},
+		"archsimd": {"convertUTF32ToUTF8WithErrorsArchsimd"},
+	},
+	"ConvertValidUTF32ToUTF8": {
+		"scalar":   {"convertValidUTF32ToUTF8Scalar"},
+		"westmere": {"convertValidUTF32ToUTF8Westmere"},
+		"haswell":  {"convertValidUTF32ToUTF8Haswell"},
+		"neon":     {"convertValidUTF32ToUTF8NEON"},
+		"archsimd": {"convertValidUTF32ToUTF8Archsimd"},
+	},
+	"ConvertUTF32ToUTF16LE": {
+		"scalar":   {"convertUTF32ToUTF16LEScalar"},
+		"westmere": {"convertUTF32ToUTF16LEWestmere"},
+		"haswell":  {"convertUTF32ToUTF16LEHaswell"},
+		"neon":     {"convertUTF32ToUTF16LENEON"},
+		"archsimd": {"convertUTF32ToUTF16LEArchsimd"},
+	},
+	"ConvertUTF32ToUTF16BE": {
+		"scalar":   {"convertUTF32ToUTF16BEScalar"},
+		"westmere": {"convertUTF32ToUTF16BEWestmere"},
+		"haswell":  {"convertUTF32ToUTF16BEHaswell"},
+		"neon":     {"convertUTF32ToUTF16BENEON"},
+		"archsimd": {"convertUTF32ToUTF16BEArchsimd"},
+	},
+	"ConvertUTF32ToUTF16LEWithErrors": {
+		"scalar":   {"convertUTF32ToUTF16LEWithErrorsScalar"},
+		"westmere": {"convertUTF32ToUTF16LEWithErrorsWestmere"},
+		"haswell":  {"convertUTF32ToUTF16LEWithErrorsHaswell"},
+		"neon":     {"convertUTF32ToUTF16LEWithErrorsNEON"},
+		"archsimd": {"convertUTF32ToUTF16LEWithErrorsArchsimd"},
+	},
+	"ConvertUTF32ToUTF16BEWithErrors": {
+		"scalar":   {"convertUTF32ToUTF16BEWithErrorsScalar"},
+		"westmere": {"convertUTF32ToUTF16BEWithErrorsWestmere"},
+		"haswell":  {"convertUTF32ToUTF16BEWithErrorsHaswell"},
+		"neon":     {"convertUTF32ToUTF16BEWithErrorsNEON"},
+		"archsimd": {"convertUTF32ToUTF16BEWithErrorsArchsimd"},
+	},
+	"ConvertValidUTF32ToUTF16LE": {
+		"scalar":   {"convertValidUTF32ToUTF16LEScalar"},
+		"westmere": {"convertValidUTF32ToUTF16LEWestmere"},
+		"haswell":  {"convertValidUTF32ToUTF16LEHaswell"},
+		"neon":     {"convertValidUTF32ToUTF16LENEON"},
+		"archsimd": {"convertValidUTF32ToUTF16LEArchsimd"},
+	},
+	"ConvertValidUTF32ToUTF16BE": {
+		"scalar":   {"convertValidUTF32ToUTF16BEScalar"},
+		"westmere": {"convertValidUTF32ToUTF16BEWestmere"},
+		"haswell":  {"convertValidUTF32ToUTF16BEHaswell"},
+		"neon":     {"convertValidUTF32ToUTF16BENEON"},
+		"archsimd": {"convertValidUTF32ToUTF16BEArchsimd"},
+	},
+	"UTF8LengthFromUTF32": {
+		"scalar":   {"utf8LengthFromUTF32Scalar"},
+		"westmere": {"utf8LengthFromUTF32Westmere"},
+		"haswell":  {"utf8LengthFromUTF32Haswell"},
+		"neon":     {"utf8LengthFromUTF32NEON"},
+		"archsimd": {"utf8LengthFromUTF32Archsimd"},
+	},
+	"UTF16LengthFromUTF32": {
+		"scalar":   {"utf16LengthFromUTF32Scalar"},
+		"westmere": {"utf16LengthFromUTF32Westmere"},
+		"haswell":  {"utf16LengthFromUTF32Haswell"},
+		"neon":     {"utf16LengthFromUTF32NEON"},
+		"archsimd": {"utf16LengthFromUTF32Archsimd"},
+	},
 }
 
 func dispatchQualificationGuard(operation string, fn any) error {
@@ -970,6 +1094,34 @@ func dispatchQualificationFunction(operation string) any {
 		return activeImplementation.utf8LengthFromUTF16LEWithReplacement
 	case "UTF8LengthFromUTF16BEWithReplacement":
 		return activeImplementation.utf8LengthFromUTF16BEWithReplacement
+	case "ConvertUTF32ToLatin1":
+		return activeImplementation.convertUTF32ToLatin1
+	case "ConvertUTF32ToLatin1WithErrors":
+		return activeImplementation.convertUTF32ToLatin1WithErrors
+	case "ConvertValidUTF32ToLatin1":
+		return activeImplementation.convertValidUTF32ToLatin1
+	case "ConvertUTF32ToUTF8":
+		return activeImplementation.convertUTF32ToUTF8
+	case "ConvertUTF32ToUTF8WithErrors":
+		return activeImplementation.convertUTF32ToUTF8WithErrors
+	case "ConvertValidUTF32ToUTF8":
+		return activeImplementation.convertValidUTF32ToUTF8
+	case "ConvertUTF32ToUTF16LE":
+		return activeImplementation.convertUTF32ToUTF16LE
+	case "ConvertUTF32ToUTF16BE":
+		return activeImplementation.convertUTF32ToUTF16BE
+	case "ConvertUTF32ToUTF16LEWithErrors":
+		return activeImplementation.convertUTF32ToUTF16LEWithErrors
+	case "ConvertUTF32ToUTF16BEWithErrors":
+		return activeImplementation.convertUTF32ToUTF16BEWithErrors
+	case "ConvertValidUTF32ToUTF16LE":
+		return activeImplementation.convertValidUTF32ToUTF16LE
+	case "ConvertValidUTF32ToUTF16BE":
+		return activeImplementation.convertValidUTF32ToUTF16BE
+	case "UTF8LengthFromUTF32":
+		return activeImplementation.utf8LengthFromUTF32
+	case "UTF16LengthFromUTF32":
+		return activeImplementation.utf16LengthFromUTF32
 	default:
 		panic("unknown dispatch qualification operation: " + operation)
 	}
@@ -1284,6 +1436,74 @@ func BenchmarkDispatchQualification(b *testing.B) {
 			case "UTF8LengthFromUTF16BEWithReplacement":
 				for b.Loop() {
 					benchmarkResultSink = UTF8LengthFromUTF16BEWithReplacement(row.uint16s)
+				}
+			case "ConvertUTF32ToLatin1":
+				dst := make([]byte, len(row.uint32s))
+				for b.Loop() {
+					benchmarkIntSink = ConvertUTF32ToLatin1(row.uint32s, dst)
+				}
+			case "ConvertUTF32ToLatin1WithErrors":
+				dst := make([]byte, len(row.uint32s))
+				for b.Loop() {
+					benchmarkResultSink = ConvertUTF32ToLatin1WithErrors(row.uint32s, dst)
+				}
+			case "ConvertValidUTF32ToLatin1":
+				dst := make([]byte, len(row.uint32s))
+				for b.Loop() {
+					benchmarkIntSink = ConvertValidUTF32ToLatin1(row.uint32s, dst)
+				}
+			case "ConvertUTF32ToUTF8":
+				dst := make([]byte, len(row.uint32s))
+				for b.Loop() {
+					benchmarkIntSink = ConvertUTF32ToUTF8(row.uint32s, dst)
+				}
+			case "ConvertUTF32ToUTF8WithErrors":
+				dst := make([]byte, len(row.uint32s))
+				for b.Loop() {
+					benchmarkResultSink = ConvertUTF32ToUTF8WithErrors(row.uint32s, dst)
+				}
+			case "ConvertValidUTF32ToUTF8":
+				dst := make([]byte, len(row.uint32s))
+				for b.Loop() {
+					benchmarkIntSink = ConvertValidUTF32ToUTF8(row.uint32s, dst)
+				}
+			case "ConvertUTF32ToUTF16LE":
+				dst := make([]uint16, len(row.uint32s))
+				for b.Loop() {
+					benchmarkIntSink = ConvertUTF32ToUTF16LE(row.uint32s, dst)
+				}
+			case "ConvertUTF32ToUTF16BE":
+				dst := make([]uint16, len(row.uint32s))
+				for b.Loop() {
+					benchmarkIntSink = ConvertUTF32ToUTF16BE(row.uint32s, dst)
+				}
+			case "ConvertUTF32ToUTF16LEWithErrors":
+				dst := make([]uint16, len(row.uint32s))
+				for b.Loop() {
+					benchmarkResultSink = ConvertUTF32ToUTF16LEWithErrors(row.uint32s, dst)
+				}
+			case "ConvertUTF32ToUTF16BEWithErrors":
+				dst := make([]uint16, len(row.uint32s))
+				for b.Loop() {
+					benchmarkResultSink = ConvertUTF32ToUTF16BEWithErrors(row.uint32s, dst)
+				}
+			case "ConvertValidUTF32ToUTF16LE":
+				dst := make([]uint16, len(row.uint32s))
+				for b.Loop() {
+					benchmarkIntSink = ConvertValidUTF32ToUTF16LE(row.uint32s, dst)
+				}
+			case "ConvertValidUTF32ToUTF16BE":
+				dst := make([]uint16, len(row.uint32s))
+				for b.Loop() {
+					benchmarkIntSink = ConvertValidUTF32ToUTF16BE(row.uint32s, dst)
+				}
+			case "UTF8LengthFromUTF32":
+				for b.Loop() {
+					benchmarkIntSink = UTF8LengthFromUTF32(row.uint32s)
+				}
+			case "UTF16LengthFromUTF32":
+				for b.Loop() {
+					benchmarkIntSink = UTF16LengthFromUTF32(row.uint32s)
 				}
 			default:
 				b.Fatalf("unknown operation %q", row.operation)
@@ -2347,13 +2567,209 @@ UTF8LengthFromUTF16BEWithReplacement/Q-u16-zero/boundary/0127
 UTF8LengthFromUTF16BEWithReplacement/Q-u16-zero/boundary/0128
 UTF8LengthFromUTF16BEWithReplacement/Q-u16-zero/boundary/0129
 UTF8LengthFromUTF16BEWithReplacement/Q-u16-zero/bulk/2048
+ConvertUTF32ToLatin1/Q-u32-zero/short/0001
+ConvertUTF32ToLatin1/Q-u32-zero/short/0003
+ConvertUTF32ToLatin1/Q-u32-zero/short/0004
+ConvertUTF32ToLatin1/Q-u32-zero/short/0005
+ConvertUTF32ToLatin1/Q-u32-zero/short/0007
+ConvertUTF32ToLatin1/Q-u32-zero/short/0008
+ConvertUTF32ToLatin1/Q-u32-zero/short/0009
+ConvertUTF32ToLatin1/Q-u32-zero/boundary/0015
+ConvertUTF32ToLatin1/Q-u32-zero/boundary/0016
+ConvertUTF32ToLatin1/Q-u32-zero/boundary/0017
+ConvertUTF32ToLatin1/Q-u32-zero/boundary/0031
+ConvertUTF32ToLatin1/Q-u32-zero/boundary/0032
+ConvertUTF32ToLatin1/Q-u32-zero/boundary/0033
+ConvertUTF32ToLatin1/Q-u32-zero/bulk/1024
+ConvertUTF32ToLatin1WithErrors/Q-u32-zero/short/0001
+ConvertUTF32ToLatin1WithErrors/Q-u32-zero/short/0003
+ConvertUTF32ToLatin1WithErrors/Q-u32-zero/short/0004
+ConvertUTF32ToLatin1WithErrors/Q-u32-zero/short/0005
+ConvertUTF32ToLatin1WithErrors/Q-u32-zero/short/0007
+ConvertUTF32ToLatin1WithErrors/Q-u32-zero/short/0008
+ConvertUTF32ToLatin1WithErrors/Q-u32-zero/short/0009
+ConvertUTF32ToLatin1WithErrors/Q-u32-zero/boundary/0015
+ConvertUTF32ToLatin1WithErrors/Q-u32-zero/boundary/0016
+ConvertUTF32ToLatin1WithErrors/Q-u32-zero/boundary/0017
+ConvertUTF32ToLatin1WithErrors/Q-u32-zero/boundary/0031
+ConvertUTF32ToLatin1WithErrors/Q-u32-zero/boundary/0032
+ConvertUTF32ToLatin1WithErrors/Q-u32-zero/boundary/0033
+ConvertUTF32ToLatin1WithErrors/Q-u32-zero/bulk/1024
+ConvertValidUTF32ToLatin1/Q-u32-zero/short/0001
+ConvertValidUTF32ToLatin1/Q-u32-zero/short/0003
+ConvertValidUTF32ToLatin1/Q-u32-zero/short/0004
+ConvertValidUTF32ToLatin1/Q-u32-zero/short/0005
+ConvertValidUTF32ToLatin1/Q-u32-zero/short/0007
+ConvertValidUTF32ToLatin1/Q-u32-zero/short/0008
+ConvertValidUTF32ToLatin1/Q-u32-zero/short/0009
+ConvertValidUTF32ToLatin1/Q-u32-zero/boundary/0015
+ConvertValidUTF32ToLatin1/Q-u32-zero/boundary/0016
+ConvertValidUTF32ToLatin1/Q-u32-zero/boundary/0017
+ConvertValidUTF32ToLatin1/Q-u32-zero/boundary/0031
+ConvertValidUTF32ToLatin1/Q-u32-zero/boundary/0032
+ConvertValidUTF32ToLatin1/Q-u32-zero/boundary/0033
+ConvertValidUTF32ToLatin1/Q-u32-zero/bulk/1024
+ConvertUTF32ToUTF8/Q-u32-zero/short/0001
+ConvertUTF32ToUTF8/Q-u32-zero/short/0003
+ConvertUTF32ToUTF8/Q-u32-zero/short/0004
+ConvertUTF32ToUTF8/Q-u32-zero/short/0005
+ConvertUTF32ToUTF8/Q-u32-zero/short/0007
+ConvertUTF32ToUTF8/Q-u32-zero/short/0008
+ConvertUTF32ToUTF8/Q-u32-zero/short/0009
+ConvertUTF32ToUTF8/Q-u32-zero/boundary/0015
+ConvertUTF32ToUTF8/Q-u32-zero/boundary/0016
+ConvertUTF32ToUTF8/Q-u32-zero/boundary/0017
+ConvertUTF32ToUTF8/Q-u32-zero/boundary/0031
+ConvertUTF32ToUTF8/Q-u32-zero/boundary/0032
+ConvertUTF32ToUTF8/Q-u32-zero/boundary/0033
+ConvertUTF32ToUTF8/Q-u32-zero/bulk/1024
+ConvertUTF32ToUTF8WithErrors/Q-u32-zero/short/0001
+ConvertUTF32ToUTF8WithErrors/Q-u32-zero/short/0003
+ConvertUTF32ToUTF8WithErrors/Q-u32-zero/short/0004
+ConvertUTF32ToUTF8WithErrors/Q-u32-zero/short/0005
+ConvertUTF32ToUTF8WithErrors/Q-u32-zero/short/0007
+ConvertUTF32ToUTF8WithErrors/Q-u32-zero/short/0008
+ConvertUTF32ToUTF8WithErrors/Q-u32-zero/short/0009
+ConvertUTF32ToUTF8WithErrors/Q-u32-zero/boundary/0015
+ConvertUTF32ToUTF8WithErrors/Q-u32-zero/boundary/0016
+ConvertUTF32ToUTF8WithErrors/Q-u32-zero/boundary/0017
+ConvertUTF32ToUTF8WithErrors/Q-u32-zero/boundary/0031
+ConvertUTF32ToUTF8WithErrors/Q-u32-zero/boundary/0032
+ConvertUTF32ToUTF8WithErrors/Q-u32-zero/boundary/0033
+ConvertUTF32ToUTF8WithErrors/Q-u32-zero/bulk/1024
+ConvertValidUTF32ToUTF8/Q-u32-zero/short/0001
+ConvertValidUTF32ToUTF8/Q-u32-zero/short/0003
+ConvertValidUTF32ToUTF8/Q-u32-zero/short/0004
+ConvertValidUTF32ToUTF8/Q-u32-zero/short/0005
+ConvertValidUTF32ToUTF8/Q-u32-zero/short/0007
+ConvertValidUTF32ToUTF8/Q-u32-zero/short/0008
+ConvertValidUTF32ToUTF8/Q-u32-zero/short/0009
+ConvertValidUTF32ToUTF8/Q-u32-zero/boundary/0015
+ConvertValidUTF32ToUTF8/Q-u32-zero/boundary/0016
+ConvertValidUTF32ToUTF8/Q-u32-zero/boundary/0017
+ConvertValidUTF32ToUTF8/Q-u32-zero/boundary/0031
+ConvertValidUTF32ToUTF8/Q-u32-zero/boundary/0032
+ConvertValidUTF32ToUTF8/Q-u32-zero/boundary/0033
+ConvertValidUTF32ToUTF8/Q-u32-zero/bulk/1024
+ConvertUTF32ToUTF16LE/Q-u32-zero/short/0001
+ConvertUTF32ToUTF16LE/Q-u32-zero/short/0003
+ConvertUTF32ToUTF16LE/Q-u32-zero/short/0004
+ConvertUTF32ToUTF16LE/Q-u32-zero/short/0005
+ConvertUTF32ToUTF16LE/Q-u32-zero/short/0007
+ConvertUTF32ToUTF16LE/Q-u32-zero/short/0008
+ConvertUTF32ToUTF16LE/Q-u32-zero/short/0009
+ConvertUTF32ToUTF16LE/Q-u32-zero/boundary/0015
+ConvertUTF32ToUTF16LE/Q-u32-zero/boundary/0016
+ConvertUTF32ToUTF16LE/Q-u32-zero/boundary/0017
+ConvertUTF32ToUTF16LE/Q-u32-zero/boundary/0031
+ConvertUTF32ToUTF16LE/Q-u32-zero/boundary/0032
+ConvertUTF32ToUTF16LE/Q-u32-zero/boundary/0033
+ConvertUTF32ToUTF16LE/Q-u32-zero/bulk/1024
+ConvertUTF32ToUTF16BE/Q-u32-zero/short/0001
+ConvertUTF32ToUTF16BE/Q-u32-zero/short/0003
+ConvertUTF32ToUTF16BE/Q-u32-zero/short/0004
+ConvertUTF32ToUTF16BE/Q-u32-zero/short/0005
+ConvertUTF32ToUTF16BE/Q-u32-zero/short/0007
+ConvertUTF32ToUTF16BE/Q-u32-zero/short/0008
+ConvertUTF32ToUTF16BE/Q-u32-zero/short/0009
+ConvertUTF32ToUTF16BE/Q-u32-zero/boundary/0015
+ConvertUTF32ToUTF16BE/Q-u32-zero/boundary/0016
+ConvertUTF32ToUTF16BE/Q-u32-zero/boundary/0017
+ConvertUTF32ToUTF16BE/Q-u32-zero/boundary/0031
+ConvertUTF32ToUTF16BE/Q-u32-zero/boundary/0032
+ConvertUTF32ToUTF16BE/Q-u32-zero/boundary/0033
+ConvertUTF32ToUTF16BE/Q-u32-zero/bulk/1024
+ConvertUTF32ToUTF16LEWithErrors/Q-u32-zero/short/0001
+ConvertUTF32ToUTF16LEWithErrors/Q-u32-zero/short/0003
+ConvertUTF32ToUTF16LEWithErrors/Q-u32-zero/short/0004
+ConvertUTF32ToUTF16LEWithErrors/Q-u32-zero/short/0005
+ConvertUTF32ToUTF16LEWithErrors/Q-u32-zero/short/0007
+ConvertUTF32ToUTF16LEWithErrors/Q-u32-zero/short/0008
+ConvertUTF32ToUTF16LEWithErrors/Q-u32-zero/short/0009
+ConvertUTF32ToUTF16LEWithErrors/Q-u32-zero/boundary/0015
+ConvertUTF32ToUTF16LEWithErrors/Q-u32-zero/boundary/0016
+ConvertUTF32ToUTF16LEWithErrors/Q-u32-zero/boundary/0017
+ConvertUTF32ToUTF16LEWithErrors/Q-u32-zero/boundary/0031
+ConvertUTF32ToUTF16LEWithErrors/Q-u32-zero/boundary/0032
+ConvertUTF32ToUTF16LEWithErrors/Q-u32-zero/boundary/0033
+ConvertUTF32ToUTF16LEWithErrors/Q-u32-zero/bulk/1024
+ConvertUTF32ToUTF16BEWithErrors/Q-u32-zero/short/0001
+ConvertUTF32ToUTF16BEWithErrors/Q-u32-zero/short/0003
+ConvertUTF32ToUTF16BEWithErrors/Q-u32-zero/short/0004
+ConvertUTF32ToUTF16BEWithErrors/Q-u32-zero/short/0005
+ConvertUTF32ToUTF16BEWithErrors/Q-u32-zero/short/0007
+ConvertUTF32ToUTF16BEWithErrors/Q-u32-zero/short/0008
+ConvertUTF32ToUTF16BEWithErrors/Q-u32-zero/short/0009
+ConvertUTF32ToUTF16BEWithErrors/Q-u32-zero/boundary/0015
+ConvertUTF32ToUTF16BEWithErrors/Q-u32-zero/boundary/0016
+ConvertUTF32ToUTF16BEWithErrors/Q-u32-zero/boundary/0017
+ConvertUTF32ToUTF16BEWithErrors/Q-u32-zero/boundary/0031
+ConvertUTF32ToUTF16BEWithErrors/Q-u32-zero/boundary/0032
+ConvertUTF32ToUTF16BEWithErrors/Q-u32-zero/boundary/0033
+ConvertUTF32ToUTF16BEWithErrors/Q-u32-zero/bulk/1024
+ConvertValidUTF32ToUTF16LE/Q-u32-zero/short/0001
+ConvertValidUTF32ToUTF16LE/Q-u32-zero/short/0003
+ConvertValidUTF32ToUTF16LE/Q-u32-zero/short/0004
+ConvertValidUTF32ToUTF16LE/Q-u32-zero/short/0005
+ConvertValidUTF32ToUTF16LE/Q-u32-zero/short/0007
+ConvertValidUTF32ToUTF16LE/Q-u32-zero/short/0008
+ConvertValidUTF32ToUTF16LE/Q-u32-zero/short/0009
+ConvertValidUTF32ToUTF16LE/Q-u32-zero/boundary/0015
+ConvertValidUTF32ToUTF16LE/Q-u32-zero/boundary/0016
+ConvertValidUTF32ToUTF16LE/Q-u32-zero/boundary/0017
+ConvertValidUTF32ToUTF16LE/Q-u32-zero/boundary/0031
+ConvertValidUTF32ToUTF16LE/Q-u32-zero/boundary/0032
+ConvertValidUTF32ToUTF16LE/Q-u32-zero/boundary/0033
+ConvertValidUTF32ToUTF16LE/Q-u32-zero/bulk/1024
+ConvertValidUTF32ToUTF16BE/Q-u32-zero/short/0001
+ConvertValidUTF32ToUTF16BE/Q-u32-zero/short/0003
+ConvertValidUTF32ToUTF16BE/Q-u32-zero/short/0004
+ConvertValidUTF32ToUTF16BE/Q-u32-zero/short/0005
+ConvertValidUTF32ToUTF16BE/Q-u32-zero/short/0007
+ConvertValidUTF32ToUTF16BE/Q-u32-zero/short/0008
+ConvertValidUTF32ToUTF16BE/Q-u32-zero/short/0009
+ConvertValidUTF32ToUTF16BE/Q-u32-zero/boundary/0015
+ConvertValidUTF32ToUTF16BE/Q-u32-zero/boundary/0016
+ConvertValidUTF32ToUTF16BE/Q-u32-zero/boundary/0017
+ConvertValidUTF32ToUTF16BE/Q-u32-zero/boundary/0031
+ConvertValidUTF32ToUTF16BE/Q-u32-zero/boundary/0032
+ConvertValidUTF32ToUTF16BE/Q-u32-zero/boundary/0033
+ConvertValidUTF32ToUTF16BE/Q-u32-zero/bulk/1024
+UTF8LengthFromUTF32/Q-u32-zero/short/0001
+UTF8LengthFromUTF32/Q-u32-zero/short/0003
+UTF8LengthFromUTF32/Q-u32-zero/short/0004
+UTF8LengthFromUTF32/Q-u32-zero/short/0005
+UTF8LengthFromUTF32/Q-u32-zero/short/0007
+UTF8LengthFromUTF32/Q-u32-zero/short/0008
+UTF8LengthFromUTF32/Q-u32-zero/short/0009
+UTF8LengthFromUTF32/Q-u32-zero/boundary/0015
+UTF8LengthFromUTF32/Q-u32-zero/boundary/0016
+UTF8LengthFromUTF32/Q-u32-zero/boundary/0017
+UTF8LengthFromUTF32/Q-u32-zero/boundary/0031
+UTF8LengthFromUTF32/Q-u32-zero/boundary/0032
+UTF8LengthFromUTF32/Q-u32-zero/boundary/0033
+UTF8LengthFromUTF32/Q-u32-zero/bulk/1024
+UTF16LengthFromUTF32/Q-u32-zero/short/0001
+UTF16LengthFromUTF32/Q-u32-zero/short/0003
+UTF16LengthFromUTF32/Q-u32-zero/short/0004
+UTF16LengthFromUTF32/Q-u32-zero/short/0005
+UTF16LengthFromUTF32/Q-u32-zero/short/0007
+UTF16LengthFromUTF32/Q-u32-zero/short/0008
+UTF16LengthFromUTF32/Q-u32-zero/short/0009
+UTF16LengthFromUTF32/Q-u32-zero/boundary/0015
+UTF16LengthFromUTF32/Q-u32-zero/boundary/0016
+UTF16LengthFromUTF32/Q-u32-zero/boundary/0017
+UTF16LengthFromUTF32/Q-u32-zero/boundary/0031
+UTF16LengthFromUTF32/Q-u32-zero/boundary/0032
+UTF16LengthFromUTF32/Q-u32-zero/boundary/0033
+UTF16LengthFromUTF32/Q-u32-zero/bulk/1024
 `
 
 func TestDispatchQualificationSurface(t *testing.T) {
 	rows := dispatchQualificationRows()
 	wantNames := strings.Fields(dispatchQualificationExpectedNames)
-	if len(rows) != 1054 || len(wantNames) != 1054 {
-		t.Fatalf("row counts = (%d, %d), want (1054, 1054)", len(rows), len(wantNames))
+	if len(rows) != 1250 || len(wantNames) != 1250 {
+		t.Fatalf("row counts = (%d, %d), want (1250, 1250)", len(rows), len(wantNames))
 	}
 	for i, row := range rows {
 		if got, want := row.name(), wantNames[i]; got != want {
@@ -2574,6 +2990,20 @@ func TestDispatchQualificationTimedCallsAreLiteral(t *testing.T) {
 		"benchmarkIntSink = CountUTF16BE(row.uint16s)",
 		"benchmarkResultSink = UTF8LengthFromUTF16LEWithReplacement(row.uint16s)",
 		"benchmarkResultSink = UTF8LengthFromUTF16BEWithReplacement(row.uint16s)",
+		"benchmarkIntSink = ConvertUTF32ToLatin1(row.uint32s, dst)",
+		"benchmarkResultSink = ConvertUTF32ToLatin1WithErrors(row.uint32s, dst)",
+		"benchmarkIntSink = ConvertValidUTF32ToLatin1(row.uint32s, dst)",
+		"benchmarkIntSink = ConvertUTF32ToUTF8(row.uint32s, dst)",
+		"benchmarkResultSink = ConvertUTF32ToUTF8WithErrors(row.uint32s, dst)",
+		"benchmarkIntSink = ConvertValidUTF32ToUTF8(row.uint32s, dst)",
+		"benchmarkIntSink = ConvertUTF32ToUTF16LE(row.uint32s, dst)",
+		"benchmarkIntSink = ConvertUTF32ToUTF16BE(row.uint32s, dst)",
+		"benchmarkResultSink = ConvertUTF32ToUTF16LEWithErrors(row.uint32s, dst)",
+		"benchmarkResultSink = ConvertUTF32ToUTF16BEWithErrors(row.uint32s, dst)",
+		"benchmarkIntSink = ConvertValidUTF32ToUTF16LE(row.uint32s, dst)",
+		"benchmarkIntSink = ConvertValidUTF32ToUTF16BE(row.uint32s, dst)",
+		"benchmarkIntSink = UTF8LengthFromUTF32(row.uint32s)",
+		"benchmarkIntSink = UTF16LengthFromUTF32(row.uint32s)",
 	} {
 		if got := bytesCount(timedSource, []byte(call)); got != 1 {
 			t.Errorf("literal timed call %q count = %d, want 1", call, got)
