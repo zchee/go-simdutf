@@ -50,6 +50,8 @@ func run(args []string) error {
 		return runStateTransition(args[1:], false)
 	case "not-applicable":
 		return runStateTransition(args[1:], true)
+	case "benchstat":
+		return runBenchstat(args[1:])
 	case "return-index":
 		return runReturnIndex(args[1:])
 	default:
@@ -400,6 +402,44 @@ func runReturnIndex(args []string) error {
 		AuthoritySHA256: context.AuthoritySHA256, CampaignID: context.CampaignID,
 		CommandManifestSHA256: context.CommandManifestSHA256, IdentitySetDigest: context.IdentitySetDigest,
 	})
+}
+
+func runBenchstat(args []string) error {
+	flags, err := parseExactFlags(args, []string{"--incumbent=", "--candidate=", "--incumbent-receipt-id=", "--candidate-receipt-id=", "--qualification-contract=", "--operation-id="})
+	if err != nil {
+		return err
+	}
+	incumbentRaw, err := os.ReadFile(flags["--incumbent="])
+	if err != nil {
+		return err
+	}
+	candidateRaw, err := os.ReadFile(flags["--candidate="])
+	if err != nil {
+		return err
+	}
+	contractBytes, err := os.ReadFile(flags["--qualification-contract="])
+	if err != nil {
+		return err
+	}
+	var contract portplan.QualificationContractV1
+	dec := json.NewDecoder(bytes.NewReader(contractBytes))
+	dec.DisallowUnknownFields()
+	if err := dec.Decode(&contract); err != nil {
+		return fmt.Errorf("qualification contract: %w", err)
+	}
+	artifact, err := portplan.RenderCanonicalBenchstatArtifactV1(
+		contract,
+		flags["--operation-id="],
+		flags["--incumbent-receipt-id="],
+		flags["--candidate-receipt-id="],
+		incumbentRaw,
+		candidateRaw,
+	)
+	if err != nil {
+		return err
+	}
+	_, err = os.Stdout.Write(artifact)
+	return err
 }
 
 func parseExactFlags(args, required []string) (map[string]string, error) {

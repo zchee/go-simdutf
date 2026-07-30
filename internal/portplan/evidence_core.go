@@ -1229,6 +1229,56 @@ func benchmarkMedianX2V1(samples benchmarkSamplesV1) (int64, bool) {
 	return values[4] + values[5], true
 }
 
+func RenderCanonicalBenchstatArtifactV1(contract QualificationContractV1, operationID, incumbentReceiptID, candidateReceiptID string, incumbentRaw, candidateRaw []byte) ([]byte, error) {
+	if operationID == "" || incumbentReceiptID == "" || candidateReceiptID == "" {
+		return nil, errors.New("benchstat artifact identity is incomplete")
+	}
+	record := EvidenceRecordV1{OperationID: operationID}
+	rows := qualificationRowsForRecordV1(contract, record)
+	if len(rows) == 0 {
+		return nil, errors.New("benchstat artifact has no frozen operation rows")
+	}
+	oldSamples, err := parseBenchmarkSamplesV1(incumbentRaw, rows)
+	if err != nil {
+		return nil, err
+	}
+	newSamples, err := parseBenchmarkSamplesV1(candidateRaw, rows)
+	if err != nil {
+		return nil, err
+	}
+	artifact := benchstatArtifactV1{
+		Schema: "simdutf-benchstat-v1", Version: 1,
+		QualificationContractID: contract.QualificationContractID,
+		IncumbentReceiptID:      incumbentReceiptID, CandidateReceiptID: candidateReceiptID,
+		Rows: make([]benchstatRowV1, 0, len(rows)),
+	}
+	for _, row := range rows {
+		oldRow := oldSamples[row.BenchmarkName]
+		newRow := newSamples[row.BenchmarkName]
+		oldMedian, oldComplete := benchmarkMedianX2V1(oldRow)
+		newMedian, newComplete := benchmarkMedianX2V1(newRow)
+		pValue := -1
+		if oldComplete && newComplete {
+			value, pErr := mannWhitneyPValueMillionthsV1(oldRow.NanosMillionths, newRow.NanosMillionths)
+			if pErr != nil {
+				return nil, pErr
+			}
+			pValue = value
+		}
+		artifact.Rows = append(artifact.Rows, benchstatRowV1{
+			BenchmarkName:              row.BenchmarkName,
+			OldMedianNanosMillionthsX2: oldMedian,
+			NewMedianNanosMillionthsX2: newMedian,
+			PValueMillionths:           pValue,
+		})
+	}
+	canonical, err := json.Marshal(artifact)
+	if err != nil {
+		return nil, err
+	}
+	return append(canonical, '\n'), nil
+}
+
 func decodeBenchstatArtifactV1(contents []byte) (benchstatArtifactV1, error) {
 	var artifact benchstatArtifactV1
 	decoder := json.NewDecoder(bytes.NewReader(contents))

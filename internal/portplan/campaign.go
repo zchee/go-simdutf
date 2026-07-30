@@ -245,10 +245,6 @@ func validateArgvV1(c CampaignCommandV1) error {
 	if c.Env["GOOS"] == "darwin" {
 		goBin = "/Users/zchee/sdk/go1.26.5/bin/go"
 	}
-	benchstatBin := "/home/zchee/go/bin/benchstat"
-	if c.Env["GOOS"] == "darwin" {
-		benchstatBin = "/Users/zchee/go/bin/benchstat"
-	}
 	switch c.Action {
 	case "source_commit", "source_tree", "source_parent", "source_status":
 		return exactArgsV1(c.Argv, []string{goBin, "run", "./internal/portplan/cmd/simdutf-evidence", "source-identity", "--action=" + c.Action, "--role=" + c.Role, "--receipt=staging/identity/" + c.Role + ".json", "--archive=staging/source/" + c.Role + ".tar"})
@@ -315,10 +311,7 @@ func validateArgvV1(c CampaignCommandV1) error {
 		}
 		return nil
 	case "benchstat":
-		if len(c.Argv) != 4 || c.Argv[0] != benchstatBin || c.Argv[1] != "-alpha=0.05" || !literalObjectPathV1(c.Argv[2]) || !literalObjectPathV1(c.Argv[3]) || c.Argv[2] == c.Argv[3] {
-			return errors.New("invalid benchstat profile")
-		}
-		return nil
+		return validateEvidenceProducerBenchstatArgsV1(c.Argv, goBin)
 	case "go_object_build":
 		return exactArgsV1(c.Argv, []string{goBin, "test", "-c", "."})
 	case "provider_guard":
@@ -447,6 +440,55 @@ func literalProofReceiptFlagV1(arg string) bool {
 	}
 	value := strings.TrimPrefix(arg, prefix)
 	return strings.HasPrefix(value, "receipt-v1-") && lowerHex(strings.TrimPrefix(value, "receipt-v1-"), 64)
+}
+
+func validateEvidenceProducerBenchstatArgsV1(argv []string, goBin string) error {
+	prefix := []string{goBin, "run", "./internal/portplan/cmd/simdutf-evidence", "benchstat"}
+	required := []string{"--incumbent=", "--candidate=", "--incumbent-receipt-id=", "--candidate-receipt-id=", "--qualification-contract=", "--operation-id="}
+	if len(argv) != len(prefix)+len(required) || !exactArgsEqualV1(argv[:len(prefix)], prefix) {
+		return errors.New("invalid benchstat profile")
+	}
+	values := map[string]string{}
+	for i, flagPrefix := range required {
+		arg := argv[len(prefix)+i]
+		if !strings.HasPrefix(arg, flagPrefix) {
+			return errors.New("invalid benchstat profile")
+		}
+		value := strings.TrimPrefix(arg, flagPrefix)
+		if value == "" || strings.ContainsAny(value, "\x00\r\n") {
+			return errors.New("invalid benchstat profile")
+		}
+		values[flagPrefix] = value
+	}
+	if !literalObjectPathV1(values["--incumbent="]) || !literalObjectPathV1(values["--candidate="]) || values["--incumbent="] == values["--candidate="] {
+		return errors.New("invalid benchstat profile")
+	}
+	if !literalObjectPathV1(values["--qualification-contract="]) {
+		return errors.New("invalid benchstat profile")
+	}
+	if !strings.HasPrefix(values["--incumbent-receipt-id="], "receipt-v1-") || !lowerHex(strings.TrimPrefix(values["--incumbent-receipt-id="], "receipt-v1-"), 64) {
+		return errors.New("invalid benchstat profile")
+	}
+	if !strings.HasPrefix(values["--candidate-receipt-id="], "receipt-v1-") || !lowerHex(strings.TrimPrefix(values["--candidate-receipt-id="], "receipt-v1-"), 64) {
+		return errors.New("invalid benchstat profile")
+	}
+	if !strings.HasPrefix(values["--operation-id="], "op-v1-") || !lowerHex(strings.TrimPrefix(values["--operation-id="], "op-v1-"), 64) {
+		return errors.New("invalid benchstat profile")
+	}
+	return nil
+}
+
+func benchstatInputPathsV1(argv []string) (string, string, bool) {
+	var incumbent, candidate string
+	for _, arg := range argv {
+		switch {
+		case strings.HasPrefix(arg, "--incumbent="):
+			incumbent = strings.TrimPrefix(arg, "--incumbent=")
+		case strings.HasPrefix(arg, "--candidate="):
+			candidate = strings.TrimPrefix(arg, "--candidate=")
+		}
+	}
+	return incumbent, candidate, incumbent != "" && candidate != "" && incumbent != candidate
 }
 func literalTestNameV1(arg, prefix string) bool {
 	name := strings.TrimSuffix(strings.TrimPrefix(arg, prefix), "$")
@@ -664,7 +706,7 @@ func validateOutputsV1(c CampaignCommandV1) error {
 	}
 	if artifact != "" {
 		media := "text/plain"
-		if c.Action == "state_transition" || c.Action == "not_applicable" || c.Action == "return_index" || c.Action == "quiet_affinity_recheck" {
+		if c.Action == "state_transition" || c.Action == "not_applicable" || c.Action == "return_index" || c.Action == "quiet_affinity_recheck" || c.Action == "benchstat" {
 			media = "application/json"
 		}
 		expected[artifact] = struct{ kind, media string }{artifact, media}
@@ -686,7 +728,7 @@ func validateOutputsV1(c CampaignCommandV1) error {
 }
 
 func outputExtensionV1(id string) string {
-	if id == "exit" || id == "argv-env" || id == "state-transition" || id == "not-applicable" || id == "index" || id == "quiet-affinity" {
+	if id == "exit" || id == "argv-env" || id == "state-transition" || id == "not-applicable" || id == "index" || id == "quiet-affinity" || id == "benchstat" {
 		return ".json"
 	}
 	return ".txt"
@@ -748,7 +790,8 @@ func validateBenchmarkTopologyV1(commands []CampaignCommandV1) error {
 		case "provider_guard":
 			pair.guardOrdinal = c.Ordinal
 		case "benchstat":
-			if c.Argv[2] != pair.oldPath || c.Argv[3] != pair.newPath {
+			incumbent, candidate, ok := benchstatInputPathsV1(c.Argv)
+			if !ok || incumbent != pair.oldPath || candidate != pair.newPath {
 				return errors.New("invalid benchstat inputs")
 			}
 			pair.benchstatOrdinal = c.Ordinal

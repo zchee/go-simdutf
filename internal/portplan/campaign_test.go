@@ -93,7 +93,7 @@ func TestValidateBenchmarkTopologyV1(t *testing.T) {
 	quiet.Env["SIMDUTF_CPU"], quiet.Env["SIMDUTF_AFFINITY"] = "1", "taskset:1"
 	new := campaignTestCommand(3, "go_benchmark", "new", []string{"/usr/bin/taskset", "-c", "1", goBin, "test", "-run=^$", "-bench=^BenchmarkUTF8$", "-benchmem", "-count=10", "."})
 	guard := campaignTestCommand(4, "provider_guard", "direct", []string{goBin, "test", "-run=^TestProviderGuard$", "."})
-	benchstat := campaignTestCommand(5, "benchstat", "new", []string{"/home/zchee/go/bin/benchstat", "-alpha=0.05", commandOutputPathV1(old, "incumbent-benchmark"), commandOutputPathV1(new, "candidate-benchmark")})
+	benchstat := campaignTestCommand(5, "benchstat", "new", []string{goBin, "run", "./internal/portplan/cmd/simdutf-evidence", "benchstat", "--incumbent=" + commandOutputPathV1(old, "incumbent-benchmark"), "--candidate=" + commandOutputPathV1(new, "candidate-benchmark"), "--incumbent-receipt-id=receipt-v1-" + strings.Repeat("1", 64), "--candidate-receipt-id=receipt-v1-" + strings.Repeat("2", 64), "--qualification-contract=staging/qualification-contract-v1.json", "--operation-id=" + campaignTestID("op-v1-")})
 	selector := campaignTestCommand(6, "selector_test", "selector", []string{goBin, "test", "-run=^TestSelector$", "."})
 	if err := validateBenchmarkTopologyV1([]CampaignCommandV1{old, quiet, new, guard, benchstat, selector}); err != nil {
 		t.Fatalf("canonical topology rejected: %v", err)
@@ -139,7 +139,7 @@ func campaignTestCommand(ordinal int, action, role string, argv []string) Campai
 	}
 	kind := campaignArtifactKindV1(action, role)
 	outputs := []CommandOutputV1{{"stdout", "stdout", "staging/" + id + "/stdout.txt", "text/plain", true}, {"stderr", "stderr", "staging/" + id + "/stderr.txt", "text/plain", true}, {"exit", "exit", "staging/" + id + "/exit.json", "application/json", true}, {"argv-env", "argv-env", "staging/" + id + "/argv-env.json", "application/json", true}}
-	outputs = append(outputs, CommandOutputV1{kind, kind, "staging/" + id + "/" + kind + outputExtensionV1(kind), map[bool]string{true: "application/json", false: "text/plain"}[action == "state_transition" || action == "not_applicable" || action == "return_index" || action == "quiet_affinity_recheck"], true})
+	outputs = append(outputs, CommandOutputV1{kind, kind, "staging/" + id + "/" + kind + outputExtensionV1(kind), map[bool]string{true: "application/json", false: "text/plain"}[action == "state_transition" || action == "not_applicable" || action == "return_index" || action == "quiet_affinity_recheck" || action == "benchstat"], true})
 	return CampaignCommandV1{ordinal, id, action, role, argv, cwd, env, 60, 0, outputs, campaignTestID("op-v1-"), campaignTestID("batch-v1-"), campaignTestID("rk-v1-"), campaignTestID("cell-v1-"), "westmere"}
 }
 
