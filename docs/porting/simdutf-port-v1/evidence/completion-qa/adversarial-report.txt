@@ -1,0 +1,10 @@
+simdutf port completion adversarial/fail-closed receipt
+schema: simdutf-completion-adversarial-v1
+checks:
+- missing D3 lane proof fails TestPortCompletionAudit
+- host/SSH authority drift fails TestPortCompletionAudit
+- illegal disposition values fail LoadQualificationDispositionsV1 / audit
+- dirty tracked tree fails SourceClean / ValidateCompletionV1
+- manifest totals other than 155/0/9 fail audit
+- ValidateCompletionV1 rejects incomplete row/cell state chains
+observed: env GOEXPERIMENT=nosimd,runtimesecret go test -run=^TestPortCompletionAudit$ . => PASS

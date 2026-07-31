@@ -1,0 +1,1 @@
+ok  	github.com/zchee/go-simdutf	0.484s
