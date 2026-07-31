@@ -750,7 +750,7 @@ func validatePinnedCPPV1(row QualificationBenchmarkRowV1) error {
 		}
 	case "not_comparable", "not_applicable":
 		if !reasons[row.PinnedCPPReason] || row.PinnedCPPProcedure != "" || row.PinnedCPPOptions != "" {
-			return errors.New("C++ N/A row has invalid independent reason")
+			return errors.New("invalid independent reason for C++ N/A row")
 		}
 	default:
 		return errors.New("invalid pinned C++ status")

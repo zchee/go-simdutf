@@ -26,18 +26,22 @@ import (
 
 const archsimdSourceAggregateV1 = "68b4d22b88b577530e288ac976782e0bed772dae279d5e4e4d9ed6d73f8af419"
 
-var upstreamAuthorityHeaderV1 = [...]string{"schema_version", "remote_url", "commit", "tree", "parent", "clean", "archive_format", "archive_sha256", "archive_recipe", "evidence_anchor"}
-var goBaseAuthorityHeaderV1 = [...]string{"schema_version", "repository", "commit", "tree", "parent", "clean", "archive_format", "archive_sha256", "archive_recipe", "evidence_anchor"}
-var hostAuthorityHeaderV1 = [...]string{"schema_version", "host_id", "transport", "os", "kernel", "arch", "cpu_model", "logical_cpu_count", "cpu_feature_digest_or_na", "go_version", "go_binary_sha256", "identity_fact_sha256", "evidence_anchor"}
-var archsimdSourceHeaderV1 = [...]string{"schema_version", "go_toolchain", "goos", "goarch", "ordinal", "relative_path", "sha256"}
-var archsimdPrimitiveHeaderV1 = [...]string{"mapping_version", "family_contract_display_id", "go_toolchain", "archsimd_source_digest", "required_primitives", "available_primitives", "audit_outcome", "evidence_anchor"}
-var corpusContractHeaderV1 = [...]string{"schema_version", "ordinal", "corpus_id", "state", "element_type", "size_units", "byte_length_or_pending", "sha256_or_pending", "source_identity", "recipe", "family_contracts"}
-var frozenInputsHeaderV1 = [...]string{"schema_version", "path", "size", "sha256"}
+var (
+	upstreamAuthorityHeaderV1 = [...]string{"schema_version", "remote_url", "commit", "tree", "parent", "clean", "archive_format", "archive_sha256", "archive_recipe", "evidence_anchor"}
+	goBaseAuthorityHeaderV1   = [...]string{"schema_version", "repository", "commit", "tree", "parent", "clean", "archive_format", "archive_sha256", "archive_recipe", "evidence_anchor"}
+	hostAuthorityHeaderV1     = [...]string{"schema_version", "host_id", "transport", "os", "kernel", "arch", "cpu_model", "logical_cpu_count", "cpu_feature_digest_or_na", "go_version", "go_binary_sha256", "identity_fact_sha256", "evidence_anchor"}
+	archsimdSourceHeaderV1    = [...]string{"schema_version", "go_toolchain", "goos", "goarch", "ordinal", "relative_path", "sha256"}
+	archsimdPrimitiveHeaderV1 = [...]string{"mapping_version", "family_contract_display_id", "go_toolchain", "archsimd_source_digest", "required_primitives", "available_primitives", "audit_outcome", "evidence_anchor"}
+	corpusContractHeaderV1    = [...]string{"schema_version", "ordinal", "corpus_id", "state", "element_type", "size_units", "byte_length_or_pending", "sha256_or_pending", "source_identity", "recipe", "family_contracts"}
+	frozenInputsHeaderV1      = [...]string{"schema_version", "path", "size", "sha256"}
+)
 
-type UpstreamAuthorityV1 struct{ RemoteURL, Commit, Tree, Parent, ArchiveSHA256, ArchiveRecipe, EvidenceAnchor string }
-type GoBaseAuthorityV1 struct {
-	Repository, Commit, Tree, Parent, ArchiveSHA256, ArchiveRecipe, EvidenceAnchor string
-}
+type (
+	UpstreamAuthorityV1 struct{ RemoteURL, Commit, Tree, Parent, ArchiveSHA256, ArchiveRecipe, EvidenceAnchor string }
+	GoBaseAuthorityV1   struct {
+		Repository, Commit, Tree, Parent, ArchiveSHA256, ArchiveRecipe, EvidenceAnchor string
+	}
+)
 type HostAuthorityV1 struct {
 	HostID, Transport, OS, Kernel, Arch, CPUModel                                       string
 	LogicalCPUCount                                                                     int
@@ -47,11 +51,13 @@ type ArchsimdSourceFileV1 struct {
 	Ordinal              int
 	RelativePath, SHA256 string
 }
-type ArchsimdPrimitiveV1 struct{ FamilyContractDisplayID, RequiredPrimitives, AvailablePrimitives, EvidenceAnchor string }
-type CorpusContractRecordV1 struct {
-	Ordinal                                                                                                                int
-	CorpusID, State, ElementType, SizeUnits, ByteLengthOrPending, SHA256OrPending, SourceIdentity, Recipe, FamilyContracts string
-}
+type (
+	ArchsimdPrimitiveV1    struct{ FamilyContractDisplayID, RequiredPrimitives, AvailablePrimitives, EvidenceAnchor string }
+	CorpusContractRecordV1 struct {
+		Ordinal                                                                                                                int
+		CorpusID, State, ElementType, SizeUnits, ByteLengthOrPending, SHA256OrPending, SourceIdentity, Recipe, FamilyContracts string
+	}
+)
 type FrozenInputV1 struct {
 	Path   string
 	Size   int
@@ -82,17 +88,17 @@ func ParseUpstreamAuthorityV1(data []byte) (UpstreamAuthorityV1, error) {
 
 // ParseGoBaseAuthorityV1 parses the immutable clean Go integration-base receipt.
 func ParseGoBaseAuthorityV1(data []byte) (GoBaseAuthorityV1, error) {
-	lines, err := parseLines(data, "Go base authority")
+	lines, err := parseLines(data, "go base authority")
 	if err != nil {
 		return GoBaseAuthorityV1{}, err
 	}
 	if len(lines) != 2 {
-		return GoBaseAuthorityV1{}, fmt.Errorf("Go base authority: got %d data rows, want 1", len(lines)-1)
+		return GoBaseAuthorityV1{}, fmt.Errorf("go base authority: got %d data rows, want 1", len(lines)-1)
 	}
-	if err := validateHeader(lines[0], goBaseAuthorityHeaderV1[:], "Go base authority"); err != nil {
+	if err := validateHeader(lines[0], goBaseAuthorityHeaderV1[:], "go base authority"); err != nil {
 		return GoBaseAuthorityV1{}, err
 	}
-	f, err := parseRecord(lines[1], len(goBaseAuthorityHeaderV1), 2, "Go base authority")
+	f, err := parseRecord(lines[1], len(goBaseAuthorityHeaderV1), 2, "go base authority")
 	if err != nil {
 		return GoBaseAuthorityV1{}, err
 	}
@@ -106,7 +112,7 @@ func ParseGoBaseAuthorityV1(data []byte) (GoBaseAuthorityV1, error) {
 		f[7] != "deab8255169241cac1fe3f589faa5c20f4f238c742320f4f8c0e8096a8f8f965" ||
 		f[8] != "git archive --format=tar 083f5bc47a010626612e05378ae31a3359f904ad" ||
 		f[9] != "git:083f5bc47a010626612e05378ae31a3359f904ad" {
-		return GoBaseAuthorityV1{}, errors.New("Go base authority: noncanonical receipt")
+		return GoBaseAuthorityV1{}, errors.New("go base authority: noncanonical receipt")
 	}
 	return GoBaseAuthorityV1{
 		Repository: f[1], Commit: f[2], Tree: f[3], Parent: f[4],
@@ -379,12 +385,15 @@ func lowerDigest(s string) bool {
 	_, err := hex.DecodeString(s)
 	return err == nil
 }
+
 func safeTopFile(p string) bool {
 	return safeReceiptPath(p) && !strings.Contains(p, "/") && (strings.HasSuffix(p, ".go") || strings.HasSuffix(p, ".s"))
 }
+
 func safeReceiptPath(p string) bool {
 	return p != "" && !strings.HasPrefix(p, "/") && !strings.HasPrefix(p, ".") && path.Clean(p) == p && !strings.Contains(p, "\\") && !strings.Contains(p, "\t") && !strings.Contains(p, "\n") && !strings.HasPrefix(p, "internal/portplan/") && !strings.Contains(p, "generated")
 }
+
 func sourceAggregate(rows []ArchsimdSourceFileV1) string {
 	f := []string{"archsimd-source-v1", "go1.26.5", "linux", "amd64"}
 	for i, r := range rows {
@@ -395,6 +404,7 @@ func sourceAggregate(rows []ArchsimdSourceFileV1) string {
 	}
 	return SHA256Hex(EncodeTupleV1(f...))
 }
+
 func validateCorpusFixtures(rows []CorpusContractRecordV1) error {
 	zero := make([]byte, 4096)
 	ramp := make([]byte, 4096)

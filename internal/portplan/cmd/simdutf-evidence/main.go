@@ -530,5 +530,5 @@ func readLinuxCpusAllowedList() (string, error) {
 			return strings.TrimSpace(strings.TrimPrefix(line, "Cpus_allowed_list:")), nil
 		}
 	}
-	return "", errors.New("Cpus_allowed_list missing")
+	return "", errors.New("missing Cpus_allowed_list")
 }
