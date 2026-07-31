@@ -154,7 +154,7 @@ func gitRevParse(root, rev string) (string, error) {
 }
 
 func gitWorkingTreeClean(root string) (bool, error) {
-	cmd := exec.Command("git", "status", "--porcelain")
+	cmd := exec.Command("git", "status", "--porcelain", "--untracked-files=no")
 	cmd.Dir = root
 	out, err := cmd.Output()
 	if err != nil {

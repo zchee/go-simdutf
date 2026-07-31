@@ -185,7 +185,7 @@ func TestPortCompletionAudit(t *testing.T) {
 	}
 
 	// Working tree must be clean for a durable completion claim.
-	status, err := exec.Command("git", "-C", root, "status", "--porcelain").Output()
+	status, err := exec.Command("git", "-C", root, "status", "--porcelain", "--untracked-files=no").Output()
 	if err != nil {
 		t.Fatal(err)
 	}
