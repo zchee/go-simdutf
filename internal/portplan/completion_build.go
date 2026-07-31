@@ -211,6 +211,16 @@ func BuildRepositoryCompletionV1(root string) (CompletionV1, CompletionValidatio
 	if err != nil {
 		return CompletionV1{}, CompletionValidationContextV1{}, err
 	}
+	plannedByKey := map[string]ManifestRowV1{}
+	for _, row := range planned {
+		plannedByKey[row.RowKeyV1] = row
+	}
+	for index := range initial {
+		if frozen, ok := plannedByKey[initial[index].RowKeyV1]; ok {
+			initial[index].Cells[manifestStatusIndex] = frozen.Cells[manifestStatusIndex]
+			initial[index].Cells[manifestMilestoneIndex] = frozen.Cells[manifestMilestoneIndex]
+		}
+	}
 	ledger, err := ParseISALedgerV1(ledgerBytes)
 	if err != nil {
 		return CompletionV1{}, CompletionValidationContextV1{}, err
@@ -248,11 +258,7 @@ func BuildRepositoryCompletionV1(root string) (CompletionV1, CompletionValidatio
 		return CompletionV1{}, CompletionValidationContextV1{}, err
 	}
 
-	plannedByKey := map[string]ManifestRowV1{}
-	for _, row := range planned {
-		plannedByKey[row.RowKeyV1] = row
-	}
-	final := append([]ManifestRowV1(nil), initial...)
+		final := append([]ManifestRowV1(nil), initial...)
 	for index := range final {
 		if _, ok := plannedByKey[final[index].RowKeyV1]; ok {
 			final[index].Cells[manifestStatusIndex] = "implemented"
