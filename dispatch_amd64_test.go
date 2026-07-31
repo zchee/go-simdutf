@@ -270,8 +270,8 @@ func TestMakeImplementationAMD64UTF16HelpersQualificationSelection(t *testing.T)
 }
 
 func TestMakeImplementationAMD64FindQualificationSelection(t *testing.T) {
-	// find/findUTF16 providers are forceable but remain scalar-first until
-	// qualification dispositions promote selected backends.
+	// FindUTF16 stays scalar-first. Find qualification selected haswell/westmere
+	// on linux-amd64; both remain ahead of scalar, with haswell preferred on AVX2.
 	for _, input := range []selectionInput{
 		{},
 		{features: cpuSSSE3},
@@ -280,8 +280,14 @@ func TestMakeImplementationAMD64FindQualificationSelection(t *testing.T) {
 		{features: cpuSSSE3 | cpuAVX2, archsimdAVX2: true},
 	} {
 		got := makeImplementation(input)
-		if !sameFunction(got.find, findScalar) || !sameFunction(got.findUTF16, findUTF16Scalar) {
-			t.Fatalf("find providers leaked ahead of scalar for %#v", input)
+		wantFind := findScalar
+		if input.features&cpuAVX2 != 0 {
+			wantFind = findHaswell
+		} else if input.features&cpuSSSE3 != 0 {
+			wantFind = findWestmere
+		}
+		if !sameFunction(got.find, wantFind) || !sameFunction(got.findUTF16, findUTF16Scalar) {
+			t.Fatalf("find selection mismatch for %#v", input)
 		}
 	}
 }

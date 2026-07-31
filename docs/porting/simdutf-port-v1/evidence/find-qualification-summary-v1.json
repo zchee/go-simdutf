@@ -1,0 +1,68 @@
+{
+  "family_contract_id": "FC-v1-find",
+  "head": "95d6618883d85cf43fb00ceac37145a95c89b4a6",
+  "lanes": {
+    "darwin-arm64-nosimd-neon": {
+      "host": "darwin-arm64-apple-m3-max",
+      "incumbent": "scalar",
+      "lane": "darwin-arm64-nosimd",
+      "ops": {
+        "Find": "direct_only",
+        "FindUTF16": "direct_only"
+      },
+      "provider_candidate": "neon",
+      "source": "find-darwin-neon-dispositions-v1.json"
+    },
+    "linux-amd64-none-haswell": {
+      "host": "linux-amd64-debian-13-xeon-platinum-8481c",
+      "incumbent": "scalar",
+      "lane": "linux-amd64-none",
+      "ops": {
+        "Find": "selected",
+        "FindUTF16": "direct_only"
+      },
+      "provider_candidate": "haswell",
+      "source": "find-linux-haswell-dispositions-v1.json"
+    },
+    "linux-amd64-none-westmere": {
+      "host": "linux-amd64-debian-13-xeon-platinum-8481c",
+      "incumbent": "scalar",
+      "lane": "linux-amd64-none",
+      "ops": {
+        "Find": "selected",
+        "FindUTF16": "direct_only"
+      },
+      "provider_candidate": "westmere",
+      "source": "find-linux-westmere-dispositions-v1.json"
+    },
+    "linux-amd64-simd-archsimd": {
+      "host": "linux-amd64-debian-13-xeon-platinum-8481c",
+      "incumbent": "scalar",
+      "lane": "linux-amd64-simd",
+      "ops": {
+        "Find": "direct_only",
+        "FindUTF16": "direct_only"
+      },
+      "provider_candidate": "archsimd",
+      "source": "find-linux-archsimd-dispositions-v1.json"
+    }
+  },
+  "notes": [
+    "Promote only selected providers ahead of scalar in public dispatch order.",
+    "Direct-only providers remain registered after scalar and forceable via SIMDUTF_FORCE_PROVIDER / SIMDUTF_BENCH_EXPECT_TIER.",
+    "Do not emit/promote until both host campaigns have DONE and every ConvertUTF16* pair is complete."
+  ],
+  "pending_lanes": [],
+  "public_selection": {
+    "darwin-arm64": {
+      "Find": "scalar",
+      "FindUTF16": "scalar"
+    },
+    "linux-amd64": {
+      "Find": "haswell",
+      "FindUTF16": "scalar"
+    }
+  },
+  "schema": "simdutf-find-qualification-summary-v1",
+  "version": 1
+}

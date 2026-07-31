@@ -618,10 +618,10 @@ func makeImplementation(input selectionInput) implementation {
 		),
 		find: selectVariant(
 			input,
-			variant[func([]byte, byte) int]{value: findScalar, kind: implementationScalar, available: true},
-			variant[func([]byte, byte) int]{value: archsimdFindFn, kind: implementationArchsimd, required: cpuAVX2, available: archsimdFindFn != nil},
 			variant[func([]byte, byte) int]{value: findHaswell, kind: implementationHaswell, required: cpuAVX2, available: true},
 			variant[func([]byte, byte) int]{value: findWestmere, kind: implementationWestmere, required: cpuSSSE3, available: true},
+			variant[func([]byte, byte) int]{value: findScalar, kind: implementationScalar, available: true},
+			variant[func([]byte, byte) int]{value: archsimdFindFn, kind: implementationArchsimd, required: cpuAVX2, available: archsimdFindFn != nil},
 		),
 		findUTF16: selectVariant(
 			input,

@@ -279,8 +279,8 @@ func TestMakeImplementationARM64UTF32SourceQualificationSelection(t *testing.T) 
 	}
 }
 func TestMakeImplementationARM64FindQualificationSelection(t *testing.T) {
-	// Find providers are forceable but remain scalar-first until qualification
-	// dispositions promote selected backends.
+	// Find/FindUTF16 darwin-arm64 dispositions are direct_only; keep scalar-first
+	// with NEON forceable via SIMDUTF_FORCE_PROVIDER.
 	for _, input := range []selectionInput{
 		{},
 		{features: cpuNEON},
