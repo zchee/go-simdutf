@@ -24,6 +24,7 @@ import (
 	"io"
 	"math/big"
 	"path"
+	"slices"
 	"sort"
 	"strconv"
 	"strings"
@@ -1160,7 +1161,7 @@ func parseBenchmarkSamplesV1(raw []byte, rows []QualificationBenchmarkRowV1) (ma
 		}
 		result[row.BenchmarkName] = benchmarkSamplesV1{NanosMillionths: []int64{}, ZeroAllocs: true}
 	}
-	for _, line := range strings.Split(strings.TrimSuffix(string(raw), "\n"), "\n") {
+	for line := range strings.SplitSeq(strings.TrimSuffix(string(raw), "\n"), "\n") {
 		fields := strings.Fields(line)
 		if len(fields) == 0 || !strings.HasPrefix(fields[0], "Benchmark") {
 			continue
@@ -1203,7 +1204,7 @@ func benchmarkMedianX2V1(samples benchmarkSamplesV1) (int64, bool) {
 		return 0, false
 	}
 	values := append([]int64(nil), samples.NanosMillionths...)
-	sort.Slice(values, func(i, j int) bool { return values[i] < values[j] })
+	slices.Sort(values)
 	const maxInt64 = int64(^uint64(0) >> 1)
 	if values[4] <= 0 || values[5] > maxInt64-values[4] {
 		return 0, false
@@ -1418,10 +1419,7 @@ func mannWhitneyPValueMillionthsV1(oldSamples, newSamples []int64) (int, error) 
 	if observedUX2 == mirrorUX2 {
 		return 1000000, nil
 	}
-	limitUX2 := observedUX2
-	if mirrorUX2 < limitUX2 {
-		limitUX2 = mirrorUX2
-	}
+	limitUX2 := min(mirrorUX2, observedUX2)
 
 	counts := make([]map[int]uint64, n1+1)
 	for i := range counts {
@@ -1431,10 +1429,7 @@ func mannWhitneyPValueMillionthsV1(oldSamples, newSamples []int64) (int, error) 
 	seen := 0
 	for _, rankX2 := range ranksX2 {
 		seen++
-		maxSelected := n1
-		if seen < maxSelected {
-			maxSelected = seen
-		}
+		maxSelected := min(seen, n1)
 		for selected := maxSelected; selected > 0; selected-- {
 			for sum, count := range counts[selected-1] {
 				counts[selected][sum+rankX2] += count
@@ -1452,10 +1447,7 @@ func mannWhitneyPValueMillionthsV1(oldSamples, newSamples []int64) (int, error) 
 		return 0, errors.New("invalid Mann-Whitney distribution")
 	}
 	numerator := lowerTail * 2 * 1000000
-	pValue := (numerator + total/2) / total
-	if pValue > 1000000 {
-		pValue = 1000000
-	}
+	pValue := min((numerator+total/2)/total, 1000000)
 	return int(pValue), nil
 }
 

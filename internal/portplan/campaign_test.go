@@ -15,6 +15,7 @@
 package portplan
 
 import (
+	"maps"
 	"strings"
 	"testing"
 )
@@ -154,9 +155,7 @@ func campaignArtifactKindV1(action, role string) string {
 }
 func cloneEnv(in map[string]string) map[string]string {
 	out := make(map[string]string, len(in))
-	for k, v := range in {
-		out[k] = v
-	}
+	maps.Copy(out, in)
 	return out
 }
 func campaignTestID(prefix string) string { return prefix + strings.Repeat("0", 64) }

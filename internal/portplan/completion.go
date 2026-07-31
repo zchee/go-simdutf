@@ -740,7 +740,7 @@ func validateCompletionClassificationV1(classification ClassificationV1, members
 	if len(rows) != 125 || len(ranks) != 125 {
 		return errors.New("completion: incomplete classification rows")
 	}
-	for rank := 0; rank < 125; rank++ {
+	for rank := range 125 {
 		if !ranks[rank] {
 			return errors.New("completion: noncanonical classification rank")
 		}
@@ -823,10 +823,7 @@ func validateCompletionClassificationV1(classification ClassificationV1, members
 			transactionMembers[i] = members[i].RowKeyV1
 		}
 		for start, sequence := 0, 1; start < len(members); start, sequence = start+12, sequence+1 {
-			end := start + 12
-			if end > len(members) {
-				end = len(members)
-			}
+			end := min(start+12, len(members))
 			row := members[start]
 			batch, ok := batches[row.ScalarBatchStorageID]
 			if !ok || batch.Kind != "scalar" || batch.FamilyContractDisplayID != family ||

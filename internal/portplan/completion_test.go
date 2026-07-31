@@ -18,6 +18,7 @@ import (
 	"bytes"
 	"encoding/hex"
 	"encoding/json"
+	"maps"
 	"os"
 	"path/filepath"
 	"runtime"
@@ -455,9 +456,7 @@ func TestCompletionV1EndToEndFixtureRejectsLockstepAndSelectedEvidenceMutations(
 
 	mutated = context
 	mutated.Registry = &EvidenceRegistryV1{receipts: make(map[string]EvidenceRecordV1, len(context.Registry.receipts))}
-	for id, record := range context.Registry.receipts {
-		mutated.Registry.receipts[id] = record
-	}
+	maps.Copy(mutated.Registry.receipts, context.Registry.receipts)
 	for id, record := range mutated.Registry.receipts {
 		if record.StateSubject != "backend_cell" {
 			continue
@@ -482,9 +481,7 @@ func TestCompletionV1EndToEndFixtureRejectsLockstepAndSelectedEvidenceMutations(
 	completion, context = completionEndToEndFixtureV1(t)
 	mutated = context
 	mutated.Registry = &EvidenceRegistryV1{receipts: make(map[string]EvidenceRecordV1, len(context.Registry.receipts))}
-	for id, record := range context.Registry.receipts {
-		mutated.Registry.receipts[id] = record
-	}
+	maps.Copy(mutated.Registry.receipts, context.Registry.receipts)
 	for id, record := range mutated.Registry.receipts {
 		if record.StateSubject != "backend_cell" {
 			continue

@@ -17,6 +17,7 @@ package portplan
 import (
 	"encoding/hex"
 	"fmt"
+	"slices"
 	"sort"
 	"strconv"
 	"strings"
@@ -73,7 +74,7 @@ func BuildClassificationV1(planned []ManifestRowV1, reviewed []ReviewedMappingV1
 	}
 	seenRanks := make([]bool, len(planned))
 	lastWave := 0
-	for rank := 0; rank < len(planned); rank++ {
+	for rank := range planned {
 		var row string
 		for key, value := range ranks {
 			if value == rank {
@@ -174,10 +175,7 @@ func BuildClassificationV1(planned []ManifestRowV1, reviewed []ReviewedMappingV1
 			return ClassificationV1{}, err
 		}
 		for start, sequence := 0, 1; start < len(indexes); start, sequence = start+12, sequence+1 {
-			end := start + 12
-			if end > len(indexes) {
-				end = len(indexes)
-			}
+			end := min(start+12, len(indexes))
 			members := make([]string, end-start)
 			for i, index := range indexes[start:end] {
 				members[i] = planned[index].RowKeyV1
@@ -371,12 +369,7 @@ func validateClassificationEmission(classification ClassificationV1, cellByKey m
 }
 
 func containsStorageKey(keys []string, want string) bool {
-	for _, key := range keys {
-		if key == want {
-			return true
-		}
-	}
-	return false
+	return slices.Contains(keys, want)
 }
 
 func validMembershipBackend(backend string) bool {
@@ -518,10 +511,7 @@ func assignKernelAndEvidenceBatches(out *ClassificationV1, cellByKey map[string]
 				return aKey.StorageID < bKey.StorageID
 			})
 			for start, evidenceSequence := 0, 1; start < len(members); start, evidenceSequence = start+12, evidenceSequence+1 {
-				end := start + 12
-				if end > len(members) {
-					end = len(members)
-				}
+				end := min(start+12, len(members))
 				ids := make([]string, end-start)
 				evidenceOperations := map[string]bool{}
 				for i, member := range members[start:end] {

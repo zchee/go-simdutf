@@ -285,7 +285,7 @@ func ParseCorpusContractV1(data []byte) ([]CorpusContractRecordV1, error) {
 				return nil, fmt.Errorf("corpus contract line %d: invalid frozen values", i+2)
 			}
 		}
-		for _, family := range strings.Split(f[10], ";") {
+		for family := range strings.SplitSeq(f[10], ";") {
 			if !frozenFamilies[family] {
 				return nil, fmt.Errorf("corpus contract line %d: unknown family", i+2)
 			}

@@ -83,7 +83,7 @@ func ParseReviewedMappingsV1(data []byte, planned []ManifestRowV1, ledger []ISAR
 				return nil, fmt.Errorf("reviewed mapping line %d: ISA ordinal", i+2)
 			}
 		}
-		for b := 0; b < 4; b++ {
+		for b := range 4 {
 			x := 6 + b*4
 			m.Backends[b] = BackendMappingV1{f[x], f[x+1], f[x+2], f[x+3]}
 			if e := validateBackendMapping(m, b, planned[i], ledgerForMapping(m, ledger)); e != nil {

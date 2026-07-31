@@ -21,6 +21,7 @@ import (
 	"errors"
 	"fmt"
 	"io"
+	"slices"
 	"sort"
 	"strconv"
 	"strings"
@@ -822,12 +823,7 @@ func frozenQualificationCorpus(corpus CorpusContractRecordV1) bool {
 }
 
 func semicolonContains(value, want string) bool {
-	for _, field := range strings.Split(value, ";") {
-		if field == want {
-			return true
-		}
-	}
-	return false
+	return slices.Contains(strings.Split(value, ";"), want)
 }
 
 func canonicalNonNegativeV1(value string) (int, error) {

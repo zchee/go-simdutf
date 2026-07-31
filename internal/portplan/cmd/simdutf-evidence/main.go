@@ -525,9 +525,9 @@ func readLinuxCpusAllowedList() (string, error) {
 	if err != nil {
 		return "", err
 	}
-	for _, line := range strings.Split(string(data), "\n") {
-		if strings.HasPrefix(line, "Cpus_allowed_list:") {
-			return strings.TrimSpace(strings.TrimPrefix(line, "Cpus_allowed_list:")), nil
+	for line := range strings.SplitSeq(string(data), "\n") {
+		if after, ok := strings.CutPrefix(line, "Cpus_allowed_list:"); ok {
+			return strings.TrimSpace(after), nil
 		}
 	}
 	return "", errors.New("missing Cpus_allowed_list")

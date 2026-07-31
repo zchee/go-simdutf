@@ -17,6 +17,7 @@ package portplan
 import (
 	"bytes"
 	"encoding/json"
+	"maps"
 	"reflect"
 	"strings"
 	"testing"
@@ -106,12 +107,8 @@ func TestEvidenceRegistryV1RejectedInsertionsAreAtomic(t *testing.T) {
 		for id, value := range registry.contents {
 			state.contents[id] = bytes.Clone(value)
 		}
-		for digest, value := range registry.qualifications {
-			state.qualifications[digest] = value
-		}
-		for key, value := range registry.states {
-			state.states[key] = value
-		}
+		maps.Copy(state.qualifications, registry.qualifications)
+		maps.Copy(state.states, registry.states)
 		return state
 	}
 	assertUnchanged := func(t *testing.T, before registryState) {

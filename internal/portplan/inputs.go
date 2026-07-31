@@ -17,6 +17,7 @@ package portplan
 import (
 	"encoding/hex"
 	"fmt"
+	"slices"
 	"sort"
 	"strconv"
 	"strings"
@@ -231,7 +232,7 @@ func validDependencyEvidence(anchor string) bool {
 
 func dependencySymbols(anchor string) []string {
 	var out []string
-	for _, part := range strings.Split(anchor, ";") {
+	for part := range strings.SplitSeq(anchor, ";") {
 		if strings.HasPrefix(part, "dependency:") && len(part) > len("dependency:") {
 			out = append(out, strings.TrimPrefix(part, "dependency:"))
 		}
@@ -518,10 +519,8 @@ func hasCycle(edges [][]int) bool {
 			return false
 		}
 		state[n] = 1
-		for _, m := range edges[n] {
-			if visit(m) {
-				return true
-			}
+		if slices.ContainsFunc(edges[n], visit) {
+			return true
 		}
 		state[n] = 2
 		return false
