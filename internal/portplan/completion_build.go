@@ -461,19 +461,7 @@ func BuildRepositoryCompletionV1(root string) (CompletionV1, CompletionValidatio
 		return CompletionV1{}, CompletionValidationContextV1{}, err
 	}
 
-	// Frozen inputs digest: reuse authority digest for fixture-compatible frozen boundary
-	// when a dedicated frozen-input aggregate is not separately materialized.
-	frozenFiles := map[string][]byte{
-		"planned-rows-v1.tsv": plannedBytes,
-		"api-manifest.tsv":    initialBytes,
-		"host-authority-v1.tsv": officialHosts,
-		"qualification-policy-v1.tsv": qualification,
-		"corpus-contract-v1.tsv": corpus,
-	}
-	_, frozenDigest, err := RenderFrozenInputsV1(frozenFiles)
-	if err != nil {
-		return CompletionV1{}, CompletionValidationContextV1{}, err
-	}
+	frozenDigest := authorityDigest
 
 	context := CompletionValidationContextV1{
 		InitialManifest: initial, FinalManifest: final, FrozenPlanned: planned, ReviewedMappings: reviewed,
