@@ -26,9 +26,9 @@ import (
 
 func TestBase64NEONEncodeMatchesScalar(t *testing.T) {
 	inputs := [][]byte{
-		[]byte("Hello, simdutf Base64!"), // 22 bytes - no NEON blocks
-		make([]byte, 48),                 // exactly one block
-		make([]byte, 96),                 // two blocks
+		[]byte("Hello, simdutf Base64!"),            // 22 bytes - no NEON blocks
+		make([]byte, 48),                            // exactly one block
+		make([]byte, 96),                            // two blocks
 		bytes.Repeat([]byte("0123456789abcdef"), 8), // 128
 	}
 	for i := range inputs[1] {
@@ -44,7 +44,7 @@ func TestBase64NEONEncodeMatchesScalar(t *testing.T) {
 			nN := binaryToBase64NEON(in, dstN, opt)
 			nS := binaryToBase64Scalar(in, dstS, opt)
 			if nN != nS || !bytes.Equal(dstN[:nN], dstS[:nS]) {
-				t.Fatalf("opt=%v len=%d neon=%q scalar=%q", opt, len(in), dstN[:min(nN,96)], dstS[:min(nS,96)])
+				t.Fatalf("opt=%v len=%d neon=%q scalar=%q", opt, len(in), dstN[:min(nN, 96)], dstS[:min(nS, 96)])
 			}
 		}
 	}
@@ -124,7 +124,7 @@ func TestBase64NEONDecodeUTF16MatchesScalar(t *testing.T) {
 	enc := make([]byte, base64LengthFromBinaryScalar(len(raw), Base64Default))
 	n := binaryToBase64Scalar(raw, enc, Base64Default)
 	u16 := make([]uint16, n)
-	for i := 0; i < n; i++ {
+	for i := range n {
 		u16[i] = uint16(enc[i])
 	}
 	dstN := make([]byte, maximalBinaryLengthFromBase64UTF16Scalar(u16))

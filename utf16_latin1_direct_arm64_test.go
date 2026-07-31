@@ -107,7 +107,7 @@ func utf16NativeBytes(words []uint16) []byte {
 func utf16NativeFromBytes(raw []byte) []uint16 {
 	n := len(raw) / 2
 	out := make([]uint16, n)
-	for i := 0; i < n; i++ {
+	for i := range n {
 		out[i] = uint16(raw[2*i]) | uint16(raw[2*i+1])<<8
 	}
 	return out

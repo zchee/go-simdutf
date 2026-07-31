@@ -140,7 +140,7 @@ func binaryToBase64WithLinesNEON(input, dst []byte, lineLength int, options Base
 	tmp := make([]byte, base64LengthFromBinaryScalar(len(input), options))
 	n := binaryToBase64NEON(input, tmp, options)
 	out := 0
-	for i := 0; i < n; i++ {
+	for i := range n {
 		if i > 0 && i%lineLength == 0 {
 			dst[out] = '\n'
 			out++
@@ -197,14 +197,14 @@ func base64ToBinaryDetailsNEONContiguous(input []byte, dst []byte, options Base6
 		return FullResult{}, false
 	}
 	toBase64 := base64ToValueTable(options)
-	for i := 0; i < length; i++ {
+	for i := range length {
 		if toBase64[input[i]] > 63 {
 			return FullResult{}, false
 		}
 	}
 
 	buf := make([]byte, length)
-	for i := 0; i < length; i++ {
+	for i := range length {
 		buf[i] = toBase64[input[i]]
 	}
 
@@ -247,7 +247,7 @@ func base64ToBinaryDetailsUTF16NEONContiguous(input []uint16, dst []byte, option
 		return FullResult{}, false
 	}
 	toBase64 := base64ToValueTable(options)
-	for i := 0; i < length; i++ {
+	for i := range length {
 		c := input[i]
 		if !isEightByteUTF16(c) || toBase64[byte(c)] > 63 {
 			return FullResult{}, false
@@ -255,7 +255,7 @@ func base64ToBinaryDetailsUTF16NEONContiguous(input []uint16, dst []byte, option
 	}
 
 	buf := make([]byte, length)
-	for i := 0; i < length; i++ {
+	for i := range length {
 		buf[i] = toBase64[byte(input[i])]
 	}
 

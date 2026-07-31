@@ -183,8 +183,8 @@ func makeImplementation(input selectionInput) implementation {
 			input,
 			variant[func([]uint16, []byte, Base64Options, LastChunkHandlingOptions) FullResult]{value: base64ToBinaryDetailsUTF16Scalar, kind: implementationScalar, available: true},
 		),
-		base64ToBinarySafe:                   base64ToBinarySafeScalar,
-		base64ToBinarySafeUTF16:              base64ToBinarySafeUTF16Scalar,
+		base64ToBinarySafe:      base64ToBinarySafeScalar,
+		base64ToBinarySafeUTF16: base64ToBinarySafeUTF16Scalar,
 		binaryToBase64: selectVariant(
 			input,
 			variant[func([]byte, []byte, Base64Options) int]{value: binaryToBase64Scalar, kind: implementationScalar, available: true},

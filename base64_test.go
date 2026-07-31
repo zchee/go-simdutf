@@ -91,7 +91,7 @@ func TestBase64UTF16RoundTrip(t *testing.T) {
 	enc := make([]byte, Base64LengthFromBinary(len(input), Base64Default))
 	n := BinaryToBase64(input, enc, Base64Default)
 	u16 := make([]uint16, n)
-	for i := 0; i < n; i++ {
+	for i := range n {
 		u16[i] = uint16(enc[i])
 	}
 	out := make([]byte, MaximalBinaryLengthFromBase64UTF16(u16))

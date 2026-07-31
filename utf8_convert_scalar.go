@@ -168,7 +168,7 @@ func convertUTF8ToUTF16WithErrorsScalar(input []byte, dst []uint16, storageIsNat
 			v1 := binary.LittleEndian.Uint64(input[pos:])
 			v2 := binary.LittleEndian.Uint64(input[pos+8:])
 			if (v1|v2)&0x8080808080808080 == 0 {
-				for i := 0; i < 16; i++ {
+				for i := range 16 {
 					dst[out] = storeUTF16Word(uint16(input[pos+i]), storageIsNative)
 					out++
 				}
@@ -268,7 +268,7 @@ loop:
 		if pos+8 <= len(input) {
 			v := binary.LittleEndian.Uint64(input[pos:])
 			if v&0x8080808080808080 == 0 {
-				for i := 0; i < 8; i++ {
+				for i := range 8 {
 					dst[out] = storeUTF16Word(uint16(input[pos+i]), storageIsNative)
 					out++
 				}
@@ -342,7 +342,7 @@ func convertUTF8ToUTF32WithErrorsScalar(input []byte, dst []uint32) Result {
 			v1 := binary.LittleEndian.Uint64(input[pos:])
 			v2 := binary.LittleEndian.Uint64(input[pos+8:])
 			if (v1|v2)&0x8080808080808080 == 0 {
-				for i := 0; i < 16; i++ {
+				for i := range 16 {
 					dst[out] = uint32(input[pos+i])
 					out++
 				}
@@ -430,7 +430,7 @@ loop:
 		if pos+8 <= len(input) {
 			v := binary.LittleEndian.Uint64(input[pos:])
 			if v&0x8080808080808080 == 0 {
-				for i := 0; i < 8; i++ {
+				for i := range 8 {
 					dst[out] = uint32(input[pos+i])
 					out++
 				}

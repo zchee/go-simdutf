@@ -276,7 +276,7 @@ func utf32NativeBytes(words []uint32) []byte {
 func utf32NativeFromBytes(raw []byte) []uint32 {
 	n := len(raw) / 4
 	out := make([]uint32, n)
-	for i := 0; i < n; i++ {
+	for i := range n {
 		out[i] = uint32(raw[4*i]) | uint32(raw[4*i+1])<<8 | uint32(raw[4*i+2])<<16 | uint32(raw[4*i+3])<<24
 	}
 	return out

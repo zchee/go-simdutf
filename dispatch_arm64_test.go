@@ -316,7 +316,6 @@ func TestMakeImplementationARM64DetectEncodingsQualificationSelection(t *testing
 	}
 }
 
-
 func TestMakeImplementationARM64Base64QualificationSelection(t *testing.T) {
 	// FC-v1-base64 darwin-arm64 dispositions are direct_only; keep scalar-first
 	// with NEON forceable via SIMDUTF_FORCE_PROVIDER.
@@ -337,7 +336,6 @@ func TestMakeImplementationARM64Base64QualificationSelection(t *testing.T) {
 		}
 	}
 }
-
 
 func TestMakeImplementationARM64Base64ForceProvider(t *testing.T) {
 	t.Setenv("SIMDUTF_FORCE_PROVIDER", "neon")

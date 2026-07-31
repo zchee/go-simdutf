@@ -64,7 +64,7 @@ func nativeUTF16UnitsFromBytes(input []byte) []uint16 {
 		return nil
 	}
 	out := make([]uint16, n)
-	for i := 0; i < n; i++ {
+	for i := range n {
 		out[i] = binary.NativeEndian.Uint16(input[i*2:])
 	}
 	return out
@@ -76,7 +76,7 @@ func nativeUTF32UnitsFromBytes(input []byte) []uint32 {
 		return nil
 	}
 	out := make([]uint32, n)
-	for i := 0; i < n; i++ {
+	for i := range n {
 		out[i] = binary.NativeEndian.Uint32(input[i*4:])
 	}
 	return out

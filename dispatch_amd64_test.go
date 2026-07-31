@@ -414,7 +414,6 @@ func TestMakeImplementationAMD64UTF32SourceQualificationSelection(t *testing.T) 
 	}
 }
 
-
 func TestMakeImplementationAMD64Base64QualificationSelection(t *testing.T) {
 	// FC-v1-base64 stays scalar-first except BinaryLengthFromBase64, which
 	// qualification selected as haswell/westmere on linux-amd64.
@@ -444,7 +443,6 @@ func TestMakeImplementationAMD64Base64QualificationSelection(t *testing.T) {
 		}
 	}
 }
-
 
 func TestMakeImplementationAMD64Base64ForceProvider(t *testing.T) {
 	t.Setenv("SIMDUTF_FORCE_PROVIDER", "westmere")

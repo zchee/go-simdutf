@@ -148,8 +148,7 @@ func publicAPIRecords(t *testing.T) []string {
 				}
 			}
 			records = append(records, fmt.Sprintf("type\t%s\t%s", name, typeDescription))
-			for methodIndex := range named.NumMethods() {
-				method := named.Method(methodIndex)
+			for method := range named.Methods() {
 				if !method.Exported() {
 					continue
 				}

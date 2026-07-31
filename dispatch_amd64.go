@@ -680,8 +680,8 @@ func makeImplementation(input selectionInput) implementation {
 			variant[func([]uint16, []byte, Base64Options, LastChunkHandlingOptions) FullResult]{value: base64ToBinaryDetailsUTF16Haswell, kind: implementationHaswell, required: cpuAVX2, available: true},
 			variant[func([]uint16, []byte, Base64Options, LastChunkHandlingOptions) FullResult]{value: base64ToBinaryDetailsUTF16Westmere, kind: implementationWestmere, required: cpuSSSE3, available: true},
 		),
-		base64ToBinarySafe:                   base64ToBinarySafeScalar,
-		base64ToBinarySafeUTF16:              base64ToBinarySafeUTF16Scalar,
+		base64ToBinarySafe:      base64ToBinarySafeScalar,
+		base64ToBinarySafeUTF16: base64ToBinarySafeUTF16Scalar,
 		binaryToBase64: selectVariant(
 			input,
 			variant[func([]byte, []byte, Base64Options) int]{value: binaryToBase64Scalar, kind: implementationScalar, available: true},

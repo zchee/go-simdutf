@@ -22,6 +22,7 @@ import (
 	"os"
 	"reflect"
 	"runtime"
+	"slices"
 	"strings"
 	"sync"
 	"testing"
@@ -34,21 +35,20 @@ import (
 // qualification stay outside timed b.Loop bodies.
 
 const (
-	dispatchQualificationZeroSHA256           = "ad7facb2586fc6e966c004d7d1d16b024f5805ff7cb47c7a85dabd8b48892ca7"
-	dispatchQualificationLatin1RampSHA256     = "c8f5d0341d54d951a71b136e6e2afcb14d11ed8489a7ae126a8fee0df6ecf193"
-	dispatchQualificationArabicLipsumSHA256   = "b20003e7999187985e931b1b0404f9f273576b3e9bbd77bda7466de5f26a15bb"
-	dispatchQualificationArabicLipsumPath     = ".omx/artifacts/phase0/benchmark-corpora/corpus/unicode_lipsum/lipsum/Arabic-Lipsum.utf8.txt"
-	dispatchQualificationArabicLipsumSize     = 81685
-	dispatchQualificationFindByteSHA256       = "d5adc7f2d7e4de5ff826cc0ba543bb5ba2e8aaf7609c3594df10af4c9af4f3d8"
-	dispatchQualificationFindU16LESHA256      = "96e0c9f77ab0c6b07682cf5252710117ede55c74a5b30b06201602c714a10bfb"
-	dispatchQualificationDNSNormalizedSHA256  = "79f1eba2fe0c187f1086f7534b74cd1dd4ef795a515d7db13d613eebafdb1d6f"
-	dispatchQualificationDNSSourcePath        = ".omx/artifacts/phase0/benchmark-corpora/corpus/base64data/dns/swedenzonebase.txt"
-	dispatchQualificationDNSSourceSize        = 35100000
-	dispatchQualificationDNSNormalizedSize    = 35000000
-	dispatchQualificationOperationEnv         = "SIMDUTF_BENCH_EXPECT_OPERATION"
-	dispatchQualificationTierEnv              = "SIMDUTF_BENCH_EXPECT_TIER"
+	dispatchQualificationZeroSHA256          = "ad7facb2586fc6e966c004d7d1d16b024f5805ff7cb47c7a85dabd8b48892ca7"
+	dispatchQualificationLatin1RampSHA256    = "c8f5d0341d54d951a71b136e6e2afcb14d11ed8489a7ae126a8fee0df6ecf193"
+	dispatchQualificationArabicLipsumSHA256  = "b20003e7999187985e931b1b0404f9f273576b3e9bbd77bda7466de5f26a15bb"
+	dispatchQualificationArabicLipsumPath    = ".omx/artifacts/phase0/benchmark-corpora/corpus/unicode_lipsum/lipsum/Arabic-Lipsum.utf8.txt"
+	dispatchQualificationArabicLipsumSize    = 81685
+	dispatchQualificationFindByteSHA256      = "d5adc7f2d7e4de5ff826cc0ba543bb5ba2e8aaf7609c3594df10af4c9af4f3d8"
+	dispatchQualificationFindU16LESHA256     = "96e0c9f77ab0c6b07682cf5252710117ede55c74a5b30b06201602c714a10bfb"
+	dispatchQualificationDNSNormalizedSHA256 = "79f1eba2fe0c187f1086f7534b74cd1dd4ef795a515d7db13d613eebafdb1d6f"
+	dispatchQualificationDNSSourcePath       = ".omx/artifacts/phase0/benchmark-corpora/corpus/base64data/dns/swedenzonebase.txt"
+	dispatchQualificationDNSSourceSize       = 35100000
+	dispatchQualificationDNSNormalizedSize   = 35000000
+	dispatchQualificationOperationEnv        = "SIMDUTF_BENCH_EXPECT_OPERATION"
+	dispatchQualificationTierEnv             = "SIMDUTF_BENCH_EXPECT_TIER"
 )
-
 
 var (
 	benchmarkEncodingSink   Encoding
@@ -132,7 +132,6 @@ func materializeDispatchQualificationCorpora() ([]byte, []byte, []uint16, []byte
 	return byteZero, uint16Raw, uint16Zero, uint32Raw, uint32Zero, latin1Ramp
 }
 
-
 func materializeDispatchQualificationFindCorpora() (findByte []byte, findU16LE []uint16, findU16LERaw []byte) {
 	const alphabet = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"
 	findByte = make([]byte, 4096)
@@ -144,7 +143,7 @@ func materializeDispatchQualificationFindCorpora() (findByte []byte, findU16LE [
 	}
 	findU16LE = make([]uint16, 2048)
 	findU16LERaw = make([]byte, 4096)
-	for i := 0; i < 2048; i++ {
+	for i := range 2048 {
 		findU16LE[i] = uint16(findByte[i])
 		binary.LittleEndian.PutUint16(findU16LERaw[2*i:], findU16LE[i])
 	}
@@ -1162,7 +1161,6 @@ var dispatchQualificationProviderIdentifiers = map[string]map[string][]string{
 		"neon":     {"binaryToBase64WithLinesNEON"},
 		"archsimd": {"binaryToBase64WithLinesArchsimd"},
 	},
-
 }
 
 func dispatchQualificationGuard(operation string, fn any) error {
@@ -1213,10 +1211,8 @@ func checkDispatchQualificationGuard(
 	}
 	name := runtimeFunction.Name()
 	identifier := name[strings.LastIndexByte(name, '.')+1:]
-	for _, candidate := range allowed {
-		if identifier == candidate {
-			return nil
-		}
+	if slices.Contains(allowed, identifier) {
+		return nil
 	}
 	return fmt.Errorf("operation %q dispatches to %q, not tier %q allowlist %v",
 		operation, identifier, expectedTier, allowed)
