@@ -252,7 +252,7 @@ b64_len_w_loop:
 	JNE  b64_len_w_loop
 
 b64_len_w_done:
-	MOVQ AX, ret+24(FP)
+	MOVQ AX, count+24(FP)
 	RET
 
 // func binaryLengthFromBase64BlocksHaswell(input []byte) int
@@ -290,7 +290,7 @@ b64_len_h_loop:
 
 b64_len_h_done:
 	VZEROUPPER
-	MOVQ AX, ret+24(FP)
+	MOVQ AX, count+24(FP)
 	RET
 
 // --- length: UTF-16 --------------------------------------------------------
@@ -359,7 +359,7 @@ b64_len16_w_loop:
 	SHRQ $1, AX
 
 b64_len16_w_done:
-	MOVQ AX, ret+24(FP)
+	MOVQ AX, count+24(FP)
 	RET
 
 // func binaryLengthFromBase64UTF16BlocksHaswell(input []uint16) int
@@ -399,7 +399,7 @@ b64_len16_h_loop:
 
 b64_len16_h_done:
 	VZEROUPPER
-	MOVQ AX, ret+24(FP)
+	MOVQ AX, count+24(FP)
 	RET
 
 // --- encode: Westmere 12→16 ------------------------------------------------
