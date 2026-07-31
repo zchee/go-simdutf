@@ -1,15 +1,15 @@
 {
   "schema": "simdutf-d3-lanes-index-v1",
   "version": 1,
-  "source_commit": "009f2f2149dac33eb9eb1ab7e2308353caba01e6",
-  "source_tree": "cd3721bb9ac2d403c7962e0d8f163fc80a9d84e3",
-  "source_parent": "0f597b89c7fe4cf87fb299f8852c8bbc624b157f",
+  "source_commit": "aab291ac4c5779f2b42817638e0af2a5cc1d69ce",
+  "source_tree": "53bd79541a1c36a4eb9d3700458449ce3ba7aaa4",
+  "source_parent": "009f2f2149dac33eb9eb1ab7e2308353caba01e6",
   "lanes": [
     {
       "lane_id": "darwin-arm64-nosimd",
       "host_id": "darwin-arm64-apple-m3-max",
       "transport": "local-physical",
-      "raw_sha256": "87b553df7abaed7ca1092119ab483d0c046d548e0b04f1b03e1a2b4be8058027",
+      "raw_sha256": "1721559fb4e032353687d1ef778561320e0d53abb35faf979f28dcd760dda398",
       "source_raw_sha256": "6c15fa8154bd5d64de96664b02636632196a4a85a1b79e99dfe9b5220ec95dcb",
       "exit_ok": true,
       "evidence_path": "docs/porting/simdutf-port-v1/evidence/d3-darwin-arm64-nosimd-lane-v1.txt"
@@ -18,7 +18,7 @@
       "lane_id": "darwin-arm64-simd-negative",
       "host_id": "darwin-arm64-apple-m3-max",
       "transport": "local-physical",
-      "raw_sha256": "4ede8e838a1536a156df31d0621f09465d5d27eeb5b43789eb3f6b4e9ffb9aa2",
+      "raw_sha256": "5e69482faff0be12cdb27341be21b381bbe3bf9241cf94cdd02e42a8c20e0735",
       "source_raw_sha256": "bfb299a90b31a80bb21f7f3e3a3a39e5c8b59d912b49e8c90b49f6f09641218a",
       "exit_ok": true,
       "evidence_path": "docs/porting/simdutf-port-v1/evidence/d3-darwin-arm64-simd-negative-lane-v1.txt"
@@ -27,7 +27,7 @@
       "lane_id": "linux-amd64-none",
       "host_id": "linux-amd64-debian-13-xeon-platinum-8481c",
       "transport": "ssh:debian-13-trixie.gaudiy-platform",
-      "raw_sha256": "fbb5626583357ad9646cf0e917ce4ec8c7c7184001177b7c1b4c58631af4f7ea",
+      "raw_sha256": "d64cbee57b8a8547b5f0f348ee28a004105bab90040a8df36afd8a061b1ddef5",
       "source_raw_sha256": "60cba40b69a20529ee23e42ff6143fb2c37f87bc5db8b67064e0b1bdf3270890",
       "exit_ok": true,
       "evidence_path": "docs/porting/simdutf-port-v1/evidence/d3-linux-amd64-none-lane-v1.txt"
@@ -36,7 +36,7 @@
       "lane_id": "linux-amd64-simd",
       "host_id": "linux-amd64-debian-13-xeon-platinum-8481c",
       "transport": "ssh:debian-13-trixie.gaudiy-platform",
-      "raw_sha256": "1c93acf00aa228eb707a433dbfc552252a474c8c16e2b9a32fe229f9430c69c1",
+      "raw_sha256": "15e1b545c2bd6a13b10c66dfe3fe42142083367b8437d1bbd1b3d888730d90b8",
       "source_raw_sha256": "8649d6ab237b5aee12d344834bfa09de256fe8852086eb3248567ec0bf9b6966",
       "exit_ok": true,
       "evidence_path": "docs/porting/simdutf-port-v1/evidence/d3-linux-amd64-simd-lane-v1.txt"
@@ -45,7 +45,7 @@
       "lane_id": "linux-riscv64-compile",
       "host_id": "linux-amd64-debian-13-xeon-platinum-8481c",
       "transport": "ssh:debian-13-trixie.gaudiy-platform",
-      "raw_sha256": "29992b4e488828f3be43e0c7e9edb5333a59de94699d453330334e448a18e792",
+      "raw_sha256": "cc9f2ef84d1ce7f2ca70b02f32dab166cf33ecbe37fd5cd033443901906524d8",
       "source_raw_sha256": "0b23fbadcb1d544a6d45a939b300e8a472e70e3ad4ebaeb22c0a7c84e7de7b8f",
       "exit_ok": true,
       "evidence_path": "docs/porting/simdutf-port-v1/evidence/d3-linux-riscv64-compile-lane-v1.txt"
@@ -54,7 +54,7 @@
       "lane_id": "linux-s390x-compile",
       "host_id": "linux-amd64-debian-13-xeon-platinum-8481c",
       "transport": "ssh:debian-13-trixie.gaudiy-platform",
-      "raw_sha256": "3cd8e4c6e3befb394c5e08ec25099b97b6fbfe45453f982761181a5944ce7d19",
+      "raw_sha256": "8e4ffe84fc70fe98d74d5465e187b44c67480058e91676f2c9d3d117306b8c15",
       "source_raw_sha256": "0d60d9e5d9b87003c57507222ebd7a44381e8ee27d02ebb8712038ccd8939ef4",
       "exit_ok": true,
       "evidence_path": "docs/porting/simdutf-port-v1/evidence/d3-linux-s390x-compile-lane-v1.txt"

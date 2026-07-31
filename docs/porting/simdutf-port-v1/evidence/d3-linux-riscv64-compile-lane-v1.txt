@@ -2,9 +2,9 @@ schema: simdutf-d3-lane-proof-v1
 lane_id: linux-riscv64-compile
 host_id: linux-amd64-debian-13-xeon-platinum-8481c
 transport: ssh:debian-13-trixie.gaudiy-platform
-source_commit: 009f2f2149dac33eb9eb1ab7e2308353caba01e6
-source_tree: cd3721bb9ac2d403c7962e0d8f163fc80a9d84e3
-source_parent: 0f597b89c7fe4cf87fb299f8852c8bbc624b157f
+source_commit: aab291ac4c5779f2b42817638e0af2a5cc1d69ce
+source_tree: 53bd79541a1c36a4eb9d3700458449ce3ba7aaa4
+source_parent: 009f2f2149dac33eb9eb1ab7e2308353caba01e6
 goexperiment: none
 goamd64: 
 cgo_enabled: 0
