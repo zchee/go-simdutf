@@ -15,6 +15,7 @@
 package simdutf
 
 import (
+	"bytes"
 	"crypto/sha256"
 	"encoding/binary"
 	"fmt"
@@ -22,6 +23,7 @@ import (
 	"reflect"
 	"runtime"
 	"strings"
+	"sync"
 	"testing"
 )
 
@@ -32,13 +34,25 @@ import (
 // qualification stay outside timed b.Loop bodies.
 
 const (
-	dispatchQualificationZeroSHA256         = "ad7facb2586fc6e966c004d7d1d16b024f5805ff7cb47c7a85dabd8b48892ca7"
-	dispatchQualificationLatin1RampSHA256   = "c8f5d0341d54d951a71b136e6e2afcb14d11ed8489a7ae126a8fee0df6ecf193"
-	dispatchQualificationArabicLipsumSHA256 = "b20003e7999187985e931b1b0404f9f273576b3e9bbd77bda7466de5f26a15bb"
-	dispatchQualificationArabicLipsumPath   = ".omx/artifacts/phase0/benchmark-corpora/corpus/unicode_lipsum/lipsum/Arabic-Lipsum.utf8.txt"
-	dispatchQualificationArabicLipsumSize   = 81685
-	dispatchQualificationOperationEnv       = "SIMDUTF_BENCH_EXPECT_OPERATION"
-	dispatchQualificationTierEnv            = "SIMDUTF_BENCH_EXPECT_TIER"
+	dispatchQualificationZeroSHA256           = "ad7facb2586fc6e966c004d7d1d16b024f5805ff7cb47c7a85dabd8b48892ca7"
+	dispatchQualificationLatin1RampSHA256     = "c8f5d0341d54d951a71b136e6e2afcb14d11ed8489a7ae126a8fee0df6ecf193"
+	dispatchQualificationArabicLipsumSHA256   = "b20003e7999187985e931b1b0404f9f273576b3e9bbd77bda7466de5f26a15bb"
+	dispatchQualificationArabicLipsumPath     = ".omx/artifacts/phase0/benchmark-corpora/corpus/unicode_lipsum/lipsum/Arabic-Lipsum.utf8.txt"
+	dispatchQualificationArabicLipsumSize     = 81685
+	dispatchQualificationFindByteSHA256       = "d5adc7f2d7e4de5ff826cc0ba543bb5ba2e8aaf7609c3594df10af4c9af4f3d8"
+	dispatchQualificationFindU16LESHA256      = "96e0c9f77ab0c6b07682cf5252710117ede55c74a5b30b06201602c714a10bfb"
+	dispatchQualificationDNSNormalizedSHA256  = "79f1eba2fe0c187f1086f7534b74cd1dd4ef795a515d7db13d613eebafdb1d6f"
+	dispatchQualificationDNSSourcePath        = ".omx/artifacts/phase0/benchmark-corpora/corpus/base64data/dns/swedenzonebase.txt"
+	dispatchQualificationDNSSourceSize        = 35100000
+	dispatchQualificationDNSNormalizedSize    = 35000000
+	dispatchQualificationOperationEnv         = "SIMDUTF_BENCH_EXPECT_OPERATION"
+	dispatchQualificationTierEnv              = "SIMDUTF_BENCH_EXPECT_TIER"
+)
+
+
+var (
+	benchmarkEncodingSink   Encoding
+	benchmarkFullResultSink FullResult
 )
 
 type dispatchQualificationRow struct {
@@ -118,6 +132,81 @@ func materializeDispatchQualificationCorpora() ([]byte, []byte, []uint16, []byte
 	return byteZero, uint16Raw, uint16Zero, uint32Raw, uint32Zero, latin1Ramp
 }
 
+
+func materializeDispatchQualificationFindCorpora() (findByte []byte, findU16LE []uint16, findU16LERaw []byte) {
+	const alphabet = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"
+	findByte = make([]byte, 4096)
+	for i := range findByte {
+		findByte[i] = alphabet[i%len(alphabet)]
+	}
+	if got := fmt.Sprintf("%x", sha256.Sum256(findByte)); got != dispatchQualificationFindByteSHA256 {
+		panic(fmt.Sprintf("Q-find-byte SHA-256 = %s, want %s", got, dispatchQualificationFindByteSHA256))
+	}
+	findU16LE = make([]uint16, 2048)
+	findU16LERaw = make([]byte, 4096)
+	for i := 0; i < 2048; i++ {
+		findU16LE[i] = uint16(findByte[i])
+		binary.LittleEndian.PutUint16(findU16LERaw[2*i:], findU16LE[i])
+	}
+	if got := fmt.Sprintf("%x", sha256.Sum256(findU16LERaw)); got != dispatchQualificationFindU16LESHA256 {
+		panic(fmt.Sprintf("Q-find-u16le SHA-256 = %s, want %s", got, dispatchQualificationFindU16LESHA256))
+	}
+	return findByte, findU16LE, findU16LERaw
+}
+
+func dispatchQualificationBytesToUTF16(input []byte) []uint16 {
+	out := make([]uint16, len(input))
+	for i, b := range input {
+		out[i] = uint16(b)
+	}
+	return out
+}
+
+var (
+	dispatchQualificationDNSNormalized     []byte
+	dispatchQualificationDNSNormalizedU16  []uint16
+	dispatchQualificationDNSNormalizedOnce sync.Once
+)
+
+func loadDispatchQualificationDNSNormalized() []byte {
+	dispatchQualificationDNSNormalizedOnce.Do(func() {
+		data, err := os.ReadFile(dispatchQualificationDNSSourcePath)
+		if err != nil {
+			panic(fmt.Sprintf(
+				"Q-dns-normalized source missing at %s: %v",
+				dispatchQualificationDNSSourcePath, err,
+			))
+		}
+		if len(data) != dispatchQualificationDNSSourceSize {
+			panic(fmt.Sprintf(
+				"Q-dns-source length = %d, want %d",
+				len(data), dispatchQualificationDNSSourceSize,
+			))
+		}
+		normalized := bytes.ReplaceAll(data, []byte{10}, nil)
+		if len(normalized) != dispatchQualificationDNSNormalizedSize {
+			panic(fmt.Sprintf(
+				"Q-dns-normalized length = %d, want %d",
+				len(normalized), dispatchQualificationDNSNormalizedSize,
+			))
+		}
+		if got := fmt.Sprintf("%x", sha256.Sum256(normalized)); got != dispatchQualificationDNSNormalizedSHA256 {
+			panic(fmt.Sprintf(
+				"Q-dns-normalized SHA-256 = %s, want %s",
+				got, dispatchQualificationDNSNormalizedSHA256,
+			))
+		}
+		dispatchQualificationDNSNormalized = normalized
+		dispatchQualificationDNSNormalizedU16 = dispatchQualificationBytesToUTF16(normalized)
+	})
+	return dispatchQualificationDNSNormalized
+}
+
+func loadDispatchQualificationDNSNormalizedUTF16() []uint16 {
+	_ = loadDispatchQualificationDNSNormalized()
+	return dispatchQualificationDNSNormalizedU16
+}
+
 func loadDispatchQualificationArabicLipsum() []byte {
 	data, err := os.ReadFile(dispatchQualificationArabicLipsumPath)
 	if err != nil {
@@ -144,7 +233,13 @@ func loadDispatchQualificationArabicLipsum() []byte {
 func dispatchQualificationRows() []dispatchQualificationRow {
 	byteZero, _, uint16Zero, _, uint32Zero, latin1Ramp := materializeDispatchQualificationCorpora()
 	arabicLipsum := loadDispatchQualificationArabicLipsum()
-	rows := make([]dispatchQualificationRow, 0, 1250)
+	findByte, findU16LE, _ := materializeDispatchQualificationFindCorpora()
+	detectionValid := findByte
+	dnsNormalized := loadDispatchQualificationDNSNormalized()
+	dnsNormalizedU16 := loadDispatchQualificationDNSNormalizedUTF16()
+	byteZeroU16 := dispatchQualificationBytesToUTF16(byteZero)
+	emojiU16 := dispatchQualificationBytesToUTF16(upstreamEmojiUTF8)
+	rows := make([]dispatchQualificationRow, 0, 1359)
 	for _, operation := range [...]string{"ValidateASCII", "ValidateASCIIWithErrors"} {
 		for _, input := range dispatchQualificationByteSizes {
 			rows = append(rows, dispatchQualificationRow{
@@ -349,6 +444,96 @@ func dispatchQualificationRows() []dispatchQualificationRow {
 				uint32s:   uint32Zero[:input.size],
 			})
 		}
+	}
+
+	for _, input := range dispatchQualificationByteSizes {
+		rows = append(rows, dispatchQualificationRow{
+			operation: "Find",
+			corpus:    "Q-find-byte",
+			class:     input.class,
+			size:      input.size,
+			bytes:     findByte[:input.size],
+		})
+	}
+	for _, input := range dispatchQualificationUint16Sizes {
+		rows = append(rows, dispatchQualificationRow{
+			operation: "FindUTF16",
+			corpus:    "Q-find-u16le",
+			class:     input.class,
+			size:      input.size,
+			uint16s:   findU16LE[:input.size],
+		})
+	}
+	for _, input := range dispatchQualificationByteSizes {
+		rows = append(rows, dispatchQualificationRow{
+			operation: "DetectEncodings",
+			corpus:    "Q-detection-valid",
+			class:     input.class,
+			size:      input.size,
+			bytes:     detectionValid[:input.size],
+		})
+	}
+	for _, operation := range [...]string{
+		"BinaryLengthFromBase64",
+		"BinaryToBase64",
+		"BinaryToBase64WithLines",
+	} {
+		for _, input := range dispatchQualificationByteSizes {
+			rows = append(rows, dispatchQualificationRow{
+				operation: operation,
+				corpus:    "Q-byte-zero",
+				class:     input.class,
+				size:      input.size,
+				bytes:     byteZero[:input.size],
+			})
+		}
+		rows = append(rows, dispatchQualificationRow{
+			operation: operation,
+			corpus:    "Q-emoji",
+			class:     "bulk",
+			size:      len(upstreamEmojiUTF8),
+			bytes:     upstreamEmojiUTF8,
+		})
+	}
+	for _, input := range dispatchQualificationByteSizes {
+		rows = append(rows, dispatchQualificationRow{
+			operation: "BinaryLengthFromBase64UTF16",
+			corpus:    "Q-byte-zero",
+			class:     input.class,
+			size:      input.size,
+			uint16s:   byteZeroU16[:input.size],
+		})
+	}
+	rows = append(rows, dispatchQualificationRow{
+		operation: "BinaryLengthFromBase64UTF16",
+		corpus:    "Q-emoji",
+		class:     "bulk",
+		size:      len(emojiU16),
+		uint16s:   emojiU16,
+	})
+	for _, operation := range [...]string{
+		"Base64ToBinary",
+		"Base64ToBinaryDetails",
+	} {
+		rows = append(rows, dispatchQualificationRow{
+			operation: operation,
+			corpus:    "Q-dns-normalized",
+			class:     "bulk",
+			size:      len(dnsNormalized),
+			bytes:     dnsNormalized,
+		})
+	}
+	for _, operation := range [...]string{
+		"Base64ToBinaryUTF16",
+		"Base64ToBinaryDetailsUTF16",
+	} {
+		rows = append(rows, dispatchQualificationRow{
+			operation: operation,
+			corpus:    "Q-dns-normalized",
+			class:     "bulk",
+			size:      len(dnsNormalizedU16),
+			uint16s:   dnsNormalizedU16,
+		})
 	}
 	return rows
 }
@@ -900,6 +1085,84 @@ var dispatchQualificationProviderIdentifiers = map[string]map[string][]string{
 		"neon":     {"utf16LengthFromUTF32NEON"},
 		"archsimd": {"utf16LengthFromUTF32Archsimd"},
 	},
+	"Find": {
+		"scalar":   {"findScalar"},
+		"westmere": {"findWestmere"},
+		"haswell":  {"findHaswell"},
+		"neon":     {"findNEON"},
+		"archsimd": {"findArchsimd"},
+	},
+	"FindUTF16": {
+		"scalar":   {"findUTF16Scalar"},
+		"westmere": {"findUTF16Westmere"},
+		"haswell":  {"findUTF16Haswell"},
+		"neon":     {"findUTF16NEON"},
+		"archsimd": {"findUTF16Archsimd"},
+	},
+	"DetectEncodings": {
+		"scalar":   {"detectEncodingsScalar"},
+		"westmere": {"detectEncodingsWestmere"},
+		"haswell":  {"detectEncodingsHaswell"},
+		"neon":     {"detectEncodingsNEON"},
+		"archsimd": {"detectEncodingsArchsimd"},
+	},
+	"BinaryLengthFromBase64": {
+		"scalar":   {"binaryLengthFromBase64Scalar"},
+		"westmere": {"binaryLengthFromBase64Westmere"},
+		"haswell":  {"binaryLengthFromBase64Haswell"},
+		"neon":     {"binaryLengthFromBase64NEON"},
+		"archsimd": {"binaryLengthFromBase64Archsimd"},
+	},
+	"BinaryLengthFromBase64UTF16": {
+		"scalar":   {"binaryLengthFromBase64UTF16Scalar"},
+		"westmere": {"binaryLengthFromBase64UTF16Westmere"},
+		"haswell":  {"binaryLengthFromBase64UTF16Haswell"},
+		"neon":     {"binaryLengthFromBase64UTF16NEON"},
+		"archsimd": {"binaryLengthFromBase64UTF16Archsimd"},
+	},
+	"Base64ToBinary": {
+		"scalar":   {"base64ToBinaryScalar"},
+		"westmere": {"base64ToBinaryWestmere"},
+		"haswell":  {"base64ToBinaryHaswell"},
+		"neon":     {"base64ToBinaryNEON"},
+		"archsimd": {"base64ToBinaryArchsimd"},
+	},
+	"Base64ToBinaryUTF16": {
+		"scalar":   {"base64ToBinaryUTF16Scalar"},
+		"westmere": {"base64ToBinaryUTF16Westmere"},
+		"haswell":  {"base64ToBinaryUTF16Haswell"},
+		"neon":     {"base64ToBinaryUTF16NEON"},
+		"archsimd": {"base64ToBinaryUTF16Archsimd"},
+	},
+	"Base64ToBinaryDetails": {
+		"scalar":   {"base64ToBinaryDetailsScalar"},
+		"westmere": {"base64ToBinaryDetailsWestmere"},
+		"haswell":  {"base64ToBinaryDetailsHaswell"},
+		"neon":     {"base64ToBinaryDetailsNEON"},
+		"archsimd": {"base64ToBinaryDetailsArchsimd"},
+	},
+	"Base64ToBinaryDetailsUTF16": {
+		"scalar":   {"base64ToBinaryDetailsUTF16Scalar"},
+		"westmere": {"base64ToBinaryDetailsUTF16Westmere"},
+		"haswell":  {"base64ToBinaryDetailsUTF16Haswell"},
+		"neon":     {"base64ToBinaryDetailsUTF16NEON"},
+		"archsimd": {"base64ToBinaryDetailsUTF16Archsimd"},
+	},
+	"BinaryToBase64": {
+		"scalar":   {"binaryToBase64Scalar"},
+		"westmere": {"binaryToBase64Westmere"},
+		"haswell":  {"binaryToBase64Haswell"},
+		"neon":     {"binaryToBase64NEON"},
+		"archsimd": {"binaryToBase64Archsimd"},
+	},
+	"BinaryToBase64WithLines": {
+		"scalar":   {"binaryToBase64WithLinesScalar"},
+		"westmere": {"binaryToBase64WithLinesWestmere"},
+		"haswell":  {"binaryToBase64WithLinesHaswell"},
+		"neon":     {"binaryToBase64WithLinesNEON"},
+		"archsimd": {"binaryToBase64WithLinesArchsimd"},
+	},
+
 }
 
 func dispatchQualificationGuard(operation string, fn any) error {
@@ -1122,6 +1385,28 @@ func dispatchQualificationFunction(operation string) any {
 		return activeImplementation.utf8LengthFromUTF32
 	case "UTF16LengthFromUTF32":
 		return activeImplementation.utf16LengthFromUTF32
+	case "Find":
+		return activeImplementation.find
+	case "FindUTF16":
+		return activeImplementation.findUTF16
+	case "DetectEncodings":
+		return activeImplementation.detectEncodings
+	case "BinaryLengthFromBase64":
+		return activeImplementation.binaryLengthFromBase64
+	case "BinaryLengthFromBase64UTF16":
+		return activeImplementation.binaryLengthFromBase64UTF16
+	case "Base64ToBinary":
+		return activeImplementation.base64ToBinary
+	case "Base64ToBinaryUTF16":
+		return activeImplementation.base64ToBinaryUTF16
+	case "Base64ToBinaryDetails":
+		return activeImplementation.base64ToBinaryDetails
+	case "Base64ToBinaryDetailsUTF16":
+		return activeImplementation.base64ToBinaryDetailsUTF16
+	case "BinaryToBase64":
+		return activeImplementation.binaryToBase64
+	case "BinaryToBase64WithLines":
+		return activeImplementation.binaryToBase64WithLines
 	default:
 		panic("unknown dispatch qualification operation: " + operation)
 	}
@@ -1504,6 +1789,58 @@ func BenchmarkDispatchQualification(b *testing.B) {
 			case "UTF16LengthFromUTF32":
 				for b.Loop() {
 					benchmarkIntSink = UTF16LengthFromUTF32(row.uint32s)
+				}
+			case "Find":
+				needle := row.bytes[len(row.bytes)-1]
+				for b.Loop() {
+					benchmarkIntSink = Find(row.bytes, needle)
+				}
+			case "FindUTF16":
+				needle := row.uint16s[len(row.uint16s)-1]
+				for b.Loop() {
+					benchmarkIntSink = FindUTF16(row.uint16s, needle)
+				}
+			case "DetectEncodings":
+				for b.Loop() {
+					benchmarkEncodingSink = DetectEncodings(row.bytes)
+				}
+			case "BinaryLengthFromBase64":
+				for b.Loop() {
+					benchmarkIntSink = BinaryLengthFromBase64(row.bytes)
+				}
+			case "BinaryLengthFromBase64UTF16":
+				for b.Loop() {
+					benchmarkIntSink = BinaryLengthFromBase64UTF16(row.uint16s)
+				}
+			case "Base64ToBinary":
+				dst := make([]byte, MaximalBinaryLengthFromBase64(row.bytes))
+				for b.Loop() {
+					benchmarkResultSink = Base64ToBinary(row.bytes, dst, Base64Default, Loose)
+				}
+			case "Base64ToBinaryUTF16":
+				dst := make([]byte, MaximalBinaryLengthFromBase64UTF16(row.uint16s))
+				for b.Loop() {
+					benchmarkResultSink = Base64ToBinaryUTF16(row.uint16s, dst, Base64Default, Loose)
+				}
+			case "Base64ToBinaryDetails":
+				dst := make([]byte, MaximalBinaryLengthFromBase64(row.bytes))
+				for b.Loop() {
+					benchmarkFullResultSink = Base64ToBinaryDetails(row.bytes, dst, Base64Default, Loose)
+				}
+			case "Base64ToBinaryDetailsUTF16":
+				dst := make([]byte, MaximalBinaryLengthFromBase64UTF16(row.uint16s))
+				for b.Loop() {
+					benchmarkFullResultSink = Base64ToBinaryDetailsUTF16(row.uint16s, dst, Base64Default, Loose)
+				}
+			case "BinaryToBase64":
+				dst := make([]byte, Base64LengthFromBinary(len(row.bytes), Base64Default))
+				for b.Loop() {
+					benchmarkIntSink = BinaryToBase64(row.bytes, dst, Base64Default)
+				}
+			case "BinaryToBase64WithLines":
+				dst := make([]byte, Base64LengthFromBinaryWithLines(len(row.bytes), Base64Default, DefaultLineLength))
+				for b.Loop() {
+					benchmarkIntSink = BinaryToBase64WithLines(row.bytes, dst, DefaultLineLength, Base64Default)
 				}
 			default:
 				b.Fatalf("unknown operation %q", row.operation)
@@ -2763,13 +3100,122 @@ UTF16LengthFromUTF32/Q-u32-zero/boundary/0031
 UTF16LengthFromUTF32/Q-u32-zero/boundary/0032
 UTF16LengthFromUTF32/Q-u32-zero/boundary/0033
 UTF16LengthFromUTF32/Q-u32-zero/bulk/1024
+Find/Q-find-byte/short/0001
+Find/Q-find-byte/short/0015
+Find/Q-find-byte/short/0016
+Find/Q-find-byte/short/0017
+Find/Q-find-byte/short/0031
+Find/Q-find-byte/short/0032
+Find/Q-find-byte/short/0033
+Find/Q-find-byte/boundary/0063
+Find/Q-find-byte/boundary/0064
+Find/Q-find-byte/boundary/0065
+Find/Q-find-byte/boundary/0127
+Find/Q-find-byte/boundary/0128
+Find/Q-find-byte/boundary/0129
+Find/Q-find-byte/bulk/4096
+FindUTF16/Q-find-u16le/short/0001
+FindUTF16/Q-find-u16le/short/0007
+FindUTF16/Q-find-u16le/short/0008
+FindUTF16/Q-find-u16le/short/0009
+FindUTF16/Q-find-u16le/short/0015
+FindUTF16/Q-find-u16le/short/0016
+FindUTF16/Q-find-u16le/short/0017
+FindUTF16/Q-find-u16le/boundary/0031
+FindUTF16/Q-find-u16le/boundary/0032
+FindUTF16/Q-find-u16le/boundary/0033
+FindUTF16/Q-find-u16le/boundary/0063
+FindUTF16/Q-find-u16le/boundary/0064
+FindUTF16/Q-find-u16le/boundary/0065
+FindUTF16/Q-find-u16le/boundary/0127
+FindUTF16/Q-find-u16le/boundary/0128
+FindUTF16/Q-find-u16le/boundary/0129
+FindUTF16/Q-find-u16le/bulk/2048
+DetectEncodings/Q-detection-valid/short/0001
+DetectEncodings/Q-detection-valid/short/0015
+DetectEncodings/Q-detection-valid/short/0016
+DetectEncodings/Q-detection-valid/short/0017
+DetectEncodings/Q-detection-valid/short/0031
+DetectEncodings/Q-detection-valid/short/0032
+DetectEncodings/Q-detection-valid/short/0033
+DetectEncodings/Q-detection-valid/boundary/0063
+DetectEncodings/Q-detection-valid/boundary/0064
+DetectEncodings/Q-detection-valid/boundary/0065
+DetectEncodings/Q-detection-valid/boundary/0127
+DetectEncodings/Q-detection-valid/boundary/0128
+DetectEncodings/Q-detection-valid/boundary/0129
+DetectEncodings/Q-detection-valid/bulk/4096
+BinaryLengthFromBase64/Q-byte-zero/short/0001
+BinaryLengthFromBase64/Q-byte-zero/short/0015
+BinaryLengthFromBase64/Q-byte-zero/short/0016
+BinaryLengthFromBase64/Q-byte-zero/short/0017
+BinaryLengthFromBase64/Q-byte-zero/short/0031
+BinaryLengthFromBase64/Q-byte-zero/short/0032
+BinaryLengthFromBase64/Q-byte-zero/short/0033
+BinaryLengthFromBase64/Q-byte-zero/boundary/0063
+BinaryLengthFromBase64/Q-byte-zero/boundary/0064
+BinaryLengthFromBase64/Q-byte-zero/boundary/0065
+BinaryLengthFromBase64/Q-byte-zero/boundary/0127
+BinaryLengthFromBase64/Q-byte-zero/boundary/0128
+BinaryLengthFromBase64/Q-byte-zero/boundary/0129
+BinaryLengthFromBase64/Q-byte-zero/bulk/4096
+BinaryLengthFromBase64/Q-emoji/bulk/3150
+BinaryToBase64/Q-byte-zero/short/0001
+BinaryToBase64/Q-byte-zero/short/0015
+BinaryToBase64/Q-byte-zero/short/0016
+BinaryToBase64/Q-byte-zero/short/0017
+BinaryToBase64/Q-byte-zero/short/0031
+BinaryToBase64/Q-byte-zero/short/0032
+BinaryToBase64/Q-byte-zero/short/0033
+BinaryToBase64/Q-byte-zero/boundary/0063
+BinaryToBase64/Q-byte-zero/boundary/0064
+BinaryToBase64/Q-byte-zero/boundary/0065
+BinaryToBase64/Q-byte-zero/boundary/0127
+BinaryToBase64/Q-byte-zero/boundary/0128
+BinaryToBase64/Q-byte-zero/boundary/0129
+BinaryToBase64/Q-byte-zero/bulk/4096
+BinaryToBase64/Q-emoji/bulk/3150
+BinaryToBase64WithLines/Q-byte-zero/short/0001
+BinaryToBase64WithLines/Q-byte-zero/short/0015
+BinaryToBase64WithLines/Q-byte-zero/short/0016
+BinaryToBase64WithLines/Q-byte-zero/short/0017
+BinaryToBase64WithLines/Q-byte-zero/short/0031
+BinaryToBase64WithLines/Q-byte-zero/short/0032
+BinaryToBase64WithLines/Q-byte-zero/short/0033
+BinaryToBase64WithLines/Q-byte-zero/boundary/0063
+BinaryToBase64WithLines/Q-byte-zero/boundary/0064
+BinaryToBase64WithLines/Q-byte-zero/boundary/0065
+BinaryToBase64WithLines/Q-byte-zero/boundary/0127
+BinaryToBase64WithLines/Q-byte-zero/boundary/0128
+BinaryToBase64WithLines/Q-byte-zero/boundary/0129
+BinaryToBase64WithLines/Q-byte-zero/bulk/4096
+BinaryToBase64WithLines/Q-emoji/bulk/3150
+BinaryLengthFromBase64UTF16/Q-byte-zero/short/0001
+BinaryLengthFromBase64UTF16/Q-byte-zero/short/0015
+BinaryLengthFromBase64UTF16/Q-byte-zero/short/0016
+BinaryLengthFromBase64UTF16/Q-byte-zero/short/0017
+BinaryLengthFromBase64UTF16/Q-byte-zero/short/0031
+BinaryLengthFromBase64UTF16/Q-byte-zero/short/0032
+BinaryLengthFromBase64UTF16/Q-byte-zero/short/0033
+BinaryLengthFromBase64UTF16/Q-byte-zero/boundary/0063
+BinaryLengthFromBase64UTF16/Q-byte-zero/boundary/0064
+BinaryLengthFromBase64UTF16/Q-byte-zero/boundary/0065
+BinaryLengthFromBase64UTF16/Q-byte-zero/boundary/0127
+BinaryLengthFromBase64UTF16/Q-byte-zero/boundary/0128
+BinaryLengthFromBase64UTF16/Q-byte-zero/boundary/0129
+BinaryLengthFromBase64UTF16/Q-byte-zero/bulk/4096
+BinaryLengthFromBase64UTF16/Q-emoji/bulk/3150
+Base64ToBinary/Q-dns-normalized/bulk/35000000
+Base64ToBinaryDetails/Q-dns-normalized/bulk/35000000
+Base64ToBinaryUTF16/Q-dns-normalized/bulk/35000000
+Base64ToBinaryDetailsUTF16/Q-dns-normalized/bulk/35000000
 `
 
 func TestDispatchQualificationSurface(t *testing.T) {
 	rows := dispatchQualificationRows()
 	wantNames := strings.Fields(dispatchQualificationExpectedNames)
-	if len(rows) != 1250 || len(wantNames) != 1250 {
-		t.Fatalf("row counts = (%d, %d), want (1250, 1250)", len(rows), len(wantNames))
+	if len(rows) != 1359 || len(wantNames) != 1359 {
+		t.Fatalf("row counts = (%d, %d), want (1359, 1359)", len(rows), len(wantNames))
 	}
 	for i, row := range rows {
 		if got, want := row.name(), wantNames[i]; got != want {
@@ -2816,12 +3262,33 @@ func TestDispatchQualificationInputs(t *testing.T) {
 	if len(arabicLipsum) != dispatchQualificationArabicLipsumSize {
 		t.Fatalf("Q-arabic-lipsum length = %d, want %d", len(arabicLipsum), dispatchQualificationArabicLipsumSize)
 	}
+	findByte, findU16LE, findU16LERaw := materializeDispatchQualificationFindCorpora()
+	if got := fmt.Sprintf("%x", sha256.Sum256(findByte)); got != dispatchQualificationFindByteSHA256 {
+		t.Fatalf("Q-find-byte SHA-256 = %s, want %s", got, dispatchQualificationFindByteSHA256)
+	}
+	if got := fmt.Sprintf("%x", sha256.Sum256(findU16LERaw)); got != dispatchQualificationFindU16LESHA256 {
+		t.Fatalf("Q-find-u16le SHA-256 = %s, want %s", got, dispatchQualificationFindU16LESHA256)
+	}
+	encodedFind := make([]byte, 2*len(findU16LE))
+	for i, codeUnit := range findU16LE {
+		binary.LittleEndian.PutUint16(encodedFind[2*i:], codeUnit)
+	}
+	if !reflect.DeepEqual(encodedFind, findU16LERaw) {
+		t.Fatal("Q-find-u16le is not the little-endian encoding of its code units")
+	}
+	dnsNormalized := loadDispatchQualificationDNSNormalized()
+	if got := fmt.Sprintf("%x", sha256.Sum256(dnsNormalized)); got != dispatchQualificationDNSNormalizedSHA256 {
+		t.Fatalf("Q-dns-normalized SHA-256 = %s, want %s", got, dispatchQualificationDNSNormalizedSHA256)
+	}
+	if len(dnsNormalized) != dispatchQualificationDNSNormalizedSize {
+		t.Fatalf("Q-dns-normalized length = %d, want %d", len(dnsNormalized), dispatchQualificationDNSNormalizedSize)
+	}
 	for i, row := range dispatchQualificationRows() {
 		wantBytes := int64(row.size)
-		if row.corpus == "Q-u16-zero" {
+		if row.uint16s != nil {
 			wantBytes *= 2
 		}
-		if row.corpus == "Q-u32-zero" {
+		if row.uint32s != nil {
 			wantBytes *= 4
 		}
 		if got := row.inputBytes(); got != wantBytes {
@@ -2832,6 +3299,18 @@ func TestDispatchQualificationInputs(t *testing.T) {
 		}
 		if row.corpus == "Q-arabic-lipsum" && row.size != dispatchQualificationArabicLipsumSize {
 			t.Fatalf("row %d (%s) input length = %d, want %d", i, row.name(), row.size, dispatchQualificationArabicLipsumSize)
+		}
+		if row.corpus == "Q-find-byte" && (row.size > len(findByte) || row.size < 1) {
+			t.Fatalf("row %d (%s) invalid Q-find-byte size %d", i, row.name(), row.size)
+		}
+		if row.corpus == "Q-detection-valid" && (row.size > len(findByte) || row.size < 1) {
+			t.Fatalf("row %d (%s) invalid Q-detection-valid size %d", i, row.name(), row.size)
+		}
+		if row.corpus == "Q-find-u16le" && (row.size > len(findU16LE) || row.size < 1) {
+			t.Fatalf("row %d (%s) invalid Q-find-u16le size %d", i, row.name(), row.size)
+		}
+		if row.corpus == "Q-dns-normalized" && row.size != dispatchQualificationDNSNormalizedSize {
+			t.Fatalf("row %d (%s) input length = %d, want %d", i, row.name(), row.size, dispatchQualificationDNSNormalizedSize)
 		}
 	}
 }
@@ -3004,6 +3483,17 @@ func TestDispatchQualificationTimedCallsAreLiteral(t *testing.T) {
 		"benchmarkIntSink = ConvertValidUTF32ToUTF16BE(row.uint32s, dst)",
 		"benchmarkIntSink = UTF8LengthFromUTF32(row.uint32s)",
 		"benchmarkIntSink = UTF16LengthFromUTF32(row.uint32s)",
+		"benchmarkIntSink = Find(row.bytes, needle)",
+		"benchmarkIntSink = FindUTF16(row.uint16s, needle)",
+		"benchmarkEncodingSink = DetectEncodings(row.bytes)",
+		"benchmarkIntSink = BinaryLengthFromBase64(row.bytes)",
+		"benchmarkIntSink = BinaryLengthFromBase64UTF16(row.uint16s)",
+		"benchmarkResultSink = Base64ToBinary(row.bytes, dst, Base64Default, Loose)",
+		"benchmarkResultSink = Base64ToBinaryUTF16(row.uint16s, dst, Base64Default, Loose)",
+		"benchmarkFullResultSink = Base64ToBinaryDetails(row.bytes, dst, Base64Default, Loose)",
+		"benchmarkFullResultSink = Base64ToBinaryDetailsUTF16(row.uint16s, dst, Base64Default, Loose)",
+		"benchmarkIntSink = BinaryToBase64(row.bytes, dst, Base64Default)",
+		"benchmarkIntSink = BinaryToBase64WithLines(row.bytes, dst, DefaultLineLength, Base64Default)",
 	} {
 		if got := bytesCount(timedSource, []byte(call)); got != 1 {
 			t.Errorf("literal timed call %q count = %d, want 1", call, got)
