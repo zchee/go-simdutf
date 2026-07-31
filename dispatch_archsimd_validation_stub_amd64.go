@@ -16,15 +16,9 @@
 
 package simdutf
 
-func archsimdValidateUTF16LE() func([]uint16) bool               { return nil }
-func archsimdValidateUTF16BE() func([]uint16) bool               { return nil }
 func archsimdValidateUTF16LEWithErrors() func([]uint16) Result   { return nil }
-func archsimdValidateUTF16BEWithErrors() func([]uint16) Result   { return nil }
-func archsimdToWellFormedUTF16LE() func([]uint16, []uint16)      { return nil }
-func archsimdToWellFormedUTF16BE() func([]uint16, []uint16)      { return nil }
 func archsimdValidateUTF32() func([]uint32) bool                 { return nil }
 func archsimdDetectEncodings() func([]byte) Encoding             { return nil }
-func archsimdValidateUTF32WithErrors() func([]uint32) Result     { return nil }
 func archsimdUTF8LengthFromLatin1() func([]byte) int             { return nil }
 func archsimdConvertLatin1ToUTF8() func([]byte, []byte) int      { return nil }
 func archsimdConvertLatin1ToUTF16LE() func([]byte, []uint16) int { return nil }
@@ -39,6 +33,7 @@ func archsimdConvertUTF8ToUTF16BE() func([]byte, []uint16) int           { retur
 func archsimdConvertUTF8ToUTF16LEWithErrors() func([]byte, []uint16) Result {
 	return nil
 }
+
 func archsimdConvertUTF8ToUTF16BEWithErrors() func([]byte, []uint16) Result {
 	return nil
 }
