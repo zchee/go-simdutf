@@ -1,0 +1,13 @@
+00000000006e9c80 T github.com/zchee/go-simdutf.binaryLengthFromBase64Scalar
+00000000006e9d00 T github.com/zchee/go-simdutf.binaryLengthFromBase64UTF16Scalar
+00000000006eabe0 T github.com/zchee/go-simdutf.base64ToBinaryDetailsScalar
+00000000006eac80 T github.com/zchee/go-simdutf.base64ToBinaryDetailsUTF16Scalar
+00000000006eb500 T github.com/zchee/go-simdutf.base64ToBinaryScalar
+00000000006eb620 T github.com/zchee/go-simdutf.base64ToBinaryUTF16Scalar
+00000000006eb760 T github.com/zchee/go-simdutf.binaryToBase64Scalar
+00000000006eb8a0 T github.com/zchee/go-simdutf.binaryToBase64WithLinesScalar
+00000000006ecca0 T github.com/zchee/go-simdutf.base64ToBinarySafeScalar
+00000000006ecd60 T github.com/zchee/go-simdutf.base64ToBinarySafeUTF16Scalar
+00000000006eda40 T github.com/zchee/go-simdutf.detectEncodingsScalar
+00000000006f24a0 T github.com/zchee/go-simdutf.findScalar
+00000000006f24e0 T github.com/zchee/go-simdutf.findUTF16Scalar

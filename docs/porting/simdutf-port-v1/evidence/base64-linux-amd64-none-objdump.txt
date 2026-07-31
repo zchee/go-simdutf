@@ -1,0 +1,725 @@
+TEXT github.com/zchee/go-simdutf.binaryLengthFromBase64Scalar(SB) /tmp/go-simdutf-w06w07-qual/base64_scalar.go
+  base64_scalar.go:248	0x6e9c80		4889442408		MOVQ AX, 0x8(SP)		
+  base64_scalar.go:250	0x6e9c85		31c9			XORL CX, CX			
+  base64_scalar.go:250	0x6e9c87		31d2			XORL DX, DX			
+  base64_scalar.go:250	0x6e9c89		eb16			JMP 0x6e9ca1			
+  base64_scalar.go:250	0x6e9c8b		0fb63408		MOVZX 0(AX)(CX*1), SI		
+  base64_scalar.go:250	0x6e9c8f		48ffc1			INCQ CX				
+  base64_scalar.go:250	0x6e9c92		4080fe20		CMPL SI, $0x20			
+  base64_scalar.go:251	0x6e9c96		400f97c6		SETA SI				
+  base64_scalar.go:251	0x6e9c9a		400fb6f6		MOVZX SI, SI			
+  base64_scalar.go:251	0x6e9c9e		4801f2			ADDQ SI, DX			
+  base64_scalar.go:250	0x6e9ca1		4839cb			CMPQ BX, CX			
+  base64_scalar.go:250	0x6e9ca4		7fe5			JG 0x6e9c8b			
+  base64_scalar.go:250	0x6e9ca6		31c9			XORL CX, CX			
+  base64_scalar.go:257	0x6e9ca8		eb03			JMP 0x6e9cad			
+  base64_scalar.go:258	0x6e9caa		48ffcb			DECQ BX				
+  base64_scalar.go:257	0x6e9cad		4885db			TESTQ BX, BX			
+  base64_scalar.go:257	0x6e9cb0		7e1f			JLE 0x6e9cd1			
+  base64_scalar.go:257	0x6e9cb2		4883f902		CMPQ CX, $0x2			
+  base64_scalar.go:257	0x6e9cb6		7d19			JGE 0x6e9cd1			
+  base64_scalar.go:259	0x6e9cb8		0fb67403ff		MOVZX -0x1(BX)(AX*1), SI	
+  base64_scalar.go:259	0x6e9cbd		0f1f00			NOPL 0(AX)			
+  base64_scalar.go:260	0x6e9cc0		4080fe3d		CMPL SI, $0x3d			
+  base64_scalar.go:260	0x6e9cc4		7505			JNE 0x6e9ccb			
+  base64_scalar.go:261	0x6e9cc6		48ffc1			INCQ CX				
+  base64_scalar.go:261	0x6e9cc9		ebdf			JMP 0x6e9caa			
+  base64_scalar.go:262	0x6e9ccb		4080fe20		CMPL SI, $0x20			
+  base64_scalar.go:262	0x6e9ccf		76d9			JBE 0x6e9caa			
+  base64_scalar.go:266	0x6e9cd1		4829ca			SUBQ CX, DX			
+  base64_scalar.go:266	0x6e9cd4		488d0c52		LEAQ 0(DX)(DX*2), CX		
+  base64_scalar.go:266	0x6e9cd8		4889ca			MOVQ CX, DX			
+  base64_scalar.go:266	0x6e9cdb		48c1f93f		SARQ $0x3f, CX			
+  base64_scalar.go:266	0x6e9cdf		48c1e93e		SHRQ $0x3e, CX			
+  base64_scalar.go:266	0x6e9ce3		488d040a		LEAQ 0(DX)(CX*1), AX		
+  base64_scalar.go:266	0x6e9ce7		48c1f802		SARQ $0x2, AX			
+  base64_scalar.go:266	0x6e9ceb		c3			RET				
+
+TEXT github.com/zchee/go-simdutf.binaryLengthFromBase64UTF16Scalar(SB) /tmp/go-simdutf-w06w07-qual/base64_scalar.go
+  base64_scalar.go:269	0x6e9d00		4889442408		MOVQ AX, 0x8(SP)		
+  base64_scalar.go:271	0x6e9d05		31c9			XORL CX, CX			
+  base64_scalar.go:271	0x6e9d07		31d2			XORL DX, DX			
+  base64_scalar.go:271	0x6e9d09		eb16			JMP 0x6e9d21			
+  base64_scalar.go:271	0x6e9d0b		0fb73448		MOVZX 0(AX)(CX*2), SI		
+  base64_scalar.go:271	0x6e9d0f		48ffc1			INCQ CX				
+  base64_scalar.go:271	0x6e9d12		6683fe20		CMPW SI, $0x20			
+  base64_scalar.go:272	0x6e9d16		400f97c6		SETA SI				
+  base64_scalar.go:272	0x6e9d1a		400fb6f6		MOVZX SI, SI			
+  base64_scalar.go:272	0x6e9d1e		4801f2			ADDQ SI, DX			
+  base64_scalar.go:271	0x6e9d21		4839cb			CMPQ BX, CX			
+  base64_scalar.go:271	0x6e9d24		7fe5			JG 0x6e9d0b			
+  base64_scalar.go:271	0x6e9d26		31c9			XORL CX, CX			
+  base64_scalar.go:278	0x6e9d28		eb03			JMP 0x6e9d2d			
+  base64_scalar.go:279	0x6e9d2a		48ffcb			DECQ BX				
+  base64_scalar.go:278	0x6e9d2d		4885db			TESTQ BX, BX			
+  base64_scalar.go:278	0x6e9d30		7e1f			JLE 0x6e9d51			
+  base64_scalar.go:278	0x6e9d32		4883f902		CMPQ CX, $0x2			
+  base64_scalar.go:278	0x6e9d36		7d19			JGE 0x6e9d51			
+  base64_scalar.go:280	0x6e9d38		0fb77458fe		MOVZX -0x2(AX)(BX*2), SI	
+  base64_scalar.go:280	0x6e9d3d		0f1f00			NOPL 0(AX)			
+  base64_scalar.go:281	0x6e9d40		6683fe3d		CMPW SI, $0x3d			
+  base64_scalar.go:281	0x6e9d44		7505			JNE 0x6e9d4b			
+  base64_scalar.go:282	0x6e9d46		48ffc1			INCQ CX				
+  base64_scalar.go:282	0x6e9d49		ebdf			JMP 0x6e9d2a			
+  base64_scalar.go:283	0x6e9d4b		6683fe20		CMPW SI, $0x20			
+  base64_scalar.go:283	0x6e9d4f		76d9			JBE 0x6e9d2a			
+  base64_scalar.go:287	0x6e9d51		4829ca			SUBQ CX, DX			
+  base64_scalar.go:287	0x6e9d54		488d0c52		LEAQ 0(DX)(DX*2), CX		
+  base64_scalar.go:287	0x6e9d58		4889ca			MOVQ CX, DX			
+  base64_scalar.go:287	0x6e9d5b		48c1f93f		SARQ $0x3f, CX			
+  base64_scalar.go:287	0x6e9d5f		48c1e93e		SHRQ $0x3e, CX			
+  base64_scalar.go:287	0x6e9d63		488d040a		LEAQ 0(DX)(CX*1), AX		
+  base64_scalar.go:287	0x6e9d67		48c1f802		SARQ $0x2, AX			
+  base64_scalar.go:287	0x6e9d6b		c3			RET				
+
+TEXT github.com/zchee/go-simdutf.base64ToBinaryDetailsScalar(SB) /tmp/go-simdutf-w06w07-qual/base64_scalar.go
+  base64_scalar.go:481	0x6eabe0		493b6610		CMPQ SP, 0x10(R14)						
+  base64_scalar.go:481	0x6eabe4		7625			JBE 0x6eac0b							
+  base64_scalar.go:481	0x6eabe6		55			PUSHQ BP							
+  base64_scalar.go:481	0x6eabe7		4889e5			MOVQ SP, BP							
+  base64_scalar.go:481	0x6eabea		4883ec48		SUBQ $0x48, SP							
+  base64_scalar.go:481	0x6eabee		4889442458		MOVQ AX, 0x58(SP)						
+  base64_scalar.go:481	0x6eabf3		48897c2470		MOVQ DI, 0x70(SP)						
+  base64_scalar.go:482	0x6eabf8		4531db			XORL R11, R11							
+  base64_scalar.go:482	0x6eabfb		0f1f440000		NOPL 0(AX)(AX*1)						
+  base64_scalar.go:482	0x6eac00		e81b010000		CALL github.com/zchee/go-simdutf.base64ToBinaryDetailsByte(SB)	
+  base64_scalar.go:482	0x6eac05		4883c448		ADDQ $0x48, SP							
+  base64_scalar.go:482	0x6eac09		5d			POPQ BP								
+  base64_scalar.go:482	0x6eac0a		c3			RET								
+  base64_scalar.go:481	0x6eac0b		4889442408		MOVQ AX, 0x8(SP)						
+  base64_scalar.go:481	0x6eac10		48895c2410		MOVQ BX, 0x10(SP)						
+  base64_scalar.go:481	0x6eac15		48894c2418		MOVQ CX, 0x18(SP)						
+  base64_scalar.go:481	0x6eac1a		48897c2420		MOVQ DI, 0x20(SP)						
+  base64_scalar.go:481	0x6eac1f		4889742428		MOVQ SI, 0x28(SP)						
+  base64_scalar.go:481	0x6eac24		4c89442430		MOVQ R8, 0x30(SP)						
+  base64_scalar.go:481	0x6eac29		4c894c2438		MOVQ R9, 0x38(SP)						
+  base64_scalar.go:481	0x6eac2e		4c89542440		MOVQ R10, 0x40(SP)						
+  base64_scalar.go:481	0x6eac33		e8c8e0d9ff		CALL runtime.morestack_noctxt.abi0(SB)				
+  base64_scalar.go:481	0x6eac38		488b442408		MOVQ 0x8(SP), AX						
+  base64_scalar.go:481	0x6eac3d		488b5c2410		MOVQ 0x10(SP), BX						
+  base64_scalar.go:481	0x6eac42		488b4c2418		MOVQ 0x18(SP), CX						
+  base64_scalar.go:481	0x6eac47		488b7c2420		MOVQ 0x20(SP), DI						
+  base64_scalar.go:481	0x6eac4c		488b742428		MOVQ 0x28(SP), SI						
+  base64_scalar.go:481	0x6eac51		4c8b442430		MOVQ 0x30(SP), R8						
+  base64_scalar.go:481	0x6eac56		4c8b4c2438		MOVQ 0x38(SP), R9						
+  base64_scalar.go:481	0x6eac5b		4c8b542440		MOVQ 0x40(SP), R10						
+  base64_scalar.go:481	0x6eac60		e97bffffff		JMP github.com/zchee/go-simdutf.base64ToBinaryDetailsScalar(SB)	
+
+TEXT github.com/zchee/go-simdutf.base64ToBinaryDetailsUTF16Scalar(SB) /tmp/go-simdutf-w06w07-qual/base64_scalar.go
+  base64_scalar.go:485	0x6eac80		493b6610		CMPQ SP, 0x10(R14)							
+  base64_scalar.go:485	0x6eac84		7625			JBE 0x6eacab								
+  base64_scalar.go:485	0x6eac86		55			PUSHQ BP								
+  base64_scalar.go:485	0x6eac87		4889e5			MOVQ SP, BP								
+  base64_scalar.go:485	0x6eac8a		4883ec48		SUBQ $0x48, SP								
+  base64_scalar.go:485	0x6eac8e		4889442458		MOVQ AX, 0x58(SP)							
+  base64_scalar.go:485	0x6eac93		48897c2470		MOVQ DI, 0x70(SP)							
+  base64_scalar.go:486	0x6eac98		4531db			XORL R11, R11								
+  base64_scalar.go:486	0x6eac9b		0f1f440000		NOPL 0(AX)(AX*1)							
+  base64_scalar.go:486	0x6eaca0		e87b040000		CALL github.com/zchee/go-simdutf.base64ToBinaryDetailsUTF16Inner(SB)	
+  base64_scalar.go:486	0x6eaca5		4883c448		ADDQ $0x48, SP								
+  base64_scalar.go:486	0x6eaca9		5d			POPQ BP									
+  base64_scalar.go:486	0x6eacaa		c3			RET									
+  base64_scalar.go:485	0x6eacab		4889442408		MOVQ AX, 0x8(SP)							
+  base64_scalar.go:485	0x6eacb0		48895c2410		MOVQ BX, 0x10(SP)							
+  base64_scalar.go:485	0x6eacb5		48894c2418		MOVQ CX, 0x18(SP)							
+  base64_scalar.go:485	0x6eacba		48897c2420		MOVQ DI, 0x20(SP)							
+  base64_scalar.go:485	0x6eacbf		4889742428		MOVQ SI, 0x28(SP)							
+  base64_scalar.go:485	0x6eacc4		4c89442430		MOVQ R8, 0x30(SP)							
+  base64_scalar.go:485	0x6eacc9		4c894c2438		MOVQ R9, 0x38(SP)							
+  base64_scalar.go:485	0x6eacce		4c89542440		MOVQ R10, 0x40(SP)							
+  base64_scalar.go:485	0x6eacd3		e828e0d9ff		CALL runtime.morestack_noctxt.abi0(SB)					
+  base64_scalar.go:485	0x6eacd8		488b442408		MOVQ 0x8(SP), AX							
+  base64_scalar.go:485	0x6eacdd		488b5c2410		MOVQ 0x10(SP), BX							
+  base64_scalar.go:485	0x6eace2		488b4c2418		MOVQ 0x18(SP), CX							
+  base64_scalar.go:485	0x6eace7		488b7c2420		MOVQ 0x20(SP), DI							
+  base64_scalar.go:485	0x6eacec		488b742428		MOVQ 0x28(SP), SI							
+  base64_scalar.go:485	0x6eacf1		4c8b442430		MOVQ 0x30(SP), R8							
+  base64_scalar.go:485	0x6eacf6		4c8b4c2438		MOVQ 0x38(SP), R9							
+  base64_scalar.go:485	0x6eacfb		4c8b542440		MOVQ 0x40(SP), R10							
+  base64_scalar.go:485	0x6ead00		e97bffffff		JMP github.com/zchee/go-simdutf.base64ToBinaryDetailsUTF16Scalar(SB)	
+
+TEXT github.com/zchee/go-simdutf.base64ToBinaryScalar(SB) /tmp/go-simdutf-w06w07-qual/base64_scalar.go
+  base64_scalar.go:563	0x6eb500		493b6610		CMPQ SP, 0x10(R14)						
+  base64_scalar.go:563	0x6eb504		0f86b2000000		JBE 0x6eb5bc							
+  base64_scalar.go:563	0x6eb50a		55			PUSHQ BP							
+  base64_scalar.go:563	0x6eb50b		4889e5			MOVQ SP, BP							
+  base64_scalar.go:563	0x6eb50e		4883ec48		SUBQ $0x48, SP							
+  base64_scalar.go:563	0x6eb512		4889442458		MOVQ AX, 0x58(SP)						
+  base64_scalar.go:563	0x6eb517		48897c2470		MOVQ DI, 0x70(SP)						
+  base64_scalar.go:563	0x6eb51c		0f1f4000		NOPL 0(AX)							
+  base64_scalar.go:216	0x6eb520		4885db			TESTQ BX, BX							
+  base64_scalar.go:216	0x6eb523		742c			JE 0x6eb551							
+  base64_scalar.go:217	0x6eb525		0fb65403ff		MOVZX -0x1(BX)(AX*1), DX					
+  base64_scalar.go:217	0x6eb52a		80fa3d			CMPL DL, $0x3d							
+  base64_scalar.go:217	0x6eb52d		751e			JNE 0x6eb54d							
+  base64_scalar.go:219	0x6eb52f		4883fb01		CMPQ BX, $0x1							
+  base64_scalar.go:219	0x6eb533		7e11			JLE 0x6eb546							
+  base64_scalar.go:219	0x6eb535		0fb65403fe		MOVZX -0x2(BX)(AX*1), DX					
+  base64_scalar.go:219	0x6eb53a		80fa3d			CMPL DL, $0x3d							
+  base64_scalar.go:219	0x6eb53d		7507			JNE 0x6eb546							
+  base64_scalar.go:220	0x6eb53f		ba02000000		MOVL $0x2, DX							
+  base64_scalar.go:220	0x6eb544		eb0d			JMP 0x6eb553							
+  base64_scalar.go:220	0x6eb546		ba01000000		MOVL $0x1, DX							
+  base64_scalar.go:219	0x6eb54b		eb06			JMP 0x6eb553							
+  base64_scalar.go:219	0x6eb54d		31d2			XORL DX, DX							
+  base64_scalar.go:217	0x6eb54f		eb02			JMP 0x6eb553							
+  base64_scalar.go:217	0x6eb551		31d2			XORL DX, DX							
+  base64_scalar.go:224	0x6eb553		4989dc			MOVQ BX, R12							
+  base64_scalar.go:224	0x6eb556		4929d4			SUBQ DX, R12							
+  base64_scalar.go:225	0x6eb559		4c89e2			MOVQ R12, DX							
+  base64_scalar.go:225	0x6eb55c		49c1fc3f		SARQ $0x3f, R12							
+  base64_scalar.go:225	0x6eb560		49c1ec3e		SHRQ $0x3e, R12							
+  base64_scalar.go:225	0x6eb564		4901d4			ADDQ DX, R12							
+  base64_scalar.go:225	0x6eb567		49c1fc02		SARQ $0x2, R12							
+  base64_scalar.go:225	0x6eb56b		4d89e5			MOVQ R12, R13							
+  base64_scalar.go:225	0x6eb56e		49c1e402		SHLQ $0x2, R12							
+  base64_scalar.go:225	0x6eb572		4c29e2			SUBQ R12, DX							
+  base64_scalar.go:225	0x6eb575		4883fa01		CMPQ DX, $0x1							
+  base64_scalar.go:225	0x6eb579		7f07			JG 0x6eb582							
+  base64_scalar.go:226	0x6eb57b		4b8d546d00		LEAQ 0(R13)(R13*2), DX						
+  base64_scalar.go:564	0x6eb580		eb0d			JMP 0x6eb58f							
+  base64_scalar.go:228	0x6eb582		4f8d646d00		LEAQ 0(R13)(R13*2), R12						
+  base64_scalar.go:228	0x6eb587		4a8d1422		LEAQ 0(DX)(R12*1), DX						
+  base64_scalar.go:228	0x6eb58b		488d52ff		LEAQ -0x1(DX), DX						
+  base64_scalar.go:565	0x6eb58f		4839d6			CMPQ SI, DX							
+  base64_scalar.go:565	0x6eb592		7c14			JL 0x6eb5a8							
+  base64_scalar.go:482	0x6eb594		4531db			XORL R11, R11							
+  base64_scalar.go:482	0x6eb597		e884f7ffff		CALL github.com/zchee/go-simdutf.base64ToBinaryDetailsByte(SB)	
+  errors.go:87		0x6eb59c		84c0			TESTL AL, AL							
+  base64_scalar.go:568	0x6eb59e		480f44d9		CMOVE CX, BX							
+  errors.go:87		0x6eb5a2		4883c448		ADDQ $0x48, SP							
+  errors.go:87		0x6eb5a6		5d			POPQ BP								
+  errors.go:87		0x6eb5a7		c3			RET								
+  base64_scalar.go:566	0x6eb5a8		488d05b18b0e00		LEAQ 0xe8bb1(IP), AX						
+  base64_scalar.go:566	0x6eb5af		488d1d1abd1a00		LEAQ 0x1abd1a(IP), BX						
+  base64_scalar.go:566	0x6eb5b6		e8a576d9ff		CALL runtime.gopanic(SB)					
+  base64_scalar.go:566	0x6eb5bb		90			NOPL								
+  base64_scalar.go:563	0x6eb5bc		4889442408		MOVQ AX, 0x8(SP)						
+  base64_scalar.go:563	0x6eb5c1		48895c2410		MOVQ BX, 0x10(SP)						
+  base64_scalar.go:563	0x6eb5c6		48894c2418		MOVQ CX, 0x18(SP)						
+  base64_scalar.go:563	0x6eb5cb		48897c2420		MOVQ DI, 0x20(SP)						
+  base64_scalar.go:563	0x6eb5d0		4889742428		MOVQ SI, 0x28(SP)						
+  base64_scalar.go:563	0x6eb5d5		4c89442430		MOVQ R8, 0x30(SP)						
+  base64_scalar.go:563	0x6eb5da		4c894c2438		MOVQ R9, 0x38(SP)						
+  base64_scalar.go:563	0x6eb5df		4c89542440		MOVQ R10, 0x40(SP)						
+  base64_scalar.go:563	0x6eb5e4		e817d7d9ff		CALL runtime.morestack_noctxt.abi0(SB)				
+  base64_scalar.go:563	0x6eb5e9		488b442408		MOVQ 0x8(SP), AX						
+  base64_scalar.go:563	0x6eb5ee		488b5c2410		MOVQ 0x10(SP), BX						
+  base64_scalar.go:563	0x6eb5f3		488b4c2418		MOVQ 0x18(SP), CX						
+  base64_scalar.go:563	0x6eb5f8		488b7c2420		MOVQ 0x20(SP), DI						
+  base64_scalar.go:563	0x6eb5fd		488b742428		MOVQ 0x28(SP), SI						
+  base64_scalar.go:563	0x6eb602		4c8b442430		MOVQ 0x30(SP), R8						
+  base64_scalar.go:563	0x6eb607		4c8b4c2438		MOVQ 0x38(SP), R9						
+  base64_scalar.go:563	0x6eb60c		4c8b542440		MOVQ 0x40(SP), R10						
+  base64_scalar.go:563	0x6eb611		e9eafeffff		JMP github.com/zchee/go-simdutf.base64ToBinaryScalar(SB)	
+
+TEXT github.com/zchee/go-simdutf.base64ToBinaryUTF16Scalar(SB) /tmp/go-simdutf-w06w07-qual/base64_scalar.go
+  base64_scalar.go:571	0x6eb620		493b6610		CMPQ SP, 0x10(R14)							
+  base64_scalar.go:571	0x6eb624		0f86bd000000		JBE 0x6eb6e7								
+  base64_scalar.go:571	0x6eb62a		55			PUSHQ BP								
+  base64_scalar.go:571	0x6eb62b		4889e5			MOVQ SP, BP								
+  base64_scalar.go:571	0x6eb62e		4883ec48		SUBQ $0x48, SP								
+  base64_scalar.go:571	0x6eb632		4889442458		MOVQ AX, 0x58(SP)							
+  base64_scalar.go:571	0x6eb637		48897c2470		MOVQ DI, 0x70(SP)							
+  base64_scalar.go:571	0x6eb63c		0f1f4000		NOPL 0(AX)								
+  base64_scalar.go:233	0x6eb640		4885db			TESTQ BX, BX								
+  base64_scalar.go:233	0x6eb643		7433			JE 0x6eb678								
+  base64_scalar.go:234	0x6eb645		0fb75458fe		MOVZX -0x2(AX)(BX*2), DX						
+  base64_scalar.go:234	0x6eb64a		6683fa3d		CMPW DX, $0x3d								
+  base64_scalar.go:234	0x6eb64e		7524			JNE 0x6eb674								
+  base64_scalar.go:236	0x6eb650		4883fb01		CMPQ BX, $0x1								
+  base64_scalar.go:236	0x6eb654		7e17			JLE 0x6eb66d								
+  base64_scalar.go:236	0x6eb656		0fb75458fc		MOVZX -0x4(AX)(BX*2), DX						
+  base64_scalar.go:236	0x6eb65b		0f1f440000		NOPL 0(AX)(AX*1)							
+  base64_scalar.go:236	0x6eb660		6683fa3d		CMPW DX, $0x3d								
+  base64_scalar.go:236	0x6eb664		7507			JNE 0x6eb66d								
+  base64_scalar.go:234	0x6eb666		ba02000000		MOVL $0x2, DX								
+  base64_scalar.go:237	0x6eb66b		eb0d			JMP 0x6eb67a								
+  base64_scalar.go:237	0x6eb66d		ba01000000		MOVL $0x1, DX								
+  base64_scalar.go:236	0x6eb672		eb06			JMP 0x6eb67a								
+  base64_scalar.go:236	0x6eb674		31d2			XORL DX, DX								
+  base64_scalar.go:234	0x6eb676		eb02			JMP 0x6eb67a								
+  base64_scalar.go:234	0x6eb678		31d2			XORL DX, DX								
+  base64_scalar.go:241	0x6eb67a		4989dc			MOVQ BX, R12								
+  base64_scalar.go:241	0x6eb67d		4929d4			SUBQ DX, R12								
+  base64_scalar.go:242	0x6eb680		4c89e2			MOVQ R12, DX								
+  base64_scalar.go:242	0x6eb683		49c1fc3f		SARQ $0x3f, R12								
+  base64_scalar.go:242	0x6eb687		49c1ec3e		SHRQ $0x3e, R12								
+  base64_scalar.go:242	0x6eb68b		4901d4			ADDQ DX, R12								
+  base64_scalar.go:242	0x6eb68e		49c1fc02		SARQ $0x2, R12								
+  base64_scalar.go:242	0x6eb692		4d89e5			MOVQ R12, R13								
+  base64_scalar.go:242	0x6eb695		49c1e402		SHLQ $0x2, R12								
+  base64_scalar.go:242	0x6eb699		4c29e2			SUBQ R12, DX								
+  base64_scalar.go:242	0x6eb69c		0f1f4000		NOPL 0(AX)								
+  base64_scalar.go:242	0x6eb6a0		4883fa01		CMPQ DX, $0x1								
+  base64_scalar.go:242	0x6eb6a4		7f07			JG 0x6eb6ad								
+  base64_scalar.go:243	0x6eb6a6		4b8d546d00		LEAQ 0(R13)(R13*2), DX							
+  base64_scalar.go:572	0x6eb6ab		eb0d			JMP 0x6eb6ba								
+  base64_scalar.go:245	0x6eb6ad		4f8d646d00		LEAQ 0(R13)(R13*2), R12							
+  base64_scalar.go:245	0x6eb6b2		4a8d1422		LEAQ 0(DX)(R12*1), DX							
+  base64_scalar.go:245	0x6eb6b6		488d52ff		LEAQ -0x1(DX), DX							
+  base64_scalar.go:573	0x6eb6ba		4839d6			CMPQ SI, DX								
+  base64_scalar.go:573	0x6eb6bd		7c14			JL 0x6eb6d3								
+  base64_scalar.go:486	0x6eb6bf		4531db			XORL R11, R11								
+  base64_scalar.go:486	0x6eb6c2		e859faffff		CALL github.com/zchee/go-simdutf.base64ToBinaryDetailsUTF16Inner(SB)	
+  errors.go:87		0x6eb6c7		84c0			TESTL AL, AL								
+  base64_scalar.go:576	0x6eb6c9		480f44d9		CMOVE CX, BX								
+  errors.go:87		0x6eb6cd		4883c448		ADDQ $0x48, SP								
+  errors.go:87		0x6eb6d1		5d			POPQ BP									
+  errors.go:87		0x6eb6d2		c3			RET									
+  base64_scalar.go:574	0x6eb6d3		488d05868a0e00		LEAQ 0xe8a86(IP), AX							
+  base64_scalar.go:574	0x6eb6da		488d1defbb1a00		LEAQ 0x1abbef(IP), BX							
+  base64_scalar.go:574	0x6eb6e1		e87a75d9ff		CALL runtime.gopanic(SB)						
+  base64_scalar.go:574	0x6eb6e6		90			NOPL									
+  base64_scalar.go:571	0x6eb6e7		4889442408		MOVQ AX, 0x8(SP)							
+  base64_scalar.go:571	0x6eb6ec		48895c2410		MOVQ BX, 0x10(SP)							
+  base64_scalar.go:571	0x6eb6f1		48894c2418		MOVQ CX, 0x18(SP)							
+  base64_scalar.go:571	0x6eb6f6		48897c2420		MOVQ DI, 0x20(SP)							
+  base64_scalar.go:571	0x6eb6fb		4889742428		MOVQ SI, 0x28(SP)							
+  base64_scalar.go:571	0x6eb700		4c89442430		MOVQ R8, 0x30(SP)							
+  base64_scalar.go:571	0x6eb705		4c894c2438		MOVQ R9, 0x38(SP)							
+  base64_scalar.go:571	0x6eb70a		4c89542440		MOVQ R10, 0x40(SP)							
+  base64_scalar.go:571	0x6eb70f		e8ecd5d9ff		CALL runtime.morestack_noctxt.abi0(SB)					
+  base64_scalar.go:571	0x6eb714		488b442408		MOVQ 0x8(SP), AX							
+  base64_scalar.go:571	0x6eb719		488b5c2410		MOVQ 0x10(SP), BX							
+  base64_scalar.go:571	0x6eb71e		488b4c2418		MOVQ 0x18(SP), CX							
+  base64_scalar.go:571	0x6eb723		488b7c2420		MOVQ 0x20(SP), DI							
+  base64_scalar.go:571	0x6eb728		488b742428		MOVQ 0x28(SP), SI							
+  base64_scalar.go:571	0x6eb72d		4c8b442430		MOVQ 0x30(SP), R8							
+  base64_scalar.go:571	0x6eb732		4c8b4c2438		MOVQ 0x38(SP), R9							
+  base64_scalar.go:571	0x6eb737		4c8b542440		MOVQ 0x40(SP), R10							
+  base64_scalar.go:571	0x6eb73c		0f1f4000		NOPL 0(AX)								
+  base64_scalar.go:571	0x6eb740		e9dbfeffff		JMP github.com/zchee/go-simdutf.base64ToBinaryUTF16Scalar(SB)		
+
+TEXT github.com/zchee/go-simdutf.binaryToBase64Scalar(SB) /tmp/go-simdutf-w06w07-qual/base64_scalar.go
+  base64_scalar.go:580	0x6eb760		493b6610		CMPQ SP, 0x10(R14)						
+  base64_scalar.go:580	0x6eb764		0f86dc000000		JBE 0x6eb846							
+  base64_scalar.go:580	0x6eb76a		55			PUSHQ BP							
+  base64_scalar.go:580	0x6eb76b		4889e5			MOVQ SP, BP							
+  base64_scalar.go:580	0x6eb76e		4883ec48		SUBQ $0x48, SP							
+  base64_scalar.go:580	0x6eb772		4889442458		MOVQ AX, 0x58(SP)						
+  base64_scalar.go:580	0x6eb777		48897c2470		MOVQ DI, 0x70(SP)						
+  base64_scalar.go:56	0x6eb77c		4c89ca			MOVQ R9, DX							
+  base64_scalar.go:56	0x6eb77f		83e201			ANDL $0x1, DX							
+  base64_scalar.go:56	0x6eb782		83f201			XORL $0x1, DX							
+  base64_scalar.go:57	0x6eb785		410fbae101		BTL $0x1, R9							
+  base64_scalar.go:57	0x6eb78a		410f92c4		SETB R12							
+  base64_scalar.go:58	0x6eb78e		4138d4			CMPL R12, DL							
+  base64_scalar.go:291	0x6eb791		7432			JE 0x6eb7c5							
+  base64_scalar.go:297	0x6eb793		488d5302		LEAQ 0x2(BX), DX						
+  base64_scalar.go:297	0x6eb797		4989d4			MOVQ DX, R12							
+  base64_scalar.go:297	0x6eb79a		48c1fa3f		SARQ $0x3f, DX							
+  base64_scalar.go:291	0x6eb79e		4989c2			MOVQ AX, R10							
+  base64_scalar.go:297	0x6eb7a1		48b8abaaaaaaaaaaaaaa	MOVQ $0xaaaaaaaaaaaaaaab, AX					
+  base64_scalar.go:297	0x6eb7ab		4989d3			MOVQ DX, R11							
+  base64_scalar.go:297	0x6eb7ae		49f7ec			IMULQ R12							
+  base64_scalar.go:297	0x6eb7b1		488d1413		LEAQ 0(BX)(DX*1), DX						
+  base64_scalar.go:297	0x6eb7b5		488d5202		LEAQ 0x2(DX), DX						
+  base64_scalar.go:297	0x6eb7b9		48d1fa			SARQ $0x1, DX							
+  base64_scalar.go:297	0x6eb7bc		4c29da			SUBQ R11, DX							
+  base64_scalar.go:297	0x6eb7bf		48c1e202		SHLQ $0x2, DX							
+  base64_scalar.go:581	0x6eb7c3		eb3b			JMP 0x6eb800							
+  base64_scalar.go:291	0x6eb7c5		4889c2			MOVQ AX, DX							
+  base64_scalar.go:292	0x6eb7c8		48b8abaaaaaaaaaaaaaa	MOVQ $0xaaaaaaaaaaaaaaab, AX					
+  base64_scalar.go:291	0x6eb7d2		4989d2			MOVQ DX, R10							
+  base64_scalar.go:292	0x6eb7d5		48f7e3			MULQ BX								
+  base64_scalar.go:292	0x6eb7d8		48d1ea			SHRQ $0x1, DX							
+  base64_scalar.go:292	0x6eb7db		4c8d2452		LEAQ 0(DX)(DX*2), R12						
+  base64_scalar.go:292	0x6eb7df		90			NOPL								
+  base64_scalar.go:292	0x6eb7e0		4c39e3			CMPQ BX, R12							
+  base64_scalar.go:292	0x6eb7e3		7413			JE 0x6eb7f8							
+  base64_scalar.go:293	0x6eb7e5		4989dd			MOVQ BX, R13							
+  base64_scalar.go:293	0x6eb7e8		4c29e3			SUBQ R12, BX							
+  base64_scalar.go:293	0x6eb7eb		488d1493		LEAQ 0(BX)(DX*4), DX						
+  base64_scalar.go:293	0x6eb7ef		488d5201		LEAQ 0x1(DX), DX						
+  base64_scalar.go:585	0x6eb7f3		4c89eb			MOVQ R13, BX							
+  base64_scalar.go:581	0x6eb7f6		eb08			JMP 0x6eb800							
+  base64_scalar.go:295	0x6eb7f8		48c1e202		SHLQ $0x2, DX							
+  base64_scalar.go:295	0x6eb7fc		0f1f4000		NOPL 0(AX)							
+  base64_scalar.go:582	0x6eb800		4839d6			CMPQ SI, DX							
+  base64_scalar.go:582	0x6eb803		7c29			JL 0x6eb82e							
+  base64_scalar.go:585	0x6eb805		4889f8			MOVQ DI, AX							
+  base64_scalar.go:585	0x6eb808		4c89d7			MOVQ R10, DI							
+  base64_scalar.go:585	0x6eb80b		4531d2			XORL R10, R10							
+  base64_scalar.go:585	0x6eb80e		4531db			XORL R11, R11							
+  base64_scalar.go:291	0x6eb811		4889da			MOVQ BX, DX							
+  base64_scalar.go:585	0x6eb814		4889f3			MOVQ SI, BX							
+  base64_scalar.go:291	0x6eb817		4989cc			MOVQ CX, R12							
+  base64_scalar.go:585	0x6eb81a		4c89c1			MOVQ R8, CX							
+  base64_scalar.go:585	0x6eb81d		4889d6			MOVQ DX, SI							
+  base64_scalar.go:585	0x6eb820		4d89e0			MOVQ R12, R8							
+  base64_scalar.go:585	0x6eb823		e898010000		CALL github.com/zchee/go-simdutf.tailEncodeBase64(SB)		
+  base64_scalar.go:585	0x6eb828		4883c448		ADDQ $0x48, SP							
+  base64_scalar.go:585	0x6eb82c		5d			POPQ BP								
+  base64_scalar.go:585	0x6eb82d		c3			RET								
+  base64_scalar.go:583	0x6eb82e		488d052b890e00		LEAQ 0xe892b(IP), AX						
+  base64_scalar.go:583	0x6eb835		488d1d94ba1a00		LEAQ 0x1aba94(IP), BX						
+  base64_scalar.go:583	0x6eb83c		0f1f4000		NOPL 0(AX)							
+  base64_scalar.go:583	0x6eb840		e81b74d9ff		CALL runtime.gopanic(SB)					
+  base64_scalar.go:583	0x6eb845		90			NOPL								
+  base64_scalar.go:580	0x6eb846		4889442408		MOVQ AX, 0x8(SP)						
+  base64_scalar.go:580	0x6eb84b		48895c2410		MOVQ BX, 0x10(SP)						
+  base64_scalar.go:580	0x6eb850		48894c2418		MOVQ CX, 0x18(SP)						
+  base64_scalar.go:580	0x6eb855		48897c2420		MOVQ DI, 0x20(SP)						
+  base64_scalar.go:580	0x6eb85a		4889742428		MOVQ SI, 0x28(SP)						
+  base64_scalar.go:580	0x6eb85f		4c89442430		MOVQ R8, 0x30(SP)						
+  base64_scalar.go:580	0x6eb864		4c894c2438		MOVQ R9, 0x38(SP)						
+  base64_scalar.go:580	0x6eb869		e892d4d9ff		CALL runtime.morestack_noctxt.abi0(SB)				
+  base64_scalar.go:580	0x6eb86e		488b442408		MOVQ 0x8(SP), AX						
+  base64_scalar.go:580	0x6eb873		488b5c2410		MOVQ 0x10(SP), BX						
+  base64_scalar.go:580	0x6eb878		488b4c2418		MOVQ 0x18(SP), CX						
+  base64_scalar.go:580	0x6eb87d		488b7c2420		MOVQ 0x20(SP), DI						
+  base64_scalar.go:580	0x6eb882		488b742428		MOVQ 0x28(SP), SI						
+  base64_scalar.go:580	0x6eb887		4c8b442430		MOVQ 0x30(SP), R8						
+  base64_scalar.go:580	0x6eb88c		4c8b4c2438		MOVQ 0x38(SP), R9						
+  base64_scalar.go:580	0x6eb891		e9cafeffff		JMP github.com/zchee/go-simdutf.binaryToBase64Scalar(SB)	
+
+TEXT github.com/zchee/go-simdutf.binaryToBase64WithLinesScalar(SB) /tmp/go-simdutf-w06w07-qual/base64_scalar.go
+  base64_scalar.go:588	0x6eb8a0		493b6610		CMPQ SP, 0x10(R14)								
+  base64_scalar.go:588	0x6eb8a4		0f86af000000		JBE 0x6eb959									
+  base64_scalar.go:588	0x6eb8aa		55			PUSHQ BP									
+  base64_scalar.go:588	0x6eb8ab		4889e5			MOVQ SP, BP									
+  base64_scalar.go:588	0x6eb8ae		4883ec48		SUBQ $0x48, SP									
+  base64_scalar.go:590	0x6eb8b2		4c89842480000000	MOVQ R8, 0x80(SP)								
+  base64_scalar.go:590	0x6eb8ba		4c898c2488000000	MOVQ R9, 0x88(SP)								
+  base64_scalar.go:590	0x6eb8c2		4c89942490000000	MOVQ R10, 0x90(SP)								
+  base64_scalar.go:590	0x6eb8ca		4889742478		MOVQ SI, 0x78(SP)								
+  base64_scalar.go:590	0x6eb8cf		48894c2468		MOVQ CX, 0x68(SP)								
+  base64_scalar.go:590	0x6eb8d4		48897c2470		MOVQ DI, 0x70(SP)								
+  base64_scalar.go:590	0x6eb8d9		48895c2460		MOVQ BX, 0x60(SP)								
+  base64_scalar.go:590	0x6eb8de		4889442458		MOVQ AX, 0x58(SP)								
+  base64_scalar.go:589	0x6eb8e3		4889d8			MOVQ BX, AX									
+  base64_scalar.go:589	0x6eb8e6		4c89d3			MOVQ R10, BX									
+  base64_scalar.go:589	0x6eb8e9		4c89c9			MOVQ R9, CX									
+  base64_scalar.go:589	0x6eb8ec		e88fe4ffff		CALL github.com/zchee/go-simdutf.base64LengthFromBinaryWithLinesScalar(SB)	
+  base64_scalar.go:590	0x6eb8f1		488b5c2478		MOVQ 0x78(SP), BX								
+  base64_scalar.go:590	0x6eb8f6		4839d8			CMPQ AX, BX									
+  base64_scalar.go:590	0x6eb8f9		7f4a			JG 0x6eb945									
+  base64_scalar.go:593	0x6eb8fb		4c8b9c2488000000	MOVQ 0x88(SP), R11								
+  base64_scalar.go:593	0x6eb903		4983fb04		CMPQ R11, $0x4									
+  base64_scalar.go:596	0x6eb907		ba04000000		MOVL $0x4, DX									
+  base64_scalar.go:596	0x6eb90c		4c0f4cda		CMOVL DX, R11									
+  base64_scalar.go:596	0x6eb910		488b442470		MOVQ 0x70(SP), AX								
+  base64_scalar.go:596	0x6eb915		488b8c2480000000	MOVQ 0x80(SP), CX								
+  base64_scalar.go:596	0x6eb91d		488b7c2458		MOVQ 0x58(SP), DI								
+  base64_scalar.go:596	0x6eb922		488b742460		MOVQ 0x60(SP), SI								
+  base64_scalar.go:596	0x6eb927		4c8b442468		MOVQ 0x68(SP), R8								
+  base64_scalar.go:596	0x6eb92c		4c8b8c2490000000	MOVQ 0x90(SP), R9								
+  base64_scalar.go:596	0x6eb934		41ba01000000		MOVL $0x1, R10									
+  base64_scalar.go:596	0x6eb93a		e881000000		CALL github.com/zchee/go-simdutf.tailEncodeBase64(SB)				
+  base64_scalar.go:593	0x6eb93f		4883c448		ADDQ $0x48, SP									
+  base64_scalar.go:593	0x6eb943		5d			POPQ BP										
+  base64_scalar.go:593	0x6eb944		c3			RET										
+  base64_scalar.go:591	0x6eb945		488d0514880e00		LEAQ 0xe8814(IP), AX								
+  base64_scalar.go:591	0x6eb94c		488d1d7db91a00		LEAQ 0x1ab97d(IP), BX								
+  base64_scalar.go:591	0x6eb953		e80873d9ff		CALL runtime.gopanic(SB)							
+  base64_scalar.go:591	0x6eb958		90			NOPL										
+  base64_scalar.go:588	0x6eb959		4889442408		MOVQ AX, 0x8(SP)								
+  base64_scalar.go:588	0x6eb95e		48895c2410		MOVQ BX, 0x10(SP)								
+  base64_scalar.go:588	0x6eb963		48894c2418		MOVQ CX, 0x18(SP)								
+  base64_scalar.go:588	0x6eb968		48897c2420		MOVQ DI, 0x20(SP)								
+  base64_scalar.go:588	0x6eb96d		4889742428		MOVQ SI, 0x28(SP)								
+  base64_scalar.go:588	0x6eb972		4c89442430		MOVQ R8, 0x30(SP)								
+  base64_scalar.go:588	0x6eb977		4c894c2438		MOVQ R9, 0x38(SP)								
+  base64_scalar.go:588	0x6eb97c		4c89542440		MOVQ R10, 0x40(SP)								
+  base64_scalar.go:588	0x6eb981		e87ad3d9ff		CALL runtime.morestack_noctxt.abi0(SB)						
+  base64_scalar.go:588	0x6eb986		488b442408		MOVQ 0x8(SP), AX								
+  base64_scalar.go:588	0x6eb98b		488b5c2410		MOVQ 0x10(SP), BX								
+  base64_scalar.go:588	0x6eb990		488b4c2418		MOVQ 0x18(SP), CX								
+  base64_scalar.go:588	0x6eb995		488b7c2420		MOVQ 0x20(SP), DI								
+  base64_scalar.go:588	0x6eb99a		488b742428		MOVQ 0x28(SP), SI								
+  base64_scalar.go:588	0x6eb99f		4c8b442430		MOVQ 0x30(SP), R8								
+  base64_scalar.go:588	0x6eb9a4		4c8b4c2438		MOVQ 0x38(SP), R9								
+  base64_scalar.go:588	0x6eb9a9		4c8b542440		MOVQ 0x40(SP), R10								
+  base64_scalar.go:588	0x6eb9ae		e9edfeffff		JMP github.com/zchee/go-simdutf.binaryToBase64WithLinesScalar(SB)		
+
+TEXT github.com/zchee/go-simdutf.base64ToBinarySafeScalar(SB) /tmp/go-simdutf-w06w07-qual/base64_scalar.go
+  base64_scalar.go:835	0x6ecca0		493b6610		CMPQ SP, 0x10(R14)						
+  base64_scalar.go:835	0x6ecca4		7637			JBE 0x6eccdd							
+  base64_scalar.go:835	0x6ecca6		55			PUSHQ BP							
+  base64_scalar.go:835	0x6ecca7		4889e5			MOVQ SP, BP							
+  base64_scalar.go:835	0x6eccaa		4883ec48		SUBQ $0x48, SP							
+  base64_scalar.go:835	0x6eccae		4889442458		MOVQ AX, 0x58(SP)						
+  base64_scalar.go:835	0x6eccb3		48897c2470		MOVQ DI, 0x70(SP)						
+  base64_scalar.go:836	0x6eccb8		4584db			TESTL R11, R11							
+  base64_scalar.go:836	0x6eccbb		740e			JE 0x6ecccb							
+  base64_scalar.go:837	0x6eccbd		0f1f00			NOPL 0(AX)							
+  base64_scalar.go:837	0x6eccc0		e85b010000		CALL github.com/zchee/go-simdutf.slowBase64ToBinarySafeByte(SB)	
+  base64_scalar.go:837	0x6eccc5		4883c448		ADDQ $0x48, SP							
+  base64_scalar.go:837	0x6eccc9		5d			POPQ BP								
+  base64_scalar.go:837	0x6eccca		c3			RET								
+  base64_scalar.go:839	0x6ecccb		90			NOPL								
+  base64_scalar.go:490	0x6ecccc		41bb01000000		MOVL $0x1, R11							
+  base64_scalar.go:490	0x6eccd2		e849e0ffff		CALL github.com/zchee/go-simdutf.base64ToBinaryDetailsByte(SB)	
+  base64_scalar.go:840	0x6eccd7		4883c448		ADDQ $0x48, SP							
+  base64_scalar.go:840	0x6eccdb		5d			POPQ BP								
+  base64_scalar.go:840	0x6eccdc		c3			RET								
+  base64_scalar.go:835	0x6eccdd		4889442408		MOVQ AX, 0x8(SP)						
+  base64_scalar.go:835	0x6ecce2		48895c2410		MOVQ BX, 0x10(SP)						
+  base64_scalar.go:835	0x6ecce7		48894c2418		MOVQ CX, 0x18(SP)						
+  base64_scalar.go:835	0x6eccec		48897c2420		MOVQ DI, 0x20(SP)						
+  base64_scalar.go:835	0x6eccf1		4889742428		MOVQ SI, 0x28(SP)						
+  base64_scalar.go:835	0x6eccf6		4c89442430		MOVQ R8, 0x30(SP)						
+  base64_scalar.go:835	0x6eccfb		4c894c2438		MOVQ R9, 0x38(SP)						
+  base64_scalar.go:835	0x6ecd00		4c89542440		MOVQ R10, 0x40(SP)						
+  base64_scalar.go:835	0x6ecd05		44885c2448		MOVB R11, 0x48(SP)						
+  base64_scalar.go:835	0x6ecd0a		e8f1bfd9ff		CALL runtime.morestack_noctxt.abi0(SB)				
+  base64_scalar.go:835	0x6ecd0f		488b442408		MOVQ 0x8(SP), AX						
+  base64_scalar.go:835	0x6ecd14		488b5c2410		MOVQ 0x10(SP), BX						
+  base64_scalar.go:835	0x6ecd19		488b4c2418		MOVQ 0x18(SP), CX						
+  base64_scalar.go:835	0x6ecd1e		488b7c2420		MOVQ 0x20(SP), DI						
+  base64_scalar.go:835	0x6ecd23		488b742428		MOVQ 0x28(SP), SI						
+  base64_scalar.go:835	0x6ecd28		4c8b442430		MOVQ 0x30(SP), R8						
+  base64_scalar.go:835	0x6ecd2d		4c8b4c2438		MOVQ 0x38(SP), R9						
+  base64_scalar.go:835	0x6ecd32		4c8b542440		MOVQ 0x40(SP), R10						
+  base64_scalar.go:835	0x6ecd37		440fb65c2448		MOVZX 0x48(SP), R11						
+  base64_scalar.go:835	0x6ecd3d		0f1f00			NOPL 0(AX)							
+  base64_scalar.go:835	0x6ecd40		e95bffffff		JMP github.com/zchee/go-simdutf.base64ToBinarySafeScalar(SB)	
+
+TEXT github.com/zchee/go-simdutf.base64ToBinarySafeUTF16Scalar(SB) /tmp/go-simdutf-w06w07-qual/base64_scalar.go
+  base64_scalar.go:843	0x6ecd60		493b6610		CMPQ SP, 0x10(R14)							
+  base64_scalar.go:843	0x6ecd64		7637			JBE 0x6ecd9d								
+  base64_scalar.go:843	0x6ecd66		55			PUSHQ BP								
+  base64_scalar.go:843	0x6ecd67		4889e5			MOVQ SP, BP								
+  base64_scalar.go:843	0x6ecd6a		4883ec48		SUBQ $0x48, SP								
+  base64_scalar.go:843	0x6ecd6e		4889442458		MOVQ AX, 0x58(SP)							
+  base64_scalar.go:843	0x6ecd73		48897c2470		MOVQ DI, 0x70(SP)							
+  base64_scalar.go:844	0x6ecd78		4584db			TESTL R11, R11								
+  base64_scalar.go:844	0x6ecd7b		740e			JE 0x6ecd8b								
+  base64_scalar.go:845	0x6ecd7d		0f1f00			NOPL 0(AX)								
+  base64_scalar.go:845	0x6ecd80		e8fb020000		CALL github.com/zchee/go-simdutf.slowBase64ToBinarySafeUTF16(SB)	
+  base64_scalar.go:845	0x6ecd85		4883c448		ADDQ $0x48, SP								
+  base64_scalar.go:845	0x6ecd89		5d			POPQ BP									
+  base64_scalar.go:845	0x6ecd8a		c3			RET									
+  base64_scalar.go:847	0x6ecd8b		90			NOPL									
+  base64_scalar.go:494	0x6ecd8c		41bb01000000		MOVL $0x1, R11								
+  base64_scalar.go:494	0x6ecd92		e889e3ffff		CALL github.com/zchee/go-simdutf.base64ToBinaryDetailsUTF16Inner(SB)	
+  base64_scalar.go:848	0x6ecd97		4883c448		ADDQ $0x48, SP								
+  base64_scalar.go:848	0x6ecd9b		5d			POPQ BP									
+  base64_scalar.go:848	0x6ecd9c		c3			RET									
+  base64_scalar.go:843	0x6ecd9d		4889442408		MOVQ AX, 0x8(SP)							
+  base64_scalar.go:843	0x6ecda2		48895c2410		MOVQ BX, 0x10(SP)							
+  base64_scalar.go:843	0x6ecda7		48894c2418		MOVQ CX, 0x18(SP)							
+  base64_scalar.go:843	0x6ecdac		48897c2420		MOVQ DI, 0x20(SP)							
+  base64_scalar.go:843	0x6ecdb1		4889742428		MOVQ SI, 0x28(SP)							
+  base64_scalar.go:843	0x6ecdb6		4c89442430		MOVQ R8, 0x30(SP)							
+  base64_scalar.go:843	0x6ecdbb		4c894c2438		MOVQ R9, 0x38(SP)							
+  base64_scalar.go:843	0x6ecdc0		4c89542440		MOVQ R10, 0x40(SP)							
+  base64_scalar.go:843	0x6ecdc5		44885c2448		MOVB R11, 0x48(SP)							
+  base64_scalar.go:843	0x6ecdca		e831bfd9ff		CALL runtime.morestack_noctxt.abi0(SB)					
+  base64_scalar.go:843	0x6ecdcf		488b442408		MOVQ 0x8(SP), AX							
+  base64_scalar.go:843	0x6ecdd4		488b5c2410		MOVQ 0x10(SP), BX							
+  base64_scalar.go:843	0x6ecdd9		488b4c2418		MOVQ 0x18(SP), CX							
+  base64_scalar.go:843	0x6ecdde		488b7c2420		MOVQ 0x20(SP), DI							
+  base64_scalar.go:843	0x6ecde3		488b742428		MOVQ 0x28(SP), SI							
+  base64_scalar.go:843	0x6ecde8		4c8b442430		MOVQ 0x30(SP), R8							
+  base64_scalar.go:843	0x6ecded		4c8b4c2438		MOVQ 0x38(SP), R9							
+  base64_scalar.go:843	0x6ecdf2		4c8b542440		MOVQ 0x40(SP), R10							
+  base64_scalar.go:843	0x6ecdf7		440fb65c2448		MOVZX 0x48(SP), R11							
+  base64_scalar.go:843	0x6ecdfd		0f1f00			NOPL 0(AX)								
+  base64_scalar.go:843	0x6ece00		e95bffffff		JMP github.com/zchee/go-simdutf.base64ToBinarySafeUTF16Scalar(SB)	
+
+TEXT github.com/zchee/go-simdutf.detectEncodingsScalar(SB) /tmp/go-simdutf-w06w07-qual/detect_scalar.go
+  detect_scalar.go:27	0x6eda40		493b6610		CMPQ SP, 0x10(R14)						
+  detect_scalar.go:27	0x6eda44		0f8668020000		JBE 0x6edcb2							
+  detect_scalar.go:27	0x6eda4a		55			PUSHQ BP							
+  detect_scalar.go:27	0x6eda4b		4889e5			MOVQ SP, BP							
+  detect_scalar.go:27	0x6eda4e		4883ec78		SUBQ $0x78, SP							
+  detect_scalar.go:28	0x6eda52		48899c2490000000	MOVQ BX, 0x90(SP)						
+  detect_scalar.go:28	0x6eda5a		48898c2498000000	MOVQ CX, 0x98(SP)						
+  detect_scalar.go:28	0x6eda62		4889842488000000	MOVQ AX, 0x88(SP)						
+  detect_scalar.go:28	0x6eda6a		e871490000		CALL github.com/zchee/go-simdutf.CheckBOM(SB)			
+  detect_scalar.go:28	0x6eda6f		84c0			TESTL AL, AL							
+  detect_scalar.go:28	0x6eda71		0f85a3000000		JNE 0x6edb1a							
+  detect_scalar.go:32	0x6eda77		488b842488000000	MOVQ 0x88(SP), AX						
+  detect_scalar.go:32	0x6eda7f		488b9c2490000000	MOVQ 0x90(SP), BX						
+  detect_scalar.go:32	0x6eda87		488b8c2498000000	MOVQ 0x98(SP), CX						
+  detect_scalar.go:32	0x6eda8f		e8ec2e0100		CALL github.com/zchee/go-simdutf.validateUTF8Scalar(SB)		
+  detect_scalar.go:35	0x6eda94		488b8c2490000000	MOVQ 0x90(SP), CX						
+  detect_scalar.go:35	0x6eda9c		0fbae100		BTL $0x0, CX							
+  detect_scalar.go:35	0x6edaa0		727f			JB 0x6edb21							
+  detect_scalar.go:32	0x6edaa2		88442427		MOVB AL, 0x27(SP)						
+  detect_scalar.go:62	0x6edaa6		4889cb			MOVQ CX, BX							
+  detect_scalar.go:62	0x6edaa9		48d1eb			SHRQ $0x1, BX							
+  detect_scalar.go:63	0x6edaac		4885db			TESTQ BX, BX							
+  detect_scalar.go:63	0x6edaaf		7460			JE 0x6edb11							
+  detect_scalar.go:66	0x6edab1		4883fb10		CMPQ BX, $0x10							
+  detect_scalar.go:66	0x6edab5		7715			JA 0x6edacc							
+  detect_scalar.go:66	0x6edab7		488d542458		LEAQ 0x58(SP), DX						
+  detect_scalar.go:66	0x6edabc		440f113a		MOVUPS X15, 0(DX)						
+  detect_scalar.go:66	0x6edac0		440f117a10		MOVUPS X15, 0x10(DX)						
+  detect_scalar.go:66	0x6edac5		488d542458		LEAQ 0x58(SP), DX						
+  detect_scalar.go:66	0x6edaca		eb2e			JMP 0x6edafa							
+  detect_scalar.go:62	0x6edacc		48895c2430		MOVQ BX, 0x30(SP)						
+  detect_scalar.go:66	0x6edad1		488d0588670e00		LEAQ 0xe6788(IP), AX						
+  detect_scalar.go:66	0x6edad8		4889d9			MOVQ BX, CX							
+  detect_scalar.go:66	0x6edadb		0f1f440000		NOPL 0(AX)(AX*1)						
+  detect_scalar.go:66	0x6edae0		e85b78d9ff		CALL runtime.makeslice(SB)					
+  detect_scalar.go:68	0x6edae5		488b8c2490000000	MOVQ 0x90(SP), CX						
+  detect_scalar.go:67	0x6edaed		488b5c2430		MOVQ 0x30(SP), BX						
+  detect_scalar.go:67	0x6edaf2		4889c2			MOVQ AX, DX							
+  detect_scalar.go:37	0x6edaf5		0fb6442427		MOVZX 0x27(SP), AX						
+  detect_scalar.go:67	0x6edafa		488bb42488000000	MOVQ 0x88(SP), SI						
+  detect_scalar.go:67	0x6edb02		4c8b842498000000	MOVQ 0x98(SP), R8						
+  detect_scalar.go:67	0x6edb0a		31ff			XORL DI, DI							
+  detect_scalar.go:67	0x6edb0c		e952010000		JMP 0x6edc63							
+  detect_scalar.go:67	0x6edb11		31d2			XORL DX, DX							
+  detect_scalar.go:67	0x6edb13		31db			XORL BX, BX							
+  detect_scalar.go:36	0x6edb15		e90b010000		JMP 0x6edc25							
+  detect_scalar.go:29	0x6edb1a		4883c478		ADDQ $0x78, SP							
+  detect_scalar.go:29	0x6edb1e		5d			POPQ BP								
+  detect_scalar.go:29	0x6edb1f		90			NOPL								
+  detect_scalar.go:29	0x6edb20		c3			RET								
+  detect_scalar.go:40	0x6edb21		48f7c103000000		TESTQ $0x3, CX							
+  detect_scalar.go:40	0x6edb28		7573			JNE 0x6edb9d							
+  detect_scalar.go:74	0x6edb2a		4889cb			MOVQ CX, BX							
+  detect_scalar.go:74	0x6edb2d		48c1eb02		SHRQ $0x2, BX							
+  detect_scalar.go:75	0x6edb31		4885db			TESTQ BX, BX							
+  detect_scalar.go:75	0x6edb34		750a			JNE 0x6edb40							
+  detect_scalar.go:75	0x6edb36		31db			XORL BX, BX							
+  detect_scalar.go:75	0x6edb38		31d2			XORL DX, DX							
+  detect_scalar.go:41	0x6edb3a		e9a8000000		JMP 0x6edbe7							
+  detect_scalar.go:41	0x6edb3f		90			NOPL								
+  detect_scalar.go:78	0x6edb40		4883fb08		CMPQ BX, $0x8							
+  detect_scalar.go:78	0x6edb44		7715			JA 0x6edb5b							
+  detect_scalar.go:78	0x6edb46		488d542438		LEAQ 0x38(SP), DX						
+  detect_scalar.go:78	0x6edb4b		440f113a		MOVUPS X15, 0(DX)						
+  detect_scalar.go:78	0x6edb4f		440f117a10		MOVUPS X15, 0x10(DX)						
+  detect_scalar.go:78	0x6edb54		488d542438		LEAQ 0x38(SP), DX						
+  detect_scalar.go:78	0x6edb59		eb2d			JMP 0x6edb88							
+  detect_scalar.go:74	0x6edb5b		48895c2428		MOVQ BX, 0x28(SP)						
+  detect_scalar.go:40	0x6edb60		88442426		MOVB AL, 0x26(SP)						
+  detect_scalar.go:78	0x6edb64		488d0575670e00		LEAQ 0xe6775(IP), AX						
+  detect_scalar.go:78	0x6edb6b		4889d9			MOVQ BX, CX							
+  detect_scalar.go:78	0x6edb6e		e8cd77d9ff		CALL runtime.makeslice(SB)					
+  detect_scalar.go:80	0x6edb73		488b8c2490000000	MOVQ 0x90(SP), CX						
+  detect_scalar.go:79	0x6edb7b		488b5c2428		MOVQ 0x28(SP), BX						
+  detect_scalar.go:79	0x6edb80		4889c2			MOVQ AX, DX							
+  detect_scalar.go:42	0x6edb83		0fb6442426		MOVZX 0x26(SP), AX						
+  detect_scalar.go:79	0x6edb88		488bb42488000000	MOVQ 0x88(SP), SI						
+  detect_scalar.go:79	0x6edb90		488bbc2498000000	MOVQ 0x98(SP), DI						
+  detect_scalar.go:79	0x6edb98		4531c0			XORL R8, R8							
+  detect_scalar.go:79	0x6edb9b		eb11			JMP 0x6edbae							
+  detect_scalar.go:45	0x6edb9d		4883c478		ADDQ $0x78, SP							
+  detect_scalar.go:45	0x6edba1		5d			POPQ BP								
+  detect_scalar.go:45	0x6edba2		c3			RET								
+  detect_scalar.go:80	0x6edba3		42890c8a		MOVL CX, 0(DX)(R9*4)						
+  detect_scalar.go:79	0x6edba7		4d8d4101		LEAQ 0x1(R9), R8						
+  detect_scalar.go:80	0x6edbab		4c89d1			MOVQ R10, CX							
+  detect_scalar.go:79	0x6edbae		4939d8			CMPQ R8, BX							
+  detect_scalar.go:79	0x6edbb1		7d34			JGE 0x6edbe7							
+  detect_scalar.go:80	0x6edbb3		4d89c1			MOVQ R8, R9							
+  detect_scalar.go:80	0x6edbb6		49c1e002		SHLQ $0x2, R8							
+  detect_scalar.go:80	0x6edbba		4c39c1			CMPQ CX, R8							
+  detect_scalar.go:80	0x6edbbd		725e			JB 0x6edc1d							
+  detect_scalar.go:80	0x6edbbf		4989ca			MOVQ CX, R10							
+  detect_scalar.go:80	0x6edbc2		4c29c1			SUBQ R8, CX							
+  detect_scalar.go:80	0x6edbc5		4d89c3			MOVQ R8, R11							
+  detect_scalar.go:80	0x6edbc8		4929f8			SUBQ DI, R8							
+  detect_scalar.go:80	0x6edbcb		49c1f83f		SARQ $0x3f, R8							
+  detect_scalar.go:80	0x6edbcf		4d21d8			ANDQ R11, R8							
+  binary.go:91		0x6edbd2		4883f903		CMPQ CX, $0x3							
+  binary.go:91		0x6edbd6		7640			JBE 0x6edc18							
+  binary.go:92		0x6edbd8		428b0c06		MOVL 0(SI)(R8*1), CX						
+  binary.go:92		0x6edbdc		0f1f4000		NOPL 0(AX)							
+  detect_scalar.go:79	0x6edbe0		4939d9			CMPQ R9, BX							
+  detect_scalar.go:80	0x6edbe3		72be			JB 0x6edba3							
+  detect_scalar.go:80	0x6edbe5		eb2c			JMP 0x6edc13							
+  detect_scalar.go:41	0x6edbe7		31c9			XORL CX, CX							
+  utf32_scalar.go:23	0x6edbe9		eb03			JMP 0x6edbee							
+  utf32_scalar.go:23	0x6edbeb		48ffc1			INCQ CX								
+  utf32_scalar.go:23	0x6edbee		4839d9			CMPQ CX, BX							
+  utf32_scalar.go:23	0x6edbf1		7d1b			JGE 0x6edc0e							
+  utf32_scalar.go:23	0x6edbf3		8b348a			MOVL 0(DX)(CX*4), SI						
+  utf32_scalar.go:24	0x6edbf6		81feffff1000		CMPL SI, $0x10ffff						
+  utf32_scalar.go:24	0x6edbfc		779f			JA 0x6edb9d							
+  utf32_scalar.go:24	0x6edbfe		81c60028ffff		ADDL $-0xd800, SI						
+  utf32_scalar.go:24	0x6edc04		81feff070000		CMPL SI, $0x7ff							
+  utf32_scalar.go:24	0x6edc0a		77df			JA 0x6edbeb							
+  utf32_scalar.go:24	0x6edc0c		eb8f			JMP 0x6edb9d							
+  detect_scalar.go:42	0x6edc0e		83c808			ORL $0x8, AX							
+  detect_scalar.go:42	0x6edc11		eb8a			JMP 0x6edb9d							
+  detect_scalar.go:80	0x6edc13		e808ced9ff		CALL runtime.panicBounds(SB)					
+  binary.go:91		0x6edc18		e803ced9ff		CALL runtime.panicBounds(SB)					
+  detect_scalar.go:80	0x6edc1d		0f1f00			NOPL 0(AX)							
+  detect_scalar.go:80	0x6edc20		e8fbcdd9ff		CALL runtime.panicBounds(SB)					
+  utf16_scalar.go:25	0x6edc25		4889d8			MOVQ BX, AX							
+  utf16_scalar.go:25	0x6edc28		4889d3			MOVQ DX, BX							
+  utf16_scalar.go:25	0x6edc2b		4889d9			MOVQ BX, CX							
+  utf16_scalar.go:25	0x6edc2e		bf01000000		MOVL $0x1, DI							
+  utf16_scalar.go:25	0x6edc33		e8c8960000		CALL github.com/zchee/go-simdutf.validateUTF16Scalar(SB)	
+  utf16_scalar.go:25	0x6edc38		84c0			TESTL AL, AL							
+  detect_scalar.go:36	0x6edc3a		740a			JE 0x6edc46							
+  detect_scalar.go:37	0x6edc3c		0fb6442427		MOVZX 0x27(SP), AX						
+  detect_scalar.go:37	0x6edc41		83c802			ORL $0x2, AX							
+  detect_scalar.go:37	0x6edc44		eb05			JMP 0x6edc4b							
+  detect_scalar.go:37	0x6edc46		0fb6442427		MOVZX 0x27(SP), AX						
+  detect_scalar.go:40	0x6edc4b		488b8c2490000000	MOVQ 0x90(SP), CX						
+  detect_scalar.go:40	0x6edc53		e9c9feffff		JMP 0x6edb21							
+  detect_scalar.go:68	0x6edc58		6644890c7a		MOVW R9, 0(DX)(DI*2)						
+  detect_scalar.go:67	0x6edc5d		48ffc7			INCQ DI								
+  detect_scalar.go:68	0x6edc60		4c89d1			MOVQ R10, CX							
+  detect_scalar.go:67	0x6edc63		4839df			CMPQ DI, BX							
+  detect_scalar.go:67	0x6edc66		7d2e			JGE 0x6edc96							
+  detect_scalar.go:68	0x6edc68		4c8d0c3f		LEAQ 0(DI)(DI*1), R9						
+  detect_scalar.go:68	0x6edc6c		4c39c9			CMPQ CX, R9							
+  detect_scalar.go:68	0x6edc6f		723b			JB 0x6edcac							
+  detect_scalar.go:68	0x6edc71		4989ca			MOVQ CX, R10							
+  detect_scalar.go:68	0x6edc74		4c29c9			SUBQ R9, CX							
+  detect_scalar.go:68	0x6edc77		4d89cb			MOVQ R9, R11							
+  detect_scalar.go:68	0x6edc7a		4d29c1			SUBQ R8, R9							
+  detect_scalar.go:68	0x6edc7d		49c1f93f		SARQ $0x3f, R9							
+  detect_scalar.go:68	0x6edc81		4d21d9			ANDQ R11, R9							
+  binary.go:70		0x6edc84		4883f901		CMPQ CX, $0x1							
+  binary.go:70		0x6edc88		761d			JBE 0x6edca7							
+  binary.go:71		0x6edc8a		460fb70c0e		MOVZX 0(SI)(R9*1), R9						
+  detect_scalar.go:67	0x6edc8f		4839df			CMPQ DI, BX							
+  detect_scalar.go:68	0x6edc92		72c4			JB 0x6edc58							
+  detect_scalar.go:68	0x6edc94		eb0c			JMP 0x6edca2							
+  detect_scalar.go:36	0x6edc96		4889d7			MOVQ DX, DI							
+  detect_scalar.go:36	0x6edc99		4889da			MOVQ BX, DX							
+  detect_scalar.go:36	0x6edc9c		4889fb			MOVQ DI, BX							
+  detect_scalar.go:36	0x6edc9f		90			NOPL								
+  detect_scalar.go:36	0x6edca0		eb83			JMP 0x6edc25							
+  detect_scalar.go:68	0x6edca2		e879cdd9ff		CALL runtime.panicBounds(SB)					
+  binary.go:70		0x6edca7		e874cdd9ff		CALL runtime.panicBounds(SB)					
+  detect_scalar.go:68	0x6edcac		e86fcdd9ff		CALL runtime.panicBounds(SB)					
+  detect_scalar.go:68	0x6edcb1		90			NOPL								
+  detect_scalar.go:27	0x6edcb2		4889442408		MOVQ AX, 0x8(SP)						
+  detect_scalar.go:27	0x6edcb7		48895c2410		MOVQ BX, 0x10(SP)						
+  detect_scalar.go:27	0x6edcbc		48894c2418		MOVQ CX, 0x18(SP)						
+  detect_scalar.go:27	0x6edcc1		e83ab0d9ff		CALL runtime.morestack_noctxt.abi0(SB)				
+  detect_scalar.go:27	0x6edcc6		488b442408		MOVQ 0x8(SP), AX						
+  detect_scalar.go:27	0x6edccb		488b5c2410		MOVQ 0x10(SP), BX						
+  detect_scalar.go:27	0x6edcd0		488b4c2418		MOVQ 0x18(SP), CX						
+  detect_scalar.go:27	0x6edcd5		e966fdffff		JMP github.com/zchee/go-simdutf.detectEncodingsScalar(SB)	
+
+TEXT github.com/zchee/go-simdutf.findScalar(SB) /tmp/go-simdutf-w06w07-qual/find_scalar.go
+  find_scalar.go:23	0x6f24a0		4889442408		MOVQ AX, 0x8(SP)	
+  find_scalar.go:24	0x6f24a5		31c9			XORL CX, CX		
+  find_scalar.go:24	0x6f24a7		eb03			JMP 0x6f24ac		
+  find_scalar.go:24	0x6f24a9		48ffc1			INCQ CX			
+  find_scalar.go:24	0x6f24ac		4839cb			CMPQ BX, CX		
+  find_scalar.go:24	0x6f24af		7e0d			JLE 0x6f24be		
+  find_scalar.go:24	0x6f24b1		0fb61408		MOVZX 0(AX)(CX*1), DX	
+  find_scalar.go:24	0x6f24b5		4038fa			CMPL DL, DI		
+  find_scalar.go:25	0x6f24b8		75ef			JNE 0x6f24a9		
+  find_scalar.go:26	0x6f24ba		4889c8			MOVQ CX, AX		
+  find_scalar.go:26	0x6f24bd		c3			RET			
+  find_scalar.go:29	0x6f24be		4889d8			MOVQ BX, AX		
+  find_scalar.go:29	0x6f24c1		c3			RET			
+
+TEXT github.com/zchee/go-simdutf.findUTF16Scalar(SB) /tmp/go-simdutf-w06w07-qual/find_scalar.go
+  find_scalar.go:32	0x6f24e0		4889442408		MOVQ AX, 0x8(SP)	
+  find_scalar.go:33	0x6f24e5		31c9			XORL CX, CX		
+  find_scalar.go:33	0x6f24e7		eb03			JMP 0x6f24ec		
+  find_scalar.go:33	0x6f24e9		48ffc1			INCQ CX			
+  find_scalar.go:33	0x6f24ec		4839cb			CMPQ BX, CX		
+  find_scalar.go:33	0x6f24ef		7e0d			JLE 0x6f24fe		
+  find_scalar.go:33	0x6f24f1		0fb71448		MOVZX 0(AX)(CX*2), DX	
+  find_scalar.go:33	0x6f24f5		6639fa			CMPW DX, DI		
+  find_scalar.go:34	0x6f24f8		75ef			JNE 0x6f24e9		
+  find_scalar.go:35	0x6f24fa		4889c8			MOVQ CX, AX		
+  find_scalar.go:35	0x6f24fd		c3			RET			
+  find_scalar.go:38	0x6f24fe		4889d8			MOVQ BX, AX		
+  find_scalar.go:38	0x6f2501		c3			RET			

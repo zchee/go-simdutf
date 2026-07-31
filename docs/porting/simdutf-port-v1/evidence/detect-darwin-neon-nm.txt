@@ -1,0 +1,1 @@
+0000000100289bb0 t _github.com/zchee/go-simdutf.detectEncodingsNEON

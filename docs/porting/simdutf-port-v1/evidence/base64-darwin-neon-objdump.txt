@@ -1,0 +1,1349 @@
+TEXT github.com/zchee/go-simdutf.binaryLengthFromBase64NEON(SB) /Users/zchee/go/src/github.com/zchee/go-simdutf/base64_arm64.go
+  base64_arm64.go:76	0x1002852d0		f9400b90		MOVD 16(R28), R16								
+  base64_arm64.go:76	0x1002852d4		eb3063ff		CMP R16, RSP									
+  base64_arm64.go:76	0x1002852d8		54000749		BLS 58(PC)									
+  base64_arm64.go:76	0x1002852dc		f81c0ffe		MOVD.W R30, -64(RSP)								
+  base64_arm64.go:76	0x1002852e0		f81f83fd		MOVD R29, -8(RSP)								
+  base64_arm64.go:76	0x1002852e4		d10023fd		SUB $8, RSP, R29								
+  base64_arm64.go:76	0x1002852e8		f90027e0		MOVD R0, 72(RSP)								
+  base64_arm64.go:79	0x1002852ec		927ae423		AND $-64, R1, R3								
+  base64_arm64.go:80	0x1002852f0		f101007f		CMP $64, R3									
+  base64_arm64.go:80	0x1002852f4		5400006a		BGE 3(PC)									
+  base64_arm64.go:83	0x1002852f8		aa1f03e4		MOVD ZR, R4									
+  base64_arm64.go:80	0x1002852fc		1400000e		JMP 14(PC)									
+  base64_arm64.go:79	0x100285300		f9001be3		MOVD R3, 48(RSP)								
+  base64_arm64.go:80	0x100285304		f90027e0		MOVD R0, 72(RSP)								
+  base64_arm64.go:80	0x100285308		f9002be1		MOVD R1, 80(RSP)								
+  base64_arm64.go:80	0x10028530c		f9002fe2		MOVD R2, 88(RSP)								
+  base64_arm64.go:81	0x100285310		f90007e0		MOVD R0, 8(RSP)									
+  base64_arm64.go:81	0x100285314		a9010be3		STP (R3, R2), 16(RSP)								
+  base64_arm64.go:81	0x100285318		9401ccf6		CALL github.com/zchee/go-simdutf.countBase64SignificantBytesNEON.abi0(SB)	
+  base64_arm64.go:81	0x10028531c		f94013e0		MOVD 32(RSP), R0								
+  base64_arm64.go:83	0x100285320		f9402be1		MOVD 80(RSP), R1								
+  base64_arm64.go:83	0x100285324		f9402fe2		MOVD 88(RSP), R2								
+  base64_arm64.go:83	0x100285328		f9401be3		MOVD 48(RSP), R3								
+  base64_arm64.go:83	0x10028532c		aa0003e4		MOVD R0, R4									
+  base64_arm64.go:83	0x100285330		f94027e0		MOVD 72(RSP), R0								
+  base64_arm64.go:83	0x100285334		cb020062		SUB R2, R3, R2									
+  base64_arm64.go:83	0x100285338		8a82fc22		AND R2->63, R1, R2								
+  base64_arm64.go:83	0x10028533c		927ae442		AND $-64, R2, R2								
+  base64_arm64.go:83	0x100285340		8b020002		ADD R2, R0, R2									
+  base64_arm64.go:83	0x100285344		cb030023		SUB R3, R1, R3									
+  base64_arm64.go:83	0x100285348		aa1f03e5		MOVD ZR, R5									
+  base64_arm64.go:83	0x10028534c		14000005		JMP 5(PC)									
+  base64_arm64.go:83	0x100285350		38656846		MOVBU (R2)(R5), R6								
+  base64_arm64.go:83	0x100285354		910004a5		ADD $1, R5, R5									
+  base64_arm64.go:84	0x100285358		710080df		CMPW $32, R6									
+  base64_arm64.go:84	0x10028535c		9a849484		CINC HI, R4, R4									
+  base64_arm64.go:83	0x100285360		eb0300bf		CMP R3, R5									
+  base64_arm64.go:83	0x100285364		54ffff6b		BLT -5(PC)									
+  base64_arm64.go:88	0x100285368		d503201f		NOOP										
+  base64_arm64.go:49	0x10028536c		aa1f03e2		MOVD ZR, R2									
+  base64_arm64.go:49	0x100285370		f100003f		CMP $0, R1									
+  base64_arm64.go:49	0x100285374		5400016d		BLE 11(PC)									
+  base64_arm64.go:49	0x100285378		f100085f		CMP $2, R2									
+  base64_arm64.go:49	0x10028537c		5400012a		BGE 9(PC)									
+  base64_arm64.go:50	0x100285380		d1000421		SUB $1, R1, R1									
+  base64_arm64.go:51	0x100285384		38616803		MOVBU (R0)(R1), R3								
+  base64_arm64.go:52	0x100285388		7100f47f		CMPW $61, R3									
+  base64_arm64.go:52	0x10028538c		54000061		BNE 3(PC)									
+  base64_arm64.go:53	0x100285390		91000442		ADD $1, R2, R2									
+  base64_arm64.go:53	0x100285394		17fffff7		JMP -9(PC)									
+  base64_arm64.go:54	0x100285398		7100807f		CMPW $32, R3									
+  base64_arm64.go:54	0x10028539c		54fffea9		BLS -11(PC)									
+  base64_arm64.go:89	0x1002853a0		cb020081		SUB R2, R4, R1									
+  base64_arm64.go:89	0x1002853a4		8b010421		ADD R1<<1, R1, R1								
+  base64_arm64.go:89	0x1002853a8		937ffc22		ASR $63, R1, R2									
+  base64_arm64.go:89	0x1002853ac		8b42f821		ADD R2>>62, R1, R1								
+  base64_arm64.go:89	0x1002853b0		9342fc20		ASR $2, R1, R0									
+  base64_arm64.go:89	0x1002853b4		f85f83fd		MOVD -8(RSP), R29								
+  base64_arm64.go:89	0x1002853b8		f84407fe		MOVD.P 64(RSP), R30								
+  base64_arm64.go:89	0x1002853bc		d65f03c0		RET										
+  base64_arm64.go:76	0x1002853c0		a90087e0		STP (R0, R1), 8(RSP)								
+  base64_arm64.go:76	0x1002853c4		f9000fe2		MOVD R2, 24(RSP)								
+  base64_arm64.go:76	0x1002853c8		aa1e03e3		MOVD R30, R3									
+  base64_arm64.go:76	0x1002853cc		97f7f4c1		CALL runtime.morestack_noctxt.abi0(SB)						
+  base64_arm64.go:76	0x1002853d0		a94087e0		LDP 8(RSP), (R0, R1)								
+  base64_arm64.go:76	0x1002853d4		f9400fe2		MOVD 24(RSP), R2								
+  base64_arm64.go:76	0x1002853d8		17ffffbe		JMP github.com/zchee/go-simdutf.binaryLengthFromBase64NEON(SB)			
+  base64_arm64.go:76	0x1002853dc		00000000		?										
+
+TEXT github.com/zchee/go-simdutf.binaryLengthFromBase64UTF16NEON(SB) /Users/zchee/go/src/github.com/zchee/go-simdutf/base64_arm64.go
+  base64_arm64.go:92	0x1002853e0		f9400b90		MOVD 16(R28), R16								
+  base64_arm64.go:92	0x1002853e4		eb3063ff		CMP R16, RSP									
+  base64_arm64.go:92	0x1002853e8		54000729		BLS 57(PC)									
+  base64_arm64.go:92	0x1002853ec		f81c0ffe		MOVD.W R30, -64(RSP)								
+  base64_arm64.go:92	0x1002853f0		f81f83fd		MOVD R29, -8(RSP)								
+  base64_arm64.go:92	0x1002853f4		d10023fd		SUB $8, RSP, R29								
+  base64_arm64.go:92	0x1002853f8		f90027e0		MOVD R0, 72(RSP)								
+  base64_arm64.go:95	0x1002853fc		927be823		AND $-32, R1, R3								
+  base64_arm64.go:96	0x100285400		f100807f		CMP $32, R3									
+  base64_arm64.go:96	0x100285404		5400006a		BGE 3(PC)									
+  base64_arm64.go:99	0x100285408		aa1f03e4		MOVD ZR, R4									
+  base64_arm64.go:96	0x10028540c		1400000e		JMP 14(PC)									
+  base64_arm64.go:95	0x100285410		f9001be3		MOVD R3, 48(RSP)								
+  base64_arm64.go:96	0x100285414		f9002fe2		MOVD R2, 88(RSP)								
+  base64_arm64.go:96	0x100285418		f9002be1		MOVD R1, 80(RSP)								
+  base64_arm64.go:96	0x10028541c		f90027e0		MOVD R0, 72(RSP)								
+  base64_arm64.go:97	0x100285420		f90007e0		MOVD R0, 8(RSP)									
+  base64_arm64.go:97	0x100285424		a9010be3		STP (R3, R2), 16(RSP)								
+  base64_arm64.go:97	0x100285428		9401ccd2		CALL github.com/zchee/go-simdutf.countBase64SignificantUTF16NEON.abi0(SB)	
+  base64_arm64.go:97	0x10028542c		f94013e0		MOVD 32(RSP), R0								
+  base64_arm64.go:99	0x100285430		f9402be1		MOVD 80(RSP), R1								
+  base64_arm64.go:99	0x100285434		f9402fe2		MOVD 88(RSP), R2								
+  base64_arm64.go:99	0x100285438		f9401be3		MOVD 48(RSP), R3								
+  base64_arm64.go:99	0x10028543c		aa0003e4		MOVD R0, R4									
+  base64_arm64.go:99	0x100285440		f94027e0		MOVD 72(RSP), R0								
+  base64_arm64.go:99	0x100285444		cb020062		SUB R2, R3, R2									
+  base64_arm64.go:99	0x100285448		8a82fc62		AND R2->63, R3, R2								
+  base64_arm64.go:99	0x10028544c		8b020402		ADD R2<<1, R0, R2								
+  base64_arm64.go:99	0x100285450		cb030023		SUB R3, R1, R3									
+  base64_arm64.go:99	0x100285454		aa1f03e5		MOVD ZR, R5									
+  base64_arm64.go:99	0x100285458		14000005		JMP 5(PC)									
+  base64_arm64.go:99	0x10028545c		78657846		MOVHU (R2)(R5<<1), R6								
+  base64_arm64.go:99	0x100285460		910004a5		ADD $1, R5, R5									
+  base64_arm64.go:100	0x100285464		710080df		CMPW $32, R6									
+  base64_arm64.go:100	0x100285468		9a849484		CINC HI, R4, R4									
+  base64_arm64.go:99	0x10028546c		eb0300bf		CMP R3, R5									
+  base64_arm64.go:99	0x100285470		54ffff6b		BLT -5(PC)									
+  base64_arm64.go:104	0x100285474		d503201f		NOOP										
+  base64_arm64.go:64	0x100285478		aa1f03e2		MOVD ZR, R2									
+  base64_arm64.go:64	0x10028547c		f100003f		CMP $0, R1									
+  base64_arm64.go:64	0x100285480		5400016d		BLE 11(PC)									
+  base64_arm64.go:64	0x100285484		f100085f		CMP $2, R2									
+  base64_arm64.go:64	0x100285488		5400012a		BGE 9(PC)									
+  base64_arm64.go:65	0x10028548c		d1000421		SUB $1, R1, R1									
+  base64_arm64.go:66	0x100285490		78617803		MOVHU (R0)(R1<<1), R3								
+  base64_arm64.go:67	0x100285494		7100f47f		CMPW $61, R3									
+  base64_arm64.go:67	0x100285498		54000061		BNE 3(PC)									
+  base64_arm64.go:68	0x10028549c		91000442		ADD $1, R2, R2									
+  base64_arm64.go:68	0x1002854a0		17fffff7		JMP -9(PC)									
+  base64_arm64.go:69	0x1002854a4		7100807f		CMPW $32, R3									
+  base64_arm64.go:69	0x1002854a8		54fffea9		BLS -11(PC)									
+  base64_arm64.go:105	0x1002854ac		cb020081		SUB R2, R4, R1									
+  base64_arm64.go:105	0x1002854b0		8b010421		ADD R1<<1, R1, R1								
+  base64_arm64.go:105	0x1002854b4		937ffc22		ASR $63, R1, R2									
+  base64_arm64.go:105	0x1002854b8		8b42f821		ADD R2>>62, R1, R1								
+  base64_arm64.go:105	0x1002854bc		9342fc20		ASR $2, R1, R0									
+  base64_arm64.go:105	0x1002854c0		f85f83fd		MOVD -8(RSP), R29								
+  base64_arm64.go:105	0x1002854c4		f84407fe		MOVD.P 64(RSP), R30								
+  base64_arm64.go:105	0x1002854c8		d65f03c0		RET										
+  base64_arm64.go:92	0x1002854cc		a90087e0		STP (R0, R1), 8(RSP)								
+  base64_arm64.go:92	0x1002854d0		f9000fe2		MOVD R2, 24(RSP)								
+  base64_arm64.go:92	0x1002854d4		aa1e03e3		MOVD R30, R3									
+  base64_arm64.go:92	0x1002854d8		97f7f47e		CALL runtime.morestack_noctxt.abi0(SB)						
+  base64_arm64.go:92	0x1002854dc		a94087e0		LDP 8(RSP), (R0, R1)								
+  base64_arm64.go:92	0x1002854e0		f9400fe2		MOVD 24(RSP), R2								
+  base64_arm64.go:92	0x1002854e4		17ffffbf		JMP github.com/zchee/go-simdutf.binaryLengthFromBase64UTF16NEON(SB)		
+  base64_arm64.go:92	0x1002854e8		00000000		?										
+  base64_arm64.go:92	0x1002854ec		00000000		?										
+
+TEXT github.com/zchee/go-simdutf.binaryToBase64NEON(SB) /Users/zchee/go/src/github.com/zchee/go-simdutf/base64_arm64.go
+  base64_arm64.go:108	0x1002854f0		f9400b90		MOVD 16(R28), R16								
+  base64_arm64.go:108	0x1002854f4		eb3063ff		CMP R16, RSP									
+  base64_arm64.go:108	0x1002854f8		54000fe9		BLS 127(PC)									
+  base64_arm64.go:108	0x1002854fc		f8190ffe		MOVD.W R30, -112(RSP)								
+  base64_arm64.go:108	0x100285500		f81f83fd		MOVD R29, -8(RSP)								
+  base64_arm64.go:108	0x100285504		d10023fd		SUB $8, RSP, R29								
+  base64_arm64.go:108	0x100285508		f9003fe0		MOVD R0, 120(RSP)								
+  base64_arm64.go:108	0x10028550c		f9004be3		MOVD R3, 144(RSP)								
+  base64_scalar.go:56	0x100285510		f24000df		TST $1, R6									
+  base64_scalar.go:56	0x100285514		9a9f17e9		CSET EQ, R9									
+  base64_scalar.go:57	0x100285518		f27f00df		TST $2, R6									
+  base64_scalar.go:57	0x10028551c		9a9f07ea		CSET NE, R10									
+  base64_scalar.go:58	0x100285520		ca0a0129		EOR R10, R9, R9									
+  base64_scalar.go:291	0x100285524		36000169		TBZ $0, R9, 11(PC)								
+  base64_scalar.go:297	0x100285528		91000829		ADD $2, R1, R9									
+  base64_scalar.go:297	0x10028552c		b201f3ea		MOVD $-6148914691236517206, R10							
+  base64_scalar.go:297	0x100285530		f295556a		MOVK $43691, R10								
+  base64_scalar.go:297	0x100285534		9b4a7d2a		SMULH R10, R9, R10								
+  base64_scalar.go:297	0x100285538		8b0a002a		ADD R10, R1, R10								
+  base64_scalar.go:297	0x10028553c		9100094a		ADD $2, R10, R10								
+  base64_scalar.go:297	0x100285540		9341fd4a		ASR $1, R10, R10								
+  base64_scalar.go:297	0x100285544		cb89fd49		SUB R9->63, R10, R9								
+  base64_scalar.go:297	0x100285548		d37ef529		LSL $2, R9, R9									
+  base64_arm64.go:109	0x10028554c		1400000e		JMP 14(PC)									
+  base64_scalar.go:292	0x100285550		b201f3e9		MOVD $-6148914691236517206, R9							
+  base64_scalar.go:292	0x100285554		f2955569		MOVK $43691, R9									
+  base64_scalar.go:292	0x100285558		9bc97c29		UMULH R9, R1, R9								
+  base64_scalar.go:292	0x10028555c		927ff92a		AND $-2, R9, R10								
+  base64_scalar.go:292	0x100285560		8b49054a		ADD R9>>1, R10, R10								
+  base64_scalar.go:292	0x100285564		d341fd29		LSR $1, R9, R9									
+  base64_scalar.go:292	0x100285568		eb0a003f		CMP R10, R1									
+  base64_scalar.go:292	0x10028556c		540000a0		BEQ 5(PC)									
+  base64_scalar.go:293	0x100285570		cb0a002a		SUB R10, R1, R10								
+  base64_scalar.go:293	0x100285574		8b09094a		ADD R9<<2, R10, R10								
+  base64_scalar.go:293	0x100285578		91000549		ADD $1, R10, R9									
+  base64_arm64.go:109	0x10028557c		14000002		JMP 2(PC)									
+  base64_scalar.go:295	0x100285580		d37ef529		LSL $2, R9, R9									
+  base64_arm64.go:110	0x100285584		eb09009f		CMP R9, R4									
+  base64_arm64.go:110	0x100285588		54000aab		BLT 85(PC)									
+  base64_arm64.go:115	0x10028558c		b201f3e9		MOVD $-6148914691236517206, R9							
+  base64_arm64.go:115	0x100285590		f2955569		MOVK $43691, R9									
+  base64_arm64.go:115	0x100285594		9bc97c29		UMULH R9, R1, R9								
+  base64_arm64.go:115	0x100285598		d345fd29		LSR $5, R9, R9									
+  base64_arm64.go:115	0x10028559c		d37ced29		LSL $4, R9, R9									
+  base64_arm64.go:115	0x1002855a0		8b090529		ADD R9<<1, R9, R9								
+  base64_arm64.go:116	0x1002855a4		f100c13f		CMP $48, R9									
+  base64_arm64.go:116	0x1002855a8		540006cb		BLT 54(PC)									
+  base64_scalar.go:291	0x1002855ac		f90057e6		MOVD R6, 168(RSP)								
+  base64_scalar.go:291	0x1002855b0		f90053e5		MOVD R5, 160(RSP)								
+  base64_scalar.go:291	0x1002855b4		f90047e2		MOVD R2, 136(RSP)								
+  base64_scalar.go:291	0x1002855b8		f9004fe4		MOVD R4, 152(RSP)								
+  base64_scalar.go:291	0x1002855bc		f9004be3		MOVD R3, 144(RSP)								
+  base64_scalar.go:291	0x1002855c0		f90043e1		MOVD R1, 128(RSP)								
+  base64_scalar.go:291	0x1002855c4		f9003fe0		MOVD R0, 120(RSP)								
+  base64_arm64.go:115	0x1002855c8		f90033e9		MOVD R9, 96(RSP)								
+  base64_arm64.go:117	0x1002855cc		36000106		TBZ $0, R6, 8(PC)								
+  base64_arm64.go:118	0x1002855d0		eb09005f		CMP R9, R2									
+  base64_arm64.go:118	0x1002855d4		54000823		BCC 65(PC)									
+  base64_arm64.go:118	0x1002855d8		a900a7e0		STP (R0, R9), 8(RSP)								
+  base64_arm64.go:118	0x1002855dc		a9018fe2		STP (R2, R3), 24(RSP)								
+  base64_arm64.go:118	0x1002855e0		a90297e4		STP (R4, R5), 40(RSP)								
+  base64_arm64.go:118	0x1002855e4		9401cc9f		CALL github.com/zchee/go-simdutf.binaryToBase64BlocksURLNEON.abi0(SB)		
+  base64_arm64.go:118	0x1002855e8		14000007		JMP 7(PC)									
+  base64_arm64.go:120	0x1002855ec		eb09005f		CMP R9, R2									
+  base64_arm64.go:120	0x1002855f0		54000723		BCC 57(PC)									
+  base64_arm64.go:120	0x1002855f4		a900a7e0		STP (R0, R9), 8(RSP)								
+  base64_arm64.go:120	0x1002855f8		a9018fe2		STP (R2, R3), 24(RSP)								
+  base64_arm64.go:120	0x1002855fc		a90297e4		STP (R4, R5), 40(RSP)								
+  base64_arm64.go:120	0x100285600		9401cc7c		CALL github.com/zchee/go-simdutf.binaryToBase64BlocksDefaultNEON.abi0(SB)	
+  base64_arm64.go:122	0x100285604		f94033e9		MOVD 96(RSP), R9								
+  base64_arm64.go:122	0x100285608		b201f3ea		MOVD $-6148914691236517206, R10							
+  base64_arm64.go:122	0x10028560c		f295556a		MOVK $43691, R10								
+  base64_arm64.go:122	0x100285610		9bca7d2a		UMULH R10, R9, R10								
+  base64_arm64.go:123	0x100285614		f94043eb		MOVD 128(RSP), R11								
+  base64_arm64.go:123	0x100285618		eb09017f		CMP R9, R11									
+  base64_arm64.go:123	0x10028561c		540005a3		BCC 45(PC)									
+  base64_arm64.go:122	0x100285620		d341fd4a		LSR $1, R10, R10								
+  base64_arm64.go:123	0x100285624		f94047ec		MOVD 136(RSP), R12								
+  base64_arm64.go:123	0x100285628		cb0c012d		SUB R12, R9, R13								
+  base64_arm64.go:123	0x10028562c		8a8dfd2d		AND R13->63, R9, R13								
+  base64_arm64.go:122	0x100285630		d37ef54e		LSL $2, R10, R14								
+  base64_arm64.go:123	0x100285634		cb09016b		SUB R9, R11, R11								
+  base64_arm64.go:123	0x100285638		cb090189		SUB R9, R12, R9									
+  base64_arm64.go:123	0x10028563c		f9403fec		MOVD 120(RSP), R12								
+  base64_arm64.go:123	0x100285640		8b0d018c		ADD R13, R12, R12								
+  base64_arm64.go:124	0x100285644		f9404fed		MOVD 152(RSP), R13								
+  base64_arm64.go:124	0x100285648		eb0a09bf		CMP R10<<2, R13									
+  base64_arm64.go:124	0x10028564c		54000403		BCC 32(PC)									
+  base64_arm64.go:124	0x100285650		f94053ef		MOVD 160(RSP), R15								
+  base64_arm64.go:124	0x100285654		cb0a09e5		SUB R10<<2, R15, R5								
+  base64_arm64.go:124	0x100285658		cb0503ef		NEG R5, R15									
+  base64_arm64.go:124	0x10028565c		8a8ffd4f		AND R15->63, R10, R15								
+  base64_arm64.go:124	0x100285660		cb0a09a4		SUB R10<<2, R13, R4								
+  base64_arm64.go:124	0x100285664		f9404bea		MOVD 144(RSP), R10								
+  base64_arm64.go:124	0x100285668		8b0f0943		ADD R15<<2, R10, R3								
+  base64_arm64.go:126	0x10028566c		f94057e6		MOVD 168(RSP), R6								
+  base64_arm64.go:126	0x100285670		aa0b03e1		MOVD R11, R1									
+  base64_arm64.go:126	0x100285674		aa0903e2		MOVD R9, R2									
+  base64_arm64.go:126	0x100285678		aa0c03e0		MOVD R12, R0									
+  base64_arm64.go:124	0x10028567c		14000002		JMP 2(PC)									
+  base64_arm64.go:126	0x100285680		aa1f03ee		MOVD ZR, R14									
+  base64_arm64.go:126	0x100285684		f9002fee		MOVD R14, 88(RSP)								
+  base64_arm64.go:126	0x100285688		aa1f03e7		MOVD ZR, R7									
+  base64_arm64.go:126	0x10028568c		aa1f03e8		MOVD ZR, R8									
+  base64_arm64.go:126	0x100285690		aa0003e9		MOVD R0, R9									
+  base64_arm64.go:126	0x100285694		aa0303e0		MOVD R3, R0									
+  base64_arm64.go:126	0x100285698		aa0103ea		MOVD R1, R10									
+  base64_arm64.go:126	0x10028569c		aa0403e1		MOVD R4, R1									
+  base64_arm64.go:126	0x1002856a0		aa0203eb		MOVD R2, R11									
+  base64_arm64.go:126	0x1002856a4		aa0503e2		MOVD R5, R2									
+  base64_arm64.go:126	0x1002856a8		aa0903e3		MOVD R9, R3									
+  base64_arm64.go:126	0x1002856ac		aa0a03e4		MOVD R10, R4									
+  base64_arm64.go:126	0x1002856b0		aa0b03e5		MOVD R11, R5									
+  base64_arm64.go:126	0x1002856b4		94000ba7		CALL github.com/zchee/go-simdutf.tailEncodeBase64(SB)				
+  base64_arm64.go:126	0x1002856b8		f9402fe9		MOVD 88(RSP), R9								
+  base64_arm64.go:126	0x1002856bc		8b090000		ADD R9, R0, R0									
+  base64_arm64.go:126	0x1002856c0		f85f83fd		MOVD -8(RSP), R29								
+  base64_arm64.go:126	0x1002856c4		f84707fe		MOVD.P 112(RSP), R30								
+  base64_arm64.go:126	0x1002856c8		d65f03c0		RET										
+  base64_arm64.go:124	0x1002856cc		97f7fc85		CALL runtime.panicBounds(SB)							
+  base64_arm64.go:123	0x1002856d0		97f7fc84		CALL runtime.panicBounds(SB)							
+  base64_arm64.go:120	0x1002856d4		97f7fc83		CALL runtime.panicBounds(SB)							
+  base64_arm64.go:118	0x1002856d8		97f7fc82		CALL runtime.panicBounds(SB)							
+  base64_arm64.go:111	0x1002856dc		d0001aa0		ADRP 3497984(PC), R0								
+  base64_arm64.go:111	0x1002856e0		91330000		ADD $3264, R0, R0								
+  base64_arm64.go:111	0x1002856e4		d0001e61		ADRP 3989504(PC), R1								
+  base64_arm64.go:111	0x1002856e8		9104c021		ADD $304, R1, R1								
+  base64_arm64.go:111	0x1002856ec		97f7dcf5		CALL runtime.gopanic(SB)							
+  base64_arm64.go:111	0x1002856f0		d503201f		NOOP										
+  base64_arm64.go:108	0x1002856f4		a90087e0		STP (R0, R1), 8(RSP)								
+  base64_arm64.go:108	0x1002856f8		a9018fe2		STP (R2, R3), 24(RSP)								
+  base64_arm64.go:108	0x1002856fc		a90297e4		STP (R4, R5), 40(RSP)								
+  base64_arm64.go:108	0x100285700		f9001fe6		MOVD R6, 56(RSP)								
+  base64_arm64.go:108	0x100285704		aa1e03e3		MOVD R30, R3									
+  base64_arm64.go:108	0x100285708		97f7f3f2		CALL runtime.morestack_noctxt.abi0(SB)						
+  base64_arm64.go:108	0x10028570c		a94087e0		LDP 8(RSP), (R0, R1)								
+  base64_arm64.go:108	0x100285710		a9418fe2		LDP 24(RSP), (R2, R3)								
+  base64_arm64.go:108	0x100285714		a94297e4		LDP 40(RSP), (R4, R5)								
+  base64_arm64.go:108	0x100285718		f9401fe6		MOVD 56(RSP), R6								
+  base64_arm64.go:108	0x10028571c		17ffff75		JMP github.com/zchee/go-simdutf.binaryToBase64NEON(SB)				
+
+TEXT github.com/zchee/go-simdutf.binaryToBase64WithLinesNEON(SB) /Users/zchee/go/src/github.com/zchee/go-simdutf/base64_arm64.go
+  base64_arm64.go:129	0x100285720		f9400b90		MOVD 16(R28), R16								
+  base64_arm64.go:129	0x100285724		eb3063ff		CMP R16, RSP									
+  base64_arm64.go:129	0x100285728		54000fa9		BLS 125(PC)									
+  base64_arm64.go:129	0x10028572c		f8180ffe		MOVD.W R30, -128(RSP)								
+  base64_arm64.go:129	0x100285730		f81f83fd		MOVD R29, -8(RSP)								
+  base64_arm64.go:129	0x100285734		d10023fd		SUB $8, RSP, R29								
+  base64_arm64.go:131	0x100285738		f9005fe6		MOVD R6, 184(RSP)								
+  base64_arm64.go:131	0x10028573c		f90063e7		MOVD R7, 192(RSP)								
+  base64_arm64.go:131	0x100285740		f9004be1		MOVD R1, 144(RSP)								
+  base64_arm64.go:131	0x100285744		f90047e0		MOVD R0, 136(RSP)								
+  base64_arm64.go:131	0x100285748		f9004fe2		MOVD R2, 152(RSP)								
+  base64_arm64.go:131	0x10028574c		f90053e3		MOVD R3, 160(RSP)								
+  base64_arm64.go:131	0x100285750		f90057e4		MOVD R4, 168(RSP)								
+  base64_arm64.go:130	0x100285754		aa0103e0		MOVD R1, R0									
+  base64_arm64.go:130	0x100285758		aa0703e1		MOVD R7, R1									
+  base64_arm64.go:130	0x10028575c		aa0603e2		MOVD R6, R2									
+  base64_arm64.go:130	0x100285760		94000574		CALL github.com/zchee/go-simdutf.base64LengthFromBinaryWithLinesScalar(SB)	
+  base64_arm64.go:131	0x100285764		f94057e3		MOVD 168(RSP), R3								
+  base64_arm64.go:131	0x100285768		eb03001f		CMP R3, R0									
+  base64_arm64.go:131	0x10028576c		54000ccc		BGT 102(PC)									
+  base64_scalar.go:291	0x100285770		d503201f		NOOP										
+  base64_arm64.go:134	0x100285774		f9405fe7		MOVD 184(RSP), R7								
+  base64_arm64.go:134	0x100285778		f10010ff		CMP $4, R7									
+  base64_arm64.go:140	0x10028577c		b27e03e8		ORR $4, ZR, R8									
+  base64_arm64.go:140	0x100285780		9a87b107		CSEL LT, R8, R7, R7								
+  base64_scalar.go:56	0x100285784		f94063e6		MOVD 192(RSP), R6								
+  base64_scalar.go:56	0x100285788		f24000df		TST $1, R6									
+  base64_scalar.go:56	0x10028578c		9a9f17e8		CSET EQ, R8									
+  base64_scalar.go:57	0x100285790		f27f00df		TST $2, R6									
+  base64_scalar.go:57	0x100285794		9a9f07e9		CSET NE, R9									
+  base64_scalar.go:58	0x100285798		ca090108		EOR R9, R8, R8									
+  base64_arm64.go:134	0x10028579c		36000188		TBZ $0, R8, 12(PC)								
+  base64_scalar.go:297	0x1002857a0		f9404be1		MOVD 144(RSP), R1								
+  base64_scalar.go:297	0x1002857a4		91000828		ADD $2, R1, R8									
+  base64_scalar.go:297	0x1002857a8		b201f3e9		MOVD $-6148914691236517206, R9							
+  base64_scalar.go:297	0x1002857ac		f2955569		MOVK $43691, R9									
+  base64_scalar.go:297	0x1002857b0		9b497d09		SMULH R9, R8, R9								
+  base64_scalar.go:297	0x1002857b4		8b090029		ADD R9, R1, R9									
+  base64_scalar.go:297	0x1002857b8		91000929		ADD $2, R9, R9									
+  base64_scalar.go:297	0x1002857bc		9341fd29		ASR $1, R9, R9									
+  base64_scalar.go:297	0x1002857c0		cb88fd28		SUB R8->63, R9, R8								
+  base64_scalar.go:297	0x1002857c4		d37ef508		LSL $2, R8, R8									
+  base64_arm64.go:140	0x1002857c8		1400000f		JMP 15(PC)									
+  base64_scalar.go:292	0x1002857cc		f9404be1		MOVD 144(RSP), R1								
+  base64_scalar.go:292	0x1002857d0		b201f3e8		MOVD $-6148914691236517206, R8							
+  base64_scalar.go:292	0x1002857d4		f2955568		MOVK $43691, R8									
+  base64_scalar.go:292	0x1002857d8		9bc87c28		UMULH R8, R1, R8								
+  base64_scalar.go:292	0x1002857dc		927ff909		AND $-2, R8, R9									
+  base64_scalar.go:292	0x1002857e0		8b480529		ADD R8>>1, R9, R9								
+  base64_scalar.go:292	0x1002857e4		d341fd08		LSR $1, R8, R8									
+  base64_scalar.go:292	0x1002857e8		eb09003f		CMP R9, R1									
+  base64_scalar.go:292	0x1002857ec		540000a0		BEQ 5(PC)									
+  base64_scalar.go:293	0x1002857f0		cb090029		SUB R9, R1, R9									
+  base64_scalar.go:293	0x1002857f4		8b080929		ADD R8<<2, R9, R9								
+  base64_scalar.go:293	0x1002857f8		91000528		ADD $1, R9, R8									
+  base64_arm64.go:140	0x1002857fc		14000002		JMP 2(PC)									
+  base64_scalar.go:295	0x100285800		d37ef508		LSL $2, R8, R8									
+  base64_arm64.go:140	0x100285804		f90023e8		MOVD R8, 64(RSP)								
+  base64_arm64.go:140	0x100285808		f90027e7		MOVD R7, 72(RSP)								
+  base64_arm64.go:140	0x10028580c		f100811f		CMP $32, R8									
+  base64_arm64.go:140	0x100285810		540000c8		BHI 6(PC)									
+  base64_arm64.go:140	0x100285814		910143e9		ADD $80, RSP, R9								
+  base64_arm64.go:140	0x100285818		a9007d3f		STP (ZR, ZR), (R9)								
+  base64_arm64.go:140	0x10028581c		a9017d3f		STP (ZR, ZR), 16(R9)								
+  base64_arm64.go:140	0x100285820		910143e0		ADD $80, RSP, R0								
+  base64_arm64.go:140	0x100285824		14000009		JMP 9(PC)									
+  base64_arm64.go:140	0x100285828		d0001aa0		ADRP 3497984(PC), R0								
+  base64_arm64.go:140	0x10028582c		91350000		ADD $3392, R0, R0								
+  base64_arm64.go:140	0x100285830		aa0803e1		MOVD R8, R1									
+  base64_arm64.go:140	0x100285834		aa0103e2		MOVD R1, R2									
+  base64_arm64.go:140	0x100285838		97f7e656		CALL runtime.makeslice(SB)							
+  base64_arm64.go:141	0x10028583c		f9404be1		MOVD 144(RSP), R1								
+  base64_arm64.go:141	0x100285840		f94063e6		MOVD 192(RSP), R6								
+  base64_arm64.go:141	0x100285844		f94023e8		MOVD 64(RSP), R8								
+  base64_arm64.go:141	0x100285848		f9003be0		MOVD R0, 112(RSP)								
+  base64_arm64.go:141	0x10028584c		f9404fe2		MOVD 152(RSP), R2								
+  base64_arm64.go:141	0x100285850		aa0003e3		MOVD R0, R3									
+  base64_arm64.go:141	0x100285854		aa0803e4		MOVD R8, R4									
+  base64_arm64.go:141	0x100285858		aa0403e5		MOVD R4, R5									
+  base64_arm64.go:141	0x10028585c		f94047e0		MOVD 136(RSP), R0								
+  base64_arm64.go:141	0x100285860		97ffff24		CALL github.com/zchee/go-simdutf.binaryToBase64NEON(SB)				
+  base64_arm64.go:143	0x100285864		f94027e7		MOVD 72(RSP), R7								
+  base64_arm64.go:143	0x100285868		f94023e5		MOVD 64(RSP), R5								
+  base64_arm64.go:143	0x10028586c		f94053e8		MOVD 160(RSP), R8								
+  base64_arm64.go:143	0x100285870		f94057e9		MOVD 168(RSP), R9								
+  base64_arm64.go:143	0x100285874		f9403be3		MOVD 112(RSP), R3								
+  base64_arm64.go:143	0x100285878		aa1f03e1		MOVD ZR, R1									
+  base64_arm64.go:143	0x10028587c		aa1f03e2		MOVD ZR, R2									
+  base64_arm64.go:143	0x100285880		14000004		JMP 4(PC)									
+  base64_arm64.go:148	0x100285884		38226906		MOVB R6, (R8)(R2)								
+  base64_arm64.go:149	0x100285888		91000442		ADD $1, R2, R2									
+  base64_arm64.go:143	0x10028588c		91000421		ADD $1, R1, R1									
+  base64_arm64.go:143	0x100285890		eb01001f		CMP R1, R0									
+  base64_arm64.go:143	0x100285894		540002ad		BLE 21(PC)									
+  base64_arm64.go:144	0x100285898		f100003f		CMP $0, R1									
+  base64_arm64.go:144	0x10028589c		5400018d		BLE 12(PC)									
+  base64_arm64.go:144	0x1002858a0		9ac7083b		UDIV R7, R1, R27								
+  base64_arm64.go:144	0x1002858a4		9b078764		MSUB R7, R1, R27, R4								
+  base64_arm64.go:144	0x1002858a8		b50000e4		CBNZ R4, 7(PC)									
+  base64_arm64.go:145	0x1002858ac		eb02013f		CMP R2, R9									
+  base64_arm64.go:145	0x1002858b0		54000289		BLS 20(PC)									
+  base64_arm64.go:145	0x1002858b4		d2800144		MOVD $10, R4									
+  base64_arm64.go:145	0x1002858b8		38226904		MOVB R4, (R8)(R2)								
+  base64_arm64.go:146	0x1002858bc		91000442		ADD $1, R2, R2									
+  base64_arm64.go:146	0x1002858c0		14000004		JMP 4(PC)									
+  base64_arm64.go:146	0x1002858c4		d2800144		MOVD $10, R4									
+  base64_arm64.go:144	0x1002858c8		14000002		JMP 2(PC)									
+  base64_arm64.go:144	0x1002858cc		d2800144		MOVD $10, R4									
+  base64_arm64.go:148	0x1002858d0		eb05003f		CMP R5, R1									
+  base64_arm64.go:148	0x1002858d4		54000142		BCS 10(PC)									
+  base64_arm64.go:148	0x1002858d8		38616866		MOVBU (R3)(R1), R6								
+  base64_arm64.go:148	0x1002858dc		eb02013f		CMP R2, R9									
+  base64_arm64.go:148	0x1002858e0		54fffd28		BHI -23(PC)									
+  base64_arm64.go:148	0x1002858e4		14000005		JMP 5(PC)									
+  base64_arm64.go:151	0x1002858e8		aa0203e0		MOVD R2, R0									
+  base64_arm64.go:151	0x1002858ec		f85f83fd		MOVD -8(RSP), R29								
+  base64_arm64.go:151	0x1002858f0		f84807fe		MOVD.P 128(RSP), R30								
+  base64_arm64.go:151	0x1002858f4		d65f03c0		RET										
+  base64_arm64.go:148	0x1002858f8		97f7fbfa		CALL runtime.panicBounds(SB)							
+  base64_arm64.go:148	0x1002858fc		97f7fbf9		CALL runtime.panicBounds(SB)							
+  base64_arm64.go:145	0x100285900		97f7fbf8		CALL runtime.panicBounds(SB)							
+  base64_arm64.go:132	0x100285904		d0001aa0		ADRP 3497984(PC), R0								
+  base64_arm64.go:132	0x100285908		91330000		ADD $3264, R0, R0								
+  base64_arm64.go:132	0x10028590c		d0001e61		ADRP 3989504(PC), R1								
+  base64_arm64.go:132	0x100285910		9104c021		ADD $304, R1, R1								
+  base64_arm64.go:132	0x100285914		97f7dc6b		CALL runtime.gopanic(SB)							
+  base64_arm64.go:132	0x100285918		d503201f		NOOP										
+  base64_arm64.go:129	0x10028591c		a90087e0		STP (R0, R1), 8(RSP)								
+  base64_arm64.go:129	0x100285920		a9018fe2		STP (R2, R3), 24(RSP)								
+  base64_arm64.go:129	0x100285924		a90297e4		STP (R4, R5), 40(RSP)								
+  base64_arm64.go:129	0x100285928		a9039fe6		STP (R6, R7), 56(RSP)								
+  base64_arm64.go:129	0x10028592c		aa1e03e3		MOVD R30, R3									
+  base64_arm64.go:129	0x100285930		97f7f368		CALL runtime.morestack_noctxt.abi0(SB)						
+  base64_arm64.go:129	0x100285934		a94087e0		LDP 8(RSP), (R0, R1)								
+  base64_arm64.go:129	0x100285938		a9418fe2		LDP 24(RSP), (R2, R3)								
+  base64_arm64.go:129	0x10028593c		a94297e4		LDP 40(RSP), (R4, R5)								
+  base64_arm64.go:129	0x100285940		a9439fe6		LDP 56(RSP), (R6, R7)								
+  base64_arm64.go:129	0x100285944		17ffff77		JMP github.com/zchee/go-simdutf.binaryToBase64WithLinesNEON(SB)			
+  base64_arm64.go:129	0x100285948		00000000		?										
+  base64_arm64.go:129	0x10028594c		00000000		?										
+
+TEXT github.com/zchee/go-simdutf.base64ToBinaryNEON(SB) /Users/zchee/go/src/github.com/zchee/go-simdutf/base64_arm64.go
+  base64_arm64.go:154	0x100285950		f9400b90		MOVD 16(R28), R16						
+  base64_arm64.go:154	0x100285954		eb3063ff		CMP R16, RSP							
+  base64_arm64.go:154	0x100285958		54000689		BLS 52(PC)							
+  base64_arm64.go:154	0x10028595c		f81b0ffe		MOVD.W R30, -80(RSP)						
+  base64_arm64.go:154	0x100285960		f81f83fd		MOVD R29, -8(RSP)						
+  base64_arm64.go:154	0x100285964		d10023fd		SUB $8, RSP, R29						
+  base64_arm64.go:154	0x100285968		f9002fe0		MOVD R0, 88(RSP)						
+  base64_arm64.go:154	0x10028596c		f9003be3		MOVD R3, 112(RSP)						
+  base64_scalar.go:216	0x100285970		b4000221		CBZ R1, 17(PC)							
+  base64_scalar.go:217	0x100285974		d1000428		SUB $1, R1, R8							
+  base64_scalar.go:217	0x100285978		38686808		MOVBU (R0)(R8), R8						
+  base64_scalar.go:217	0x10028597c		7100f51f		CMPW $61, R8							
+  base64_scalar.go:217	0x100285980		54000161		BNE 11(PC)							
+  base64_scalar.go:219	0x100285984		f100043f		CMP $1, R1							
+  base64_scalar.go:219	0x100285988		540000ed		BLE 7(PC)							
+  base64_scalar.go:219	0x10028598c		d1000828		SUB $2, R1, R8							
+  base64_scalar.go:219	0x100285990		38686808		MOVBU (R0)(R8), R8						
+  base64_scalar.go:219	0x100285994		7100f51f		CMPW $61, R8							
+  base64_scalar.go:219	0x100285998		54000061		BNE 3(PC)							
+  base64_scalar.go:220	0x10028599c		b27f03e8		ORR $2, ZR, R8							
+  base64_scalar.go:220	0x1002859a0		14000006		JMP 6(PC)							
+  base64_scalar.go:220	0x1002859a4		b24003e8		ORR $1, ZR, R8							
+  base64_scalar.go:219	0x1002859a8		14000004		JMP 4(PC)							
+  base64_scalar.go:219	0x1002859ac		aa1f03e8		MOVD ZR, R8							
+  base64_scalar.go:217	0x1002859b0		14000002		JMP 2(PC)							
+  base64_scalar.go:224	0x1002859b4		aa1f03e8		MOVD ZR, R8							
+  base64_scalar.go:224	0x1002859b8		cb080029		SUB R8, R1, R9							
+  base64_scalar.go:225	0x1002859bc		937ffd2a		ASR $63, R9, R10						
+  base64_scalar.go:225	0x1002859c0		8b4af929		ADD R10>>62, R9, R9						
+  base64_scalar.go:225	0x1002859c4		9342fd29		ASR $2, R9, R9							
+  base64_scalar.go:225	0x1002859c8		8b090908		ADD R9<<2, R8, R8						
+  base64_scalar.go:225	0x1002859cc		cb080028		SUB R8, R1, R8							
+  base64_scalar.go:225	0x1002859d0		f100051f		CMP $1, R8							
+  base64_scalar.go:225	0x1002859d4		5400006c		BGT 3(PC)							
+  base64_scalar.go:226	0x1002859d8		8b090528		ADD R9<<1, R9, R8						
+  base64_arm64.go:155	0x1002859dc		14000004		JMP 4(PC)							
+  base64_scalar.go:228	0x1002859e0		8b090529		ADD R9<<1, R9, R9						
+  base64_scalar.go:228	0x1002859e4		8b090109		ADD R9, R8, R9							
+  base64_scalar.go:228	0x1002859e8		d1000528		SUB $1, R9, R8							
+  base64_arm64.go:156	0x1002859ec		eb08009f		CMP R8, R4							
+  base64_arm64.go:156	0x1002859f0		5400010b		BLT 8(PC)							
+  base64_arm64.go:159	0x1002859f4		9400005f		CALL github.com/zchee/go-simdutf.base64ToBinaryDetailsNEON(SB)	
+  errors.go:87		0x1002859f8		d3401c08		UBFX $0, R0, $8, R8						
+  errors.go:87		0x1002859fc		7100011f		CMPW $0, R8							
+  base64_arm64.go:159	0x100285a00		9a810041		CSEL EQ, R2, R1, R1						
+  errors.go:87		0x100285a04		f85f83fd		MOVD -8(RSP), R29						
+  errors.go:87		0x100285a08		f84507fe		MOVD.P 80(RSP), R30						
+  errors.go:87		0x100285a0c		d65f03c0		RET								
+  base64_arm64.go:157	0x100285a10		d0001aa0		ADRP 3497984(PC), R0						
+  base64_arm64.go:157	0x100285a14		91330000		ADD $3264, R0, R0						
+  base64_arm64.go:157	0x100285a18		d0001e61		ADRP 3989504(PC), R1						
+  base64_arm64.go:157	0x100285a1c		9104c021		ADD $304, R1, R1						
+  base64_arm64.go:157	0x100285a20		97f7dc28		CALL runtime.gopanic(SB)					
+  base64_arm64.go:157	0x100285a24		d503201f		NOOP								
+  base64_arm64.go:154	0x100285a28		a90087e0		STP (R0, R1), 8(RSP)						
+  base64_arm64.go:154	0x100285a2c		a9018fe2		STP (R2, R3), 24(RSP)						
+  base64_arm64.go:154	0x100285a30		a90297e4		STP (R4, R5), 40(RSP)						
+  base64_arm64.go:154	0x100285a34		a9039fe6		STP (R6, R7), 56(RSP)						
+  base64_arm64.go:154	0x100285a38		aa1e03e3		MOVD R30, R3							
+  base64_arm64.go:154	0x100285a3c		97f7f325		CALL runtime.morestack_noctxt.abi0(SB)				
+  base64_arm64.go:154	0x100285a40		a94087e0		LDP 8(RSP), (R0, R1)						
+  base64_arm64.go:154	0x100285a44		a9418fe2		LDP 24(RSP), (R2, R3)						
+  base64_arm64.go:154	0x100285a48		a94297e4		LDP 40(RSP), (R4, R5)						
+  base64_arm64.go:154	0x100285a4c		a9439fe6		LDP 56(RSP), (R6, R7)						
+  base64_arm64.go:154	0x100285a50		17ffffc0		JMP github.com/zchee/go-simdutf.base64ToBinaryNEON(SB)		
+  base64_arm64.go:154	0x100285a54		00000000		?								
+  base64_arm64.go:154	0x100285a58		00000000		?								
+  base64_arm64.go:154	0x100285a5c		00000000		?								
+
+TEXT github.com/zchee/go-simdutf.base64ToBinaryUTF16NEON(SB) /Users/zchee/go/src/github.com/zchee/go-simdutf/base64_arm64.go
+  base64_arm64.go:162	0x100285a60		f9400b90		MOVD 16(R28), R16							
+  base64_arm64.go:162	0x100285a64		eb3063ff		CMP R16, RSP								
+  base64_arm64.go:162	0x100285a68		54000689		BLS 52(PC)								
+  base64_arm64.go:162	0x100285a6c		f81b0ffe		MOVD.W R30, -80(RSP)							
+  base64_arm64.go:162	0x100285a70		f81f83fd		MOVD R29, -8(RSP)							
+  base64_arm64.go:162	0x100285a74		d10023fd		SUB $8, RSP, R29							
+  base64_arm64.go:162	0x100285a78		f9002fe0		MOVD R0, 88(RSP)							
+  base64_arm64.go:162	0x100285a7c		f9003be3		MOVD R3, 112(RSP)							
+  base64_scalar.go:233	0x100285a80		b4000221		CBZ R1, 17(PC)								
+  base64_scalar.go:234	0x100285a84		d1000428		SUB $1, R1, R8								
+  base64_scalar.go:234	0x100285a88		78687808		MOVHU (R0)(R8<<1), R8							
+  base64_scalar.go:234	0x100285a8c		7100f51f		CMPW $61, R8								
+  base64_scalar.go:234	0x100285a90		54000161		BNE 11(PC)								
+  base64_scalar.go:236	0x100285a94		f100043f		CMP $1, R1								
+  base64_scalar.go:236	0x100285a98		540000ed		BLE 7(PC)								
+  base64_scalar.go:236	0x100285a9c		d1000828		SUB $2, R1, R8								
+  base64_scalar.go:236	0x100285aa0		78687808		MOVHU (R0)(R8<<1), R8							
+  base64_scalar.go:236	0x100285aa4		7100f51f		CMPW $61, R8								
+  base64_scalar.go:236	0x100285aa8		54000061		BNE 3(PC)								
+  base64_scalar.go:234	0x100285aac		b27f03e8		ORR $2, ZR, R8								
+  base64_scalar.go:237	0x100285ab0		14000006		JMP 6(PC)								
+  base64_scalar.go:237	0x100285ab4		b24003e8		ORR $1, ZR, R8								
+  base64_scalar.go:236	0x100285ab8		14000004		JMP 4(PC)								
+  base64_scalar.go:236	0x100285abc		aa1f03e8		MOVD ZR, R8								
+  base64_scalar.go:234	0x100285ac0		14000002		JMP 2(PC)								
+  base64_scalar.go:241	0x100285ac4		aa1f03e8		MOVD ZR, R8								
+  base64_scalar.go:241	0x100285ac8		cb080029		SUB R8, R1, R9								
+  base64_scalar.go:242	0x100285acc		937ffd2a		ASR $63, R9, R10							
+  base64_scalar.go:242	0x100285ad0		8b4af929		ADD R10>>62, R9, R9							
+  base64_scalar.go:242	0x100285ad4		9342fd29		ASR $2, R9, R9								
+  base64_scalar.go:242	0x100285ad8		8b090908		ADD R9<<2, R8, R8							
+  base64_scalar.go:242	0x100285adc		cb080028		SUB R8, R1, R8								
+  base64_scalar.go:242	0x100285ae0		f100051f		CMP $1, R8								
+  base64_scalar.go:242	0x100285ae4		5400006c		BGT 3(PC)								
+  base64_scalar.go:243	0x100285ae8		8b090528		ADD R9<<1, R9, R8							
+  base64_arm64.go:163	0x100285aec		14000004		JMP 4(PC)								
+  base64_scalar.go:245	0x100285af0		8b090529		ADD R9<<1, R9, R9							
+  base64_scalar.go:245	0x100285af4		8b090109		ADD R9, R8, R9								
+  base64_scalar.go:245	0x100285af8		d1000528		SUB $1, R9, R8								
+  base64_arm64.go:164	0x100285afc		eb08009f		CMP R8, R4								
+  base64_arm64.go:164	0x100285b00		5400010b		BLT 8(PC)								
+  base64_arm64.go:167	0x100285b04		94000047		CALL github.com/zchee/go-simdutf.base64ToBinaryDetailsUTF16NEON(SB)	
+  errors.go:87		0x100285b08		d3401c08		UBFX $0, R0, $8, R8							
+  errors.go:87		0x100285b0c		7100011f		CMPW $0, R8								
+  base64_arm64.go:167	0x100285b10		9a810041		CSEL EQ, R2, R1, R1							
+  errors.go:87		0x100285b14		f85f83fd		MOVD -8(RSP), R29							
+  errors.go:87		0x100285b18		f84507fe		MOVD.P 80(RSP), R30							
+  errors.go:87		0x100285b1c		d65f03c0		RET									
+  base64_arm64.go:165	0x100285b20		d0001aa0		ADRP 3497984(PC), R0							
+  base64_arm64.go:165	0x100285b24		91330000		ADD $3264, R0, R0							
+  base64_arm64.go:165	0x100285b28		d0001e61		ADRP 3989504(PC), R1							
+  base64_arm64.go:165	0x100285b2c		9104c021		ADD $304, R1, R1							
+  base64_arm64.go:165	0x100285b30		97f7dbe4		CALL runtime.gopanic(SB)						
+  base64_arm64.go:165	0x100285b34		d503201f		NOOP									
+  base64_arm64.go:162	0x100285b38		a90087e0		STP (R0, R1), 8(RSP)							
+  base64_arm64.go:162	0x100285b3c		a9018fe2		STP (R2, R3), 24(RSP)							
+  base64_arm64.go:162	0x100285b40		a90297e4		STP (R4, R5), 40(RSP)							
+  base64_arm64.go:162	0x100285b44		a9039fe6		STP (R6, R7), 56(RSP)							
+  base64_arm64.go:162	0x100285b48		aa1e03e3		MOVD R30, R3								
+  base64_arm64.go:162	0x100285b4c		97f7f2e1		CALL runtime.morestack_noctxt.abi0(SB)					
+  base64_arm64.go:162	0x100285b50		a94087e0		LDP 8(RSP), (R0, R1)							
+  base64_arm64.go:162	0x100285b54		a9418fe2		LDP 24(RSP), (R2, R3)							
+  base64_arm64.go:162	0x100285b58		a94297e4		LDP 40(RSP), (R4, R5)							
+  base64_arm64.go:162	0x100285b5c		a9439fe6		LDP 56(RSP), (R6, R7)							
+  base64_arm64.go:162	0x100285b60		17ffffc0		JMP github.com/zchee/go-simdutf.base64ToBinaryUTF16NEON(SB)		
+  base64_arm64.go:162	0x100285b64		00000000		?									
+  base64_arm64.go:162	0x100285b68		00000000		?									
+  base64_arm64.go:162	0x100285b6c		00000000		?									
+
+TEXT github.com/zchee/go-simdutf.base64ToBinaryDetailsNEON(SB) /Users/zchee/go/src/github.com/zchee/go-simdutf/base64_arm64.go
+  base64_arm64.go:170	0x100285b70		f9400b90		MOVD 16(R28), R16								
+  base64_arm64.go:170	0x100285b74		eb3063ff		CMP R16, RSP									
+  base64_arm64.go:170	0x100285b78		540003c9		BLS 30(PC)									
+  base64_arm64.go:170	0x100285b7c		f81a0ffe		MOVD.W R30, -96(RSP)								
+  base64_arm64.go:170	0x100285b80		f81f83fd		MOVD R29, -8(RSP)								
+  base64_arm64.go:170	0x100285b84		d10023fd		SUB $8, RSP, R29								
+  base64_arm64.go:171	0x100285b88		f9004fe6		MOVD R6, 152(RSP)								
+  base64_arm64.go:171	0x100285b8c		f90053e7		MOVD R7, 160(RSP)								
+  base64_arm64.go:171	0x100285b90		f90037e0		MOVD R0, 104(RSP)								
+  base64_arm64.go:171	0x100285b94		f9004be5		MOVD R5, 144(RSP)								
+  base64_arm64.go:171	0x100285b98		f90047e4		MOVD R4, 136(RSP)								
+  base64_arm64.go:171	0x100285b9c		f90043e3		MOVD R3, 128(RSP)								
+  base64_arm64.go:171	0x100285ba0		f9003fe2		MOVD R2, 120(RSP)								
+  base64_arm64.go:171	0x100285ba4		f9003be1		MOVD R1, 112(RSP)								
+  base64_arm64.go:171	0x100285ba8		9400004a		CALL github.com/zchee/go-simdutf.base64ToBinaryDetailsNEONContiguous(SB)	
+  base64_arm64.go:171	0x100285bac		36000084		TBZ $0, R4, 4(PC)								
+  base64_arm64.go:172	0x100285bb0		f85f83fd		MOVD -8(RSP), R29								
+  base64_arm64.go:172	0x100285bb4		f84607fe		MOVD.P 96(RSP), R30								
+  base64_arm64.go:172	0x100285bb8		d65f03c0		RET										
+  base64_scalar.go:482	0x100285bbc		f94037e0		MOVD 104(RSP), R0								
+  base64_scalar.go:482	0x100285bc0		f9403be1		MOVD 112(RSP), R1								
+  base64_scalar.go:482	0x100285bc4		f9403fe2		MOVD 120(RSP), R2								
+  base64_scalar.go:482	0x100285bc8		f94043e3		MOVD 128(RSP), R3								
+  base64_scalar.go:482	0x100285bcc		f94047e4		MOVD 136(RSP), R4								
+  base64_scalar.go:482	0x100285bd0		f9404be5		MOVD 144(RSP), R5								
+  base64_scalar.go:482	0x100285bd4		f9404fe6		MOVD 152(RSP), R6								
+  base64_scalar.go:482	0x100285bd8		f94053e7		MOVD 160(RSP), R7								
+  base64_scalar.go:482	0x100285bdc		aa1f03e8		MOVD ZR, R8									
+  base64_scalar.go:482	0x100285be0		940007b4		CALL github.com/zchee/go-simdutf.base64ToBinaryDetailsByte(SB)			
+  base64_arm64.go:174	0x100285be4		f85f83fd		MOVD -8(RSP), R29								
+  base64_arm64.go:174	0x100285be8		f84607fe		MOVD.P 96(RSP), R30								
+  base64_arm64.go:174	0x100285bec		d65f03c0		RET										
+  base64_arm64.go:170	0x100285bf0		a90087e0		STP (R0, R1), 8(RSP)								
+  base64_arm64.go:170	0x100285bf4		a9018fe2		STP (R2, R3), 24(RSP)								
+  base64_arm64.go:170	0x100285bf8		a90297e4		STP (R4, R5), 40(RSP)								
+  base64_arm64.go:170	0x100285bfc		a9039fe6		STP (R6, R7), 56(RSP)								
+  base64_arm64.go:170	0x100285c00		aa1e03e3		MOVD R30, R3									
+  base64_arm64.go:170	0x100285c04		97f7f2b3		CALL runtime.morestack_noctxt.abi0(SB)						
+  base64_arm64.go:170	0x100285c08		a94087e0		LDP 8(RSP), (R0, R1)								
+  base64_arm64.go:170	0x100285c0c		a9418fe2		LDP 24(RSP), (R2, R3)								
+  base64_arm64.go:170	0x100285c10		a94297e4		LDP 40(RSP), (R4, R5)								
+  base64_arm64.go:170	0x100285c14		a9439fe6		LDP 56(RSP), (R6, R7)								
+  base64_arm64.go:170	0x100285c18		17ffffd6		JMP github.com/zchee/go-simdutf.base64ToBinaryDetailsNEON(SB)			
+  base64_arm64.go:170	0x100285c1c		00000000		?										
+
+TEXT github.com/zchee/go-simdutf.base64ToBinaryDetailsUTF16NEON(SB) /Users/zchee/go/src/github.com/zchee/go-simdutf/base64_arm64.go
+  base64_arm64.go:177	0x100285c20		f9400b90		MOVD 16(R28), R16								
+  base64_arm64.go:177	0x100285c24		eb3063ff		CMP R16, RSP									
+  base64_arm64.go:177	0x100285c28		540003c9		BLS 30(PC)									
+  base64_arm64.go:177	0x100285c2c		f81a0ffe		MOVD.W R30, -96(RSP)								
+  base64_arm64.go:177	0x100285c30		f81f83fd		MOVD R29, -8(RSP)								
+  base64_arm64.go:177	0x100285c34		d10023fd		SUB $8, RSP, R29								
+  base64_arm64.go:178	0x100285c38		f9004fe6		MOVD R6, 152(RSP)								
+  base64_arm64.go:178	0x100285c3c		f90053e7		MOVD R7, 160(RSP)								
+  base64_arm64.go:178	0x100285c40		f9004be5		MOVD R5, 144(RSP)								
+  base64_arm64.go:178	0x100285c44		f90037e0		MOVD R0, 104(RSP)								
+  base64_arm64.go:178	0x100285c48		f90047e4		MOVD R4, 136(RSP)								
+  base64_arm64.go:178	0x100285c4c		f90043e3		MOVD R3, 128(RSP)								
+  base64_arm64.go:178	0x100285c50		f9003fe2		MOVD R2, 120(RSP)								
+  base64_arm64.go:178	0x100285c54		f9003be1		MOVD R1, 112(RSP)								
+  base64_arm64.go:178	0x100285c58		9400014e		CALL github.com/zchee/go-simdutf.base64ToBinaryDetailsUTF16NEONContiguous(SB)	
+  base64_arm64.go:178	0x100285c5c		36000084		TBZ $0, R4, 4(PC)								
+  base64_arm64.go:179	0x100285c60		f85f83fd		MOVD -8(RSP), R29								
+  base64_arm64.go:179	0x100285c64		f84607fe		MOVD.P 96(RSP), R30								
+  base64_arm64.go:179	0x100285c68		d65f03c0		RET										
+  base64_scalar.go:486	0x100285c6c		f94037e0		MOVD 104(RSP), R0								
+  base64_scalar.go:486	0x100285c70		f9403be1		MOVD 112(RSP), R1								
+  base64_scalar.go:486	0x100285c74		f9403fe2		MOVD 120(RSP), R2								
+  base64_scalar.go:486	0x100285c78		f94043e3		MOVD 128(RSP), R3								
+  base64_scalar.go:486	0x100285c7c		f94047e4		MOVD 136(RSP), R4								
+  base64_scalar.go:486	0x100285c80		f9404be5		MOVD 144(RSP), R5								
+  base64_scalar.go:486	0x100285c84		f9404fe6		MOVD 152(RSP), R6								
+  base64_scalar.go:486	0x100285c88		f94053e7		MOVD 160(RSP), R7								
+  base64_scalar.go:486	0x100285c8c		aa1f03e8		MOVD ZR, R8									
+  base64_scalar.go:486	0x100285c90		94000860		CALL github.com/zchee/go-simdutf.base64ToBinaryDetailsUTF16Inner(SB)		
+  base64_arm64.go:181	0x100285c94		f85f83fd		MOVD -8(RSP), R29								
+  base64_arm64.go:181	0x100285c98		f84607fe		MOVD.P 96(RSP), R30								
+  base64_arm64.go:181	0x100285c9c		d65f03c0		RET										
+  base64_arm64.go:177	0x100285ca0		a90087e0		STP (R0, R1), 8(RSP)								
+  base64_arm64.go:177	0x100285ca4		a9018fe2		STP (R2, R3), 24(RSP)								
+  base64_arm64.go:177	0x100285ca8		a90297e4		STP (R4, R5), 40(RSP)								
+  base64_arm64.go:177	0x100285cac		a9039fe6		STP (R6, R7), 56(RSP)								
+  base64_arm64.go:177	0x100285cb0		aa1e03e3		MOVD R30, R3									
+  base64_arm64.go:177	0x100285cb4		97f7f287		CALL runtime.morestack_noctxt.abi0(SB)						
+  base64_arm64.go:177	0x100285cb8		a94087e0		LDP 8(RSP), (R0, R1)								
+  base64_arm64.go:177	0x100285cbc		a9418fe2		LDP 24(RSP), (R2, R3)								
+  base64_arm64.go:177	0x100285cc0		a94297e4		LDP 40(RSP), (R4, R5)								
+  base64_arm64.go:177	0x100285cc4		a9439fe6		LDP 56(RSP), (R6, R7)								
+  base64_arm64.go:177	0x100285cc8		17ffffd6		JMP github.com/zchee/go-simdutf.base64ToBinaryDetailsUTF16NEON(SB)		
+  base64_arm64.go:177	0x100285ccc		00000000		?										
+
+TEXT github.com/zchee/go-simdutf.base64ToBinaryDetailsNEONContiguous(SB) /Users/zchee/go/src/github.com/zchee/go-simdutf/base64_arm64.go
+  base64_arm64.go:187	0x100285cd0		f9400b90		MOVD 16(R28), R16							
+  base64_arm64.go:187	0x100285cd4		d10083f1		SUB $32, RSP, R17							
+  base64_arm64.go:187	0x100285cd8		eb10023f		CMP R16, R17								
+  base64_arm64.go:187	0x100285cdc		540023e9		BLS 287(PC)								
+  base64_arm64.go:187	0x100285ce0		f8160ffe		MOVD.W R30, -160(RSP)							
+  base64_arm64.go:187	0x100285ce4		f81f83fd		MOVD R29, -8(RSP)							
+  base64_arm64.go:187	0x100285ce8		d10023fd		SUB $8, RSP, R29							
+  base64_arm64.go:187	0x100285cec		f90057e0		MOVD R0, 168(RSP)							
+  base64_arm64.go:187	0x100285cf0		f90063e3		MOVD R3, 192(RSP)							
+  base64_scalar.go:23	0x100285cf4		f10014df		CMP $5, R6								
+  base64_scalar.go:23	0x100285cf8		540000c0		BEQ 6(PC)								
+  base64_scalar.go:25	0x100285cfc		b27d00c8		ORR $8, R6, R8								
+  base64_scalar.go:25	0x100285d00		f100311f		CMP $12, R8								
+  base64_arm64.go:188	0x100285d04		54000060		BEQ 3(PC)								
+  base64_arm64.go:188	0x100285d08		f101003f		CMP $64, R1								
+  base64_arm64.go:188	0x100285d0c		5400012a		BGE 9(PC)								
+  base64_arm64.go:189	0x100285d10		aa1f03e0		MOVD ZR, R0								
+  base64_arm64.go:189	0x100285d14		aa1f03e1		MOVD ZR, R1								
+  base64_arm64.go:189	0x100285d18		aa1f03e2		MOVD ZR, R2								
+  base64_arm64.go:189	0x100285d1c		aa1f03e3		MOVD ZR, R3								
+  base64_arm64.go:189	0x100285d20		aa1f03e4		MOVD ZR, R4								
+  base64_arm64.go:189	0x100285d24		f85f83fd		MOVD -8(RSP), R29							
+  base64_arm64.go:189	0x100285d28		f84a07fe		MOVD.P 160(RSP), R30							
+  base64_arm64.go:189	0x100285d2c		d65f03c0		RET									
+  base64_scalar.go:23	0x100285d30		f9006fe6		MOVD R6, 216(RSP)							
+  base64_scalar.go:23	0x100285d34		f90073e7		MOVD R7, 224(RSP)							
+  base64_scalar.go:23	0x100285d38		f90057e0		MOVD R0, 168(RSP)							
+  base64_scalar.go:23	0x100285d3c		f9005be1		MOVD R1, 176(RSP)							
+  base64_scalar.go:23	0x100285d40		f90067e4		MOVD R4, 200(RSP)							
+  base64_scalar.go:23	0x100285d44		f9005fe2		MOVD R2, 184(RSP)							
+  base64_scalar.go:23	0x100285d48		f90063e3		MOVD R3, 192(RSP)							
+  base64_scalar.go:23	0x100285d4c		f9006be5		MOVD R5, 208(RSP)							
+  base64_arm64.go:191	0x100285d50		aa0603e3		MOVD R6, R3								
+  base64_arm64.go:191	0x100285d54		9400026b		CALL github.com/zchee/go-simdutf.findEndBase64Byte(SB)			
+  base64_arm64.go:196	0x100285d58		f101005f		CMP $64, R2								
+  base64_arm64.go:196	0x100285d5c		5400020b		BLT 16(PC)								
+  base64_scalar.go:29	0x100285d60		f9406fe4		MOVD 216(RSP), R4							
+  base64_scalar.go:29	0x100285d64		36180084		TBZ $3, R4, 4(PC)							
+  base64_scalar.go:29	0x100285d68		90001f85		ADRP 4128768(PC), R5							
+  base64_scalar.go:29	0x100285d6c		910180a5		ADD $96, R5, R5								
+  base64_arm64.go:199	0x100285d70		14000007		JMP 7(PC)								
+  base64_scalar.go:32	0x100285d74		36000084		TBZ $0, R4, 4(PC)							
+  base64_scalar.go:32	0x100285d78		f0001f65		ADRP 4124672(PC), R5							
+  base64_scalar.go:32	0x100285d7c		913d80a5		ADD $3936, R5, R5							
+  base64_arm64.go:199	0x100285d80		14000003		JMP 3(PC)								
+  base64_arm64.go:199	0x100285d84		f0001f65		ADRP 4124672(PC), R5							
+  base64_arm64.go:199	0x100285d88		913980a5		ADD $3680, R5, R5							
+  base64_arm64.go:200	0x100285d8c		f94057e6		MOVD 168(RSP), R6							
+  base64_arm64.go:200	0x100285d90		f9405be7		MOVD 176(RSP), R7							
+  base64_arm64.go:200	0x100285d94		aa1f03e8		MOVD ZR, R8								
+  base64_arm64.go:200	0x100285d98		1400000a		JMP 10(PC)								
+  base64_arm64.go:197	0x100285d9c		aa1f03e0		MOVD ZR, R0								
+  base64_arm64.go:197	0x100285da0		aa1f03e1		MOVD ZR, R1								
+  base64_arm64.go:197	0x100285da4		aa1f03e2		MOVD ZR, R2								
+  base64_arm64.go:197	0x100285da8		aa1f03e3		MOVD ZR, R3								
+  base64_arm64.go:197	0x100285dac		aa1f03e4		MOVD ZR, R4								
+  base64_arm64.go:197	0x100285db0		f85f83fd		MOVD -8(RSP), R29							
+  base64_arm64.go:197	0x100285db4		f84a07fe		MOVD.P 160(RSP), R30							
+  base64_arm64.go:197	0x100285db8		d65f03c0		RET									
+  base64_arm64.go:200	0x100285dbc		91000508		ADD $1, R8, R8								
+  base64_arm64.go:200	0x100285dc0		eb08005f		CMP R8, R2								
+  base64_arm64.go:200	0x100285dc4		540001ed		BLE 15(PC)								
+  base64_arm64.go:201	0x100285dc8		eb0800ff		CMP R8, R7								
+  base64_arm64.go:201	0x100285dcc		54001c29		BLS 225(PC)								
+  base64_arm64.go:201	0x100285dd0		386868c9		MOVBU (R6)(R8), R9							
+  base64_arm64.go:201	0x100285dd4		386968a9		MOVBU (R5)(R9), R9							
+  base64_arm64.go:201	0x100285dd8		7100fd3f		CMPW $63, R9								
+  base64_arm64.go:201	0x100285ddc		54ffff09		BLS -8(PC)								
+  base64_arm64.go:202	0x100285de0		aa1f03e0		MOVD ZR, R0								
+  base64_arm64.go:202	0x100285de4		aa1f03e1		MOVD ZR, R1								
+  base64_arm64.go:202	0x100285de8		aa1f03e2		MOVD ZR, R2								
+  base64_arm64.go:202	0x100285dec		aa1f03e3		MOVD ZR, R3								
+  base64_arm64.go:202	0x100285df0		aa1f03e4		MOVD ZR, R4								
+  base64_arm64.go:202	0x100285df4		f85f83fd		MOVD -8(RSP), R29							
+  base64_arm64.go:202	0x100285df8		f84a07fe		MOVD.P 160(RSP), R30							
+  base64_arm64.go:202	0x100285dfc		d65f03c0		RET									
+  base64_arm64.go:199	0x100285e00		f9004be5		MOVD R5, 144(RSP)							
+  base64_arm64.go:191	0x100285e04		f9003fe3		MOVD R3, 120(RSP)							
+  base64_arm64.go:191	0x100285e08		f9003be2		MOVD R2, 112(RSP)							
+  base64_arm64.go:191	0x100285e0c		f90047e1		MOVD R1, 136(RSP)							
+  base64_arm64.go:191	0x100285e10		f90043e0		MOVD R0, 128(RSP)							
+  base64_arm64.go:206	0x100285e14		d0001aa0		ADRP 3497984(PC), R0							
+  base64_arm64.go:206	0x100285e18		91350000		ADD $3392, R0, R0							
+  base64_arm64.go:206	0x100285e1c		aa0203e1		MOVD R2, R1								
+  base64_arm64.go:206	0x100285e20		97f7e4dc		CALL runtime.makeslice(SB)						
+  base64_arm64.go:207	0x100285e24		f9403be2		MOVD 112(RSP), R2							
+  base64_arm64.go:207	0x100285e28		f9404be3		MOVD 144(RSP), R3							
+  base64_arm64.go:207	0x100285e2c		f94057e4		MOVD 168(RSP), R4							
+  base64_arm64.go:207	0x100285e30		f9405be5		MOVD 176(RSP), R5							
+  base64_arm64.go:207	0x100285e34		aa1f03e1		MOVD ZR, R1								
+  base64_arm64.go:207	0x100285e38		14000003		JMP 3(PC)								
+  base64_arm64.go:208	0x100285e3c		3821680a		MOVB R10, (R0)(R1)							
+  base64_arm64.go:207	0x100285e40		91000421		ADD $1, R1, R1								
+  base64_arm64.go:207	0x100285e44		eb01005f		CMP R1, R2								
+  base64_arm64.go:207	0x100285e48		5400010d		BLE 8(PC)								
+  base64_arm64.go:208	0x100285e4c		eb0100bf		CMP R1, R5								
+  base64_arm64.go:208	0x100285e50		540017e9		BLS 191(PC)								
+  base64_arm64.go:208	0x100285e54		3861688a		MOVBU (R4)(R1), R10							
+  base64_arm64.go:208	0x100285e58		386a686a		MOVBU (R3)(R10), R10							
+  base64_arm64.go:207	0x100285e5c		eb01005f		CMP R1, R2								
+  base64_arm64.go:208	0x100285e60		54fffee8		BHI -9(PC)								
+  base64_arm64.go:208	0x100285e64		140000b9		JMP 185(PC)								
+  base64_arm64.go:212	0x100285e68		927ae44a		AND $-64, R2, R10							
+  base64_arm64.go:212	0x100285e6c		f90037ea		MOVD R10, 104(RSP)							
+  base64_arm64.go:213	0x100285e70		f101015f		CMP $64, R10								
+  base64_arm64.go:213	0x100285e74		5400024b		BLT 18(PC)								
+  base64_arm64.go:214	0x100285e78		eb0a005f		CMP R10, R2								
+  base64_arm64.go:214	0x100285e7c		54001643		BCC 178(PC)								
+  base64_arm64.go:214	0x100285e80		a900abe0		STP (R0, R10), 8(RSP)							
+  base64_arm64.go:214	0x100285e84		f94063e0		MOVD 192(RSP), R0							
+  base64_arm64.go:214	0x100285e88		a90183e2		STP (R2, R0), 24(RSP)							
+  base64_arm64.go:214	0x100285e8c		f94067e0		MOVD 200(RSP), R0							
+  base64_arm64.go:214	0x100285e90		f9406be1		MOVD 208(RSP), R1							
+  base64_arm64.go:214	0x100285e94		a90287e0		STP (R0, R1), 40(RSP)							
+  base64_arm64.go:214	0x100285e98		9401ca8e		CALL github.com/zchee/go-simdutf.base64DecodeBlocksNEON.abi0(SB)	
+  base64_arm64.go:215	0x100285e9c		f94037e0		MOVD 104(RSP), R0							
+  base64_arm64.go:215	0x100285ea0		d342fc01		LSR $2, R0, R1								
+  base64_arm64.go:215	0x100285ea4		8b010421		ADD R1<<1, R1, R1							
+  base64_arm64.go:217	0x100285ea8		f9403be2		MOVD 112(RSP), R2							
+  base64_arm64.go:217	0x100285eac		f94057e4		MOVD 168(RSP), R4							
+  base64_arm64.go:225	0x100285eb0		f9405be5		MOVD 176(RSP), R5							
+  base64_arm64.go:217	0x100285eb4		aa0003ea		MOVD R0, R10								
+  base64_arm64.go:215	0x100285eb8		14000002		JMP 2(PC)								
+  base64_arm64.go:217	0x100285ebc		aa1f03e1		MOVD ZR, R1								
+  base64_arm64.go:217	0x100285ec0		f94067eb		MOVD 200(RSP), R11							
+  base64_arm64.go:217	0x100285ec4		eb01017f		CMP R1, R11								
+  base64_arm64.go:217	0x100285ec8		540013c3		BCC 158(PC)								
+  base64_arm64.go:217	0x100285ecc		f9406bec		MOVD 208(RSP), R12							
+  base64_arm64.go:217	0x100285ed0		cb0c002d		SUB R12, R1, R13							
+  base64_arm64.go:217	0x100285ed4		8a8dfc2d		AND R13->63, R1, R13							
+  base64_arm64.go:217	0x100285ed8		cb01016b		SUB R1, R11, R11							
+  base64_arm64.go:217	0x100285edc		cb01018c		SUB R1, R12, R12							
+  base64_arm64.go:217	0x100285ee0		f94063ee		MOVD 192(RSP), R14							
+  base64_arm64.go:217	0x100285ee4		8b0d01c0		ADD R13, R14, R0							
+  base64_arm64.go:217	0x100285ee8		f9405fed		MOVD 184(RSP), R13							
+  base64_arm64.go:217	0x100285eec		eb0d005f		CMP R13, R2								
+  base64_arm64.go:217	0x100285ef0		54001268		BHI 147(PC)								
+  base64_arm64.go:217	0x100285ef4		f90033e1		MOVD R1, 96(RSP)							
+  base64_arm64.go:217	0x100285ef8		cb0a004e		SUB R10, R2, R14							
+  base64_arm64.go:217	0x100285efc		cb0a01a5		SUB R10, R13, R5							
+  base64_arm64.go:217	0x100285f00		cb0d014a		SUB R13, R10, R10							
+  base64_arm64.go:217	0x100285f04		8a8afc4a		AND R10->63, R2, R10							
+  base64_arm64.go:217	0x100285f08		927ae54a		AND $-64, R10, R10							
+  base64_arm64.go:217	0x100285f0c		8b0a0083		ADD R10, R4, R3								
+  base64_scalar.go:206	0x100285f10		aa0b03e1		MOVD R11, R1								
+  base64_scalar.go:206	0x100285f14		aa0c03e2		MOVD R12, R2								
+  base64_scalar.go:206	0x100285f18		aa0e03e4		MOVD R14, R4								
+  base64_scalar.go:206	0x100285f1c		f94043e6		MOVD 128(RSP), R6							
+  base64_scalar.go:206	0x100285f20		f9406fe7		MOVD 216(RSP), R7							
+  base64_scalar.go:206	0x100285f24		f94073e8		MOVD 224(RSP), R8							
+  base64_scalar.go:206	0x100285f28		aa1f03e9		MOVD ZR, R9								
+  base64_scalar.go:206	0x100285f2c		940003ad		CALL github.com/zchee/go-simdutf.base64TailDecodeImplByte(SB)		
+  base64_arm64.go:218	0x100285f30		d503201f		NOOP									
+  base64_scalar.go:190	0x100285f34		f94037ea		MOVD 104(RSP), R10							
+  base64_scalar.go:190	0x100285f38		8b01014a		ADD R1, R10, R10							
+  base64_scalar.go:191	0x100285f3c		f94033eb		MOVD 96(RSP), R11							
+  base64_scalar.go:191	0x100285f40		8b020162		ADD R2, R11, R2								
+  base64_scalar.go:192	0x100285f44		36000043		TBZ $0, R3, 2(PC)							
+  base64_scalar.go:195	0x100285f48		f94047ea		MOVD 136(RSP), R10							
+  base64_scalar.go:195	0x100285f4c		d3401c05		UBFX $0, R0, $8, R5							
+  base64_scalar.go:195	0x100285f50		35000265		CBNZW R5, 19(PC)							
+  options.go:70		0x100285f54		f94073e6		MOVD 224(RSP), R6							
+  options.go:70		0x100285f58		b24000c7		ORR $1, R6, R7								
+  options.go:70		0x100285f5c		f1000cff		CMP $3, R7								
+  base64_scalar.go:196	0x100285f60		540001a1		BNE 13(PC)								
+  base64_scalar.go:198	0x100285f64		b201f3e7		MOVD $-6148914691236517206, R7						
+  base64_scalar.go:198	0x100285f68		f2955567		MOVK $43691, R7								
+  base64_scalar.go:198	0x100285f6c		9b077c47		MUL R7, R2, R7								
+  base64_scalar.go:198	0x100285f70		b201f3e8		MOVD $-6148914691236517206, R8						
+  base64_scalar.go:198	0x100285f74		f2e55548		MOVK $(10922<<48), R8							
+  base64_scalar.go:198	0x100285f78		8b0800e7		ADD R8, R7, R7								
+  base64_scalar.go:198	0x100285f7c		b200f3e8		MOVD $6148914691236517205, R8						
+  base64_scalar.go:198	0x100285f80		f28aaa88		MOVK $21844, R8								
+  base64_scalar.go:198	0x100285f84		eb0800ff		CMP R8, R7								
+  base64_scalar.go:198	0x100285f88		540000c9		BLS 6(PC)								
+  base64_scalar.go:198	0x100285f8c		f9403fea		MOVD 120(RSP), R10							
+  base64_scalar.go:199	0x100285f90		14000004		JMP 4(PC)								
+  base64_scalar.go:199	0x100285f94		f9403fea		MOVD 120(RSP), R10							
+  base64_scalar.go:197	0x100285f98		14000002		JMP 2(PC)								
+  options.go:70		0x100285f9c		f94073e6		MOVD 224(RSP), R6							
+  options.go:70		0x100285fa0		b24000c6		ORR $1, R6, R6								
+  options.go:70		0x100285fa4		f1000cdf		CMP $3, R6								
+  base64_arm64.go:219	0x100285fa8		54000480		BEQ 36(PC)								
+  base64_arm64.go:219	0x100285fac		35000465		CBNZW R5, 35(PC)							
+  base64_arm64.go:219	0x100285fb0		f94043e7		MOVD 128(RSP), R7							
+  base64_arm64.go:219	0x100285fb4		f10000ff		CMP $0, R7								
+  base64_arm64.go:219	0x100285fb8		540003ed		BLE 31(PC)								
+  base64_arm64.go:220	0x100285fbc		b201f3e8		MOVD $-6148914691236517206, R8						
+  base64_arm64.go:220	0x100285fc0		f2955568		MOVK $43691, R8								
+  base64_arm64.go:220	0x100285fc4		9b487c48		SMULH R8, R2, R8							
+  base64_arm64.go:220	0x100285fc8		8b020108		ADD R2, R8, R8								
+  base64_arm64.go:220	0x100285fcc		9341fd08		ASR $1, R8, R8								
+  base64_arm64.go:220	0x100285fd0		b201f3e9		MOVD $-6148914691236517206, R9						
+  base64_arm64.go:220	0x100285fd4		f2955569		MOVK $43691, R9								
+  base64_arm64.go:220	0x100285fd8		9b097c49		MUL R9, R2, R9								
+  base64_arm64.go:220	0x100285fdc		b201f3eb		MOVD $-6148914691236517206, R11						
+  base64_arm64.go:220	0x100285fe0		f2e5554b		MOVK $(10922<<48), R11							
+  base64_arm64.go:220	0x100285fe4		8b0b0129		ADD R11, R9, R9								
+  base64_arm64.go:220	0x100285fe8		cb82fd08		SUB R2->63, R8, R8							
+  base64_arm64.go:220	0x100285fec		b200f3eb		MOVD $6148914691236517205, R11						
+  base64_arm64.go:220	0x100285ff0		f28aaa8b		MOVK $21844, R11							
+  base64_arm64.go:220	0x100285ff4		eb0b013f		CMP R11, R9								
+  base64_arm64.go:220	0x100285ff8		54000109		BLS 8(PC)								
+  base64_arm64.go:220	0x100285ffc		8b080508		ADD R8<<1, R8, R8							
+  base64_arm64.go:220	0x100286000		cb080048		SUB R8, R2, R8								
+  base64_arm64.go:220	0x100286004		8b070107		ADD R7, R8, R7								
+  base64_arm64.go:220	0x100286008		f1000cff		CMP $3, R7								
+  base64_arm64.go:220	0x10028600c		54000061		BNE 3(PC)								
+  options.go:70		0x100286010		f1000cdf		CMP $3, R6								
+  base64_arm64.go:220	0x100286014		14000009		JMP 9(PC)								
+  base64_arm64.go:221	0x100286018		b2400be0		ORR $7, ZR, R0								
+  base64_arm64.go:221	0x10028601c		f94047e1		MOVD 136(RSP), R1							
+  base64_arm64.go:221	0x100286020		b24003e3		ORR $1, ZR, R3								
+  base64_arm64.go:221	0x100286024		aa0303e4		MOVD R3, R4								
+  base64_arm64.go:221	0x100286028		f85f83fd		MOVD -8(RSP), R29							
+  base64_arm64.go:221	0x10028602c		f84a07fe		MOVD.P 160(RSP), R30							
+  base64_arm64.go:221	0x100286030		d65f03c0		RET									
+  options.go:70		0x100286034		f1000cdf		CMP $3, R6								
+  base64_arm64.go:224	0x100286038		54000121		BNE 9(PC)								
+  base64_arm64.go:224	0x10028603c		35000105		CBNZW R5, 8(PC)								
+  base64_arm64.go:224	0x100286040		f9403fe5		MOVD 120(RSP), R5							
+  base64_arm64.go:224	0x100286044		eb0a00bf		CMP R10, R5								
+  base64_arm64.go:224	0x100286048		540000ad		BLE 5(PC)								
+  base64_arm64.go:224	0x10028604c		f94057e6		MOVD 168(RSP), R6							
+  base64_arm64.go:224	0x100286050		f9405be7		MOVD 176(RSP), R7							
+  base64_arm64.go:224	0x100286054		f9406fe8		MOVD 216(RSP), R8							
+  base64_arm64.go:224	0x100286058		14000007		JMP 7(PC)								
+  base64_arm64.go:234	0x10028605c		aa0a03e1		MOVD R10, R1								
+  base64_arm64.go:234	0x100286060		b24003e4		ORR $1, ZR, R4								
+  base64_arm64.go:234	0x100286064		f85f83fd		MOVD -8(RSP), R29							
+  base64_arm64.go:234	0x100286068		f84a07fe		MOVD.P 160(RSP), R30							
+  base64_arm64.go:234	0x10028606c		d65f03c0		RET									
+  base64_arm64.go:226	0x100286070		9100054a		ADD $1, R10, R10							
+  base64_arm64.go:225	0x100286074		eb0a00bf		CMP R10, R5								
+  base64_arm64.go:225	0x100286078		54ffff2d		BLE -7(PC)								
+  base64_arm64.go:225	0x10028607c		eb0a00ff		CMP R10, R7								
+  base64_arm64.go:225	0x100286080		540005c9		BLS 46(PC)								
+  base64_arm64.go:225	0x100286084		386a68c9		MOVBU (R6)(R10), R9							
+  base64_scalar.go:29	0x100286088		36180088		TBZ $3, R8, 4(PC)							
+  base64_scalar.go:29	0x10028608c		f0001f61		ADRP 4124672(PC), R1							
+  base64_scalar.go:29	0x100286090		91018021		ADD $96, R1, R1								
+  base64_scalar.go:66	0x100286094		14000007		JMP 7(PC)								
+  base64_scalar.go:32	0x100286098		36000088		TBZ $0, R8, 4(PC)							
+  base64_scalar.go:32	0x10028609c		d0001f61		ADRP 4120576(PC), R1							
+  base64_scalar.go:32	0x1002860a0		913d8021		ADD $3936, R1, R1							
+  base64_scalar.go:66	0x1002860a4		14000003		JMP 3(PC)								
+  base64_scalar.go:66	0x1002860a8		d0001f61		ADRP 4120576(PC), R1							
+  base64_scalar.go:66	0x1002860ac		91398021		ADD $3680, R1, R1							
+  base64_scalar.go:67	0x1002860b0		38696829		MOVBU (R1)(R9), R9							
+  base64_scalar.go:68	0x1002860b4		7100fd3f		CMPW $63, R9								
+  base64_scalar.go:68	0x1002860b8		540000a9		BLS 5(PC)								
+  base64_scalar.go:71	0x1002860bc		7101013f		CMPW $64, R9								
+  base64_scalar.go:71	0x1002860c0		54fffd80		BEQ -20(PC)								
+  base64_arm64.go:225	0x1002860c4		eb0a00bf		CMP R10, R5								
+  base64_arm64.go:225	0x1002860c8		14000002		JMP 2(PC)								
+  base64_arm64.go:225	0x1002860cc		eb0a00bf		CMP R10, R5								
+  base64_arm64.go:228	0x1002860d0		5400006c		BGT 3(PC)								
+  base64_arm64.go:228	0x1002860d4		17ffffe2		JMP -30(PC)								
+  base64_arm64.go:229	0x1002860d8		aa0503ea		MOVD R5, R10								
+  base64_arm64.go:229	0x1002860dc		f100015f		CMP $0, R10								
+  base64_arm64.go:229	0x1002860e0		54fffbed		BLE -33(PC)								
+  base64_arm64.go:229	0x1002860e4		d1000545		SUB $1, R10, R5								
+  base64_arm64.go:229	0x1002860e8		eb0500ff		CMP R5, R7								
+  base64_arm64.go:229	0x1002860ec		54000249		BLS 18(PC)								
+  base64_arm64.go:229	0x1002860f0		386568c9		MOVBU (R6)(R5), R9							
+  base64_scalar.go:29	0x1002860f4		36180088		TBZ $3, R8, 4(PC)							
+  base64_scalar.go:29	0x1002860f8		f0001f61		ADRP 4124672(PC), R1							
+  base64_scalar.go:29	0x1002860fc		91018021		ADD $96, R1, R1								
+  base64_scalar.go:66	0x100286100		14000007		JMP 7(PC)								
+  base64_scalar.go:32	0x100286104		36000088		TBZ $0, R8, 4(PC)							
+  base64_scalar.go:32	0x100286108		d0001f61		ADRP 4120576(PC), R1							
+  base64_scalar.go:32	0x10028610c		913d8021		ADD $3936, R1, R1							
+  base64_scalar.go:66	0x100286110		14000003		JMP 3(PC)								
+  base64_scalar.go:66	0x100286114		d0001f61		ADRP 4120576(PC), R1							
+  base64_scalar.go:66	0x100286118		91398021		ADD $3680, R1, R1							
+  base64_scalar.go:67	0x10028611c		38696829		MOVBU (R1)(R9), R9							
+  base64_scalar.go:68	0x100286120		7100fd3f		CMPW $63, R9								
+  base64_scalar.go:68	0x100286124		54fff9c9		BLS -50(PC)								
+  base64_scalar.go:71	0x100286128		7101013f		CMPW $64, R9								
+  base64_scalar.go:71	0x10028612c		54fffd60		BEQ -21(PC)								
+  base64_scalar.go:71	0x100286130		17ffffcb		JMP -53(PC)								
+  base64_arm64.go:229	0x100286134		97f7f9eb		CALL runtime.panicBounds(SB)						
+  base64_arm64.go:225	0x100286138		97f7f9ea		CALL runtime.panicBounds(SB)						
+  base64_arm64.go:217	0x10028613c		97f7f9e9		CALL runtime.panicBounds(SB)						
+  base64_arm64.go:217	0x100286140		97f7f9e8		CALL runtime.panicBounds(SB)						
+  base64_arm64.go:214	0x100286144		97f7f9e7		CALL runtime.panicBounds(SB)						
+  base64_arm64.go:208	0x100286148		97f7f9e6		CALL runtime.panicBounds(SB)						
+  base64_arm64.go:208	0x10028614c		97f7f9e5		CALL runtime.panicBounds(SB)						
+  base64_arm64.go:201	0x100286150		97f7f9e4		CALL runtime.panicBounds(SB)						
+  base64_arm64.go:201	0x100286154		d503201f		NOOP									
+  base64_arm64.go:187	0x100286158		a90087e0		STP (R0, R1), 8(RSP)							
+  base64_arm64.go:187	0x10028615c		a9018fe2		STP (R2, R3), 24(RSP)							
+  base64_arm64.go:187	0x100286160		a90297e4		STP (R4, R5), 40(RSP)							
+  base64_arm64.go:187	0x100286164		a9039fe6		STP (R6, R7), 56(RSP)							
+  base64_arm64.go:187	0x100286168		aa1e03e3		MOVD R30, R3								
+  base64_arm64.go:187	0x10028616c		97f7f159		CALL runtime.morestack_noctxt.abi0(SB)					
+  base64_arm64.go:187	0x100286170		a94087e0		LDP 8(RSP), (R0, R1)							
+  base64_arm64.go:187	0x100286174		a9418fe2		LDP 24(RSP), (R2, R3)							
+  base64_arm64.go:187	0x100286178		a94297e4		LDP 40(RSP), (R4, R5)							
+  base64_arm64.go:187	0x10028617c		a9439fe6		LDP 56(RSP), (R6, R7)							
+  base64_arm64.go:187	0x100286180		17fffed4		JMP github.com/zchee/go-simdutf.base64ToBinaryDetailsNEONContiguous(SB)	
+  base64_arm64.go:187	0x100286184		00000000		?									
+  base64_arm64.go:187	0x100286188		00000000		?									
+  base64_arm64.go:187	0x10028618c		00000000		?									
+
+TEXT github.com/zchee/go-simdutf.base64ToBinaryDetailsUTF16NEONContiguous(SB) /Users/zchee/go/src/github.com/zchee/go-simdutf/base64_arm64.go
+  base64_arm64.go:237	0x100286190		f9400b90		MOVD 16(R28), R16								
+  base64_arm64.go:237	0x100286194		d10103f1		SUB $64, RSP, R17								
+  base64_arm64.go:237	0x100286198		eb10023f		CMP R16, R17									
+  base64_arm64.go:237	0x10028619c		54002409		BLS 288(PC)									
+  base64_arm64.go:237	0x1002861a0		f8140ffe		MOVD.W R30, -192(RSP)								
+  base64_arm64.go:237	0x1002861a4		f81f83fd		MOVD R29, -8(RSP)								
+  base64_arm64.go:237	0x1002861a8		d10023fd		SUB $8, RSP, R29								
+  base64_arm64.go:237	0x1002861ac		f90067e0		MOVD R0, 200(RSP)								
+  base64_arm64.go:237	0x1002861b0		f90073e3		MOVD R3, 224(RSP)								
+  base64_scalar.go:23	0x1002861b4		f10014df		CMP $5, R6									
+  base64_scalar.go:23	0x1002861b8		540000c0		BEQ 6(PC)									
+  base64_scalar.go:25	0x1002861bc		b27d00c8		ORR $8, R6, R8									
+  base64_scalar.go:25	0x1002861c0		f100311f		CMP $12, R8									
+  base64_arm64.go:238	0x1002861c4		54000060		BEQ 3(PC)									
+  base64_arm64.go:238	0x1002861c8		f101003f		CMP $64, R1									
+  base64_arm64.go:238	0x1002861cc		5400012a		BGE 9(PC)									
+  base64_arm64.go:239	0x1002861d0		aa1f03e0		MOVD ZR, R0									
+  base64_arm64.go:239	0x1002861d4		aa1f03e1		MOVD ZR, R1									
+  base64_arm64.go:239	0x1002861d8		aa1f03e2		MOVD ZR, R2									
+  base64_arm64.go:239	0x1002861dc		aa1f03e3		MOVD ZR, R3									
+  base64_arm64.go:239	0x1002861e0		aa1f03e4		MOVD ZR, R4									
+  base64_arm64.go:239	0x1002861e4		f85f83fd		MOVD -8(RSP), R29								
+  base64_arm64.go:239	0x1002861e8		f84c07fe		MOVD.P 192(RSP), R30								
+  base64_arm64.go:239	0x1002861ec		d65f03c0		RET										
+  base64_scalar.go:23	0x1002861f0		f9007fe6		MOVD R6, 248(RSP)								
+  base64_scalar.go:23	0x1002861f4		f90083e7		MOVD R7, 256(RSP)								
+  base64_scalar.go:23	0x1002861f8		f9007be5		MOVD R5, 240(RSP)								
+  base64_scalar.go:23	0x1002861fc		f90077e4		MOVD R4, 232(RSP)								
+  base64_scalar.go:23	0x100286200		f90067e0		MOVD R0, 200(RSP)								
+  base64_scalar.go:23	0x100286204		f90073e3		MOVD R3, 224(RSP)								
+  base64_scalar.go:23	0x100286208		f9006be1		MOVD R1, 208(RSP)								
+  base64_scalar.go:23	0x10028620c		f9006fe2		MOVD R2, 216(RSP)								
+  base64_arm64.go:241	0x100286210		aa0603e3		MOVD R6, R3									
+  base64_arm64.go:241	0x100286214		940001b7		CALL github.com/zchee/go-simdutf.findEndBase64UTF16(SB)				
+  base64_arm64.go:246	0x100286218		f101005f		CMP $64, R2									
+  base64_arm64.go:246	0x10028621c		5400020b		BLT 16(PC)									
+  base64_scalar.go:29	0x100286220		f9407fe4		MOVD 248(RSP), R4								
+  base64_scalar.go:29	0x100286224		36180084		TBZ $3, R4, 4(PC)								
+  base64_scalar.go:29	0x100286228		f0001f65		ADRP 4124672(PC), R5								
+  base64_scalar.go:29	0x10028622c		910180a5		ADD $96, R5, R5									
+  base64_arm64.go:249	0x100286230		14000007		JMP 7(PC)									
+  base64_scalar.go:32	0x100286234		36000084		TBZ $0, R4, 4(PC)								
+  base64_scalar.go:32	0x100286238		d0001f65		ADRP 4120576(PC), R5								
+  base64_scalar.go:32	0x10028623c		913d80a5		ADD $3936, R5, R5								
+  base64_arm64.go:249	0x100286240		14000003		JMP 3(PC)									
+  base64_arm64.go:249	0x100286244		d0001f65		ADRP 4120576(PC), R5								
+  base64_arm64.go:249	0x100286248		913980a5		ADD $3680, R5, R5								
+  base64_arm64.go:250	0x10028624c		f94067e6		MOVD 200(RSP), R6								
+  base64_arm64.go:250	0x100286250		f9406be7		MOVD 208(RSP), R7								
+  base64_arm64.go:250	0x100286254		aa1f03e8		MOVD ZR, R8									
+  base64_arm64.go:250	0x100286258		1400000a		JMP 10(PC)									
+  base64_arm64.go:247	0x10028625c		aa1f03e0		MOVD ZR, R0									
+  base64_arm64.go:247	0x100286260		aa1f03e1		MOVD ZR, R1									
+  base64_arm64.go:247	0x100286264		aa1f03e2		MOVD ZR, R2									
+  base64_arm64.go:247	0x100286268		aa1f03e3		MOVD ZR, R3									
+  base64_arm64.go:247	0x10028626c		aa1f03e4		MOVD ZR, R4									
+  base64_arm64.go:247	0x100286270		f85f83fd		MOVD -8(RSP), R29								
+  base64_arm64.go:247	0x100286274		f84c07fe		MOVD.P 192(RSP), R30								
+  base64_arm64.go:247	0x100286278		d65f03c0		RET										
+  base64_arm64.go:250	0x10028627c		91000508		ADD $1, R8, R8									
+  base64_arm64.go:250	0x100286280		eb08005f		CMP R8, R2									
+  base64_arm64.go:250	0x100286284		5400026d		BLE 19(PC)									
+  base64_arm64.go:251	0x100286288		eb0800ff		CMP R8, R7									
+  base64_arm64.go:251	0x10028628c		54001c49		BLS 226(PC)									
+  base64_arm64.go:251	0x100286290		786878c9		MOVHU (R6)(R8<<1), R9								
+  base64_scalar.go:63	0x100286294		aa0903ea		MOVD R9, R10									
+  base64_scalar.go:63	0x100286298		7103fd5f		CMPW $255, R10									
+  base64_arm64.go:252	0x10028629c		540000a8		BHI 5(PC)									
+  base64_arm64.go:252	0x1002862a0		d3401d29		UBFX $0, R9, $8, R9								
+  base64_arm64.go:252	0x1002862a4		386968a9		MOVBU (R5)(R9), R9								
+  base64_arm64.go:252	0x1002862a8		7100fd3f		CMPW $63, R9									
+  base64_arm64.go:252	0x1002862ac		54fffe89		BLS -12(PC)									
+  base64_arm64.go:253	0x1002862b0		aa1f03e0		MOVD ZR, R0									
+  base64_arm64.go:253	0x1002862b4		aa1f03e1		MOVD ZR, R1									
+  base64_arm64.go:253	0x1002862b8		aa1f03e2		MOVD ZR, R2									
+  base64_arm64.go:253	0x1002862bc		aa1f03e3		MOVD ZR, R3									
+  base64_arm64.go:253	0x1002862c0		aa1f03e4		MOVD ZR, R4									
+  base64_arm64.go:253	0x1002862c4		f85f83fd		MOVD -8(RSP), R29								
+  base64_arm64.go:253	0x1002862c8		f84c07fe		MOVD.P 192(RSP), R30								
+  base64_arm64.go:253	0x1002862cc		d65f03c0		RET										
+  base64_arm64.go:249	0x1002862d0		f9005be5		MOVD R5, 176(RSP)								
+  base64_arm64.go:241	0x1002862d4		f90057e0		MOVD R0, 168(RSP)								
+  base64_arm64.go:241	0x1002862d8		f90053e1		MOVD R1, 160(RSP)								
+  base64_arm64.go:241	0x1002862dc		f9004fe2		MOVD R2, 152(RSP)								
+  base64_arm64.go:241	0x1002862e0		f9004be3		MOVD R3, 144(RSP)								
+  base64_arm64.go:257	0x1002862e4		b0001aa0		ADRP 3493888(PC), R0								
+  base64_arm64.go:257	0x1002862e8		91350000		ADD $3392, R0, R0								
+  base64_arm64.go:257	0x1002862ec		aa0203e1		MOVD R2, R1									
+  base64_arm64.go:257	0x1002862f0		97f7e3a8		CALL runtime.makeslice(SB)							
+  base64_arm64.go:258	0x1002862f4		f9404fe2		MOVD 152(RSP), R2								
+  base64_arm64.go:258	0x1002862f8		f9405be3		MOVD 176(RSP), R3								
+  base64_arm64.go:258	0x1002862fc		f94067e4		MOVD 200(RSP), R4								
+  base64_arm64.go:258	0x100286300		f9406be5		MOVD 208(RSP), R5								
+  base64_arm64.go:258	0x100286304		aa1f03e1		MOVD ZR, R1									
+  base64_arm64.go:258	0x100286308		14000003		JMP 3(PC)									
+  base64_arm64.go:259	0x10028630c		3821680a		MOVB R10, (R0)(R1)								
+  base64_arm64.go:258	0x100286310		91000421		ADD $1, R1, R1									
+  base64_arm64.go:258	0x100286314		eb01005f		CMP R1, R2									
+  base64_arm64.go:258	0x100286318		5400012d		BLE 9(PC)									
+  base64_arm64.go:259	0x10028631c		eb0100bf		CMP R1, R5									
+  base64_arm64.go:259	0x100286320		54001789		BLS 188(PC)									
+  base64_arm64.go:259	0x100286324		7861788a		MOVHU (R4)(R1<<1), R10								
+  base64_arm64.go:259	0x100286328		d3401d4a		UBFX $0, R10, $8, R10								
+  base64_arm64.go:259	0x10028632c		386a686a		MOVBU (R3)(R10), R10								
+  base64_arm64.go:258	0x100286330		eb01005f		CMP R1, R2									
+  base64_arm64.go:259	0x100286334		54fffec8		BHI -10(PC)									
+  base64_arm64.go:259	0x100286338		140000b5		JMP 181(PC)									
+  base64_arm64.go:263	0x10028633c		927ae44a		AND $-64, R2, R10								
+  base64_arm64.go:263	0x100286340		f90043ea		MOVD R10, 128(RSP)								
+  base64_arm64.go:264	0x100286344		f101015f		CMP $64, R10									
+  base64_arm64.go:264	0x100286348		5400024b		BLT 18(PC)									
+  base64_arm64.go:265	0x10028634c		eb0a005f		CMP R10, R2									
+  base64_arm64.go:265	0x100286350		540015c3		BCC 174(PC)									
+  base64_arm64.go:265	0x100286354		a900abe0		STP (R0, R10), 8(RSP)								
+  base64_arm64.go:265	0x100286358		f94073e0		MOVD 224(RSP), R0								
+  base64_arm64.go:265	0x10028635c		a90183e2		STP (R2, R0), 24(RSP)								
+  base64_arm64.go:265	0x100286360		f94077e0		MOVD 232(RSP), R0								
+  base64_arm64.go:265	0x100286364		f9407be1		MOVD 240(RSP), R1								
+  base64_arm64.go:265	0x100286368		a90287e0		STP (R0, R1), 40(RSP)								
+  base64_arm64.go:265	0x10028636c		9401c959		CALL github.com/zchee/go-simdutf.base64DecodeBlocksNEON.abi0(SB)		
+  base64_arm64.go:266	0x100286370		f94043e0		MOVD 128(RSP), R0								
+  base64_arm64.go:266	0x100286374		d342fc01		LSR $2, R0, R1									
+  base64_arm64.go:266	0x100286378		8b010421		ADD R1<<1, R1, R1								
+  base64_arm64.go:268	0x10028637c		f9404fe2		MOVD 152(RSP), R2								
+  base64_arm64.go:268	0x100286380		f94067e4		MOVD 200(RSP), R4								
+  base64_arm64.go:276	0x100286384		f9406be5		MOVD 208(RSP), R5								
+  base64_arm64.go:268	0x100286388		aa0003ea		MOVD R0, R10									
+  base64_arm64.go:266	0x10028638c		14000002		JMP 2(PC)									
+  base64_arm64.go:268	0x100286390		aa1f03e1		MOVD ZR, R1									
+  base64_arm64.go:268	0x100286394		f94077eb		MOVD 232(RSP), R11								
+  base64_arm64.go:268	0x100286398		eb01017f		CMP R1, R11									
+  base64_arm64.go:268	0x10028639c		54001343		BCC 154(PC)									
+  base64_arm64.go:268	0x1002863a0		f9407bec		MOVD 240(RSP), R12								
+  base64_arm64.go:268	0x1002863a4		cb0c002d		SUB R12, R1, R13								
+  base64_arm64.go:268	0x1002863a8		8a8dfc2d		AND R13->63, R1, R13								
+  base64_arm64.go:268	0x1002863ac		cb01016b		SUB R1, R11, R11								
+  base64_arm64.go:268	0x1002863b0		cb01018c		SUB R1, R12, R12								
+  base64_arm64.go:268	0x1002863b4		f94073ee		MOVD 224(RSP), R14								
+  base64_arm64.go:268	0x1002863b8		8b0d01c0		ADD R13, R14, R0								
+  base64_arm64.go:268	0x1002863bc		f9406fed		MOVD 216(RSP), R13								
+  base64_arm64.go:268	0x1002863c0		eb0d005f		CMP R13, R2									
+  base64_arm64.go:268	0x1002863c4		540011e8		BHI 143(PC)									
+  base64_arm64.go:268	0x1002863c8		f9003fe1		MOVD R1, 120(RSP)								
+  base64_arm64.go:268	0x1002863cc		cb0a004e		SUB R10, R2, R14								
+  base64_arm64.go:268	0x1002863d0		cb0a01a5		SUB R10, R13, R5								
+  base64_arm64.go:268	0x1002863d4		cb0d014d		SUB R13, R10, R13								
+  base64_arm64.go:268	0x1002863d8		8a8dfd4a		AND R13->63, R10, R10								
+  base64_arm64.go:268	0x1002863dc		8b0a0483		ADD R10<<1, R4, R3								
+  base64_scalar.go:210	0x1002863e0		aa0b03e1		MOVD R11, R1									
+  base64_scalar.go:210	0x1002863e4		aa0c03e2		MOVD R12, R2									
+  base64_scalar.go:210	0x1002863e8		aa0e03e4		MOVD R14, R4									
+  base64_scalar.go:210	0x1002863ec		f94057e6		MOVD 168(RSP), R6								
+  base64_scalar.go:210	0x1002863f0		f9407fe7		MOVD 248(RSP), R7								
+  base64_scalar.go:210	0x1002863f4		f94083e8		MOVD 256(RSP), R8								
+  base64_scalar.go:210	0x1002863f8		aa1f03e9		MOVD ZR, R9									
+  base64_scalar.go:210	0x1002863fc		940002f5		CALL github.com/zchee/go-simdutf.base64TailDecodeImplUTF16(SB)			
+  base64_arm64.go:269	0x100286400		d503201f		NOOP										
+  base64_scalar.go:190	0x100286404		f94043ea		MOVD 128(RSP), R10								
+  base64_scalar.go:190	0x100286408		8b01014a		ADD R1, R10, R10								
+  base64_scalar.go:191	0x10028640c		f9403feb		MOVD 120(RSP), R11								
+  base64_scalar.go:191	0x100286410		8b020162		ADD R2, R11, R2									
+  base64_scalar.go:192	0x100286414		36000043		TBZ $0, R3, 2(PC)								
+  base64_scalar.go:195	0x100286418		f94053ea		MOVD 160(RSP), R10								
+  base64_scalar.go:195	0x10028641c		d3401c05		UBFX $0, R0, $8, R5								
+  base64_scalar.go:195	0x100286420		35000265		CBNZW R5, 19(PC)								
+  options.go:70		0x100286424		f94083e6		MOVD 256(RSP), R6								
+  options.go:70		0x100286428		b24000c7		ORR $1, R6, R7									
+  options.go:70		0x10028642c		f1000cff		CMP $3, R7									
+  base64_scalar.go:196	0x100286430		540001a1		BNE 13(PC)									
+  base64_scalar.go:198	0x100286434		b201f3e7		MOVD $-6148914691236517206, R7							
+  base64_scalar.go:198	0x100286438		f2955567		MOVK $43691, R7									
+  base64_scalar.go:198	0x10028643c		9b077c47		MUL R7, R2, R7									
+  base64_scalar.go:198	0x100286440		b201f3e8		MOVD $-6148914691236517206, R8							
+  base64_scalar.go:198	0x100286444		f2e55548		MOVK $(10922<<48), R8								
+  base64_scalar.go:198	0x100286448		8b0800e7		ADD R8, R7, R7									
+  base64_scalar.go:198	0x10028644c		b200f3e8		MOVD $6148914691236517205, R8							
+  base64_scalar.go:198	0x100286450		f28aaa88		MOVK $21844, R8									
+  base64_scalar.go:198	0x100286454		eb0800ff		CMP R8, R7									
+  base64_scalar.go:198	0x100286458		540000c9		BLS 6(PC)									
+  base64_scalar.go:198	0x10028645c		f9404bea		MOVD 144(RSP), R10								
+  base64_scalar.go:199	0x100286460		14000004		JMP 4(PC)									
+  base64_scalar.go:199	0x100286464		f9404bea		MOVD 144(RSP), R10								
+  base64_scalar.go:197	0x100286468		14000002		JMP 2(PC)									
+  options.go:70		0x10028646c		f94083e6		MOVD 256(RSP), R6								
+  options.go:70		0x100286470		b24000c6		ORR $1, R6, R6									
+  options.go:70		0x100286474		f1000cdf		CMP $3, R6									
+  base64_arm64.go:270	0x100286478		54000480		BEQ 36(PC)									
+  base64_arm64.go:270	0x10028647c		35000465		CBNZW R5, 35(PC)								
+  base64_arm64.go:270	0x100286480		f94057e7		MOVD 168(RSP), R7								
+  base64_arm64.go:270	0x100286484		f10000ff		CMP $0, R7									
+  base64_arm64.go:270	0x100286488		540003ed		BLE 31(PC)									
+  base64_arm64.go:271	0x10028648c		b201f3e8		MOVD $-6148914691236517206, R8							
+  base64_arm64.go:271	0x100286490		f2955568		MOVK $43691, R8									
+  base64_arm64.go:271	0x100286494		9b487c48		SMULH R8, R2, R8								
+  base64_arm64.go:271	0x100286498		8b020108		ADD R2, R8, R8									
+  base64_arm64.go:271	0x10028649c		9341fd08		ASR $1, R8, R8									
+  base64_arm64.go:271	0x1002864a0		b201f3e9		MOVD $-6148914691236517206, R9							
+  base64_arm64.go:271	0x1002864a4		f2955569		MOVK $43691, R9									
+  base64_arm64.go:271	0x1002864a8		9b097c49		MUL R9, R2, R9									
+  base64_arm64.go:271	0x1002864ac		b201f3eb		MOVD $-6148914691236517206, R11							
+  base64_arm64.go:271	0x1002864b0		f2e5554b		MOVK $(10922<<48), R11								
+  base64_arm64.go:271	0x1002864b4		8b0b0129		ADD R11, R9, R9									
+  base64_arm64.go:271	0x1002864b8		cb82fd08		SUB R2->63, R8, R8								
+  base64_arm64.go:271	0x1002864bc		b200f3eb		MOVD $6148914691236517205, R11							
+  base64_arm64.go:271	0x1002864c0		f28aaa8b		MOVK $21844, R11								
+  base64_arm64.go:271	0x1002864c4		eb0b013f		CMP R11, R9									
+  base64_arm64.go:271	0x1002864c8		54000109		BLS 8(PC)									
+  base64_arm64.go:271	0x1002864cc		8b080508		ADD R8<<1, R8, R8								
+  base64_arm64.go:271	0x1002864d0		cb080048		SUB R8, R2, R8									
+  base64_arm64.go:271	0x1002864d4		8b070107		ADD R7, R8, R7									
+  base64_arm64.go:271	0x1002864d8		f1000cff		CMP $3, R7									
+  base64_arm64.go:271	0x1002864dc		54000061		BNE 3(PC)									
+  options.go:70		0x1002864e0		f1000cdf		CMP $3, R6									
+  base64_arm64.go:271	0x1002864e4		14000009		JMP 9(PC)									
+  base64_arm64.go:272	0x1002864e8		b2400be0		ORR $7, ZR, R0									
+  base64_arm64.go:272	0x1002864ec		f94053e1		MOVD 160(RSP), R1								
+  base64_arm64.go:272	0x1002864f0		b24003e3		ORR $1, ZR, R3									
+  base64_arm64.go:272	0x1002864f4		aa0303e4		MOVD R3, R4									
+  base64_arm64.go:272	0x1002864f8		f85f83fd		MOVD -8(RSP), R29								
+  base64_arm64.go:272	0x1002864fc		f84c07fe		MOVD.P 192(RSP), R30								
+  base64_arm64.go:272	0x100286500		d65f03c0		RET										
+  options.go:70		0x100286504		f1000cdf		CMP $3, R6									
+  base64_arm64.go:275	0x100286508		54000121		BNE 9(PC)									
+  base64_arm64.go:275	0x10028650c		35000105		CBNZW R5, 8(PC)									
+  base64_arm64.go:275	0x100286510		f9404be5		MOVD 144(RSP), R5								
+  base64_arm64.go:275	0x100286514		eb0a00bf		CMP R10, R5									
+  base64_arm64.go:275	0x100286518		540000ad		BLE 5(PC)									
+  base64_scalar.go:191	0x10028651c		f90037e2		MOVD R2, 104(RSP)								
+  base64_scalar.go:210	0x100286520		39019fe3		MOVB R3, 103(RSP)								
+  base64_scalar.go:210	0x100286524		39019be0		MOVB R0, 102(RSP)								
+  base64_arm64.go:275	0x100286528		14000007		JMP 7(PC)									
+  base64_arm64.go:285	0x10028652c		aa0a03e1		MOVD R10, R1									
+  base64_arm64.go:285	0x100286530		b24003e4		ORR $1, ZR, R4									
+  base64_arm64.go:285	0x100286534		f85f83fd		MOVD -8(RSP), R29								
+  base64_arm64.go:285	0x100286538		f84c07fe		MOVD.P 192(RSP), R30								
+  base64_arm64.go:285	0x10028653c		d65f03c0		RET										
+  base64_arm64.go:277	0x100286540		9100054a		ADD $1, R10, R10								
+  base64_arm64.go:276	0x100286544		eb0a00bf		CMP R10, R5									
+  base64_arm64.go:276	0x100286548		5400006c		BGT 3(PC)									
+  base64_arm64.go:276	0x10028654c		aa1f03e1		MOVD ZR, R1									
+  base64_arm64.go:276	0x100286550		14000012		JMP 18(PC)									
+  base64_arm64.go:276	0x100286554		f9406be4		MOVD 208(RSP), R4								
+  base64_arm64.go:276	0x100286558		eb0a009f		CMP R10, R4									
+  base64_arm64.go:276	0x10028655c		54000509		BLS 40(PC)									
+  base64_arm64.go:276	0x100286560		f9003bea		MOVD R10, 112(RSP)								
+  base64_arm64.go:276	0x100286564		f94067e2		MOVD 200(RSP), R2								
+  base64_arm64.go:276	0x100286568		786a7840		MOVHU (R2)(R10<<1), R0								
+  base64_arm64.go:276	0x10028656c		f9407fe1		MOVD 248(RSP), R1								
+  base64_arm64.go:276	0x100286570		94000038		CALL github.com/zchee/go-simdutf.isIgnorableUTF16(SB)				
+  base64_arm64.go:276	0x100286574		f9404be2		MOVD 144(RSP), R2								
+  base64_arm64.go:276	0x100286578		f9403be3		MOVD 112(RSP), R3								
+  base64_arm64.go:276	0x10028657c		eb03005f		CMP R3, R2									
+  base64_arm64.go:285	0x100286580		f94037e2		MOVD 104(RSP), R2								
+  base64_arm64.go:285	0x100286584		39419fe3		MOVBU 103(RSP), R3								
+  base64_arm64.go:276	0x100286588		f9404be5		MOVD 144(RSP), R5								
+  base64_arm64.go:277	0x10028658c		f9403bea		MOVD 112(RSP), R10								
+  base64_arm64.go:276	0x100286590		aa0003e1		MOVD R0, R1									
+  base64_arm64.go:285	0x100286594		39419be0		MOVBU 102(RSP), R0								
+  base64_arm64.go:276	0x100286598		3707fd41		TBNZ $0, R1, -22(PC)								
+  base64_arm64.go:279	0x10028659c		5400006c		BGT 3(PC)									
+  base64_arm64.go:279	0x1002865a0		17ffffe3		JMP -29(PC)									
+  base64_arm64.go:281	0x1002865a4		d100054a		SUB $1, R10, R10								
+  base64_arm64.go:280	0x1002865a8		f100015f		CMP $0, R10									
+  base64_arm64.go:280	0x1002865ac		5400006c		BGT 3(PC)									
+  base64_arm64.go:280	0x1002865b0		aa1f03e1		MOVD ZR, R1									
+  base64_arm64.go:280	0x1002865b4		1400000f		JMP 15(PC)									
+  base64_arm64.go:280	0x1002865b8		d1000544		SUB $1, R10, R4									
+  base64_arm64.go:280	0x1002865bc		f9406be5		MOVD 208(RSP), R5								
+  base64_arm64.go:280	0x1002865c0		eb0400bf		CMP R4, R5									
+  base64_arm64.go:280	0x1002865c4		540001a9		BLS 13(PC)									
+  base64_arm64.go:280	0x1002865c8		f90047ea		MOVD R10, 136(RSP)								
+  base64_arm64.go:280	0x1002865cc		f94067e2		MOVD 200(RSP), R2								
+  base64_arm64.go:280	0x1002865d0		78647840		MOVHU (R2)(R4<<1), R0								
+  base64_arm64.go:280	0x1002865d4		f9407fe1		MOVD 248(RSP), R1								
+  base64_arm64.go:280	0x1002865d8		9400001e		CALL github.com/zchee/go-simdutf.isIgnorableUTF16(SB)				
+  base64_arm64.go:285	0x1002865dc		f94037e2		MOVD 104(RSP), R2								
+  base64_arm64.go:285	0x1002865e0		39419fe3		MOVBU 103(RSP), R3								
+  base64_arm64.go:281	0x1002865e4		f94047ea		MOVD 136(RSP), R10								
+  base64_arm64.go:280	0x1002865e8		aa0003e1		MOVD R0, R1									
+  base64_arm64.go:285	0x1002865ec		39419be0		MOVBU 102(RSP), R0								
+  base64_arm64.go:280	0x1002865f0		3707fda1		TBNZ $0, R1, -19(PC)								
+  base64_arm64.go:280	0x1002865f4		17ffffce		JMP -50(PC)									
+  base64_arm64.go:280	0x1002865f8		97f7f8ba		CALL runtime.panicBounds(SB)							
+  base64_arm64.go:276	0x1002865fc		97f7f8b9		CALL runtime.panicBounds(SB)							
+  base64_arm64.go:268	0x100286600		97f7f8b8		CALL runtime.panicBounds(SB)							
+  base64_arm64.go:268	0x100286604		97f7f8b7		CALL runtime.panicBounds(SB)							
+  base64_arm64.go:265	0x100286608		97f7f8b6		CALL runtime.panicBounds(SB)							
+  base64_arm64.go:259	0x10028660c		97f7f8b5		CALL runtime.panicBounds(SB)							
+  base64_arm64.go:259	0x100286610		97f7f8b4		CALL runtime.panicBounds(SB)							
+  base64_arm64.go:251	0x100286614		97f7f8b3		CALL runtime.panicBounds(SB)							
+  base64_arm64.go:251	0x100286618		d503201f		NOOP										
+  base64_arm64.go:237	0x10028661c		a90087e0		STP (R0, R1), 8(RSP)								
+  base64_arm64.go:237	0x100286620		a9018fe2		STP (R2, R3), 24(RSP)								
+  base64_arm64.go:237	0x100286624		a90297e4		STP (R4, R5), 40(RSP)								
+  base64_arm64.go:237	0x100286628		a9039fe6		STP (R6, R7), 56(RSP)								
+  base64_arm64.go:237	0x10028662c		aa1e03e3		MOVD R30, R3									
+  base64_arm64.go:237	0x100286630		97f7f028		CALL runtime.morestack_noctxt.abi0(SB)						
+  base64_arm64.go:237	0x100286634		a94087e0		LDP 8(RSP), (R0, R1)								
+  base64_arm64.go:237	0x100286638		a9418fe2		LDP 24(RSP), (R2, R3)								
+  base64_arm64.go:237	0x10028663c		a94297e4		LDP 40(RSP), (R4, R5)								
+  base64_arm64.go:237	0x100286640		a9439fe6		LDP 56(RSP), (R6, R7)								
+  base64_arm64.go:237	0x100286644		17fffed3		JMP github.com/zchee/go-simdutf.base64ToBinaryDetailsUTF16NEONContiguous(SB)	
+  base64_arm64.go:237	0x100286648		00000000		?										
+  base64_arm64.go:237	0x10028664c		00000000		?										
+
+TEXT github.com/zchee/go-simdutf.binaryToBase64BlocksDefaultNEON.abi0(SB) /Users/zchee/go/src/github.com/zchee/go-simdutf/base64_arm64.s
+  base64_arm64.s:133	0x1002f87f0		f94007e0		MOVD 8(RSP), R0							
+  base64_arm64.s:134	0x1002f87f4		f9400be1		MOVD 16(RSP), R1						
+  base64_arm64.s:135	0x1002f87f8		f94013e2		MOVD 32(RSP), R2						
+  base64_arm64.s:136	0x1002f87fc		b4000301		CBZ R1, 24(PC)							
+  base64_arm64.s:137	0x1002f8800		f0000285		ADRP 339968(PC), R5						
+  base64_arm64.s:137	0x1002f8804		910b80a5		ADD $736, R5, R5						
+  base64_arm64.s:138	0x1002f8808		4c4020b0		VLD1 (R5), [V16.B16, V17.B16, V18.B16, V19.B16]			
+  base64_arm64.s:139	0x1002f880c		b24017e5		ORR $63, ZR, R5							
+  base64_arm64.s:140	0x1002f8810		4e010cb4		VDUP R5, V20.B16						
+  base64_arm64.s:142	0x1002f8814		4c404000		VLD3 (R0), [V0.B16, V1.B16, V2.B16]				
+  base64_arm64.s:143	0x1002f8818		9100c000		ADD $48, R0, R0							
+  base64_arm64.s:144	0x1002f881c		6f0e0404		VUSHR $2, V0.B16, V4.B16					
+  base64_arm64.s:145	0x1002f8820		6f0c0425		VUSHR $4, V1.B16, V5.B16					
+  base64_arm64.s:146	0x1002f8824		6f0c5405		VSLI $4, V0.B16, V5.B16						
+  base64_arm64.s:147	0x1002f8828		4e341ca5		VAND V20.B16, V5.B16, V5.B16					
+  base64_arm64.s:148	0x1002f882c		6f0a0446		VUSHR $6, V2.B16, V6.B16					
+  base64_arm64.s:149	0x1002f8830		6f0a5426		VSLI $2, V1.B16, V6.B16						
+  base64_arm64.s:150	0x1002f8834		4e341cc6		VAND V20.B16, V6.B16, V6.B16					
+  base64_arm64.s:151	0x1002f8838		4e341c47		VAND V20.B16, V2.B16, V7.B16					
+  base64_arm64.s:152	0x1002f883c		4e046204		VTBL V4.B16, [V16.B16, V17.B16, V18.B16, V19.B16], V4.B16	
+  base64_arm64.s:153	0x1002f8840		4e056205		VTBL V5.B16, [V16.B16, V17.B16, V18.B16, V19.B16], V5.B16	
+  base64_arm64.s:154	0x1002f8844		4e066206		VTBL V6.B16, [V16.B16, V17.B16, V18.B16, V19.B16], V6.B16	
+  base64_arm64.s:155	0x1002f8848		4e076207		VTBL V7.B16, [V16.B16, V17.B16, V18.B16, V19.B16], V7.B16	
+  base64_arm64.s:156	0x1002f884c		4c000044		VST4 (R2), [V4.B16, V5.B16, V6.B16, V7.B16]			
+  base64_arm64.s:157	0x1002f8850		91010042		ADD $64, R2, R2							
+  base64_arm64.s:158	0x1002f8854		d100c021		SUB $48, R1, R1							
+  base64_arm64.s:159	0x1002f8858		b5fffde1		CBNZ R1, -17(PC)						
+  base64_arm64.s:161	0x1002f885c		d65f03c0		RET								
+
+TEXT github.com/zchee/go-simdutf.binaryToBase64BlocksURLNEON.abi0(SB) /Users/zchee/go/src/github.com/zchee/go-simdutf/base64_arm64.s
+  base64_arm64.s:165	0x1002f8860		f94007e0		MOVD 8(RSP), R0							
+  base64_arm64.s:166	0x1002f8864		f9400be1		MOVD 16(RSP), R1						
+  base64_arm64.s:167	0x1002f8868		f94013e2		MOVD 32(RSP), R2						
+  base64_arm64.s:168	0x1002f886c		b4000301		CBZ R1, 24(PC)							
+  base64_arm64.s:169	0x1002f8870		f0000285		ADRP 339968(PC), R5						
+  base64_arm64.s:169	0x1002f8874		910c80a5		ADD $800, R5, R5						
+  base64_arm64.s:170	0x1002f8878		4c4020b0		VLD1 (R5), [V16.B16, V17.B16, V18.B16, V19.B16]			
+  base64_arm64.s:171	0x1002f887c		b24017e5		ORR $63, ZR, R5							
+  base64_arm64.s:172	0x1002f8880		4e010cb4		VDUP R5, V20.B16						
+  base64_arm64.s:174	0x1002f8884		4c404000		VLD3 (R0), [V0.B16, V1.B16, V2.B16]				
+  base64_arm64.s:175	0x1002f8888		9100c000		ADD $48, R0, R0							
+  base64_arm64.s:176	0x1002f888c		6f0e0404		VUSHR $2, V0.B16, V4.B16					
+  base64_arm64.s:177	0x1002f8890		6f0c0425		VUSHR $4, V1.B16, V5.B16					
+  base64_arm64.s:178	0x1002f8894		6f0c5405		VSLI $4, V0.B16, V5.B16						
+  base64_arm64.s:179	0x1002f8898		4e341ca5		VAND V20.B16, V5.B16, V5.B16					
+  base64_arm64.s:180	0x1002f889c		6f0a0446		VUSHR $6, V2.B16, V6.B16					
+  base64_arm64.s:181	0x1002f88a0		6f0a5426		VSLI $2, V1.B16, V6.B16						
+  base64_arm64.s:182	0x1002f88a4		4e341cc6		VAND V20.B16, V6.B16, V6.B16					
+  base64_arm64.s:183	0x1002f88a8		4e341c47		VAND V20.B16, V2.B16, V7.B16					
+  base64_arm64.s:184	0x1002f88ac		4e046204		VTBL V4.B16, [V16.B16, V17.B16, V18.B16, V19.B16], V4.B16	
+  base64_arm64.s:185	0x1002f88b0		4e056205		VTBL V5.B16, [V16.B16, V17.B16, V18.B16, V19.B16], V5.B16	
+  base64_arm64.s:186	0x1002f88b4		4e066206		VTBL V6.B16, [V16.B16, V17.B16, V18.B16, V19.B16], V6.B16	
+  base64_arm64.s:187	0x1002f88b8		4e076207		VTBL V7.B16, [V16.B16, V17.B16, V18.B16, V19.B16], V7.B16	
+  base64_arm64.s:188	0x1002f88bc		4c000044		VST4 (R2), [V4.B16, V5.B16, V6.B16, V7.B16]			
+  base64_arm64.s:189	0x1002f88c0		91010042		ADD $64, R2, R2							
+  base64_arm64.s:190	0x1002f88c4		d100c021		SUB $48, R1, R1							
+  base64_arm64.s:191	0x1002f88c8		b5fffde1		CBNZ R1, -17(PC)						
+  base64_arm64.s:193	0x1002f88cc		d65f03c0		RET								
+
+TEXT github.com/zchee/go-simdutf.base64DecodeBlocksNEON.abi0(SB) /Users/zchee/go/src/github.com/zchee/go-simdutf/base64_arm64.s
+  base64_arm64.s:198	0x1002f88d0		f94007e0		MOVD 8(RSP), R0					
+  base64_arm64.s:199	0x1002f88d4		f9400be1		MOVD 16(RSP), R1				
+  base64_arm64.s:200	0x1002f88d8		f94013e2		MOVD 32(RSP), R2				
+  base64_arm64.s:201	0x1002f88dc		b40001a1		CBZ R1, 13(PC)					
+  base64_arm64.s:203	0x1002f88e0		4c400000		VLD4 (R0), [V0.B16, V1.B16, V2.B16, V3.B16]	
+  base64_arm64.s:204	0x1002f88e4		91010000		ADD $64, R0, R0					
+  base64_arm64.s:205	0x1002f88e8		6f0c0424		VUSHR $4, V1.B16, V4.B16			
+  base64_arm64.s:206	0x1002f88ec		6f0a5404		VSLI $2, V0.B16, V4.B16				
+  base64_arm64.s:207	0x1002f88f0		6f0e0445		VUSHR $2, V2.B16, V5.B16			
+  base64_arm64.s:208	0x1002f88f4		6f0c5425		VSLI $4, V1.B16, V5.B16				
+  base64_arm64.s:209	0x1002f88f8		4ea31c66		VMOV V3.B16, V6.B16				
+  base64_arm64.s:210	0x1002f88fc		6f0e5446		VSLI $6, V2.B16, V6.B16				
+  base64_arm64.s:211	0x1002f8900		4c004044		VST3 (R2), [V4.B16, V5.B16, V6.B16]		
+  base64_arm64.s:212	0x1002f8904		9100c042		ADD $48, R2, R2					
+  base64_arm64.s:213	0x1002f8908		d1010021		SUB $64, R1, R1					
+  base64_arm64.s:214	0x1002f890c		b5fffea1		CBNZ R1, -11(PC)				
+  base64_arm64.s:216	0x1002f8910		d65f03c0		RET						
+  base64_arm64.s:216	0x1002f8914		00000000		?						
+  base64_arm64.s:216	0x1002f8918		00000000		?						
+  base64_arm64.s:216	0x1002f891c		00000000		?						

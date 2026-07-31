@@ -1,0 +1,3 @@
+00000000006f3360 T github.com/zchee/go-simdutf.detectEncodingsWestmere
+00000000006f33c0 T github.com/zchee/go-simdutf.detectEncodingsHaswell
+00000000006f3660 T github.com/zchee/go-simdutf.detectEncodingsArchsimd

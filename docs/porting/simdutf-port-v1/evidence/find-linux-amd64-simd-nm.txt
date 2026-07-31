@@ -1,0 +1,11 @@
+00000000006f87c0 T github.com/zchee/go-simdutf.findArchsimd
+00000000006f8960 T github.com/zchee/go-simdutf.findUTF16Archsimd
+00000000007a2a00 T github.com/zchee/go-simdutf.findUTF8LengthArchsimdDirectVariant
+00000000007bf100 T github.com/zchee/go-simdutf.findWestmere.abi0
+00000000007bf200 T github.com/zchee/go-simdutf.findHaswell.abi0
+00000000007bf2e0 T github.com/zchee/go-simdutf.findUTF16Westmere.abi0
+00000000007bf400 T github.com/zchee/go-simdutf.findUTF16Haswell.abi0
+00000000007c77e0 T github.com/zchee/go-simdutf.findWestmere
+00000000007c7820 T github.com/zchee/go-simdutf.findHaswell
+00000000007c7860 T github.com/zchee/go-simdutf.findUTF16Westmere
+00000000007c78a0 T github.com/zchee/go-simdutf.findUTF16Haswell

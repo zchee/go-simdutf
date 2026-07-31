@@ -1,0 +1,4 @@
+00000001002f89b0 t _github.com/zchee/go-simdutf.findNEON.abi0
+00000001002f8b60 t _github.com/zchee/go-simdutf.findUTF16NEON.abi0
+00000001002ffa00 t _github.com/zchee/go-simdutf.findNEON
+00000001002ffa30 t _github.com/zchee/go-simdutf.findUTF16NEON

@@ -1,0 +1,2 @@
+00000000006f24a0 T github.com/zchee/go-simdutf.findScalar
+00000000006f24e0 T github.com/zchee/go-simdutf.findUTF16Scalar

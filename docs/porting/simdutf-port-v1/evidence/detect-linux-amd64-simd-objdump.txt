@@ -1,0 +1,216 @@
+TEXT github.com/zchee/go-simdutf.detectEncodingsWestmere(SB) /tmp/go-simdutf-w06w07-qual/detect_amd64.go
+  detect_amd64.go:29	0x6f3360		493b6610		CMPQ SP, 0x10(R14)						
+  detect_amd64.go:29	0x6f3364		762d			JBE 0x6f3393							
+  detect_amd64.go:29	0x6f3366		55			PUSHQ BP							
+  detect_amd64.go:29	0x6f3367		4889e5			MOVQ SP, BP							
+  detect_amd64.go:29	0x6f336a		4883ec30		SUBQ $0x30, SP							
+  detect_amd64.go:29	0x6f336e		4889442440		MOVQ AX, 0x40(SP)						
+  detect_amd64.go:30	0x6f3373		488d3d2e4e1d00		LEAQ 0x1d4e2e(IP), DI						
+  detect_amd64.go:30	0x6f337a		488d359f4d1d00		LEAQ 0x1d4d9f(IP), SI						
+  detect_amd64.go:30	0x6f3381		4c8d05d84d1d00		LEAQ 0x1d4dd8(IP), R8						
+  detect_amd64.go:30	0x6f3388		e893000000		CALL github.com/zchee/go-simdutf.detectEncodingsAMD64(SB)	
+  detect_amd64.go:30	0x6f338d		4883c430		ADDQ $0x30, SP							
+  detect_amd64.go:30	0x6f3391		5d			POPQ BP								
+  detect_amd64.go:30	0x6f3392		c3			RET								
+  detect_amd64.go:29	0x6f3393		4889442408		MOVQ AX, 0x8(SP)						
+  detect_amd64.go:29	0x6f3398		48895c2410		MOVQ BX, 0x10(SP)						
+  detect_amd64.go:29	0x6f339d		48894c2418		MOVQ CX, 0x18(SP)						
+  detect_amd64.go:29	0x6f33a2		e87999d9ff		CALL runtime.morestack_noctxt.abi0(SB)				
+  detect_amd64.go:29	0x6f33a7		488b442408		MOVQ 0x8(SP), AX						
+  detect_amd64.go:29	0x6f33ac		488b5c2410		MOVQ 0x10(SP), BX						
+  detect_amd64.go:29	0x6f33b1		488b4c2418		MOVQ 0x18(SP), CX						
+  detect_amd64.go:29	0x6f33b6		eba8			JMP github.com/zchee/go-simdutf.detectEncodingsWestmere(SB)	
+
+TEXT github.com/zchee/go-simdutf.detectEncodingsHaswell(SB) /tmp/go-simdutf-w06w07-qual/detect_amd64.go
+  detect_amd64.go:33	0x6f33c0		493b6610		CMPQ SP, 0x10(R14)						
+  detect_amd64.go:33	0x6f33c4		762d			JBE 0x6f33f3							
+  detect_amd64.go:33	0x6f33c6		55			PUSHQ BP							
+  detect_amd64.go:33	0x6f33c7		4889e5			MOVQ SP, BP							
+  detect_amd64.go:33	0x6f33ca		4883ec30		SUBQ $0x30, SP							
+  detect_amd64.go:33	0x6f33ce		4889442440		MOVQ AX, 0x40(SP)						
+  detect_amd64.go:34	0x6f33d3		488d3dae4d1d00		LEAQ 0x1d4dae(IP), DI						
+  detect_amd64.go:34	0x6f33da		488d352f4d1d00		LEAQ 0x1d4d2f(IP), SI						
+  detect_amd64.go:34	0x6f33e1		4c8d05684d1d00		LEAQ 0x1d4d68(IP), R8						
+  detect_amd64.go:34	0x6f33e8		e833000000		CALL github.com/zchee/go-simdutf.detectEncodingsAMD64(SB)	
+  detect_amd64.go:34	0x6f33ed		4883c430		ADDQ $0x30, SP							
+  detect_amd64.go:34	0x6f33f1		5d			POPQ BP								
+  detect_amd64.go:34	0x6f33f2		c3			RET								
+  detect_amd64.go:33	0x6f33f3		4889442408		MOVQ AX, 0x8(SP)						
+  detect_amd64.go:33	0x6f33f8		48895c2410		MOVQ BX, 0x10(SP)						
+  detect_amd64.go:33	0x6f33fd		48894c2418		MOVQ CX, 0x18(SP)						
+  detect_amd64.go:33	0x6f3402		e81999d9ff		CALL runtime.morestack_noctxt.abi0(SB)				
+  detect_amd64.go:33	0x6f3407		488b442408		MOVQ 0x8(SP), AX						
+  detect_amd64.go:33	0x6f340c		488b5c2410		MOVQ 0x10(SP), BX						
+  detect_amd64.go:33	0x6f3411		488b4c2418		MOVQ 0x18(SP), CX						
+  detect_amd64.go:33	0x6f3416		eba8			JMP github.com/zchee/go-simdutf.detectEncodingsHaswell(SB)	
+
+TEXT github.com/zchee/go-simdutf.detectEncodingsArchsimd(SB) /tmp/go-simdutf-w06w07-qual/detect_archsimd.go
+  detect_archsimd.go:27	0x6f3660		493b6610		CMPQ SP, 0x10(R14)						
+  detect_archsimd.go:27	0x6f3664		0f865c020000		JBE 0x6f38c6							
+  detect_archsimd.go:27	0x6f366a		55			PUSHQ BP							
+  detect_archsimd.go:27	0x6f366b		4889e5			MOVQ SP, BP							
+  detect_archsimd.go:27	0x6f366e		4883ec70		SUBQ $0x70, SP							
+  detect_archsimd.go:28	0x6f3672		48898c2490000000	MOVQ CX, 0x90(SP)						
+  detect_archsimd.go:28	0x6f367a		48899c2488000000	MOVQ BX, 0x88(SP)						
+  detect_archsimd.go:28	0x6f3682		4889842480000000	MOVQ AX, 0x80(SP)						
+  detect_archsimd.go:28	0x6f368a		e871500000		CALL github.com/zchee/go-simdutf.CheckBOM(SB)			
+  detect_archsimd.go:28	0x6f368f		84c0			TESTL AL, AL							
+  detect_archsimd.go:28	0x6f3691		0f85a4000000		JNE 0x6f373b							
+  detect_archsimd.go:32	0x6f3697		488b842480000000	MOVQ 0x80(SP), AX						
+  detect_archsimd.go:32	0x6f369f		488b9c2488000000	MOVQ 0x88(SP), BX						
+  detect_archsimd.go:32	0x6f36a7		488b8c2490000000	MOVQ 0x90(SP), CX						
+  detect_archsimd.go:32	0x6f36af		e88c510100		CALL github.com/zchee/go-simdutf.validateUTF8Archsimd(SB)	
+  detect_archsimd.go:35	0x6f36b4		488b8c2488000000	MOVQ 0x88(SP), CX						
+  detect_archsimd.go:35	0x6f36bc		0fbae100		BTL $0x0, CX							
+  detect_archsimd.go:35	0x6f36c0		727f			JB 0x6f3741							
+  detect_archsimd.go:32	0x6f36c2		8844241f		MOVB AL, 0x1f(SP)						
+  detect_scalar.go:62	0x6f36c6		4889cb			MOVQ CX, BX							
+  detect_scalar.go:62	0x6f36c9		48d1eb			SHRQ $0x1, BX							
+  detect_scalar.go:63	0x6f36cc		4885db			TESTQ BX, BX							
+  detect_scalar.go:63	0x6f36cf		7461			JE 0x6f3732							
+  detect_scalar.go:66	0x6f36d1		4883fb10		CMPQ BX, $0x10							
+  detect_scalar.go:66	0x6f36d5		7715			JA 0x6f36ec							
+  detect_scalar.go:66	0x6f36d7		488d542450		LEAQ 0x50(SP), DX						
+  detect_scalar.go:66	0x6f36dc		440f113a		MOVUPS X15, 0(DX)						
+  detect_scalar.go:66	0x6f36e0		440f117a10		MOVUPS X15, 0x10(DX)						
+  detect_scalar.go:66	0x6f36e5		488d542450		LEAQ 0x50(SP), DX						
+  detect_scalar.go:66	0x6f36ea		eb2e			JMP 0x6f371a							
+  detect_scalar.go:62	0x6f36ec		48895c2428		MOVQ BX, 0x28(SP)						
+  detect_scalar.go:66	0x6f36f1		488d05e80d1100		LEAQ 0x110de8(IP), AX						
+  detect_scalar.go:66	0x6f36f8		4889d9			MOVQ BX, CX							
+  detect_scalar.go:66	0x6f36fb		0f1f440000		NOPL 0(AX)(AX*1)						
+  detect_scalar.go:66	0x6f3700		e85b5cd9ff		CALL runtime.makeslice(SB)					
+  detect_scalar.go:68	0x6f3705		488b8c2488000000	MOVQ 0x88(SP), CX						
+  detect_scalar.go:67	0x6f370d		488b5c2428		MOVQ 0x28(SP), BX						
+  detect_scalar.go:67	0x6f3712		4889c2			MOVQ AX, DX							
+  detect_archsimd.go:37	0x6f3715		0fb644241f		MOVZX 0x1f(SP), AX						
+  detect_scalar.go:67	0x6f371a		488bb42480000000	MOVQ 0x80(SP), SI						
+  detect_scalar.go:67	0x6f3722		488bbc2490000000	MOVQ 0x90(SP), DI						
+  detect_scalar.go:67	0x6f372a		4531c0			XORL R8, R8							
+  detect_scalar.go:67	0x6f372d		e944010000		JMP 0x6f3876							
+  detect_scalar.go:67	0x6f3732		31d2			XORL DX, DX							
+  detect_scalar.go:67	0x6f3734		31db			XORL BX, BX							
+  detect_archsimd.go:36	0x6f3736		e902010000		JMP 0x6f383d							
+  detect_archsimd.go:29	0x6f373b		4883c470		ADDQ $0x70, SP							
+  detect_archsimd.go:29	0x6f373f		5d			POPQ BP								
+  detect_archsimd.go:29	0x6f3740		c3			RET								
+  detect_archsimd.go:40	0x6f3741		48f7c103000000		TESTQ $0x3, CX							
+  detect_archsimd.go:40	0x6f3748		7575			JNE 0x6f37bf							
+  detect_archsimd.go:40	0x6f374a		8844241e		MOVB AL, 0x1e(SP)						
+  detect_scalar.go:74	0x6f374e		4889cb			MOVQ CX, BX							
+  detect_scalar.go:74	0x6f3751		48c1eb02		SHRQ $0x2, BX							
+  detect_scalar.go:75	0x6f3755		4885db			TESTQ BX, BX							
+  detect_scalar.go:75	0x6f3758		745f			JE 0x6f37b9							
+  detect_scalar.go:75	0x6f375a		660f1f440000		NOPW 0(AX)(AX*1)						
+  detect_scalar.go:78	0x6f3760		4883fb08		CMPQ BX, $0x8							
+  detect_scalar.go:78	0x6f3764		7715			JA 0x6f377b							
+  detect_scalar.go:78	0x6f3766		488d542430		LEAQ 0x30(SP), DX						
+  detect_scalar.go:78	0x6f376b		440f113a		MOVUPS X15, 0(DX)						
+  detect_scalar.go:78	0x6f376f		440f117a10		MOVUPS X15, 0x10(DX)						
+  detect_scalar.go:78	0x6f3774		488d542430		LEAQ 0x30(SP), DX						
+  detect_scalar.go:78	0x6f3779		eb29			JMP 0x6f37a4							
+  detect_scalar.go:74	0x6f377b		48895c2420		MOVQ BX, 0x20(SP)						
+  detect_scalar.go:78	0x6f3780		488d05d90d1100		LEAQ 0x110dd9(IP), AX						
+  detect_scalar.go:78	0x6f3787		4889d9			MOVQ BX, CX							
+  detect_scalar.go:78	0x6f378a		e8d15bd9ff		CALL runtime.makeslice(SB)					
+  detect_scalar.go:80	0x6f378f		488b8c2488000000	MOVQ 0x88(SP), CX						
+  detect_scalar.go:79	0x6f3797		488b5c2420		MOVQ 0x20(SP), BX						
+  detect_scalar.go:79	0x6f379c		4889c2			MOVQ AX, DX							
+  detect_archsimd.go:42	0x6f379f		0fb644241e		MOVZX 0x1e(SP), AX						
+  detect_scalar.go:79	0x6f37a4		488bb42480000000	MOVQ 0x80(SP), SI						
+  detect_scalar.go:79	0x6f37ac		488bbc2490000000	MOVQ 0x90(SP), DI						
+  detect_scalar.go:79	0x6f37b4		4531c0			XORL R8, R8							
+  detect_scalar.go:79	0x6f37b7		eb37			JMP 0x6f37f0							
+  detect_scalar.go:79	0x6f37b9		31c9			XORL CX, CX							
+  detect_scalar.go:79	0x6f37bb		31d2			XORL DX, DX							
+  detect_archsimd.go:41	0x6f37bd		eb06			JMP 0x6f37c5							
+  detect_archsimd.go:45	0x6f37bf		4883c470		ADDQ $0x70, SP							
+  detect_archsimd.go:45	0x6f37c3		5d			POPQ BP								
+  detect_archsimd.go:45	0x6f37c4		c3			RET								
+  detect_archsimd.go:41	0x6f37c5		4889d0			MOVQ DX, AX							
+  detect_archsimd.go:41	0x6f37c8		4889cb			MOVQ CX, BX							
+  detect_archsimd.go:41	0x6f37cb		e830cd0100		CALL github.com/zchee/go-simdutf.validateUTF32Archsimd(SB)	
+  detect_archsimd.go:41	0x6f37d0		84c0			TESTL AL, AL							
+  detect_archsimd.go:41	0x6f37d2		740a			JE 0x6f37de							
+  detect_archsimd.go:42	0x6f37d4		0fb644241e		MOVZX 0x1e(SP), AX						
+  detect_archsimd.go:42	0x6f37d9		83c808			ORL $0x8, AX							
+  detect_archsimd.go:42	0x6f37dc		ebe1			JMP 0x6f37bf							
+  detect_archsimd.go:42	0x6f37de		0fb644241e		MOVZX 0x1e(SP), AX						
+  detect_archsimd.go:41	0x6f37e3		ebda			JMP 0x6f37bf							
+  detect_scalar.go:80	0x6f37e5		4689048a		MOVL R8, 0(DX)(R9*4)						
+  detect_scalar.go:79	0x6f37e9		4d8d4101		LEAQ 0x1(R9), R8						
+  detect_scalar.go:80	0x6f37ed		4c89d1			MOVQ R10, CX							
+  detect_scalar.go:79	0x6f37f0		4939d8			CMPQ R8, BX							
+  detect_scalar.go:79	0x6f37f3		7d34			JGE 0x6f3829							
+  detect_scalar.go:80	0x6f37f5		4d89c1			MOVQ R8, R9							
+  detect_scalar.go:80	0x6f37f8		49c1e002		SHLQ $0x2, R8							
+  detect_scalar.go:80	0x6f37fc		0f1f4000		NOPL 0(AX)							
+  detect_scalar.go:80	0x6f3800		4c39c1			CMPQ CX, R8							
+  detect_scalar.go:80	0x6f3803		7233			JB 0x6f3838							
+  detect_scalar.go:80	0x6f3805		4989ca			MOVQ CX, R10							
+  detect_scalar.go:80	0x6f3808		4c29c1			SUBQ R8, CX							
+  detect_scalar.go:80	0x6f380b		4d89c3			MOVQ R8, R11							
+  detect_scalar.go:80	0x6f380e		4929f8			SUBQ DI, R8							
+  detect_scalar.go:80	0x6f3811		49c1f83f		SARQ $0x3f, R8							
+  detect_scalar.go:80	0x6f3815		4d21c3			ANDQ R8, R11							
+  binary.go:91		0x6f3818		4883f903		CMPQ CX, $0x3							
+  binary.go:91		0x6f381c		7615			JBE 0x6f3833							
+  binary.go:92		0x6f381e		468b041e		MOVL 0(SI)(R11*1), R8						
+  detect_scalar.go:79	0x6f3822		4939d9			CMPQ R9, BX							
+  detect_scalar.go:80	0x6f3825		72be			JB 0x6f37e5							
+  detect_scalar.go:80	0x6f3827		eb05			JMP 0x6f382e							
+  detect_archsimd.go:41	0x6f3829		4889d9			MOVQ BX, CX							
+  detect_archsimd.go:41	0x6f382c		eb97			JMP 0x6f37c5							
+  detect_scalar.go:80	0x6f382e		e80db2d9ff		CALL runtime.panicBounds(SB)					
+  binary.go:91		0x6f3833		e808b2d9ff		CALL runtime.panicBounds(SB)					
+  detect_scalar.go:80	0x6f3838		e803b2d9ff		CALL runtime.panicBounds(SB)					
+  detect_archsimd.go:36	0x6f383d		4889d8			MOVQ BX, AX							
+  detect_archsimd.go:36	0x6f3840		4889d3			MOVQ DX, BX							
+  detect_archsimd.go:36	0x6f3843		4889d9			MOVQ BX, CX							
+  detect_archsimd.go:36	0x6f3846		e8b5c50100		CALL github.com/zchee/go-simdutf.validateUTF16LEArchsimd(SB)	
+  detect_archsimd.go:36	0x6f384b		84c0			TESTL AL, AL							
+  detect_archsimd.go:36	0x6f384d		740a			JE 0x6f3859							
+  detect_archsimd.go:37	0x6f384f		0fb644241f		MOVZX 0x1f(SP), AX						
+  detect_archsimd.go:37	0x6f3854		83c802			ORL $0x2, AX							
+  detect_archsimd.go:37	0x6f3857		eb05			JMP 0x6f385e							
+  detect_archsimd.go:37	0x6f3859		0fb644241f		MOVZX 0x1f(SP), AX						
+  detect_archsimd.go:40	0x6f385e		488b8c2488000000	MOVQ 0x88(SP), CX						
+  detect_archsimd.go:40	0x6f3866		e9d6feffff		JMP 0x6f3741							
+  detect_scalar.go:68	0x6f386b		6646890c42		MOVW R9, 0(DX)(R8*2)						
+  detect_scalar.go:67	0x6f3870		49ffc0			INCQ R8								
+  detect_scalar.go:68	0x6f3873		4c89d1			MOVQ R10, CX							
+  detect_scalar.go:67	0x6f3876		4939d8			CMPQ R8, BX							
+  detect_scalar.go:67	0x6f3879		7d2f			JGE 0x6f38aa							
+  detect_scalar.go:68	0x6f387b		4f8d0c00		LEAQ 0(R8)(R8*1), R9						
+  detect_scalar.go:68	0x6f387f		90			NOPL								
+  detect_scalar.go:68	0x6f3880		4c39c9			CMPQ CX, R9							
+  detect_scalar.go:68	0x6f3883		723a			JB 0x6f38bf							
+  detect_scalar.go:68	0x6f3885		4989ca			MOVQ CX, R10							
+  detect_scalar.go:68	0x6f3888		4c29c9			SUBQ R9, CX							
+  detect_scalar.go:68	0x6f388b		4d89cb			MOVQ R9, R11							
+  detect_scalar.go:68	0x6f388e		4929f9			SUBQ DI, R9							
+  detect_scalar.go:68	0x6f3891		49c1f93f		SARQ $0x3f, R9							
+  detect_scalar.go:68	0x6f3895		4d21cb			ANDQ R9, R11							
+  binary.go:70		0x6f3898		4883f901		CMPQ CX, $0x1							
+  binary.go:70		0x6f389c		761c			JBE 0x6f38ba							
+  binary.go:71		0x6f389e		460fb70c1e		MOVZX 0(SI)(R11*1), R9						
+  detect_scalar.go:67	0x6f38a3		4939d8			CMPQ R8, BX							
+  detect_scalar.go:68	0x6f38a6		72c3			JB 0x6f386b							
+  detect_scalar.go:68	0x6f38a8		eb0b			JMP 0x6f38b5							
+  detect_archsimd.go:36	0x6f38aa		4989d0			MOVQ DX, R8							
+  detect_archsimd.go:36	0x6f38ad		4889da			MOVQ BX, DX							
+  detect_archsimd.go:36	0x6f38b0		4c89c3			MOVQ R8, BX							
+  detect_archsimd.go:36	0x6f38b3		eb88			JMP 0x6f383d							
+  detect_scalar.go:68	0x6f38b5		e886b1d9ff		CALL runtime.panicBounds(SB)					
+  binary.go:70		0x6f38ba		e881b1d9ff		CALL runtime.panicBounds(SB)					
+  detect_scalar.go:68	0x6f38bf		90			NOPL								
+  detect_scalar.go:68	0x6f38c0		e87bb1d9ff		CALL runtime.panicBounds(SB)					
+  detect_scalar.go:68	0x6f38c5		90			NOPL								
+  detect_archsimd.go:27	0x6f38c6		4889442408		MOVQ AX, 0x8(SP)						
+  detect_archsimd.go:27	0x6f38cb		48895c2410		MOVQ BX, 0x10(SP)						
+  detect_archsimd.go:27	0x6f38d0		48894c2418		MOVQ CX, 0x18(SP)						
+  detect_archsimd.go:27	0x6f38d5		e84694d9ff		CALL runtime.morestack_noctxt.abi0(SB)				
+  detect_archsimd.go:27	0x6f38da		488b442408		MOVQ 0x8(SP), AX						
+  detect_archsimd.go:27	0x6f38df		488b5c2410		MOVQ 0x10(SP), BX						
+  detect_archsimd.go:27	0x6f38e4		488b4c2418		MOVQ 0x18(SP), CX						
+  detect_archsimd.go:27	0x6f38e9		e972fdffff		JMP github.com/zchee/go-simdutf.detectEncodingsArchsimd(SB)	

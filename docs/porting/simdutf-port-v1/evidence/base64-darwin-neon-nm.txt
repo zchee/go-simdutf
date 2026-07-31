@@ -1,0 +1,13 @@
+00000001002852d0 t _github.com/zchee/go-simdutf.binaryLengthFromBase64NEON
+00000001002853e0 t _github.com/zchee/go-simdutf.binaryLengthFromBase64UTF16NEON
+00000001002854f0 t _github.com/zchee/go-simdutf.binaryToBase64NEON
+0000000100285720 t _github.com/zchee/go-simdutf.binaryToBase64WithLinesNEON
+0000000100285950 t _github.com/zchee/go-simdutf.base64ToBinaryNEON
+0000000100285a60 t _github.com/zchee/go-simdutf.base64ToBinaryUTF16NEON
+0000000100285b70 t _github.com/zchee/go-simdutf.base64ToBinaryDetailsNEON
+0000000100285c20 t _github.com/zchee/go-simdutf.base64ToBinaryDetailsUTF16NEON
+0000000100285cd0 t _github.com/zchee/go-simdutf.base64ToBinaryDetailsNEONContiguous
+0000000100286190 t _github.com/zchee/go-simdutf.base64ToBinaryDetailsUTF16NEONContiguous
+00000001002f87f0 t _github.com/zchee/go-simdutf.binaryToBase64BlocksDefaultNEON.abi0
+00000001002f8860 t _github.com/zchee/go-simdutf.binaryToBase64BlocksURLNEON.abi0
+00000001002f88d0 t _github.com/zchee/go-simdutf.base64DecodeBlocksNEON.abi0

@@ -1,0 +1,149 @@
+TEXT github.com/zchee/go-simdutf.detectEncodingsNEON(SB) /Users/zchee/go/src/github.com/zchee/go-simdutf/detect_arm64.go
+  detect_arm64.go:28	0x100289bb0		f9400b90		MOVD 16(R28), R16						
+  detect_arm64.go:28	0x100289bb4		eb3063ff		CMP R16, RSP							
+  detect_arm64.go:28	0x100289bb8		54001109		BLS 136(PC)							
+  detect_arm64.go:28	0x100289bbc		f8180ffe		MOVD.W R30, -128(RSP)						
+  detect_arm64.go:28	0x100289bc0		f81f83fd		MOVD R29, -8(RSP)						
+  detect_arm64.go:28	0x100289bc4		d10023fd		SUB $8, RSP, R29						
+  detect_arm64.go:29	0x100289bc8		f9004fe2		MOVD R2, 152(RSP)						
+  detect_arm64.go:29	0x100289bcc		f9004be1		MOVD R1, 144(RSP)						
+  detect_arm64.go:29	0x100289bd0		f90047e0		MOVD R0, 136(RSP)						
+  detect_arm64.go:29	0x100289bd4		94000a0b		CALL github.com/zchee/go-simdutf.CheckBOM(SB)			
+  detect_arm64.go:29	0x100289bd8		d3401c03		UBFX $0, R0, $8, R3						
+  detect_arm64.go:29	0x100289bdc		35000423		CBNZW R3, 33(PC)						
+  detect_arm64.go:33	0x100289be0		f94047e0		MOVD 136(RSP), R0						
+  detect_arm64.go:33	0x100289be4		f9404be1		MOVD 144(RSP), R1						
+  detect_arm64.go:33	0x100289be8		f9404fe2		MOVD 152(RSP), R2						
+  detect_arm64.go:33	0x100289bec		940028e9		CALL github.com/zchee/go-simdutf.validateUTF8NEON(SB)		
+  detect_arm64.go:36	0x100289bf0		f9404be1		MOVD 144(RSP), R1						
+  detect_arm64.go:36	0x100289bf4		370003c1		TBNZ $0, R1, 30(PC)						
+  detect_arm64.go:33	0x100289bf8		39009fe0		MOVB R0, 39(RSP)						
+  detect_scalar.go:62	0x100289bfc		d341fc22		LSR $1, R1, R2							
+  detect_scalar.go:63	0x100289c00		b40002a2		CBZ R2, 21(PC)							
+  detect_scalar.go:66	0x100289c04		f100405f		CMP $16, R2							
+  detect_scalar.go:66	0x100289c08		540000c8		BHI 6(PC)							
+  detect_scalar.go:66	0x100289c0c		910163e3		ADD $88, RSP, R3						
+  detect_scalar.go:66	0x100289c10		a9007c7f		STP (ZR, ZR), (R3)						
+  detect_scalar.go:66	0x100289c14		a9017c7f		STP (ZR, ZR), 16(R3)						
+  detect_scalar.go:66	0x100289c18		910163e3		ADD $88, RSP, R3						
+  detect_scalar.go:66	0x100289c1c		1400000a		JMP 10(PC)							
+  detect_scalar.go:62	0x100289c20		f9001be2		MOVD R2, 48(RSP)						
+  detect_scalar.go:66	0x100289c24		d0001a80		ADRP 3481600(PC), R0						
+  detect_scalar.go:66	0x100289c28		91370000		ADD $3520, R0, R0						
+  detect_scalar.go:66	0x100289c2c		aa0203e1		MOVD R2, R1							
+  detect_scalar.go:66	0x100289c30		97f7d558		CALL runtime.makeslice(SB)					
+  detect_scalar.go:67	0x100289c34		f9404be1		MOVD 144(RSP), R1						
+  detect_arm64.go:37	0x100289c38		f9401be2		MOVD 48(RSP), R2						
+  detect_scalar.go:67	0x100289c3c		aa0003e3		MOVD R0, R3							
+  detect_arm64.go:38	0x100289c40		39409fe0		MOVBU 39(RSP), R0						
+  detect_scalar.go:67	0x100289c44		f94047e4		MOVD 136(RSP), R4						
+  detect_scalar.go:67	0x100289c48		f9404fe5		MOVD 152(RSP), R5						
+  detect_scalar.go:67	0x100289c4c		aa1f03e6		MOVD ZR, R6							
+  detect_scalar.go:67	0x100289c50		14000050		JMP 80(PC)							
+  detect_arm64.go:37	0x100289c54		aa1f03e2		MOVD ZR, R2							
+  detect_arm64.go:37	0x100289c58		aa1f03e3		MOVD ZR, R3							
+  detect_arm64.go:37	0x100289c5c		14000042		JMP 66(PC)							
+  detect_arm64.go:30	0x100289c60		f85f83fd		MOVD -8(RSP), R29						
+  detect_arm64.go:30	0x100289c64		f84807fe		MOVD.P 128(RSP), R30						
+  detect_arm64.go:30	0x100289c68		d65f03c0		RET								
+  detect_arm64.go:41	0x100289c6c		f240043f		TST $3, R1							
+  detect_arm64.go:41	0x100289c70		54000361		BNE 27(PC)							
+  detect_arm64.go:41	0x100289c74		39009be0		MOVB R0, 38(RSP)						
+  detect_scalar.go:74	0x100289c78		d342fc22		LSR $2, R1, R2							
+  detect_scalar.go:75	0x100289c7c		b40002a2		CBZ R2, 21(PC)							
+  detect_scalar.go:78	0x100289c80		f100205f		CMP $8, R2							
+  detect_scalar.go:78	0x100289c84		540000c8		BHI 6(PC)							
+  detect_scalar.go:78	0x100289c88		9100e3e3		ADD $56, RSP, R3						
+  detect_scalar.go:78	0x100289c8c		a9007c7f		STP (ZR, ZR), (R3)						
+  detect_scalar.go:78	0x100289c90		a9017c7f		STP (ZR, ZR), 16(R3)						
+  detect_scalar.go:78	0x100289c94		9100e3e3		ADD $56, RSP, R3						
+  detect_scalar.go:78	0x100289c98		1400000a		JMP 10(PC)							
+  detect_scalar.go:74	0x100289c9c		f90017e2		MOVD R2, 40(RSP)						
+  detect_scalar.go:78	0x100289ca0		d0001a80		ADRP 3481600(PC), R0						
+  detect_scalar.go:78	0x100289ca4		91390000		ADD $3648, R0, R0						
+  detect_scalar.go:78	0x100289ca8		aa0203e1		MOVD R2, R1							
+  detect_scalar.go:78	0x100289cac		97f7d539		CALL runtime.makeslice(SB)					
+  detect_scalar.go:79	0x100289cb0		f9404be1		MOVD 144(RSP), R1						
+  detect_arm64.go:42	0x100289cb4		f94017e2		MOVD 40(RSP), R2						
+  detect_scalar.go:79	0x100289cb8		aa0003e3		MOVD R0, R3							
+  detect_arm64.go:43	0x100289cbc		39409be0		MOVBU 38(RSP), R0						
+  detect_scalar.go:79	0x100289cc0		f94047e4		MOVD 136(RSP), R4						
+  detect_scalar.go:79	0x100289cc4		f9404fe5		MOVD 152(RSP), R5						
+  detect_scalar.go:79	0x100289cc8		aa1f03e6		MOVD ZR, R6							
+  detect_scalar.go:79	0x100289ccc		14000011		JMP 17(PC)							
+  detect_arm64.go:42	0x100289cd0		aa1f03e1		MOVD ZR, R1							
+  detect_arm64.go:42	0x100289cd4		aa1f03e2		MOVD ZR, R2							
+  detect_arm64.go:42	0x100289cd8		14000004		JMP 4(PC)							
+  detect_arm64.go:46	0x100289cdc		f85f83fd		MOVD -8(RSP), R29						
+  detect_arm64.go:46	0x100289ce0		f84807fe		MOVD.P 128(RSP), R30						
+  detect_arm64.go:46	0x100289ce4		d65f03c0		RET								
+  detect_arm64.go:42	0x100289ce8		aa0203e0		MOVD R2, R0							
+  detect_arm64.go:42	0x100289cec		aa0103e2		MOVD R1, R2							
+  detect_arm64.go:42	0x100289cf0		940037f0		CALL github.com/zchee/go-simdutf.validateUTF32NEON(SB)		
+  detect_arm64.go:43	0x100289cf4		39409be3		MOVBU 38(RSP), R3						
+  detect_arm64.go:43	0x100289cf8		b27d0064		ORR $8, R3, R4							
+  detect_arm64.go:43	0x100289cfc		7200001f		TSTW $1, R0							
+  detect_arm64.go:43	0x100289d00		9a831080		CSEL NE, R4, R3, R0						
+  detect_arm64.go:42	0x100289d04		17fffff6		JMP -10(PC)							
+  detect_scalar.go:80	0x100289d08		b8267867		MOVW R7, (R3)(R6<<2)						
+  detect_scalar.go:79	0x100289d0c		910004c6		ADD $1, R6, R6							
+  detect_scalar.go:79	0x100289d10		eb4108df		CMP R1>>2, R6							
+  detect_scalar.go:79	0x100289d14		540001aa		BGE 13(PC)							
+  detect_scalar.go:80	0x100289d18		eb06083f		CMP R6<<2, R1							
+  detect_scalar.go:80	0x100289d1c		54000203		BCC 16(PC)							
+  detect_scalar.go:80	0x100289d20		cb060827		SUB R6<<2, R1, R7						
+  detect_scalar.go:80	0x100289d24		cb0608a8		SUB R6<<2, R5, R8						
+  detect_scalar.go:80	0x100289d28		cb0803e8		NEG R8, R8							
+  detect_scalar.go:80	0x100289d2c		8a88fcc8		AND R8->63, R6, R8						
+  binary.go:91		0x100289d30		f1000cff		CMP $3, R7							
+  binary.go:91		0x100289d34		54000129		BLS 9(PC)							
+  binary.go:92		0x100289d38		b8687887		MOVWU (R4)(R8<<2), R7						
+  detect_scalar.go:79	0x100289d3c		eb4108df		CMP R1>>2, R6							
+  detect_scalar.go:80	0x100289d40		54fffe43		BCC -14(PC)							
+  detect_scalar.go:80	0x100289d44		14000004		JMP 4(PC)							
+  detect_arm64.go:42	0x100289d48		aa0203e1		MOVD R2, R1							
+  detect_arm64.go:42	0x100289d4c		aa0303e2		MOVD R3, R2							
+  detect_arm64.go:42	0x100289d50		17ffffe6		JMP -26(PC)							
+  detect_scalar.go:80	0x100289d54		97f7eae3		CALL runtime.panicBounds(SB)					
+  binary.go:91		0x100289d58		97f7eae2		CALL runtime.panicBounds(SB)					
+  detect_scalar.go:80	0x100289d5c		d37ef4c0		LSL $2, R6, R0							
+  detect_scalar.go:80	0x100289d60		97f7eae0		CALL runtime.panicBounds(SB)					
+  detect_arm64.go:37	0x100289d64		aa0303e0		MOVD R3, R0							
+  detect_arm64.go:37	0x100289d68		aa0203e1		MOVD R2, R1							
+  detect_arm64.go:37	0x100289d6c		94003661		CALL github.com/zchee/go-simdutf.validateUTF16LENEON(SB)	
+  detect_arm64.go:38	0x100289d70		39409fe3		MOVBU 39(RSP), R3						
+  detect_arm64.go:38	0x100289d74		b27f0064		ORR $2, R3, R4							
+  detect_arm64.go:38	0x100289d78		7200001f		TSTW $1, R0							
+  detect_arm64.go:38	0x100289d7c		9a831080		CSEL NE, R4, R3, R0						
+  detect_arm64.go:41	0x100289d80		f9404be1		MOVD 144(RSP), R1						
+  detect_arm64.go:37	0x100289d84		17ffffba		JMP -70(PC)							
+  detect_scalar.go:68	0x100289d88		78267867		MOVH R7, (R3)(R6<<1)						
+  detect_scalar.go:67	0x100289d8c		910004c6		ADD $1, R6, R6							
+  detect_scalar.go:67	0x100289d90		eb4104df		CMP R1>>1, R6							
+  detect_scalar.go:67	0x100289d94		54fffe8a		BGE -12(PC)							
+  detect_scalar.go:68	0x100289d98		eb06043f		CMP R6<<1, R1							
+  detect_scalar.go:68	0x100289d9c		54000183		BCC 12(PC)							
+  detect_scalar.go:68	0x100289da0		cb060427		SUB R6<<1, R1, R7						
+  detect_scalar.go:68	0x100289da4		cb0604a8		SUB R6<<1, R5, R8						
+  detect_scalar.go:68	0x100289da8		cb0803e8		NEG R8, R8							
+  detect_scalar.go:68	0x100289dac		8a88fcc8		AND R8->63, R6, R8						
+  binary.go:70		0x100289db0		f10004ff		CMP $1, R7							
+  binary.go:70		0x100289db4		540000a9		BLS 5(PC)							
+  binary.go:71		0x100289db8		78687887		MOVHU (R4)(R8<<1), R7						
+  detect_scalar.go:67	0x100289dbc		eb4104df		CMP R1>>1, R6							
+  detect_scalar.go:68	0x100289dc0		54fffe43		BCC -14(PC)							
+  detect_scalar.go:68	0x100289dc4		97f7eac7		CALL runtime.panicBounds(SB)					
+  binary.go:70		0x100289dc8		97f7eac6		CALL runtime.panicBounds(SB)					
+  detect_scalar.go:68	0x100289dcc		8b0600c0		ADD R6, R6, R0							
+  detect_scalar.go:68	0x100289dd0		97f7eac4		CALL runtime.panicBounds(SB)					
+  detect_scalar.go:68	0x100289dd4		d503201f		NOOP								
+  detect_arm64.go:28	0x100289dd8		a90087e0		STP (R0, R1), 8(RSP)						
+  detect_arm64.go:28	0x100289ddc		f9000fe2		MOVD R2, 24(RSP)						
+  detect_arm64.go:28	0x100289de0		aa1e03e3		MOVD R30, R3							
+  detect_arm64.go:28	0x100289de4		97f7e23b		CALL runtime.morestack_noctxt.abi0(SB)				
+  detect_arm64.go:28	0x100289de8		a94087e0		LDP 8(RSP), (R0, R1)						
+  detect_arm64.go:28	0x100289dec		f9400fe2		MOVD 24(RSP), R2						
+  detect_arm64.go:28	0x100289df0		17ffff70		JMP github.com/zchee/go-simdutf.detectEncodingsNEON(SB)		
+  detect_arm64.go:28	0x100289df4		00000000		?								
+  detect_arm64.go:28	0x100289df8		00000000		?								
+  detect_arm64.go:28	0x100289dfc		00000000		?								

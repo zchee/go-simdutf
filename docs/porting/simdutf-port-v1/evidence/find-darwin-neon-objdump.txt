@@ -1,0 +1,255 @@
+TEXT github.com/zchee/go-simdutf.findNEON.abi0(SB) /Users/zchee/go/src/github.com/zchee/go-simdutf/find_arm64.s
+  find_arm64.s:28	0x1002f89b0		f94007e0		MOVD 8(RSP), R0					
+  find_arm64.s:29	0x1002f89b4		f9400be9		MOVD 16(RSP), R9				
+  find_arm64.s:30	0x1002f89b8		394083e2		MOVBU 32(RSP), R2				
+  find_arm64.s:31	0x1002f89bc		aa0003e8		MOVD R0, R8					
+  find_arm64.s:32	0x1002f89c0		8b000123		ADD R0, R9, R3					
+  find_arm64.s:33	0x1002f89c4		b4000c69		CBZ R9, 99(PC)					
+  find_arm64.s:34	0x1002f89c8		4e010c47		VDUP R2, V7.B16					
+  find_arm64.s:36	0x1002f89cc		92400c04		AND $15, R0, R4					
+  find_arm64.s:37	0x1002f89d0		b4000264		CBZ R4, 19(PC)					
+  find_arm64.s:38	0x1002f89d4		b27c03e5		ORR $16, ZR, R5					
+  find_arm64.s:39	0x1002f89d8		cb0400a5		SUB R4, R5, R5					
+  find_arm64.s:40	0x1002f89dc		cb000066		SUB R0, R3, R6					
+  find_arm64.s:41	0x1002f89e0		eb0500df		CMP R5, R6					
+  find_arm64.s:42	0x1002f89e4		5400004a		BGE 2(PC)					
+  find_arm64.s:43	0x1002f89e8		aa0603e5		MOVD R6, R5					
+  find_arm64.s:45	0x1002f89ec		aa1f03e4		MOVD ZR, R4					
+  find_arm64.s:47	0x1002f89f0		eb05009f		CMP R5, R4					
+  find_arm64.s:48	0x1002f89f4		54000120		BEQ 9(PC)					
+  find_arm64.s:49	0x1002f89f8		38646806		MOVBU (R0)(R4), R6				
+  find_arm64.s:50	0x1002f89fc		eb0200df		CMP R2, R6					
+  find_arm64.s:51	0x1002f8a00		54000060		BEQ 3(PC)					
+  find_arm64.s:52	0x1002f8a04		91000484		ADD $1, R4, R4					
+  find_arm64.s:53	0x1002f8a08		17fffffa		JMP -6(PC)					
+  find_arm64.s:55	0x1002f8a0c		cb080007		SUB R8, R0, R7					
+  find_arm64.s:56	0x1002f8a10		8b0400e7		ADD R4, R7, R7					
+  find_arm64.s:57	0x1002f8a14		14000051		JMP 81(PC)					
+  find_arm64.s:59	0x1002f8a18		8b050000		ADD R5, R0, R0					
+  find_arm64.s:63	0x1002f8a1c		cb000064		SUB R0, R3, R4					
+  find_arm64.s:64	0x1002f8a20		f101009f		CMP $64, R4					
+  find_arm64.s:65	0x1002f8a24		5400058b		BLT 44(PC)					
+  find_arm64.s:66	0x1002f8a28		4c402000		VLD1 (R0), [V0.B16, V1.B16, V2.B16, V3.B16]	
+  find_arm64.s:67	0x1002f8a2c		6e278c00		VCMEQ V7.B16, V0.B16, V0.B16			
+  find_arm64.s:68	0x1002f8a30		6e278c21		VCMEQ V7.B16, V1.B16, V1.B16			
+  find_arm64.s:69	0x1002f8a34		6e278c42		VCMEQ V7.B16, V2.B16, V2.B16			
+  find_arm64.s:70	0x1002f8a38		6e278c63		VCMEQ V7.B16, V3.B16, V3.B16			
+  find_arm64.s:71	0x1002f8a3c		4ea11c04		VORR V1.B16, V0.B16, V4.B16			
+  find_arm64.s:72	0x1002f8a40		4ea31c45		VORR V3.B16, V2.B16, V5.B16			
+  find_arm64.s:73	0x1002f8a44		4ea51c84		VORR V5.B16, V4.B16, V4.B16			
+  find_arm64.s:74	0x1002f8a48		4e083c84		VMOV V4.D[0], R4				
+  find_arm64.s:75	0x1002f8a4c		4e183c85		VMOV V4.D[1], R5				
+  find_arm64.s:76	0x1002f8a50		aa050084		ORR R5, R4, R4					
+  find_arm64.s:77	0x1002f8a54		b5000064		CBNZ R4, 3(PC)					
+  find_arm64.s:78	0x1002f8a58		91010000		ADD $64, R0, R0					
+  find_arm64.s:79	0x1002f8a5c		17fffff0		JMP -16(PC)					
+  find_arm64.s:82	0x1002f8a60		4e083c04		VMOV V0.D[0], R4				
+  find_arm64.s:83	0x1002f8a64		4e183c05		VMOV V0.D[1], R5				
+  find_arm64.s:84	0x1002f8a68		aa050084		ORR R5, R4, R4					
+  find_arm64.s:85	0x1002f8a6c		aa1f03e5		MOVD ZR, R5					
+  find_arm64.s:86	0x1002f8a70		b5000184		CBNZ R4, 12(PC)					
+  find_arm64.s:87	0x1002f8a74		4e083c24		VMOV V1.D[0], R4				
+  find_arm64.s:88	0x1002f8a78		4e183c25		VMOV V1.D[1], R5				
+  find_arm64.s:89	0x1002f8a7c		aa050084		ORR R5, R4, R4					
+  find_arm64.s:90	0x1002f8a80		b27c03e5		ORR $16, ZR, R5					
+  find_arm64.s:91	0x1002f8a84		b50000e4		CBNZ R4, 7(PC)					
+  find_arm64.s:92	0x1002f8a88		4e083c44		VMOV V2.D[0], R4				
+  find_arm64.s:93	0x1002f8a8c		4e183c45		VMOV V2.D[1], R5				
+  find_arm64.s:94	0x1002f8a90		aa050084		ORR R5, R4, R4					
+  find_arm64.s:95	0x1002f8a94		b27b03e5		ORR $32, ZR, R5					
+  find_arm64.s:96	0x1002f8a98		b5000044		CBNZ R4, 2(PC)					
+  find_arm64.s:97	0x1002f8a9c		b27c07e5		ORR $48, ZR, R5					
+  find_arm64.s:100	0x1002f8aa0		8b050004		ADD R5, R0, R4					
+  find_arm64.s:101	0x1002f8aa4		aa1f03e6		MOVD ZR, R6					
+  find_arm64.s:103	0x1002f8aa8		38666887		MOVBU (R4)(R6), R7				
+  find_arm64.s:104	0x1002f8aac		eb0200ff		CMP R2, R7					
+  find_arm64.s:105	0x1002f8ab0		540000c0		BEQ 6(PC)					
+  find_arm64.s:106	0x1002f8ab4		910004c6		ADD $1, R6, R6					
+  find_arm64.s:107	0x1002f8ab8		f10040df		CMP $16, R6					
+  find_arm64.s:108	0x1002f8abc		54ffff6b		BLT -5(PC)					
+  find_arm64.s:109	0x1002f8ac0		91010000		ADD $64, R0, R0					
+  find_arm64.s:110	0x1002f8ac4		17ffffd6		JMP -42(PC)					
+  find_arm64.s:112	0x1002f8ac8		cb080087		SUB R8, R4, R7					
+  find_arm64.s:113	0x1002f8acc		8b0600e7		ADD R6, R7, R7					
+  find_arm64.s:114	0x1002f8ad0		14000022		JMP 34(PC)					
+  find_arm64.s:117	0x1002f8ad4		cb000064		SUB R0, R3, R4					
+  find_arm64.s:118	0x1002f8ad8		f100409f		CMP $16, R4					
+  find_arm64.s:119	0x1002f8adc		5400028b		BLT 20(PC)					
+  find_arm64.s:120	0x1002f8ae0		4c407000		VLD1 (R0), [V0.B16]				
+  find_arm64.s:121	0x1002f8ae4		6e278c00		VCMEQ V7.B16, V0.B16, V0.B16			
+  find_arm64.s:122	0x1002f8ae8		4e083c04		VMOV V0.D[0], R4				
+  find_arm64.s:123	0x1002f8aec		4e183c05		VMOV V0.D[1], R5				
+  find_arm64.s:124	0x1002f8af0		aa050084		ORR R5, R4, R4					
+  find_arm64.s:125	0x1002f8af4		aa1f03e5		MOVD ZR, R5					
+  find_arm64.s:126	0x1002f8af8		b5000064		CBNZ R4, 3(PC)					
+  find_arm64.s:127	0x1002f8afc		91004000		ADD $16, R0, R0					
+  find_arm64.s:128	0x1002f8b00		17fffff5		JMP -11(PC)					
+  find_arm64.s:131	0x1002f8b04		8b050004		ADD R5, R0, R4					
+  find_arm64.s:132	0x1002f8b08		aa1f03e6		MOVD ZR, R6					
+  find_arm64.s:134	0x1002f8b0c		38666887		MOVBU (R4)(R6), R7				
+  find_arm64.s:135	0x1002f8b10		eb0200ff		CMP R2, R7					
+  find_arm64.s:136	0x1002f8b14		54fffda0		BEQ -19(PC)					
+  find_arm64.s:137	0x1002f8b18		910004c6		ADD $1, R6, R6					
+  find_arm64.s:138	0x1002f8b1c		f10040df		CMP $16, R6					
+  find_arm64.s:139	0x1002f8b20		54ffff6b		BLT -5(PC)					
+  find_arm64.s:140	0x1002f8b24		91004000		ADD $16, R0, R0					
+  find_arm64.s:141	0x1002f8b28		17ffffeb		JMP -21(PC)					
+  find_arm64.s:144	0x1002f8b2c		eb03001f		CMP R3, R0					
+  find_arm64.s:145	0x1002f8b30		54000100		BEQ 8(PC)					
+  find_arm64.s:146	0x1002f8b34		39400004		MOVBU (R0), R4					
+  find_arm64.s:147	0x1002f8b38		eb02009f		CMP R2, R4					
+  find_arm64.s:148	0x1002f8b3c		54000060		BEQ 3(PC)					
+  find_arm64.s:149	0x1002f8b40		91000400		ADD $1, R0, R0					
+  find_arm64.s:150	0x1002f8b44		17fffffa		JMP -6(PC)					
+  find_arm64.s:152	0x1002f8b48		cb080007		SUB R8, R0, R7					
+  find_arm64.s:153	0x1002f8b4c		14000003		JMP 3(PC)					
+  find_arm64.s:156	0x1002f8b50		f90017e9		MOVD R9, 40(RSP)				
+  find_arm64.s:157	0x1002f8b54		d65f03c0		RET						
+  find_arm64.s:159	0x1002f8b58		f90017e7		MOVD R7, 40(RSP)				
+  find_arm64.s:160	0x1002f8b5c		d65f03c0		RET						
+
+TEXT github.com/zchee/go-simdutf.findUTF16NEON.abi0(SB) /Users/zchee/go/src/github.com/zchee/go-simdutf/find_arm64.s
+  find_arm64.s:164	0x1002f8b60		f94007e0		MOVD 8(RSP), R0				
+  find_arm64.s:165	0x1002f8b64		f9400be9		MOVD 16(RSP), R9			
+  find_arm64.s:166	0x1002f8b68		794043e2		MOVHU 32(RSP), R2			
+  find_arm64.s:167	0x1002f8b6c		aa0003e8		MOVD R0, R8				
+  find_arm64.s:169	0x1002f8b70		8b090123		ADD R9, R9, R3				
+  find_arm64.s:170	0x1002f8b74		8b000063		ADD R0, R3, R3				
+  find_arm64.s:171	0x1002f8b78		b4000ce9		CBZ R9, 103(PC)				
+  find_arm64.s:172	0x1002f8b7c		4e020c47		VDUP R2, V7.H8				
+  find_arm64.s:174	0x1002f8b80		92400c04		AND $15, R0, R4				
+  find_arm64.s:175	0x1002f8b84		b4000304		CBZ R4, 24(PC)				
+  find_arm64.s:176	0x1002f8b88		92400085		AND $1, R4, R5				
+  find_arm64.s:177	0x1002f8b8c		b50002c5		CBNZ R5, 22(PC)				
+  find_arm64.s:178	0x1002f8b90		b27c03e5		ORR $16, ZR, R5				
+  find_arm64.s:179	0x1002f8b94		cb0400a5		SUB R4, R5, R5				
+  find_arm64.s:180	0x1002f8b98		d341fca5		LSR $1, R5, R5				
+  find_arm64.s:181	0x1002f8b9c		cb000066		SUB R0, R3, R6				
+  find_arm64.s:182	0x1002f8ba0		d341fcc6		LSR $1, R6, R6				
+  find_arm64.s:183	0x1002f8ba4		eb0500df		CMP R5, R6				
+  find_arm64.s:184	0x1002f8ba8		5400004a		BGE 2(PC)				
+  find_arm64.s:185	0x1002f8bac		aa0603e5		MOVD R6, R5				
+  find_arm64.s:187	0x1002f8bb0		aa1f03e4		MOVD ZR, R4				
+  find_arm64.s:189	0x1002f8bb4		eb05009f		CMP R5, R4				
+  find_arm64.s:190	0x1002f8bb8		54000140		BEQ 10(PC)				
+  find_arm64.s:191	0x1002f8bbc		78647806		MOVHU (R0)(R4<<1), R6			
+  find_arm64.s:192	0x1002f8bc0		6b0200df		CMPW R2, R6				
+  find_arm64.s:193	0x1002f8bc4		54000060		BEQ 3(PC)				
+  find_arm64.s:194	0x1002f8bc8		91000484		ADD $1, R4, R4				
+  find_arm64.s:195	0x1002f8bcc		17fffffa		JMP -6(PC)				
+  find_arm64.s:197	0x1002f8bd0		cb080007		SUB R8, R0, R7				
+  find_arm64.s:198	0x1002f8bd4		d341fce7		LSR $1, R7, R7				
+  find_arm64.s:199	0x1002f8bd8		8b0400e7		ADD R4, R7, R7				
+  find_arm64.s:200	0x1002f8bdc		14000050		JMP 80(PC)				
+  find_arm64.s:202	0x1002f8be0		8b050400		ADD R5<<1, R0, R0			
+  find_arm64.s:206	0x1002f8be4		cb000064		SUB R0, R3, R4				
+  find_arm64.s:207	0x1002f8be8		f101009f		CMP $64, R4				
+  find_arm64.s:208	0x1002f8bec		5400054b		BLT 42(PC)				
+  find_arm64.s:209	0x1002f8bf0		4c402400		VLD1 (R0), [V0.H8, V1.H8, V2.H8, V3.H8]	
+  find_arm64.s:210	0x1002f8bf4		6e678c00		VCMEQ V7.H8, V0.H8, V0.H8		
+  find_arm64.s:211	0x1002f8bf8		6e678c21		VCMEQ V7.H8, V1.H8, V1.H8		
+  find_arm64.s:212	0x1002f8bfc		6e678c42		VCMEQ V7.H8, V2.H8, V2.H8		
+  find_arm64.s:213	0x1002f8c00		6e678c63		VCMEQ V7.H8, V3.H8, V3.H8		
+  find_arm64.s:214	0x1002f8c04		4e083c04		VMOV V0.D[0], R4			
+  find_arm64.s:215	0x1002f8c08		4e183c05		VMOV V0.D[1], R5			
+  find_arm64.s:216	0x1002f8c0c		aa050084		ORR R5, R4, R4				
+  find_arm64.s:217	0x1002f8c10		aa1f03e5		MOVD ZR, R5				
+  find_arm64.s:218	0x1002f8c14		b5000244		CBNZ R4, 18(PC)				
+  find_arm64.s:219	0x1002f8c18		4e083c24		VMOV V1.D[0], R4			
+  find_arm64.s:220	0x1002f8c1c		4e183c25		VMOV V1.D[1], R5			
+  find_arm64.s:221	0x1002f8c20		aa050084		ORR R5, R4, R4				
+  find_arm64.s:222	0x1002f8c24		b27c03e5		ORR $16, ZR, R5				
+  find_arm64.s:223	0x1002f8c28		b50001a4		CBNZ R4, 13(PC)				
+  find_arm64.s:224	0x1002f8c2c		4e083c44		VMOV V2.D[0], R4			
+  find_arm64.s:225	0x1002f8c30		4e183c45		VMOV V2.D[1], R5			
+  find_arm64.s:226	0x1002f8c34		aa050084		ORR R5, R4, R4				
+  find_arm64.s:227	0x1002f8c38		b27b03e5		ORR $32, ZR, R5				
+  find_arm64.s:228	0x1002f8c3c		b5000104		CBNZ R4, 8(PC)				
+  find_arm64.s:229	0x1002f8c40		4e083c64		VMOV V3.D[0], R4			
+  find_arm64.s:230	0x1002f8c44		4e183c65		VMOV V3.D[1], R5			
+  find_arm64.s:231	0x1002f8c48		aa050084		ORR R5, R4, R4				
+  find_arm64.s:232	0x1002f8c4c		b27c07e5		ORR $48, ZR, R5				
+  find_arm64.s:233	0x1002f8c50		b5000064		CBNZ R4, 3(PC)				
+  find_arm64.s:234	0x1002f8c54		91010000		ADD $64, R0, R0				
+  find_arm64.s:235	0x1002f8c58		17ffffe3		JMP -29(PC)				
+  find_arm64.s:238	0x1002f8c5c		8b050004		ADD R5, R0, R4				
+  find_arm64.s:239	0x1002f8c60		aa1f03e6		MOVD ZR, R6				
+  find_arm64.s:241	0x1002f8c64		78667887		MOVHU (R4)(R6<<1), R7			
+  find_arm64.s:242	0x1002f8c68		6b0200ff		CMPW R2, R7				
+  find_arm64.s:243	0x1002f8c6c		540000c0		BEQ 6(PC)				
+  find_arm64.s:244	0x1002f8c70		910004c6		ADD $1, R6, R6				
+  find_arm64.s:245	0x1002f8c74		f10020df		CMP $8, R6				
+  find_arm64.s:246	0x1002f8c78		54ffff6b		BLT -5(PC)				
+  find_arm64.s:247	0x1002f8c7c		91010000		ADD $64, R0, R0				
+  find_arm64.s:248	0x1002f8c80		17ffffd9		JMP -39(PC)				
+  find_arm64.s:250	0x1002f8c84		cb080087		SUB R8, R4, R7				
+  find_arm64.s:251	0x1002f8c88		d341fce7		LSR $1, R7, R7				
+  find_arm64.s:252	0x1002f8c8c		8b0600e7		ADD R6, R7, R7				
+  find_arm64.s:253	0x1002f8c90		14000023		JMP 35(PC)				
+  find_arm64.s:256	0x1002f8c94		cb000064		SUB R0, R3, R4				
+  find_arm64.s:257	0x1002f8c98		f100409f		CMP $16, R4				
+  find_arm64.s:258	0x1002f8c9c		5400028b		BLT 20(PC)				
+  find_arm64.s:259	0x1002f8ca0		4c407400		VLD1 (R0), [V0.H8]			
+  find_arm64.s:260	0x1002f8ca4		6e678c00		VCMEQ V7.H8, V0.H8, V0.H8		
+  find_arm64.s:261	0x1002f8ca8		4e083c04		VMOV V0.D[0], R4			
+  find_arm64.s:262	0x1002f8cac		4e183c05		VMOV V0.D[1], R5			
+  find_arm64.s:263	0x1002f8cb0		aa050084		ORR R5, R4, R4				
+  find_arm64.s:264	0x1002f8cb4		aa1f03e5		MOVD ZR, R5				
+  find_arm64.s:265	0x1002f8cb8		b5000064		CBNZ R4, 3(PC)				
+  find_arm64.s:266	0x1002f8cbc		91004000		ADD $16, R0, R0				
+  find_arm64.s:267	0x1002f8cc0		17fffff5		JMP -11(PC)				
+  find_arm64.s:270	0x1002f8cc4		8b050004		ADD R5, R0, R4				
+  find_arm64.s:271	0x1002f8cc8		aa1f03e6		MOVD ZR, R6				
+  find_arm64.s:273	0x1002f8ccc		78667887		MOVHU (R4)(R6<<1), R7			
+  find_arm64.s:274	0x1002f8cd0		6b0200ff		CMPW R2, R7				
+  find_arm64.s:275	0x1002f8cd4		54fffd80		BEQ -20(PC)				
+  find_arm64.s:276	0x1002f8cd8		910004c6		ADD $1, R6, R6				
+  find_arm64.s:277	0x1002f8cdc		f10020df		CMP $8, R6				
+  find_arm64.s:278	0x1002f8ce0		54ffff6b		BLT -5(PC)				
+  find_arm64.s:279	0x1002f8ce4		91004000		ADD $16, R0, R0				
+  find_arm64.s:280	0x1002f8ce8		17ffffeb		JMP -21(PC)				
+  find_arm64.s:283	0x1002f8cec		eb03001f		CMP R3, R0				
+  find_arm64.s:284	0x1002f8cf0		54000120		BEQ 9(PC)				
+  find_arm64.s:285	0x1002f8cf4		79400004		MOVHU (R0), R4				
+  find_arm64.s:286	0x1002f8cf8		6b02009f		CMPW R2, R4				
+  find_arm64.s:287	0x1002f8cfc		54000060		BEQ 3(PC)				
+  find_arm64.s:288	0x1002f8d00		91000800		ADD $2, R0, R0				
+  find_arm64.s:289	0x1002f8d04		17fffffa		JMP -6(PC)				
+  find_arm64.s:291	0x1002f8d08		cb080007		SUB R8, R0, R7				
+  find_arm64.s:292	0x1002f8d0c		d341fce7		LSR $1, R7, R7				
+  find_arm64.s:293	0x1002f8d10		14000003		JMP 3(PC)				
+  find_arm64.s:296	0x1002f8d14		f90017e9		MOVD R9, 40(RSP)			
+  find_arm64.s:297	0x1002f8d18		d65f03c0		RET					
+  find_arm64.s:299	0x1002f8d1c		f90017e7		MOVD R7, 40(RSP)			
+  find_arm64.s:300	0x1002f8d20		d65f03c0		RET					
+  find_arm64.s:300	0x1002f8d24		00000000		?					
+  find_arm64.s:300	0x1002f8d28		00000000		?					
+  find_arm64.s:300	0x1002f8d2c		00000000		?					
+
+TEXT github.com/zchee/go-simdutf.findNEON(SB) <autogenerated>
+  <autogenerated>:1	0x1002ffa00		f81c0ffe		MOVD.W R30, -64(RSP)					
+  <autogenerated>:1	0x1002ffa04		f81f83fd		MOVD R29, -8(RSP)					
+  <autogenerated>:1	0x1002ffa08		d10023fd		SUB $8, RSP, R29					
+  <autogenerated>:1	0x1002ffa0c		f90027e0		MOVD R0, 72(RSP)					
+  <autogenerated>:1	0x1002ffa10		f90007e0		MOVD R0, 8(RSP)						
+  <autogenerated>:1	0x1002ffa14		a9010be1		STP (R1, R2), 16(RSP)					
+  <autogenerated>:1	0x1002ffa18		390083e3		MOVB R3, 32(RSP)					
+  <autogenerated>:1	0x1002ffa1c		97ffe3e5		CALL github.com/zchee/go-simdutf.findNEON.abi0(SB)	
+  <autogenerated>:1	0x1002ffa20		f94017e0		MOVD 40(RSP), R0					
+  <autogenerated>:1	0x1002ffa24		f85f83fd		MOVD -8(RSP), R29					
+  <autogenerated>:1	0x1002ffa28		f84407fe		MOVD.P 64(RSP), R30					
+  <autogenerated>:1	0x1002ffa2c		d65f03c0		RET							
+
+TEXT github.com/zchee/go-simdutf.findUTF16NEON(SB) <autogenerated>
+  <autogenerated>:1	0x1002ffa30		f81c0ffe		MOVD.W R30, -64(RSP)					
+  <autogenerated>:1	0x1002ffa34		f81f83fd		MOVD R29, -8(RSP)					
+  <autogenerated>:1	0x1002ffa38		d10023fd		SUB $8, RSP, R29					
+  <autogenerated>:1	0x1002ffa3c		f90027e0		MOVD R0, 72(RSP)					
+  <autogenerated>:1	0x1002ffa40		f90007e0		MOVD R0, 8(RSP)						
+  <autogenerated>:1	0x1002ffa44		a9010be1		STP (R1, R2), 16(RSP)					
+  <autogenerated>:1	0x1002ffa48		790043e3		MOVH R3, 32(RSP)					
+  <autogenerated>:1	0x1002ffa4c		97ffe445		CALL github.com/zchee/go-simdutf.findUTF16NEON.abi0(SB)	
+  <autogenerated>:1	0x1002ffa50		f94017e0		MOVD 40(RSP), R0					
+  <autogenerated>:1	0x1002ffa54		f85f83fd		MOVD -8(RSP), R29					
+  <autogenerated>:1	0x1002ffa58		f84407fe		MOVD.P 64(RSP), R30					
+  <autogenerated>:1	0x1002ffa5c		d65f03c0		RET							

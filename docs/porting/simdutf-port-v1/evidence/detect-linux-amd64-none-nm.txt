@@ -1,0 +1,1 @@
+00000000006eda40 T github.com/zchee/go-simdutf.detectEncodingsScalar

@@ -1,0 +1,724 @@
+TEXT github.com/zchee/go-simdutf.findArchsimd(SB) /tmp/go-simdutf-w06w07-qual/find_archsimd.go
+  find_archsimd.go:44		0x6f87c0		55			PUSHQ BP			
+  find_archsimd.go:44		0x6f87c1		4889e5			MOVQ SP, BP			
+  find_archsimd.go:44		0x6f87c4		4889442410		MOVQ AX, 0x10(SP)		
+  find_archsimd.go:46		0x6f87c9		4885db			TESTQ BX, BX			
+  find_archsimd.go:46		0x6f87cc		742d			JE 0x6f87fb			
+  find_archsimd.go:51		0x6f87ce		4889c2			MOVQ AX, DX			
+  find_archsimd.go:51		0x6f87d1		83e03f			ANDL $0x3f, AX			
+  find_archsimd.go:52		0x6f87d4		4885c0			TESTQ AX, AX			
+  find_archsimd.go:52		0x6f87d7		741e			JE 0x6f87f7			
+  find_archsimd.go:53		0x6f87d9		488d70c0		LEAQ -0x40(AX), SI		
+  find_archsimd.go:53		0x6f87dd		48f7de			NEGQ SI				
+  find_archsimd.go:54		0x6f87e0		4839f3			CMPQ BX, SI			
+  find_archsimd.go:54		0x6f87e3		7d05			JGE 0x6f87ea			
+  find_archsimd.go:46		0x6f87e5		4889d8			MOVQ BX, AX			
+  find_archsimd.go:55		0x6f87e8		eb06			JMP 0x6f87f0			
+  find_archsimd.go:65		0x6f87ea		4889d8			MOVQ BX, AX			
+  find_archsimd.go:57		0x6f87ed		4889f3			MOVQ SI, BX			
+  find_archsimd.go:57		0x6f87f0		31f6			XORL SI, SI			
+  find_archsimd.go:57		0x6f87f2		e92b010000		JMP 0x6f8922			
+  find_archsimd.go:57		0x6f87f7		31c0			XORL AX, AX			
+  find_archsimd.go:52		0x6f87f9		eb04			JMP 0x6f87ff			
+  find_archsimd.go:47		0x6f87fb		31c0			XORL AX, AX			
+  find_archsimd.go:47		0x6f87fd		5d			POPQ BP				
+  find_archsimd.go:47		0x6f87fe		c3			RET				
+  find_archsimd.go:65		0x6f87ff		488d7040		LEAQ 0x40(AX), SI		
+  find_archsimd.go:65		0x6f8803		4839f3			CMPQ BX, SI			
+  find_archsimd.go:65		0x6f8806		7c0d			JL 0x6f8815			
+  other_gen_amd64.go:139	0x6f8808		c4e1f96e		OUTSB DS:0(SI), DX		
+  other_gen_amd64.go:139	0x6f880c		c7			?				
+  find_archsimd.go:66		0x6f880d		90			NOPL				
+  other_gen_amd64.go:139	0x6f880e		c4e27d78c0		JS 0x6f87d3			
+  find_archsimd.go:67		0x6f8813		eb48			JMP 0x6f885d			
+  find_archsimd.go:80		0x6f8815		4839c3			CMPQ BX, AX			
+  find_archsimd.go:80		0x6f8818		7235			JB 0x6f884f			
+  find_archsimd.go:80		0x6f881a		4889c6			MOVQ AX, SI			
+  find_archsimd.go:80		0x6f881d		4829c8			SUBQ CX, AX			
+  find_archsimd.go:80		0x6f8820		48c1f83f		SARQ $0x3f, AX			
+  find_archsimd.go:80		0x6f8824		4821f0			ANDQ SI, AX			
+  find_archsimd.go:80		0x6f8827		4829f3			SUBQ SI, BX			
+  find_archsimd.go:80		0x6f882a		488d0c02		LEAQ 0(DX)(AX*1), CX		
+  find_archsimd.go:80		0x6f882e		31c0			XORL AX, AX			
+  find_scalar.go:24		0x6f8830		eb03			JMP 0x6f8835			
+  find_scalar.go:24		0x6f8832		48ffc0			INCQ AX				
+  find_scalar.go:24		0x6f8835		4839d8			CMPQ AX, BX			
+  find_scalar.go:24		0x6f8838		7d0d			JGE 0x6f8847			
+  find_scalar.go:24		0x6f883a		0fb61408		MOVZX 0(AX)(CX*1), DX		
+  find_scalar.go:24		0x6f883e		6690			NOPW				
+  find_scalar.go:24		0x6f8840		4038fa			CMPL DL, DI			
+  find_scalar.go:25		0x6f8843		75ed			JNE 0x6f8832			
+  find_scalar.go:25		0x6f8845		eb03			JMP 0x6f884a			
+  find_archsimd.go:80		0x6f8847		4889d8			MOVQ BX, AX			
+  find_archsimd.go:80		0x6f884a		4801f0			ADDQ SI, AX			
+  find_archsimd.go:80		0x6f884d		5d			POPQ BP				
+  find_archsimd.go:80		0x6f884e		c3			RET				
+  find_archsimd.go:80		0x6f884f		e8ec61d9ff		CALL runtime.panicBounds(SB)	
+  find_archsimd.go:68		0x6f8854		4c89c9			MOVQ R9, CX			
+  find_archsimd.go:67		0x6f8857		4c89c3			MOVQ R8, BX			
+  find_archsimd.go:67		0x6f885a		4889f0			MOVQ SI, AX			
+  find_archsimd.go:67		0x6f885d		488d7040		LEAQ 0x40(AX), SI		
+  find_archsimd.go:67		0x6f8861		4839f3			CMPQ BX, SI			
+  find_archsimd.go:67		0x6f8864		0f8c8b000000		JL 0x6f88f5			
+  find_archsimd.go:68		0x6f886a		4839c3			CMPQ BX, AX			
+  find_archsimd.go:68		0x6f886d		0f82a7000000		JB 0x6f891a			
+  find_archsimd.go:68		0x6f8873		4989d8			MOVQ BX, R8			
+  find_archsimd.go:68		0x6f8876		4829c3			SUBQ AX, BX			
+  find_archsimd.go:68		0x6f8879		4989c9			MOVQ CX, R9			
+  find_archsimd.go:68		0x6f887c		4829c1			SUBQ AX, CX			
+  find_archsimd.go:68		0x6f887f		4989ca			MOVQ CX, R10			
+  find_archsimd.go:68		0x6f8882		48f7d9			NEGQ CX				
+  find_archsimd.go:68		0x6f8885		48c1f93f		SARQ $0x3f, CX			
+  find_archsimd.go:68		0x6f8889		4821c1			ANDQ AX, CX			
+  find_archsimd.go:68		0x6f888c		4801d1			ADDQ DX, CX			
+  slice_gen_amd64.go:151	0x6f888f		4883fb20		CMPQ BX, $0x20			
+  slice_gen_amd64.go:151	0x6f8893		7279			JB 0x6f890e			
+  find_archsimd.go:69		0x6f8895		4c8d5820		LEAQ 0x20(AX), R11		
+  find_archsimd.go:69		0x6f8899		4d39d8			CMPQ R8, R11			
+  find_archsimd.go:69		0x6f889c		726b			JB 0x6f8909			
+  find_archsimd.go:69		0x6f889e		4883c3e0		ADDQ $-0x20, BX			
+  find_archsimd.go:69		0x6f88a2		4983c2e0		ADDQ $-0x20, R10		
+  find_archsimd.go:69		0x6f88a6		49f7da			NEGQ R10			
+  find_archsimd.go:69		0x6f88a9		49c1fa3f		SARQ $0x3f, R10			
+  find_archsimd.go:69		0x6f88ad		4d21d3			ANDQ R10, R11			
+  find_archsimd.go:69		0x6f88b0		4e8d141a		LEAQ 0(DX)(R11*1), R10		
+  slice_gen_amd64.go:151	0x6f88b4		4883fb20		CMPQ BX, $0x20			
+  slice_gen_amd64.go:151	0x6f88b8		7243			JB 0x6f88fd			
+  slice_gen_amd64.go:151	0x6f88ba		c5fe6f09		VMOVDQU 0(CX), X1		
+  find_archsimd.go:70		0x6f88be		c5f574c8		JE 0x6f888a			
+  find_archsimd.go:70		0x6f88c2		c5fdd7			XLATB DS:0(BX)			
+  find_archsimd.go:70		0x6f88c5		c9			LEAVE				
+  find_archsimd.go:70		0x6f88c6		89c9			MOVL CX, CX			
+  slice_gen_amd64.go:151	0x6f88c8		c4c17e6f0a		VMOVDQU 0(DX), X1		
+  find_archsimd.go:70		0x6f88cd		c5f574c8		JE 0x6f8899			
+  find_archsimd.go:70		0x6f88d1		c5fdd7			XLATB DS:0(BX)			
+  find_archsimd.go:70		0x6f88d4		d9			?				
+  find_archsimd.go:70		0x6f88d5		89db			MOVL BX, BX			
+  find_archsimd.go:70		0x6f88d7		48c1e320		SHLQ $0x20, BX			
+  find_archsimd.go:70		0x6f88db		4809d9			ORQ BX, CX			
+  find_archsimd.go:70		0x6f88de		6690			NOPW				
+  find_archsimd.go:71		0x6f88e0		4885c9			TESTQ CX, CX			
+  find_archsimd.go:71		0x6f88e3		0f846bffffff		JE 0x6f8854			
+  find_archsimd.go:72		0x6f88e9		c5f877			VZEROUPPER			
+  find_archsimd.go:73		0x6f88ec		480fbcc9		BSFQ CX, CX			
+  find_archsimd.go:73		0x6f88f0		4801c8			ADDQ CX, AX			
+  find_archsimd.go:73		0x6f88f3		5d			POPQ BP				
+  find_archsimd.go:73		0x6f88f4		c3			RET				
+  find_archsimd.go:77		0x6f88f5		c5f877			VZEROUPPER			
+  find_archsimd.go:77		0x6f88f8		e918ffffff		JMP 0x6f8815			
+  slice_gen_amd64.go:151	0x6f88fd		48c7c020000000		MOVQ $0x20, AX			
+  slice_gen_amd64.go:151	0x6f8904		e83761d9ff		CALL runtime.panicBounds(SB)	
+  find_archsimd.go:69		0x6f8909		e83261d9ff		CALL runtime.panicBounds(SB)	
+  slice_gen_amd64.go:151	0x6f890e		48c7c020000000		MOVQ $0x20, AX			
+  slice_gen_amd64.go:151	0x6f8915		e82661d9ff		CALL runtime.panicBounds(SB)	
+  find_archsimd.go:68		0x6f891a		e82161d9ff		CALL runtime.panicBounds(SB)	
+  find_archsimd.go:57		0x6f891f		48ffc6			INCQ SI				
+  find_archsimd.go:57		0x6f8922		4839f3			CMPQ BX, SI			
+  find_archsimd.go:57		0x6f8925		7e0f			JLE 0x6f8936			
+  find_archsimd.go:58		0x6f8927		440fb60432		MOVZX 0(DX)(SI*1), R8		
+  find_archsimd.go:58		0x6f892c		4138f8			CMPL R8, DI			
+  find_archsimd.go:58		0x6f892f		75ee			JNE 0x6f891f			
+  find_archsimd.go:59		0x6f8931		4889f0			MOVQ SI, AX			
+  find_archsimd.go:59		0x6f8934		5d			POPQ BP				
+  find_archsimd.go:59		0x6f8935		c3			RET				
+  find_archsimd.go:65		0x6f8936		4889de			MOVQ BX, SI			
+  find_archsimd.go:65		0x6f8939		4889c3			MOVQ AX, BX			
+  find_archsimd.go:65		0x6f893c		4889f0			MOVQ SI, AX			
+  find_archsimd.go:65		0x6f893f		90			NOPL				
+  find_archsimd.go:62		0x6f8940		e9bafeffff		JMP 0x6f87ff			
+
+TEXT github.com/zchee/go-simdutf.findUTF16Archsimd(SB) /tmp/go-simdutf-w06w07-qual/find_archsimd.go
+  find_archsimd.go:83		0x6f8960		55			PUSHQ BP			
+  find_archsimd.go:83		0x6f8961		4889e5			MOVQ SP, BP			
+  find_archsimd.go:83		0x6f8964		4889442410		MOVQ AX, 0x10(SP)		
+  find_archsimd.go:85		0x6f8969		4885db			TESTQ BX, BX			
+  find_archsimd.go:85		0x6f896c		743b			JE 0x6f89a9			
+  find_archsimd.go:90		0x6f896e		4889c2			MOVQ AX, DX			
+  find_archsimd.go:90		0x6f8971		4889c6			MOVQ AX, SI			
+  find_archsimd.go:90		0x6f8974		83e03f			ANDL $0x3f, AX			
+  find_archsimd.go:91		0x6f8977		4885c0			TESTQ AX, AX			
+  find_archsimd.go:91		0x6f897a		7429			JE 0x6f89a5			
+  find_archsimd.go:91		0x6f897c		0fbae600		BTL $0x0, SI			
+  find_archsimd.go:91		0x6f8980		7223			JB 0x6f89a5			
+  find_archsimd.go:92		0x6f8982		488d70c0		LEAQ -0x40(AX), SI		
+  find_archsimd.go:92		0x6f8986		48f7de			NEGQ SI				
+  find_archsimd.go:92		0x6f8989		48d1ee			SHRQ $0x1, SI			
+  find_archsimd.go:93		0x6f898c		4839f3			CMPQ BX, SI			
+  find_archsimd.go:93		0x6f898f		7d05			JGE 0x6f8996			
+  find_archsimd.go:85		0x6f8991		4889d8			MOVQ BX, AX			
+  find_archsimd.go:94		0x6f8994		eb06			JMP 0x6f899c			
+  find_archsimd.go:104		0x6f8996		4889d8			MOVQ BX, AX			
+  find_archsimd.go:96		0x6f8999		4889f3			MOVQ SI, BX			
+  find_archsimd.go:96		0x6f899c		31f6			XORL SI, SI			
+  find_archsimd.go:96		0x6f899e		6690			NOPW				
+  find_archsimd.go:96		0x6f89a0		e95b010000		JMP 0x6f8b00			
+  find_archsimd.go:96		0x6f89a5		31c0			XORL AX, AX			
+  find_archsimd.go:91		0x6f89a7		eb04			JMP 0x6f89ad			
+  find_archsimd.go:86		0x6f89a9		31c0			XORL AX, AX			
+  find_archsimd.go:86		0x6f89ab		5d			POPQ BP				
+  find_archsimd.go:86		0x6f89ac		c3			RET				
+  find_archsimd.go:104		0x6f89ad		488d7020		LEAQ 0x20(AX), SI		
+  find_archsimd.go:104		0x6f89b1		4839f3			CMPQ BX, SI			
+  find_archsimd.go:104		0x6f89b4		7c11			JL 0x6f89c7			
+  other_gen_amd64.go:148	0x6f89b6		c4e1f96e		OUTSB DS:0(SI), DX		
+  other_gen_amd64.go:148	0x6f89ba		c7			?				
+  find_archsimd.go:105		0x6f89bb		90			NOPL				
+  other_gen_amd64.go:148	0x6f89bc		c4e27d79c0		JNS 0x6f8981			
+  other_gen_amd64.go:299	0x6f89c1		c5f5ef			OUTL AX, DX			
+  other_gen_amd64.go:299	0x6f89c4		c9			LEAVE				
+  find_archsimd.go:106		0x6f89c5		eb49			JMP 0x6f8a10			
+  find_archsimd.go:122		0x6f89c7		4839c3			CMPQ BX, AX			
+  find_archsimd.go:122		0x6f89ca		7236			JB 0x6f8a02			
+  find_archsimd.go:122		0x6f89cc		4889c6			MOVQ AX, SI			
+  find_archsimd.go:122		0x6f89cf		4829c8			SUBQ CX, AX			
+  find_archsimd.go:122		0x6f89d2		488d0c36		LEAQ 0(SI)(SI*1), CX		
+  find_archsimd.go:122		0x6f89d6		48c1f83f		SARQ $0x3f, AX			
+  find_archsimd.go:122		0x6f89da		4821c1			ANDQ AX, CX			
+  find_archsimd.go:122		0x6f89dd		4829f3			SUBQ SI, BX			
+  find_archsimd.go:122		0x6f89e0		4801d1			ADDQ DX, CX			
+  find_archsimd.go:122		0x6f89e3		31c0			XORL AX, AX			
+  find_scalar.go:33		0x6f89e5		eb03			JMP 0x6f89ea			
+  find_scalar.go:33		0x6f89e7		48ffc0			INCQ AX				
+  find_scalar.go:33		0x6f89ea		4839d8			CMPQ AX, BX			
+  find_scalar.go:33		0x6f89ed		7d0b			JGE 0x6f89fa			
+  find_scalar.go:33		0x6f89ef		0fb71441		MOVZX 0(CX)(AX*2), DX		
+  find_scalar.go:33		0x6f89f3		6639fa			CMPW DX, DI			
+  find_scalar.go:34		0x6f89f6		75ef			JNE 0x6f89e7			
+  find_scalar.go:34		0x6f89f8		eb03			JMP 0x6f89fd			
+  find_archsimd.go:122		0x6f89fa		4889d8			MOVQ BX, AX			
+  find_archsimd.go:122		0x6f89fd		4801f0			ADDQ SI, AX			
+  find_archsimd.go:122		0x6f8a00		5d			POPQ BP				
+  find_archsimd.go:122		0x6f8a01		c3			RET				
+  find_archsimd.go:122		0x6f8a02		e83960d9ff		CALL runtime.panicBounds(SB)	
+  find_archsimd.go:107		0x6f8a07		4c89c9			MOVQ R9, CX			
+  find_archsimd.go:106		0x6f8a0a		4c89c3			MOVQ R8, BX			
+  find_archsimd.go:106		0x6f8a0d		4889f0			MOVQ SI, AX			
+  find_archsimd.go:106		0x6f8a10		488d7020		LEAQ 0x20(AX), SI		
+  find_archsimd.go:106		0x6f8a14		4839f3			CMPQ BX, SI			
+  find_archsimd.go:106		0x6f8a17		0f8cc4000000		JL 0x6f8ae1			
+  find_archsimd.go:106		0x6f8a1d		0f1f00			NOPL 0(AX)			
+  find_archsimd.go:107		0x6f8a20		4839c3			CMPQ BX, AX			
+  find_archsimd.go:107		0x6f8a23		0f82cf000000		JB 0x6f8af8			
+  find_archsimd.go:107		0x6f8a29		4989d8			MOVQ BX, R8			
+  find_archsimd.go:107		0x6f8a2c		4829c3			SUBQ AX, BX			
+  find_archsimd.go:107		0x6f8a2f		4989c9			MOVQ CX, R9			
+  find_archsimd.go:107		0x6f8a32		4829c1			SUBQ AX, CX			
+  find_archsimd.go:107		0x6f8a35		4c8d1400		LEAQ 0(AX)(AX*1), R10		
+  find_archsimd.go:107		0x6f8a39		4989cb			MOVQ CX, R11			
+  find_archsimd.go:107		0x6f8a3c		48f7d9			NEGQ CX				
+  find_archsimd.go:107		0x6f8a3f		48c1f93f		SARQ $0x3f, CX			
+  find_archsimd.go:107		0x6f8a43		4921ca			ANDQ CX, R10			
+  find_archsimd.go:107		0x6f8a46		498d0c12		LEAQ 0(R10)(DX*1), CX		
+  slice_gen_amd64.go:161	0x6f8a4a		4883fb10		CMPQ BX, $0x10			
+  slice_gen_amd64.go:161	0x6f8a4e		0f829f000000		JB 0x6f8af3			
+  find_archsimd.go:108		0x6f8a54		4c8d5010		LEAQ 0x10(AX), R10		
+  find_archsimd.go:108		0x6f8a58		0f1f840000000000	NOPL 0(AX)(AX*1)		
+  find_archsimd.go:108		0x6f8a60		4d39d0			CMPQ R8, R10			
+  find_archsimd.go:108		0x6f8a63		0f8285000000		JB 0x6f8aee			
+  find_archsimd.go:108		0x6f8a69		4c8d1400		LEAQ 0(AX)(AX*1), R10		
+  find_archsimd.go:108		0x6f8a6d		4d8d5220		LEAQ 0x20(R10), R10		
+  find_archsimd.go:108		0x6f8a71		4883c3f0		ADDQ $-0x10, BX			
+  find_archsimd.go:108		0x6f8a75		4983c3f0		ADDQ $-0x10, R11		
+  find_archsimd.go:108		0x6f8a79		49f7db			NEGQ R11			
+  find_archsimd.go:108		0x6f8a7c		49c1fb3f		SARQ $0x3f, R11			
+  find_archsimd.go:108		0x6f8a80		4d21da			ANDQ R11, R10			
+  find_archsimd.go:108		0x6f8a83		4901d2			ADDQ DX, R10			
+  slice_gen_amd64.go:161	0x6f8a86		4883fb10		CMPQ BX, $0x10			
+  slice_gen_amd64.go:161	0x6f8a8a		725d			JB 0x6f8ae9			
+  slice_gen_amd64.go:161	0x6f8a8c		c5fe6f11		VMOVDQU 0(CX), X2		
+  find_archsimd.go:110		0x6f8a90		c5ed75d0		JNE 0x6f8a64			
+  slice_gen_amd64.go:161	0x6f8a94		c4c17e6f1a		VMOVDQU 0(DX), X3		
+  find_archsimd.go:111		0x6f8a99		c5e575d8		JNE 0x6f8a75			
+  compare_gen_amd64.go:158	0x6f8a9d		c5ed74e2		JE 0x6f8a83			
+  compare_gen_amd64.go:159	0x6f8aa1		c5f574d2		JE 0x6f8a77			
+  compare_gen_amd64.go:159	0x6f8aa5		c5ddef			OUTL AX, DX			
+  compare_gen_amd64.go:159	0x6f8aa8		d2c5			ROLL CL, CH			
+  find_archsimd.go:110		0x6f8aaa		fd			STD				
+  find_archsimd.go:110		0x6f8aab		d7			XLATB DS:0(BX)			
+  find_archsimd.go:110		0x6f8aac		ca89c9			LRET $0xc989			
+  compare_gen_amd64.go:158	0x6f8aaf		c5e574d3		JE 0x6f8a86			
+  compare_gen_amd64.go:159	0x6f8ab3		c5e574d9		JE 0x6f8a90			
+  compare_gen_amd64.go:159	0x6f8ab7		c5edef			OUTL AX, DX			
+  compare_gen_amd64.go:159	0x6f8aba		d3c5			ROLL CL, BP			
+  find_archsimd.go:111		0x6f8abc		fd			STD				
+  find_archsimd.go:111		0x6f8abd		d7			XLATB DS:0(BX)			
+  find_archsimd.go:111		0x6f8abe		da89db48c1e3		FIMUL 0xe3c148db(CX)		
+  find_archsimd.go:112		0x6f8ac4		204809			ANDB CL, 0x9(AX)		
+  find_archsimd.go:112		0x6f8ac7		d9904885c90f		FST 0xfc98548(AX)		
+  find_archsimd.go:113		0x6f8acd		8435ffffffc5		TESTB DH, 0xc5ffffff(IP)	
+  find_archsimd.go:114		0x6f8ad3		f8			CLC				
+  find_archsimd.go:114		0x6f8ad4		7748			JA 0x6f8b1e			
+  find_archsimd.go:115		0x6f8ad6		0fbcc9			BSFL CX, CX			
+  find_archsimd.go:115		0x6f8ad9		48d1e9			SHRQ $0x1, CX			
+  find_archsimd.go:115		0x6f8adc		4801c8			ADDQ CX, AX			
+  find_archsimd.go:115		0x6f8adf		5d			POPQ BP				
+  find_archsimd.go:115		0x6f8ae0		c3			RET				
+  find_archsimd.go:119		0x6f8ae1		c5f877			VZEROUPPER			
+  find_archsimd.go:119		0x6f8ae4		e9defeffff		JMP 0x6f89c7			
+  slice_gen_amd64.go:161	0x6f8ae9		e8525fd9ff		CALL runtime.panicBounds(SB)	
+  find_archsimd.go:108		0x6f8aee		e84d5fd9ff		CALL runtime.panicBounds(SB)	
+  slice_gen_amd64.go:161	0x6f8af3		e8485fd9ff		CALL runtime.panicBounds(SB)	
+  find_archsimd.go:107		0x6f8af8		e8435fd9ff		CALL runtime.panicBounds(SB)	
+  find_archsimd.go:96		0x6f8afd		48ffc6			INCQ SI				
+  find_archsimd.go:96		0x6f8b00		4839f3			CMPQ BX, SI			
+  find_archsimd.go:96		0x6f8b03		7e10			JLE 0x6f8b15			
+  find_archsimd.go:97		0x6f8b05		440fb70472		MOVZX 0(DX)(SI*2), R8		
+  find_archsimd.go:97		0x6f8b0a		664139f8		CMPW R8, DI			
+  find_archsimd.go:97		0x6f8b0e		75ed			JNE 0x6f8afd			
+  find_archsimd.go:98		0x6f8b10		4889f0			MOVQ SI, AX			
+  find_archsimd.go:98		0x6f8b13		5d			POPQ BP				
+  find_archsimd.go:98		0x6f8b14		c3			RET				
+  find_archsimd.go:104		0x6f8b15		4889de			MOVQ BX, SI			
+  find_archsimd.go:104		0x6f8b18		4889c3			MOVQ AX, BX			
+  find_archsimd.go:104		0x6f8b1b		4889f0			MOVQ SI, AX			
+  find_archsimd.go:104		0x6f8b1e		6690			NOPW				
+  find_archsimd.go:101		0x6f8b20		e988feffff		JMP 0x6f89ad			
+
+TEXT github.com/zchee/go-simdutf.findUTF8LengthArchsimdDirectVariant(SB) /tmp/go-simdutf-w06w07-qual/utf8_length_direct_variants_archsimd_amd64_test.go
+  utf8_length_direct_variants_archsimd_amd64_test.go:35	0x7a2a00		493b6610		CMPQ SP, 0x10(R14)							
+  utf8_length_direct_variants_archsimd_amd64_test.go:35	0x7a2a04		0f8684010000		JBE 0x7a2b8e								
+  utf8_length_direct_variants_archsimd_amd64_test.go:35	0x7a2a0a		55			PUSHQ BP								
+  utf8_length_direct_variants_archsimd_amd64_test.go:35	0x7a2a0b		4889e5			MOVQ SP, BP								
+  utf8_length_direct_variants_archsimd_amd64_test.go:35	0x7a2a0e		4883ec50		SUBQ $0x50, SP								
+  utf8_length_direct_variants_archsimd_amd64_test.go:38	0x7a2a12		48898424a0000000	MOVQ AX, 0xa0(SP)							
+  utf8_length_direct_variants_archsimd_amd64_test.go:35	0x7a2a1a		488d4c2460		LEAQ 0x60(SP), CX							
+  utf8_length_direct_variants_archsimd_amd64_test.go:35	0x7a2a1f		440f1139		MOVUPS X15, 0(CX)							
+  utf8_length_direct_variants_archsimd_amd64_test.go:35	0x7a2a23		440f117910		MOVUPS X15, 0x10(CX)							
+  utf8_length_direct_variants_archsimd_amd64_test.go:35	0x7a2a28		440f117920		MOVUPS X15, 0x20(CX)							
+  utf8_length_direct_variants_archsimd_amd64_test.go:35	0x7a2a2d		440f117930		MOVUPS X15, 0x30(CX)							
+  utf8_length_direct_variants_archsimd_amd64_test.go:36	0x7a2a32		8400			TESTB AL, 0(AX)								
+  utf8_length_direct_variants_archsimd_amd64_test.go:36	0x7a2a34		e88736d7ff		CALL testing.(*common).Helper(SB)					
+  utf8_length_direct_variants_archsimd_amd64_test.go:38	0x7a2a39		488b0da8a24200		MOVQ github.com/zchee/go-simdutf.utf8LengthDirectVariants+8(SB), CX	
+  utf8_length_direct_variants_archsimd_amd64_test.go:38	0x7a2a40		48894c2430		MOVQ CX, 0x30(SP)							
+  utf8_length_direct_variants_archsimd_amd64_test.go:38	0x7a2a45		31c0			XORL AX, AX								
+  utf8_length_direct_variants_archsimd_amd64_test.go:38	0x7a2a47		31d2			XORL DX, DX								
+  utf8_length_direct_variants_archsimd_amd64_test.go:38	0x7a2a49		eb04			JMP 0x7a2a4f								
+  utf8_length_direct_variants_archsimd_amd64_test.go:38	0x7a2a4b		488d4601		LEAQ 0x1(SI), AX							
+  utf8_length_direct_variants_archsimd_amd64_test.go:38	0x7a2a4f		4839c8			CMPQ AX, CX								
+  utf8_length_direct_variants_archsimd_amd64_test.go:38	0x7a2a52		0f8db7000000		JGE 0x7a2b0f								
+  utf8_length_direct_variants_archsimd_amd64_test.go:39	0x7a2a58		488b3589a24200		MOVQ github.com/zchee/go-simdutf.utf8LengthDirectVariants+8(SB), SI	
+  utf8_length_direct_variants_archsimd_amd64_test.go:39	0x7a2a5f		90			NOPL									
+  utf8_length_direct_variants_archsimd_amd64_test.go:39	0x7a2a60		4839f0			CMPQ AX, SI								
+  utf8_length_direct_variants_archsimd_amd64_test.go:39	0x7a2a63		0f831f010000		JAE 0x7a2b88								
+  utf8_length_direct_variants_archsimd_amd64_test.go:39	0x7a2a69		4889c6			MOVQ AX, SI								
+  utf8_length_direct_variants_archsimd_amd64_test.go:39	0x7a2a6c		48c1e006		SHLQ $0x6, AX								
+  utf8_length_direct_variants_archsimd_amd64_test.go:39	0x7a2a70		4c8b0569a24200		MOVQ github.com/zchee/go-simdutf.utf8LengthDirectVariants(SB), R8	
+  utf8_length_direct_variants_archsimd_amd64_test.go:39	0x7a2a77		4d8b4c0008		MOVQ 0x8(R8)(AX*1), R9							
+  utf8_length_direct_variants_archsimd_amd64_test.go:39	0x7a2a7c		4d8b0400		MOVQ 0(R8)(AX*1), R8							
+  utf8_length_direct_variants_archsimd_amd64_test.go:39	0x7a2a80		4983f908		CMPQ R9, $0x8								
+  utf8_length_direct_variants_archsimd_amd64_test.go:39	0x7a2a84		75c5			JNE 0x7a2a4b								
+  utf8_length_direct_variants_archsimd_amd64_test.go:39	0x7a2a86		49b96172636873696d64	MOVQ $0x646d697368637261, R9						
+  utf8_length_direct_variants_archsimd_amd64_test.go:39	0x7a2a90		4d3908			CMPQ 0(R8), R9								
+  utf8_length_direct_variants_archsimd_amd64_test.go:39	0x7a2a93		75b6			JNE 0x7a2a4b								
+  utf8_length_direct_variants_archsimd_amd64_test.go:42	0x7a2a95		4885d2			TESTQ DX, DX								
+  utf8_length_direct_variants_archsimd_amd64_test.go:42	0x7a2a98		7455			JE 0x7a2aef								
+  utf8_length_direct_variants_archsimd_amd64_test.go:38	0x7a2a9a		4889742428		MOVQ SI, 0x28(SP)							
+  utf8_length_direct_variants_archsimd_amd64_test.go:39	0x7a2a9f		4889442420		MOVQ AX, 0x20(SP)							
+  utf8_length_direct_variants_archsimd_amd64_test.go:43	0x7a2aa4		488d1535190600		LEAQ 0x61935(IP), DX							
+  utf8_length_direct_variants_archsimd_amd64_test.go:43	0x7a2aab		4889542440		MOVQ DX, 0x40(SP)							
+  utf8_length_direct_variants_archsimd_amd64_test.go:43	0x7a2ab0		488d15f98a1200		LEAQ 0x128af9(IP), DX							
+  utf8_length_direct_variants_archsimd_amd64_test.go:43	0x7a2ab7		4889542448		MOVQ DX, 0x48(SP)							
+  utf8_length_direct_variants_archsimd_amd64_test.go:43	0x7a2abc		488b8424a0000000	MOVQ 0xa0(SP), AX							
+  utf8_length_direct_variants_archsimd_amd64_test.go:43	0x7a2ac4		488d5c2440		LEAQ 0x40(SP), BX							
+  utf8_length_direct_variants_archsimd_amd64_test.go:43	0x7a2ac9		b901000000		MOVL $0x1, CX								
+  utf8_length_direct_variants_archsimd_amd64_test.go:43	0x7a2ace		4889cf			MOVQ CX, DI								
+  utf8_length_direct_variants_archsimd_amd64_test.go:43	0x7a2ad1		e8ea2fd7ff		CALL testing.(*common).Fatal(SB)					
+  utf8_length_direct_variants_archsimd_amd64_test.go:45	0x7a2ad6		488b442420		MOVQ 0x20(SP), AX							
+  utf8_length_direct_variants_archsimd_amd64_test.go:38	0x7a2adb		488b4c2430		MOVQ 0x30(SP), CX							
+  utf8_length_direct_variants_archsimd_amd64_test.go:45	0x7a2ae0		488b742428		MOVQ 0x28(SP), SI							
+  utf8_length_direct_variants_archsimd_amd64_test.go:45	0x7a2ae5		49b96172636873696d64	MOVQ $0x646d697368637261, R9						
+  utf8_length_direct_variants_archsimd_amd64_test.go:45	0x7a2aef		488b15f2a14200		MOVQ github.com/zchee/go-simdutf.utf8LengthDirectVariants+8(SB), DX	
+  utf8_length_direct_variants_archsimd_amd64_test.go:45	0x7a2af6		4839d6			CMPQ SI, DX								
+  utf8_length_direct_variants_archsimd_amd64_test.go:45	0x7a2af9		0f8384000000		JAE 0x7a2b83								
+  utf8_length_direct_variants_archsimd_amd64_test.go:45	0x7a2aff		4c8b05daa14200		MOVQ github.com/zchee/go-simdutf.utf8LengthDirectVariants(SB), R8	
+  utf8_length_direct_variants_archsimd_amd64_test.go:45	0x7a2b06		498d1400		LEAQ 0(R8)(AX*1), DX							
+  utf8_length_direct_variants_archsimd_amd64_test.go:45	0x7a2b0a		e93cffffff		JMP 0x7a2a4b								
+  utf8_length_direct_variants_archsimd_amd64_test.go:47	0x7a2b0f		4885d2			TESTQ DX, DX								
+  utf8_length_direct_variants_archsimd_amd64_test.go:47	0x7a2b12		753c			JNE 0x7a2b50								
+  utf8_length_direct_variants_archsimd_amd64_test.go:38	0x7a2b14		4889542438		MOVQ DX, 0x38(SP)							
+  utf8_length_direct_variants_archsimd_amd64_test.go:48	0x7a2b19		488d15c0180600		LEAQ 0x618c0(IP), DX							
+  utf8_length_direct_variants_archsimd_amd64_test.go:48	0x7a2b20		4889542440		MOVQ DX, 0x40(SP)							
+  utf8_length_direct_variants_archsimd_amd64_test.go:48	0x7a2b25		488d15948a1200		LEAQ 0x128a94(IP), DX							
+  utf8_length_direct_variants_archsimd_amd64_test.go:48	0x7a2b2c		4889542448		MOVQ DX, 0x48(SP)							
+  utf8_length_direct_variants_archsimd_amd64_test.go:48	0x7a2b31		488b8424a0000000	MOVQ 0xa0(SP), AX							
+  utf8_length_direct_variants_archsimd_amd64_test.go:48	0x7a2b39		488d5c2440		LEAQ 0x40(SP), BX							
+  utf8_length_direct_variants_archsimd_amd64_test.go:48	0x7a2b3e		b901000000		MOVL $0x1, CX								
+  utf8_length_direct_variants_archsimd_amd64_test.go:48	0x7a2b43		4889cf			MOVQ CX, DI								
+  utf8_length_direct_variants_archsimd_amd64_test.go:48	0x7a2b46		e8752fd7ff		CALL testing.(*common).Fatal(SB)					
+  utf8_length_direct_variants_archsimd_amd64_test.go:50	0x7a2b4b		488b542438		MOVQ 0x38(SP), DX							
+  utf8_length_direct_variants_archsimd_amd64_test.go:50	0x7a2b50		8402			TESTB AL, 0(DX)								
+  utf8_length_direct_variants_archsimd_amd64_test.go:50	0x7a2b52		488d442460		LEAQ 0x60(SP), AX							
+  utf8_length_direct_variants_archsimd_amd64_test.go:50	0x7a2b57		440f1032		MOVUPS 0(DX), X14							
+  utf8_length_direct_variants_archsimd_amd64_test.go:50	0x7a2b5b		440f1130		MOVUPS X14, 0(AX)							
+  utf8_length_direct_variants_archsimd_amd64_test.go:50	0x7a2b5f		440f107210		MOVUPS 0x10(DX), X14							
+  utf8_length_direct_variants_archsimd_amd64_test.go:50	0x7a2b64		440f117010		MOVUPS X14, 0x10(AX)							
+  utf8_length_direct_variants_archsimd_amd64_test.go:50	0x7a2b69		440f107220		MOVUPS 0x20(DX), X14							
+  utf8_length_direct_variants_archsimd_amd64_test.go:50	0x7a2b6e		440f117020		MOVUPS X14, 0x20(AX)							
+  utf8_length_direct_variants_archsimd_amd64_test.go:50	0x7a2b73		440f107230		MOVUPS 0x30(DX), X14							
+  utf8_length_direct_variants_archsimd_amd64_test.go:50	0x7a2b78		440f117030		MOVUPS X14, 0x30(AX)							
+  utf8_length_direct_variants_archsimd_amd64_test.go:50	0x7a2b7d		4883c450		ADDQ $0x50, SP								
+  utf8_length_direct_variants_archsimd_amd64_test.go:50	0x7a2b81		5d			POPQ BP									
+  utf8_length_direct_variants_archsimd_amd64_test.go:50	0x7a2b82		c3			RET									
+  utf8_length_direct_variants_archsimd_amd64_test.go:45	0x7a2b83		e8b8beceff		CALL runtime.panicBounds(SB)						
+  utf8_length_direct_variants_archsimd_amd64_test.go:39	0x7a2b88		e8b3beceff		CALL runtime.panicBounds(SB)						
+  utf8_length_direct_variants_archsimd_amd64_test.go:39	0x7a2b8d		90			NOPL									
+  utf8_length_direct_variants_archsimd_amd64_test.go:35	0x7a2b8e		4889442448		MOVQ AX, 0x48(SP)							
+  utf8_length_direct_variants_archsimd_amd64_test.go:35	0x7a2b93		e888a1ceff		CALL runtime.morestack_noctxt.abi0(SB)					
+  utf8_length_direct_variants_archsimd_amd64_test.go:35	0x7a2b98		488b442448		MOVQ 0x48(SP), AX							
+  utf8_length_direct_variants_archsimd_amd64_test.go:35	0x7a2b9d		0f1f00			NOPL 0(AX)								
+  utf8_length_direct_variants_archsimd_amd64_test.go:35	0x7a2ba0		e95bfeffff		JMP github.com/zchee/go-simdutf.findUTF8LengthArchsimdDirectVariant(SB)	
+
+TEXT github.com/zchee/go-simdutf.findWestmere.abi0(SB) /tmp/go-simdutf-w06w07-qual/find_amd64.s
+  find_amd64.s:28	0x7bf100		488b742408		MOVQ 0x8(SP), SI	
+  find_amd64.s:29	0x7bf105		4c8b5c2410		MOVQ 0x10(SP), R11	
+  find_amd64.s:30	0x7bf10a		440fb6442420		MOVZX 0x20(SP), R8	
+  find_amd64.s:31	0x7bf110		4d85db			TESTQ R11, R11		
+  find_amd64.s:32	0x7bf113		0f84d6000000		JE 0x7bf1ef		
+  find_amd64.s:34	0x7bf119		66490f6ec0		MOVQ R8, X0		
+  find_amd64.s:35	0x7bf11e		660f60c0		PUNPCKLBW X0, X0	
+  find_amd64.s:36	0x7bf122		660f60c0		PUNPCKLBW X0, X0	
+  find_amd64.s:37	0x7bf126		660f70c000		PSHUFD $0x0, X0, X0	
+  find_amd64.s:39	0x7bf12b		4889f7			MOVQ SI, DI		
+  find_amd64.s:40	0x7bf12e		4e8d0c1e		LEAQ 0(SI)(R11*1), R9	
+  find_amd64.s:42	0x7bf132		4889f0			MOVQ SI, AX		
+  find_amd64.s:43	0x7bf135		4883e03f		ANDQ $0x3f, AX		
+  find_amd64.s:44	0x7bf139		7431			JE 0x7bf16c		
+  find_amd64.s:46	0x7bf13b		48c7c340000000		MOVQ $0x40, BX		
+  find_amd64.s:47	0x7bf142		4829c3			SUBQ AX, BX		
+  find_amd64.s:48	0x7bf145		4c89c9			MOVQ R9, CX		
+  find_amd64.s:49	0x7bf148		4829f9			SUBQ DI, CX		
+  find_amd64.s:50	0x7bf14b		4839d9			CMPQ CX, BX		
+  find_amd64.s:51	0x7bf14e		7303			JAE 0x7bf153		
+  find_amd64.s:52	0x7bf150		4889cb			MOVQ CX, BX		
+  find_amd64.s:55	0x7bf153		4885db			TESTQ BX, BX		
+  find_amd64.s:56	0x7bf156		7414			JE 0x7bf16c		
+  find_amd64.s:57	0x7bf158		0fb607			MOVZX 0(DI), AX		
+  find_amd64.s:58	0x7bf15b		4c39c0			CMPQ AX, R8		
+  find_amd64.s:59	0x7bf15e		0f8482000000		JE 0x7bf1e6		
+  find_amd64.s:60	0x7bf164		48ffc7			INCQ DI			
+  find_amd64.s:61	0x7bf167		48ffcb			DECQ BX			
+  find_amd64.s:62	0x7bf16a		ebe7			JMP 0x7bf153		
+  find_amd64.s:65	0x7bf16c		4c89c9			MOVQ R9, CX		
+  find_amd64.s:66	0x7bf16f		4829f9			SUBQ DI, CX		
+  find_amd64.s:67	0x7bf172		4883f940		CMPQ CX, $0x40		
+  find_amd64.s:68	0x7bf176		725c			JB 0x7bf1d4		
+  find_amd64.s:70	0x7bf178		f30f6f0f		MOVDQU 0(DI), X1	
+  find_amd64.s:71	0x7bf17c		660f74c8		PCMPEQB X0, X1		
+  find_amd64.s:72	0x7bf180		660fd7c1		PMOVMSKB X1, AX		
+  find_amd64.s:73	0x7bf184		f30f6f4f10		MOVDQU 0x10(DI), X1	
+  find_amd64.s:74	0x7bf189		660f74c8		PCMPEQB X0, X1		
+  find_amd64.s:75	0x7bf18d		660fd7d1		PMOVMSKB X1, DX		
+  find_amd64.s:76	0x7bf191		48c1e210		SHLQ $0x10, DX		
+  find_amd64.s:77	0x7bf195		4809d0			ORQ DX, AX		
+  find_amd64.s:78	0x7bf198		f30f6f4f20		MOVDQU 0x20(DI), X1	
+  find_amd64.s:79	0x7bf19d		660f74c8		PCMPEQB X0, X1		
+  find_amd64.s:80	0x7bf1a1		660fd7d1		PMOVMSKB X1, DX		
+  find_amd64.s:81	0x7bf1a5		48c1e220		SHLQ $0x20, DX		
+  find_amd64.s:82	0x7bf1a9		4809d0			ORQ DX, AX		
+  find_amd64.s:83	0x7bf1ac		f30f6f4f30		MOVDQU 0x30(DI), X1	
+  find_amd64.s:84	0x7bf1b1		660f74c8		PCMPEQB X0, X1		
+  find_amd64.s:85	0x7bf1b5		660fd7d1		PMOVMSKB X1, DX		
+  find_amd64.s:86	0x7bf1b9		48c1e230		SHLQ $0x30, DX		
+  find_amd64.s:87	0x7bf1bd		4809d0			ORQ DX, AX		
+  find_amd64.s:88	0x7bf1c0		4885c0			TESTQ AX, AX		
+  find_amd64.s:89	0x7bf1c3		7506			JNE 0x7bf1cb		
+  find_amd64.s:90	0x7bf1c5		4883c740		ADDQ $0x40, DI		
+  find_amd64.s:91	0x7bf1c9		eba1			JMP 0x7bf16c		
+  find_amd64.s:94	0x7bf1cb		480fbcc0		BSFQ AX, AX		
+  find_amd64.s:95	0x7bf1cf		4801c7			ADDQ AX, DI		
+  find_amd64.s:96	0x7bf1d2		eb12			JMP 0x7bf1e6		
+  find_amd64.s:99	0x7bf1d4		4c39cf			CMPQ DI, R9		
+  find_amd64.s:100	0x7bf1d7		7316			JAE 0x7bf1ef		
+  find_amd64.s:101	0x7bf1d9		0fb607			MOVZX 0(DI), AX		
+  find_amd64.s:102	0x7bf1dc		4c39c0			CMPQ AX, R8		
+  find_amd64.s:103	0x7bf1df		7405			JE 0x7bf1e6		
+  find_amd64.s:104	0x7bf1e1		48ffc7			INCQ DI			
+  find_amd64.s:105	0x7bf1e4		ebee			JMP 0x7bf1d4		
+  find_amd64.s:108	0x7bf1e6		4829f7			SUBQ SI, DI		
+  find_amd64.s:109	0x7bf1e9		48897c2428		MOVQ DI, 0x28(SP)	
+  find_amd64.s:110	0x7bf1ee		c3			RET			
+  find_amd64.s:113	0x7bf1ef		4c895c2428		MOVQ R11, 0x28(SP)	
+  find_amd64.s:114	0x7bf1f4		c3			RET			
+
+TEXT github.com/zchee/go-simdutf.findHaswell.abi0(SB) /tmp/go-simdutf-w06w07-qual/find_amd64.s
+  find_amd64.s:118	0x7bf200		488b742408		MOVQ 0x8(SP), SI	
+  find_amd64.s:119	0x7bf205		4c8b5c2410		MOVQ 0x10(SP), R11	
+  find_amd64.s:120	0x7bf20a		440fb6442420		MOVZX 0x20(SP), R8	
+  find_amd64.s:121	0x7bf210		4d85db			TESTQ R11, R11		
+  find_amd64.s:122	0x7bf213		0f84a5000000		JE 0x7bf2be		
+  find_amd64.s:124	0x7bf219		66490f6ec0		MOVQ R8, X0		
+  find_amd64.s:125	0x7bf21e		c4e27d78c0		JS 0x7bf1e3		
+  find_amd64.s:127	0x7bf223		4889f7			MOVQ SI, DI		
+  find_amd64.s:128	0x7bf226		4e8d0c1e		LEAQ 0(SI)(R11*1), R9	
+  find_amd64.s:130	0x7bf22a		4889f0			MOVQ SI, AX		
+  find_amd64.s:131	0x7bf22d		4883e03f		ANDQ $0x3f, AX		
+  find_amd64.s:132	0x7bf231		742d			JE 0x7bf260		
+  find_amd64.s:134	0x7bf233		48c7c340000000		MOVQ $0x40, BX		
+  find_amd64.s:135	0x7bf23a		4829c3			SUBQ AX, BX		
+  find_amd64.s:136	0x7bf23d		4c89c9			MOVQ R9, CX		
+  find_amd64.s:137	0x7bf240		4829f9			SUBQ DI, CX		
+  find_amd64.s:138	0x7bf243		4839d9			CMPQ CX, BX		
+  find_amd64.s:139	0x7bf246		7303			JAE 0x7bf24b		
+  find_amd64.s:140	0x7bf248		4889cb			MOVQ CX, BX		
+  find_amd64.s:143	0x7bf24b		4885db			TESTQ BX, BX		
+  find_amd64.s:144	0x7bf24e		7410			JE 0x7bf260		
+  find_amd64.s:145	0x7bf250		0fb607			MOVZX 0(DI), AX		
+  find_amd64.s:146	0x7bf253		4c39c0			CMPQ AX, R8		
+  find_amd64.s:147	0x7bf256		745a			JE 0x7bf2b2		
+  find_amd64.s:148	0x7bf258		48ffc7			INCQ DI			
+  find_amd64.s:149	0x7bf25b		48ffcb			DECQ BX			
+  find_amd64.s:150	0x7bf25e		ebeb			JMP 0x7bf24b		
+  find_amd64.s:153	0x7bf260		4c89c9			MOVQ R9, CX		
+  find_amd64.s:154	0x7bf263		4829f9			SUBQ DI, CX		
+  find_amd64.s:155	0x7bf266		4883f940		CMPQ CX, $0x40		
+  find_amd64.s:156	0x7bf26a		7234			JB 0x7bf2a0		
+  find_amd64.s:158	0x7bf26c		c5fe6f0f		VMOVDQU 0(DI), X1	
+  find_amd64.s:159	0x7bf270		c5f574c8		JE 0x7bf23c		
+  find_amd64.s:160	0x7bf274		c5fdd7			XLATB DS:0(BX)		
+  find_amd64.s:160	0x7bf277		c1c5fe			ROLL $0xfe, BP		
+  find_amd64.s:161	0x7bf27a		6f			OUTSD DS:0(SI), DX	
+  find_amd64.s:161	0x7bf27b		4f20c5			ANDQ R8, R13		
+  find_amd64.s:162	0x7bf27e		f5			CMC			
+  find_amd64.s:162	0x7bf27f		74c8			JE 0x7bf249		
+  find_amd64.s:163	0x7bf281		c5fdd7			XLATB DS:0(BX)		
+  find_amd64.s:163	0x7bf284		d148c1			RORL $0x1, -0x3f(AX)	
+  find_amd64.s:164	0x7bf287		e220			LOOP 0x7bf2a9		
+  find_amd64.s:165	0x7bf289		4809d0			ORQ DX, AX		
+  find_amd64.s:166	0x7bf28c		4885c0			TESTQ AX, AX		
+  find_amd64.s:167	0x7bf28f		7506			JNE 0x7bf297		
+  find_amd64.s:168	0x7bf291		4883c740		ADDQ $0x40, DI		
+  find_amd64.s:169	0x7bf295		ebc9			JMP 0x7bf260		
+  find_amd64.s:172	0x7bf297		480fbcc0		BSFQ AX, AX		
+  find_amd64.s:173	0x7bf29b		4801c7			ADDQ AX, DI		
+  find_amd64.s:174	0x7bf29e		eb12			JMP 0x7bf2b2		
+  find_amd64.s:177	0x7bf2a0		4c39cf			CMPQ DI, R9		
+  find_amd64.s:178	0x7bf2a3		7319			JAE 0x7bf2be		
+  find_amd64.s:179	0x7bf2a5		0fb607			MOVZX 0(DI), AX		
+  find_amd64.s:180	0x7bf2a8		4c39c0			CMPQ AX, R8		
+  find_amd64.s:181	0x7bf2ab		7405			JE 0x7bf2b2		
+  find_amd64.s:182	0x7bf2ad		48ffc7			INCQ DI			
+  find_amd64.s:183	0x7bf2b0		ebee			JMP 0x7bf2a0		
+  find_amd64.s:186	0x7bf2b2		4829f7			SUBQ SI, DI		
+  find_amd64.s:187	0x7bf2b5		48897c2428		MOVQ DI, 0x28(SP)	
+  find_amd64.s:188	0x7bf2ba		c5f877			VZEROUPPER		
+  find_amd64.s:189	0x7bf2bd		c3			RET			
+  find_amd64.s:192	0x7bf2be		4c895c2428		MOVQ R11, 0x28(SP)	
+  find_amd64.s:193	0x7bf2c3		c5f877			VZEROUPPER		
+  find_amd64.s:194	0x7bf2c6		c3			RET			
+
+TEXT github.com/zchee/go-simdutf.findUTF16Westmere.abi0(SB) /tmp/go-simdutf-w06w07-qual/find_amd64.s
+  find_amd64.s:198	0x7bf2e0		488b742408		MOVQ 0x8(SP), SI	
+  find_amd64.s:199	0x7bf2e5		4c8b5c2410		MOVQ 0x10(SP), R11	
+  find_amd64.s:200	0x7bf2ea		4c0fb7442420		MOVZX 0x20(SP), R8	
+  find_amd64.s:201	0x7bf2f0		4d85db			TESTQ R11, R11		
+  find_amd64.s:202	0x7bf2f3		0f84ec000000		JE 0x7bf3e5		
+  find_amd64.s:204	0x7bf2f9		66490f6ec0		MOVQ R8, X0		
+  find_amd64.s:205	0x7bf2fe		f20f70c000		PSHUFLW $0x0, X0, X0	
+  find_amd64.s:206	0x7bf303		660f70c000		PSHUFD $0x0, X0, X0	
+  find_amd64.s:208	0x7bf308		4889f7			MOVQ SI, DI		
+  find_amd64.s:209	0x7bf30b		4e8d0c5e		LEAQ 0(SI)(R11*2), R9	
+  find_amd64.s:211	0x7bf30f		4889f0			MOVQ SI, AX		
+  find_amd64.s:212	0x7bf312		4883e03f		ANDQ $0x3f, AX		
+  find_amd64.s:213	0x7bf316		7441			JE 0x7bf359		
+  find_amd64.s:214	0x7bf318		48a901000000		TESTQ $0x1, AX		
+  find_amd64.s:215	0x7bf31e		7539			JNE 0x7bf359		
+  find_amd64.s:217	0x7bf320		48c7c340000000		MOVQ $0x40, BX		
+  find_amd64.s:218	0x7bf327		4829c3			SUBQ AX, BX		
+  find_amd64.s:219	0x7bf32a		48d1eb			SHRQ $0x1, BX		
+  find_amd64.s:220	0x7bf32d		4c89c9			MOVQ R9, CX		
+  find_amd64.s:221	0x7bf330		4829f9			SUBQ DI, CX		
+  find_amd64.s:222	0x7bf333		48d1e9			SHRQ $0x1, CX		
+  find_amd64.s:223	0x7bf336		4839d9			CMPQ CX, BX		
+  find_amd64.s:224	0x7bf339		7303			JAE 0x7bf33e		
+  find_amd64.s:225	0x7bf33b		4889cb			MOVQ CX, BX		
+  find_amd64.s:228	0x7bf33e		4885db			TESTQ BX, BX		
+  find_amd64.s:229	0x7bf341		7416			JE 0x7bf359		
+  find_amd64.s:230	0x7bf343		480fb707		MOVZX 0(DI), AX		
+  find_amd64.s:231	0x7bf347		4c39c0			CMPQ AX, R8		
+  find_amd64.s:232	0x7bf34a		0f8489000000		JE 0x7bf3d9		
+  find_amd64.s:233	0x7bf350		4883c702		ADDQ $0x2, DI		
+  find_amd64.s:234	0x7bf354		48ffcb			DECQ BX			
+  find_amd64.s:235	0x7bf357		ebe5			JMP 0x7bf33e		
+  find_amd64.s:238	0x7bf359		4c89c9			MOVQ R9, CX		
+  find_amd64.s:239	0x7bf35c		4829f9			SUBQ DI, CX		
+  find_amd64.s:240	0x7bf35f		4883f940		CMPQ CX, $0x40		
+  find_amd64.s:241	0x7bf363		7260			JB 0x7bf3c5		
+  find_amd64.s:243	0x7bf365		f30f6f0f		MOVDQU 0(DI), X1	
+  find_amd64.s:244	0x7bf369		660f75c8		PCMPEQW X0, X1		
+  find_amd64.s:245	0x7bf36d		660fd7c1		PMOVMSKB X1, AX		
+  find_amd64.s:246	0x7bf371		f30f6f4f10		MOVDQU 0x10(DI), X1	
+  find_amd64.s:247	0x7bf376		660f75c8		PCMPEQW X0, X1		
+  find_amd64.s:248	0x7bf37a		660fd7d1		PMOVMSKB X1, DX		
+  find_amd64.s:249	0x7bf37e		48c1e210		SHLQ $0x10, DX		
+  find_amd64.s:250	0x7bf382		4809d0			ORQ DX, AX		
+  find_amd64.s:251	0x7bf385		f30f6f4f20		MOVDQU 0x20(DI), X1	
+  find_amd64.s:252	0x7bf38a		660f75c8		PCMPEQW X0, X1		
+  find_amd64.s:253	0x7bf38e		660fd7d1		PMOVMSKB X1, DX		
+  find_amd64.s:254	0x7bf392		48c1e220		SHLQ $0x20, DX		
+  find_amd64.s:255	0x7bf396		4809d0			ORQ DX, AX		
+  find_amd64.s:256	0x7bf399		f30f6f4f30		MOVDQU 0x30(DI), X1	
+  find_amd64.s:257	0x7bf39e		660f75c8		PCMPEQW X0, X1		
+  find_amd64.s:258	0x7bf3a2		660fd7d1		PMOVMSKB X1, DX		
+  find_amd64.s:259	0x7bf3a6		48c1e230		SHLQ $0x30, DX		
+  find_amd64.s:260	0x7bf3aa		4809d0			ORQ DX, AX		
+  find_amd64.s:261	0x7bf3ad		4885c0			TESTQ AX, AX		
+  find_amd64.s:262	0x7bf3b0		7506			JNE 0x7bf3b8		
+  find_amd64.s:263	0x7bf3b2		4883c740		ADDQ $0x40, DI		
+  find_amd64.s:264	0x7bf3b6		eba1			JMP 0x7bf359		
+  find_amd64.s:267	0x7bf3b8		480fbcc0		BSFQ AX, AX		
+  find_amd64.s:268	0x7bf3bc		48d1e8			SHRQ $0x1, AX		
+  find_amd64.s:269	0x7bf3bf		488d3c47		LEAQ 0(DI)(AX*2), DI	
+  find_amd64.s:270	0x7bf3c3		eb14			JMP 0x7bf3d9		
+  find_amd64.s:273	0x7bf3c5		4c39cf			CMPQ DI, R9		
+  find_amd64.s:274	0x7bf3c8		731b			JAE 0x7bf3e5		
+  find_amd64.s:275	0x7bf3ca		480fb707		MOVZX 0(DI), AX		
+  find_amd64.s:276	0x7bf3ce		4c39c0			CMPQ AX, R8		
+  find_amd64.s:277	0x7bf3d1		7406			JE 0x7bf3d9		
+  find_amd64.s:278	0x7bf3d3		4883c702		ADDQ $0x2, DI		
+  find_amd64.s:279	0x7bf3d7		ebec			JMP 0x7bf3c5		
+  find_amd64.s:282	0x7bf3d9		4829f7			SUBQ SI, DI		
+  find_amd64.s:283	0x7bf3dc		48d1ef			SHRQ $0x1, DI		
+  find_amd64.s:284	0x7bf3df		48897c2428		MOVQ DI, 0x28(SP)	
+  find_amd64.s:285	0x7bf3e4		c3			RET			
+  find_amd64.s:288	0x7bf3e5		4c895c2428		MOVQ R11, 0x28(SP)	
+  find_amd64.s:289	0x7bf3ea		c3			RET			
+
+TEXT github.com/zchee/go-simdutf.findUTF16Haswell.abi0(SB) /tmp/go-simdutf-w06w07-qual/find_amd64.s
+  find_amd64.s:293	0x7bf400		488b742408		MOVQ 0x8(SP), SI	
+  find_amd64.s:294	0x7bf405		4c8b5c2410		MOVQ 0x10(SP), R11	
+  find_amd64.s:295	0x7bf40a		4c0fb7442420		MOVZX 0x20(SP), R8	
+  find_amd64.s:296	0x7bf410		4d85db			TESTQ R11, R11		
+  find_amd64.s:297	0x7bf413		0f84be000000		JE 0x7bf4d7		
+  find_amd64.s:299	0x7bf419		66490f6ec0		MOVQ R8, X0		
+  find_amd64.s:300	0x7bf41e		c4e27d79c0		JNS 0x7bf3e3		
+  find_amd64.s:302	0x7bf423		4889f7			MOVQ SI, DI		
+  find_amd64.s:303	0x7bf426		4e8d0c5e		LEAQ 0(SI)(R11*2), R9	
+  find_amd64.s:305	0x7bf42a		4889f0			MOVQ SI, AX		
+  find_amd64.s:306	0x7bf42d		4883e03f		ANDQ $0x3f, AX		
+  find_amd64.s:307	0x7bf431		743d			JE 0x7bf470		
+  find_amd64.s:308	0x7bf433		48a901000000		TESTQ $0x1, AX		
+  find_amd64.s:309	0x7bf439		7535			JNE 0x7bf470		
+  find_amd64.s:311	0x7bf43b		48c7c340000000		MOVQ $0x40, BX		
+  find_amd64.s:312	0x7bf442		4829c3			SUBQ AX, BX		
+  find_amd64.s:313	0x7bf445		48d1eb			SHRQ $0x1, BX		
+  find_amd64.s:314	0x7bf448		4c89c9			MOVQ R9, CX		
+  find_amd64.s:315	0x7bf44b		4829f9			SUBQ DI, CX		
+  find_amd64.s:316	0x7bf44e		48d1e9			SHRQ $0x1, CX		
+  find_amd64.s:317	0x7bf451		4839d9			CMPQ CX, BX		
+  find_amd64.s:318	0x7bf454		7303			JAE 0x7bf459		
+  find_amd64.s:319	0x7bf456		4889cb			MOVQ CX, BX		
+  find_amd64.s:322	0x7bf459		4885db			TESTQ BX, BX		
+  find_amd64.s:323	0x7bf45c		7412			JE 0x7bf470		
+  find_amd64.s:324	0x7bf45e		480fb707		MOVZX 0(DI), AX		
+  find_amd64.s:325	0x7bf462		4c39c0			CMPQ AX, R8		
+  find_amd64.s:326	0x7bf465		7461			JE 0x7bf4c8		
+  find_amd64.s:327	0x7bf467		4883c702		ADDQ $0x2, DI		
+  find_amd64.s:328	0x7bf46b		48ffcb			DECQ BX			
+  find_amd64.s:329	0x7bf46e		ebe9			JMP 0x7bf459		
+  find_amd64.s:332	0x7bf470		4c89c9			MOVQ R9, CX		
+  find_amd64.s:333	0x7bf473		4829f9			SUBQ DI, CX		
+  find_amd64.s:334	0x7bf476		4883f940		CMPQ CX, $0x40		
+  find_amd64.s:335	0x7bf47a		7238			JB 0x7bf4b4		
+  find_amd64.s:337	0x7bf47c		c5fe6f0f		VMOVDQU 0(DI), X1	
+  find_amd64.s:338	0x7bf480		c5f575c8		JNE 0x7bf44c		
+  find_amd64.s:339	0x7bf484		c5fdd7			XLATB DS:0(BX)		
+  find_amd64.s:339	0x7bf487		c1c5fe			ROLL $0xfe, BP		
+  find_amd64.s:340	0x7bf48a		6f			OUTSD DS:0(SI), DX	
+  find_amd64.s:340	0x7bf48b		4f20c5			ANDQ R8, R13		
+  find_amd64.s:341	0x7bf48e		f5			CMC			
+  find_amd64.s:341	0x7bf48f		75c8			JNE 0x7bf459		
+  find_amd64.s:342	0x7bf491		c5fdd7			XLATB DS:0(BX)		
+  find_amd64.s:342	0x7bf494		d148c1			RORL $0x1, -0x3f(AX)	
+  find_amd64.s:343	0x7bf497		e220			LOOP 0x7bf4b9		
+  find_amd64.s:344	0x7bf499		4809d0			ORQ DX, AX		
+  find_amd64.s:345	0x7bf49c		4885c0			TESTQ AX, AX		
+  find_amd64.s:346	0x7bf49f		7506			JNE 0x7bf4a7		
+  find_amd64.s:347	0x7bf4a1		4883c740		ADDQ $0x40, DI		
+  find_amd64.s:348	0x7bf4a5		ebc9			JMP 0x7bf470		
+  find_amd64.s:351	0x7bf4a7		480fbcc0		BSFQ AX, AX		
+  find_amd64.s:352	0x7bf4ab		48d1e8			SHRQ $0x1, AX		
+  find_amd64.s:353	0x7bf4ae		488d3c47		LEAQ 0(DI)(AX*2), DI	
+  find_amd64.s:354	0x7bf4b2		eb14			JMP 0x7bf4c8		
+  find_amd64.s:357	0x7bf4b4		4c39cf			CMPQ DI, R9		
+  find_amd64.s:358	0x7bf4b7		731e			JAE 0x7bf4d7		
+  find_amd64.s:359	0x7bf4b9		480fb707		MOVZX 0(DI), AX		
+  find_amd64.s:360	0x7bf4bd		4c39c0			CMPQ AX, R8		
+  find_amd64.s:361	0x7bf4c0		7406			JE 0x7bf4c8		
+  find_amd64.s:362	0x7bf4c2		4883c702		ADDQ $0x2, DI		
+  find_amd64.s:363	0x7bf4c6		ebec			JMP 0x7bf4b4		
+  find_amd64.s:366	0x7bf4c8		4829f7			SUBQ SI, DI		
+  find_amd64.s:367	0x7bf4cb		48d1ef			SHRQ $0x1, DI		
+  find_amd64.s:368	0x7bf4ce		48897c2428		MOVQ DI, 0x28(SP)	
+  find_amd64.s:369	0x7bf4d3		c5f877			VZEROUPPER		
+  find_amd64.s:370	0x7bf4d6		c3			RET			
+  find_amd64.s:373	0x7bf4d7		4c895c2428		MOVQ R11, 0x28(SP)	
+  find_amd64.s:374	0x7bf4dc		c5f877			VZEROUPPER		
+  find_amd64.s:375	0x7bf4df		c3			RET			
+
+TEXT github.com/zchee/go-simdutf.findWestmere(SB) <autogenerated>
+  <autogenerated>:1	0x7c77e0		55			PUSHQ BP						
+  <autogenerated>:1	0x7c77e1		4889e5			MOVQ SP, BP						
+  <autogenerated>:1	0x7c77e4		4883ec28		SUBQ $0x28, SP						
+  <autogenerated>:1	0x7c77e8		4889442438		MOVQ AX, 0x38(SP)					
+  <autogenerated>:1	0x7c77ed		48890424		MOVQ AX, 0(SP)						
+  <autogenerated>:1	0x7c77f1		48895c2408		MOVQ BX, 0x8(SP)					
+  <autogenerated>:1	0x7c77f6		48894c2410		MOVQ CX, 0x10(SP)					
+  <autogenerated>:1	0x7c77fb		40887c2418		MOVB DI, 0x18(SP)					
+  <autogenerated>:1	0x7c7800		e8fb78ffff		CALL github.com/zchee/go-simdutf.findWestmere.abi0(SB)	
+  <autogenerated>:1	0x7c7805		450f57ff		XORPS X15, X15						
+  <autogenerated>:1	0x7c7809		644c8b3425f8ffffff	MOVQ FS:0xfffffff8, R14					
+  <autogenerated>:1	0x7c7812		488b442420		MOVQ 0x20(SP), AX					
+  <autogenerated>:1	0x7c7817		4883c428		ADDQ $0x28, SP						
+  <autogenerated>:1	0x7c781b		5d			POPQ BP							
+  <autogenerated>:1	0x7c781c		c3			RET							
+
+TEXT github.com/zchee/go-simdutf.findHaswell(SB) <autogenerated>
+  <autogenerated>:1	0x7c7820		55			PUSHQ BP						
+  <autogenerated>:1	0x7c7821		4889e5			MOVQ SP, BP						
+  <autogenerated>:1	0x7c7824		4883ec28		SUBQ $0x28, SP						
+  <autogenerated>:1	0x7c7828		4889442438		MOVQ AX, 0x38(SP)					
+  <autogenerated>:1	0x7c782d		48890424		MOVQ AX, 0(SP)						
+  <autogenerated>:1	0x7c7831		48895c2408		MOVQ BX, 0x8(SP)					
+  <autogenerated>:1	0x7c7836		48894c2410		MOVQ CX, 0x10(SP)					
+  <autogenerated>:1	0x7c783b		40887c2418		MOVB DI, 0x18(SP)					
+  <autogenerated>:1	0x7c7840		e8bb79ffff		CALL github.com/zchee/go-simdutf.findHaswell.abi0(SB)	
+  <autogenerated>:1	0x7c7845		450f57ff		XORPS X15, X15						
+  <autogenerated>:1	0x7c7849		644c8b3425f8ffffff	MOVQ FS:0xfffffff8, R14					
+  <autogenerated>:1	0x7c7852		488b442420		MOVQ 0x20(SP), AX					
+  <autogenerated>:1	0x7c7857		4883c428		ADDQ $0x28, SP						
+  <autogenerated>:1	0x7c785b		5d			POPQ BP							
+  <autogenerated>:1	0x7c785c		c3			RET							
+
+TEXT github.com/zchee/go-simdutf.findUTF16Westmere(SB) <autogenerated>
+  <autogenerated>:1	0x7c7860		55			PUSHQ BP							
+  <autogenerated>:1	0x7c7861		4889e5			MOVQ SP, BP							
+  <autogenerated>:1	0x7c7864		4883ec28		SUBQ $0x28, SP							
+  <autogenerated>:1	0x7c7868		4889442438		MOVQ AX, 0x38(SP)						
+  <autogenerated>:1	0x7c786d		48890424		MOVQ AX, 0(SP)							
+  <autogenerated>:1	0x7c7871		48895c2408		MOVQ BX, 0x8(SP)						
+  <autogenerated>:1	0x7c7876		48894c2410		MOVQ CX, 0x10(SP)						
+  <autogenerated>:1	0x7c787b		66897c2418		MOVW DI, 0x18(SP)						
+  <autogenerated>:1	0x7c7880		e85b7affff		CALL github.com/zchee/go-simdutf.findUTF16Westmere.abi0(SB)	
+  <autogenerated>:1	0x7c7885		450f57ff		XORPS X15, X15							
+  <autogenerated>:1	0x7c7889		644c8b3425f8ffffff	MOVQ FS:0xfffffff8, R14						
+  <autogenerated>:1	0x7c7892		488b442420		MOVQ 0x20(SP), AX						
+  <autogenerated>:1	0x7c7897		4883c428		ADDQ $0x28, SP							
+  <autogenerated>:1	0x7c789b		5d			POPQ BP								
+  <autogenerated>:1	0x7c789c		c3			RET								
+
+TEXT github.com/zchee/go-simdutf.findUTF16Haswell(SB) <autogenerated>
+  <autogenerated>:1	0x7c78a0		55			PUSHQ BP							
+  <autogenerated>:1	0x7c78a1		4889e5			MOVQ SP, BP							
+  <autogenerated>:1	0x7c78a4		4883ec28		SUBQ $0x28, SP							
+  <autogenerated>:1	0x7c78a8		4889442438		MOVQ AX, 0x38(SP)						
+  <autogenerated>:1	0x7c78ad		48890424		MOVQ AX, 0(SP)							
+  <autogenerated>:1	0x7c78b1		48895c2408		MOVQ BX, 0x8(SP)						
+  <autogenerated>:1	0x7c78b6		48894c2410		MOVQ CX, 0x10(SP)						
+  <autogenerated>:1	0x7c78bb		66897c2418		MOVW DI, 0x18(SP)						
+  <autogenerated>:1	0x7c78c0		e83b7bffff		CALL github.com/zchee/go-simdutf.findUTF16Haswell.abi0(SB)	
+  <autogenerated>:1	0x7c78c5		450f57ff		XORPS X15, X15							
+  <autogenerated>:1	0x7c78c9		644c8b3425f8ffffff	MOVQ FS:0xfffffff8, R14						
+  <autogenerated>:1	0x7c78d2		488b442420		MOVQ 0x20(SP), AX						
+  <autogenerated>:1	0x7c78d7		4883c428		ADDQ $0x28, SP							
+  <autogenerated>:1	0x7c78db		5d			POPQ BP								
+  <autogenerated>:1	0x7c78dc		c3			RET								
