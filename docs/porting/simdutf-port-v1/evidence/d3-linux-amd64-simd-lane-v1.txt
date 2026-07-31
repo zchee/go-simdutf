@@ -1,0 +1,21 @@
+schema: simdutf-d3-lane-proof-v1
+lane_id: linux-amd64-simd
+host_id: linux-amd64-debian-13-xeon-platinum-8481c
+transport: ssh:debian-13-trixie.gaudiy-platform
+source_commit: 0f597b89c7fe4cf87fb299f8852c8bbc624b157f
+source_tree: ab9aa813977b40ea773d6d0ca9ffe22354548421
+source_parent: bbe53062f80c9a00e6baa8fb8ef0c9115bc21332
+goexperiment: simd
+goamd64: v1
+cgo_enabled: 
+goarch_target: 
+raw_sha256: 8649d6ab237b5aee12d344834bfa09de256fe8852086eb3248567ec0bf9b6966
+exit_ok: true
+---
+START linux-amd64-simd 2026-07-31T09:52:06+00:00
+HOST linux-amd64-debian-13-xeon-platinum-8481c
+SSH debian-13-trixie.gaudiy-platform
+HEAD no-git
+CMD: GOEXPERIMENT=simd GOAMD64=v1 /home/zchee/sdk/go1.26.5/bin/go test -count=1 -timeout=60m .
+ok  	github.com/zchee/go-simdutf	1.094s
+EXIT:0

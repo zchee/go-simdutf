@@ -1,0 +1,20 @@
+schema: simdutf-d3-lane-proof-v1
+lane_id: darwin-arm64-nosimd
+host_id: darwin-arm64-apple-m3-max
+transport: local-physical
+source_commit: 0f597b89c7fe4cf87fb299f8852c8bbc624b157f
+source_tree: ab9aa813977b40ea773d6d0ca9ffe22354548421
+source_parent: bbe53062f80c9a00e6baa8fb8ef0c9115bc21332
+goexperiment: nosimd,runtimesecret
+goamd64: 
+cgo_enabled: 
+goarch_target: 
+raw_sha256: 6c15fa8154bd5d64de96664b02636632196a4a85a1b79e99dfe9b5220ec95dcb
+exit_ok: true
+---
+START nosimd 2026-07-31T18:52:03+09:00
+HOST darwin-arm64-apple-m3-max
+HEAD 0f597b89c7fe4cf87fb299f8852c8bbc624b157f
+go version go1.26.5 darwin/arm64
+ok  	github.com/zchee/go-simdutf	0.982s
+EXIT_NOSIMD:0

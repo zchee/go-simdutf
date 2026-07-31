@@ -1,0 +1,23 @@
+schema: simdutf-d3-lane-proof-v1
+lane_id: linux-s390x-compile
+host_id: linux-amd64-debian-13-xeon-platinum-8481c
+transport: ssh:debian-13-trixie.gaudiy-platform
+source_commit: 0f597b89c7fe4cf87fb299f8852c8bbc624b157f
+source_tree: ab9aa813977b40ea773d6d0ca9ffe22354548421
+source_parent: bbe53062f80c9a00e6baa8fb8ef0c9115bc21332
+goexperiment: none
+goamd64: 
+cgo_enabled: 0
+goarch_target: s390x
+raw_sha256: 0d60d9e5d9b87003c57507222ebd7a44381e8ee27d02ebb8712038ccd8939ef4
+exit_ok: true
+---
+START linux-s390x-compile 2026-07-31T09:52:14+00:00
+HOST linux-amd64-debian-13-xeon-platinum-8481c
+HEAD no-git
+TEST_COMPILE:0
+BUILD:0
+NEON_SYM 1
+WESTMERE_SYM 3
+HASWELL_SYM 2
+ARCHSIMD_SYM 2

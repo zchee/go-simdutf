@@ -78,9 +78,11 @@ func TestFindUTF16(t *testing.T) {
 	}
 }
 
-func TestFindLiveDispatchIsScalar(t *testing.T) {
-	if !sameFunction(activeImplementation.find, findScalar) {
-		t.Fatalf("live find selected %p, want scalar %p", activeImplementation.find, findScalar)
+func TestFindLiveDispatchMatchesQualification(t *testing.T) {
+	// Find may be promoted by qualification on linux-amd64; FindUTF16 stays scalar-first.
+	want := makeImplementation(detectSelectionInput())
+	if !sameFunction(activeImplementation.find, want.find) {
+		t.Fatalf("live find selected %p, want qualification selection %p", activeImplementation.find, want.find)
 	}
 	if !sameFunction(activeImplementation.findUTF16, findUTF16Scalar) {
 		t.Fatalf("live findUTF16 selected %p, want scalar %p", activeImplementation.findUTF16, findUTF16Scalar)

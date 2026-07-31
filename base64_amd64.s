@@ -68,7 +68,7 @@ GLOBL ·base64Spl13<>(SB), RODATA|NOPTR, $16
 
 // setr_epi8 standard shift LUT
 DATA ·base64ShiftStd<>+0(SB)/8, $0xfcfcfcfcfcfcfc47
-DATA ·base64ShiftStd<>+8(SB)/8, $0x000041f0ebfcfcfc
+DATA ·base64ShiftStd<>+8(SB)/8, $0x000041f0edfcfcfc
 GLOBL ·base64ShiftStd<>(SB), RODATA|NOPTR, $16
 
 // setr_epi8 URL shift LUT
@@ -130,9 +130,9 @@ DATA ·base64Spl13Y<>+24(SB)/8, $0x0d0d0d0d0d0d0d0d
 GLOBL ·base64Spl13Y<>(SB), RODATA|NOPTR, $32
 
 DATA ·base64ShiftStdY<>+0(SB)/8, $0xfcfcfcfcfcfcfc47
-DATA ·base64ShiftStdY<>+8(SB)/8, $0x000041f0ebfcfcfc
+DATA ·base64ShiftStdY<>+8(SB)/8, $0x000041f0edfcfcfc
 DATA ·base64ShiftStdY<>+16(SB)/8, $0xfcfcfcfcfcfcfc47
-DATA ·base64ShiftStdY<>+24(SB)/8, $0x000041f0ebfcfcfc
+DATA ·base64ShiftStdY<>+24(SB)/8, $0x000041f0edfcfcfc
 GLOBL ·base64ShiftStdY<>(SB), RODATA|NOPTR, $32
 
 DATA ·base64ShiftURLY<>+0(SB)/8, $0xfcfcfcfcfcfcfc47

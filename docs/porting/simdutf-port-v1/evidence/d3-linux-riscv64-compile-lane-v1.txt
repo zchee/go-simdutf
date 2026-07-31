@@ -1,0 +1,23 @@
+schema: simdutf-d3-lane-proof-v1
+lane_id: linux-riscv64-compile
+host_id: linux-amd64-debian-13-xeon-platinum-8481c
+transport: ssh:debian-13-trixie.gaudiy-platform
+source_commit: 0f597b89c7fe4cf87fb299f8852c8bbc624b157f
+source_tree: ab9aa813977b40ea773d6d0ca9ffe22354548421
+source_parent: bbe53062f80c9a00e6baa8fb8ef0c9115bc21332
+goexperiment: none
+goamd64: 
+cgo_enabled: 0
+goarch_target: riscv64
+raw_sha256: 0b23fbadcb1d544a6d45a939b300e8a472e70e3ad4ebaeb22c0a7c84e7de7b8f
+exit_ok: true
+---
+START linux-riscv64-compile 2026-07-31T09:52:09+00:00
+HOST linux-amd64-debian-13-xeon-platinum-8481c
+HEAD no-git
+TEST_COMPILE:0
+BUILD:0
+NEON_SYM 1
+WESTMERE_SYM 3
+HASWELL_SYM 2
+ARCHSIMD_SYM 2

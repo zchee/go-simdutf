@@ -380,11 +380,6 @@ func completionEvidenceContextFromRecordV1(record EvidenceRecordV1) CompletionEv
 		HostReceiptID: record.HostReceiptID, HostReceiptSHA256: record.HostReceiptDigest,
 	}
 }
-func completionEvidencePathV1(record EvidenceRecordV1, extension string) string {
-	return "raw/" + record.AuthoritySHA256[:12] + "/" + record.FamilyID + "/" + record.CampaignID + "/" +
-		record.LaneID + "/" + record.ProducerID + "/" + record.Kind + "/" + record.StorageID + "/" +
-		record.Digest + "." + extension
-}
 func TestCompletionV1EndToEndFixture(t *testing.T) {
 	completion, context := completionEndToEndFixtureV1(t)
 	if err := ValidateCompletionV1(completion, context); err != nil {
@@ -747,55 +742,6 @@ func completionEndToEndFixtureV1(t *testing.T) (CompletionV1, CompletionValidati
 		Rows: CanonicalCompletionRowsV1(rows),
 	}
 	return completion, context
-}
-
-func completionFinalEvidenceRecordV1(
-	frozen ManifestRowV1, row ClassificationRowV1, cell FinalCellV1, context CompletionEvidenceContextV1,
-	authority, sourceCommit, sourceTree, sourceParent, subject, cellID, backend string, ordinal int,
-	prerequisite, current, kind, disposition, qualification, naReason, naSource string,
-) EvidenceRecordV1 {
-	family, err := FamilyKeyV1(row.FamilyContractDisplayID)
-	if err != nil {
-		panic(err)
-	}
-	record := EvidenceRecordV1{
-		Schema: evidenceSchemaV1, Version: 1, FamilyID: family.StorageID, CampaignID: context.CampaignID,
-		LaneID: "darwin-arm64-nosimd", ProducerID: "completion-fixture", Provider: backend,
-		Kind: kind, MediaType: "application/json", Size: 1, Digest: SHA256Hex([]byte(subject + ":" + current + ":" + cellID)),
-		AuthoritySHA256: authority, SourceCommit: sourceCommit, SourceTree: sourceTree, SourceParent: sourceParent, SourceRole: "new",
-		OriginCampaignID: context.CampaignID, OriginProducerID: "completion-fixture",
-		OriginSourceCommit: sourceCommit, OriginSourceTree: sourceTree, OriginSourceParent: sourceParent,
-		RowID: row.RowKeyV1, CellID: cellID, BatchID: row.ScalarBatchStorageID, TransactionID: row.APITransactionStorageID,
-		OperationID: row.SemanticOperationID, Backend: backend, StateSubject: subject, PrerequisiteState: prerequisite,
-		CurrentState: current, Disposition: disposition, GoQualification: qualification,
-		InitialState: "snapshot_planned", IdentitySetDigest: context.IdentitySetDigest,
-		CommandDigest: context.CommandManifestSHA256, QualificationContractID: context.QualificationContractID,
-		QualificationContractDigest: context.QualificationContractSHA256, CorpusID: context.CorpusID,
-		CorpusDigest: context.CorpusSHA256, HostReceiptID: context.HostReceiptID, HostReceiptDigest: context.HostReceiptSHA256,
-		CommandID: subject + "-" + current, CommandOrdinal: ordinal, CommandAction: "state_transition",
-		CommandRole: "direct", OutputID: "state", OriginPath: "staging/" + subject + "-" + current + ".json",
-		NAReason: naReason, NASource: naSource,
-	}
-	if subject == "row" {
-		record.KeyKind = "row"
-		record.StorageID = row.RowKeyV1
-		record.TupleHex = hex.EncodeToString(EncodeTupleV1(frozen.Cells[manifestFamilyIndex], frozen.Cells[manifestUpstreamSymbolIndex], frozen.Cells[manifestUpstreamSignatureIndex], frozen.Cells[manifestHeaderPathLineIndex], frozen.Cells[manifestGoSymbolIndex], frozen.Cells[manifestGoSignatureIndex]))
-	} else {
-		key, err := CellKeyV1(row.RowKeyV1, backend)
-		if err != nil {
-			panic(err)
-		}
-		record.KeyKind, record.StorageID, record.TupleHex = "cell", key.StorageID, key.TupleHex
-		record.InitialState = "eligible"
-		record.BatchID = cell.EvidenceBatchStorageID
-		record.DirectSymbol, record.SymbolID = cell.DirectSymbol, cell.DirectSymbolStorageID
-		if cell.BackendOutcome == "not_applicable" {
-			record.BatchID = row.ScalarBatchStorageID
-		}
-	}
-	record.Path = completionEvidencePathV1(record, "json")
-	record.ReceiptID = ReceiptIDV1(record)
-	return record
 }
 
 func completionRepositoryRootV1(t *testing.T) string {
