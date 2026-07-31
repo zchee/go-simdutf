@@ -1,0 +1,62 @@
+{
+  "family_contract_id": "FC-v1-detection",
+  "head": "ead04b683e939f9242d559e94080fc6d3b299d06",
+  "lanes": {
+    "darwin-arm64-nosimd-neon": {
+      "host": "darwin-arm64-apple-m3-max",
+      "incumbent": "scalar",
+      "lane": "darwin-arm64-nosimd",
+      "ops": {
+        "DetectEncodings": "direct_only"
+      },
+      "provider_candidate": "neon",
+      "source": "detect-darwin-neon-dispositions-v1.json"
+    },
+    "linux-amd64-none-haswell": {
+      "host": "linux-amd64-debian-13-xeon-platinum-8481c",
+      "incumbent": "scalar",
+      "lane": "linux-amd64-none",
+      "ops": {
+        "DetectEncodings": "direct_only"
+      },
+      "provider_candidate": "haswell",
+      "source": "detect-linux-haswell-dispositions-v1.json"
+    },
+    "linux-amd64-none-westmere": {
+      "host": "linux-amd64-debian-13-xeon-platinum-8481c",
+      "incumbent": "scalar",
+      "lane": "linux-amd64-none",
+      "ops": {
+        "DetectEncodings": "direct_only"
+      },
+      "provider_candidate": "westmere",
+      "source": "detect-linux-westmere-dispositions-v1.json"
+    },
+    "linux-amd64-simd-archsimd": {
+      "host": "linux-amd64-debian-13-xeon-platinum-8481c",
+      "incumbent": "scalar",
+      "lane": "linux-amd64-simd",
+      "ops": {
+        "DetectEncodings": "direct_only"
+      },
+      "provider_candidate": "archsimd",
+      "source": "detect-linux-archsimd-dispositions-v1.json"
+    }
+  },
+  "notes": [
+    "Promote only selected providers ahead of scalar in public dispatch order.",
+    "Direct-only providers remain registered after scalar and forceable via SIMDUTF_FORCE_PROVIDER / SIMDUTF_BENCH_EXPECT_TIER.",
+    "Do not emit/promote until both host campaigns have DONE and every ConvertUTF16* pair is complete."
+  ],
+  "pending_lanes": [],
+  "public_selection": {
+    "darwin-arm64": {
+      "DetectEncodings": "scalar"
+    },
+    "linux-amd64": {
+      "DetectEncodings": "scalar"
+    }
+  },
+  "schema": "simdutf-detect-qualification-summary-v1",
+  "version": 1
+}
