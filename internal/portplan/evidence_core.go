@@ -1381,23 +1381,6 @@ func validateBenchstatArtifactV1(record EvidenceRecordV1, contents []byte, c Evi
 	return nil
 }
 
-func changeBPSV1(oldMedianX2, newMedianX2 int64) (int, error) {
-	if oldMedianX2 <= 0 || newMedianX2 <= 0 {
-		return 0, errors.New("invalid benchmark median")
-	}
-	numerator := new(big.Int).Sub(big.NewInt(oldMedianX2), big.NewInt(newMedianX2))
-	numerator.Mul(numerator, big.NewInt(10000))
-	numerator.Quo(numerator, big.NewInt(oldMedianX2))
-	if !numerator.IsInt64() {
-		return 0, errors.New("benchmark change exceeds integer range")
-	}
-	value := numerator.Int64()
-	if int64(int(value)) != value {
-		return 0, errors.New("benchmark change exceeds platform integer range")
-	}
-	return int(value), nil
-}
-
 func compareBenchmarkChangeV1(oldMedianX2, newMedianX2 int64, thresholdBPS int) (int, error) {
 	if oldMedianX2 <= 0 || newMedianX2 <= 0 {
 		return 0, errors.New("invalid benchmark median")
@@ -1882,17 +1865,4 @@ func sameStrings(a, b []string) bool {
 		}
 	}
 	return true
-}
-func validateFrozenBinding(r EvidenceRecordV1, c EvidenceValidationContextV1) error {
-	b, e := bindingFor(r, c)
-	if e != nil {
-		return e
-	}
-	return validateKeyAndBinding(r, b)
-}
-func validateEvidenceKey(r EvidenceRecordV1) error {
-	return validateTypedEvidenceKey(r)
-}
-func validateBindingsAndState(r EvidenceRecordV1) error {
-	return validateState(r, EvidenceBindingV1{NAReason: r.NAReason, NASource: r.NASource}, nil)
 }

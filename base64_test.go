@@ -78,9 +78,11 @@ func TestBase64ToBinarySafeShort(t *testing.T) {
 	enc := []byte("AQID") // 0x01 0x02 0x03
 	dst := make([]byte, 2)
 	res, written := Base64ToBinarySafe(enc, dst, Base64Default, Loose, false)
-	if res.Error != OutputBufferTooSmall && written != 0 {
-		// Either buffer-too-small or partial success depending on path; must not panic.
-		_ = res
+	if res.Error != OutputBufferTooSmall {
+		t.Fatalf("want OutputBufferTooSmall, got %v written=%d", res.Error, written)
+	}
+	if written != 0 {
+		t.Fatalf("want written=0, got %d", written)
 	}
 }
 

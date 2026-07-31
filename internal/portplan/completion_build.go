@@ -83,7 +83,6 @@ func completionFinalEvidenceRecordV1(
 	return record
 }
 
-
 // LoadQualificationDispositionsV1 reads family disposition JSON files under evidenceDir.
 // Keys are "backend|GoSymbol" with values selected|direct_only.
 func LoadQualificationDispositionsV1(evidenceDir string) (DispositionLookupV1, error) {
@@ -258,7 +257,7 @@ func BuildRepositoryCompletionV1(root string) (CompletionV1, CompletionValidatio
 		return CompletionV1{}, CompletionValidationContextV1{}, err
 	}
 
-		final := append([]ManifestRowV1(nil), initial...)
+	final := append([]ManifestRowV1(nil), initial...)
 	for index := range final {
 		if _, ok := plannedByKey[final[index].RowKeyV1]; ok {
 			final[index].Cells[manifestStatusIndex] = "implemented"
@@ -313,9 +312,6 @@ func BuildRepositoryCompletionV1(root string) (CompletionV1, CompletionValidatio
 	if err != nil {
 		return CompletionV1{}, CompletionValidationContextV1{}, err
 	}
-	// Completion audit requires a clean tree for SourceClean=true; builder still emits
-	// the observed cleanliness so ValidateCompletionV1 can fail closed when dirty.
-	_ = sourceClean
 
 	evidence := CompletionEvidenceContextV1{
 		IdentitySetDigest:           SHA256Hex([]byte("phase-0-final-identity-set")),

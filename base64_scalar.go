@@ -58,8 +58,6 @@ func base64UsePadding(options Base64Options) bool {
 	return url != reverse // XOR: ((url==0) ^ reverse_padding)
 }
 
-func isEightByteByte(_ byte) bool { return true }
-
 func isEightByteUTF16(c uint16) bool { return c <= 0xff }
 
 func isIgnorableByte(c byte, options Base64Options) bool {
@@ -210,7 +208,6 @@ func base64TailDecodeUTF16(dst []byte, src []uint16, paddingCharacters int, opti
 	return base64TailDecodeImplUTF16(dst, src, paddingCharacters, options, lastChunk, checkCapacity)
 }
 
-
 func maximalBinaryLengthFromBase64Scalar(input []byte) int {
 	padding := 0
 	if n := len(input); n > 0 {
@@ -309,7 +306,6 @@ func base64LengthFromBinaryWithLinesScalar(length int, options Base64Options, li
 	return base64Length + lines - 1
 }
 
-
 func base64TailDecodeImplByte(dst []byte, src []byte, paddingCharacters int, options Base64Options, lastChunk LastChunkHandlingOptions, checkCapacity bool) FullResult {
 	return base64TailDecodeImplGeneric(
 		dst,
@@ -321,7 +317,6 @@ func base64TailDecodeImplByte(dst []byte, src []byte, paddingCharacters int, opt
 		func(i int) (byte, bool) { // value, okEight
 			return src[i], true
 		},
-		func(i int) bool { return isIgnorableByte(src[i], options) },
 	)
 }
 
@@ -340,7 +335,6 @@ func base64TailDecodeImplUTF16(dst []byte, src []uint16, paddingCharacters int, 
 			}
 			return byte(c), true
 		},
-		func(i int) bool { return isIgnorableUTF16(src[i], options) },
 	)
 }
 
@@ -352,7 +346,6 @@ func base64TailDecodeImplGeneric(
 	lastChunk LastChunkHandlingOptions,
 	checkCapacity bool,
 	at func(i int) (byte, bool),
-	ignorableAt func(i int) bool,
 ) FullResult {
 	toBase64 := base64ToValueTable(options)
 	d0, d1, d2, d3 := base64DecodeTables(options)
@@ -473,10 +466,8 @@ func base64TailDecodeImplGeneric(
 		dst[dstPos+1] = byte((triple >> 8) & 0xFF)
 		dst[dstPos+2] = byte(triple & 0xFF)
 		dstPos += 3
-		_ = ignorableAt // reserved for future parity hooks
 	}
 }
-
 
 func base64ToBinaryDetailsScalar(input []byte, dst []byte, options Base64Options, lastChunk LastChunkHandlingOptions) FullResult {
 	return base64ToBinaryDetailsByte(input, dst, options, lastChunk, false)
@@ -575,7 +566,6 @@ func base64ToBinaryUTF16Scalar(input []uint16, dst []byte, options Base64Options
 	}
 	return base64ToBinaryDetailsUTF16Scalar(input, dst, options, lastChunk).Result()
 }
-
 
 func binaryToBase64Scalar(input, dst []byte, options Base64Options) int {
 	required := base64LengthFromBinaryScalar(len(input), options)
@@ -830,7 +820,6 @@ func tailEncodeBase64(dst, src []byte, options Base64Options, useLines bool, lin
 	}
 	return out
 }
-
 
 func base64ToBinarySafeScalar(input []byte, dst []byte, options Base64Options, lastChunk LastChunkHandlingOptions, decodeUpToBadChar bool) (Result, int) {
 	if decodeUpToBadChar {

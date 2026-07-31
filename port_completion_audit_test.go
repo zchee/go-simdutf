@@ -59,20 +59,6 @@ func TestPortCompletionAudit(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	lockedText := string(lockedBytes)
-	for _, lane := range []string{
-		"darwin-arm64-nosimd",
-		"darwin-arm64-simd-negative",
-		"linux-amd64-none",
-		"linux-amd64-simd",
-		"linux-riscv64-compile",
-		"linux-s390x-compile",
-	} {
-		// locked-sets stores hex-encoded lane IDs; also accept raw for readability in regenerated sets.
-		if !strings.Contains(lockedText, lane) && !strings.Contains(lockedText, encodeLockedASCII(lane)) {
-			// hex without helper: just require evidence lane proof files below; locked membership checked via decode scan
-		}
-	}
 	for _, lane := range []string{
 		"darwin-arm64-nosimd",
 		"darwin-arm64-simd-negative",
@@ -257,5 +243,3 @@ func lockedSetContainsEvidenceLane(locked []byte, lane string) bool {
 	}
 	return bytes.Contains(locked, hex) || bytes.Contains(locked, []byte(lane))
 }
-
-func encodeLockedASCII(s string) string { return s }
