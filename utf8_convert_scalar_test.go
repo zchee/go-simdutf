@@ -180,3 +180,38 @@ func rawUTF16(native []uint16, little bool) []uint16 {
 	}
 	return out
 }
+
+// TestUTF8ToUTF16HostEndianWrappers is hand-authored Go-only coverage for the
+// host-endian UTF-8 to UTF-16 wrappers; the explicit-endian variants stay the
+// tested oracles, matching TestUTF16HostEndianWrappers.
+func TestUTF8ToUTF16HostEndianWrappers(t *testing.T) {
+	if !nativeLittleEndian() {
+		t.Skip("host-endian wrapper LE-path coverage requires little-endian host")
+	}
+
+	input := []byte("ASCII \u00e9 \u0645 \U0001F600")
+	length := UTF16LengthFromUTF8(input)
+
+	dst := make([]uint16, length)
+	leDst := make([]uint16, length)
+	if got, want := ConvertUTF8ToUTF16WithErrors(input, dst), ConvertUTF8ToUTF16LEWithErrors(input, leDst); got != want || !slices.Equal(dst, leDst) {
+		t.Fatalf("ConvertUTF8ToUTF16WithErrors = %+v, want %+v (payload equal %v)", got, want, slices.Equal(dst, leDst))
+	}
+	if got := ConvertUTF8ToUTF16WithErrors(input, dst); got != (Result{Error: Success, Count: length}) {
+		t.Fatalf("ConvertUTF8ToUTF16WithErrors = %+v, want success count %d", got, length)
+	}
+
+	validDst := make([]uint16, length)
+	validLEDst := make([]uint16, length)
+	if got, want := ConvertValidUTF8ToUTF16(input, validDst), ConvertValidUTF8ToUTF16LE(input, validLEDst); got != want || !slices.Equal(validDst, validLEDst) {
+		t.Fatalf("ConvertValidUTF8ToUTF16 = %d, want %d (payload equal %v)", got, want, slices.Equal(validDst, validLEDst))
+	}
+
+	invalid := []byte{'a', 0xff, 'b'}
+	invalidDst := make([]uint16, UTF16LengthFromUTF8(invalid))
+	invalidLEDst := make([]uint16, len(invalidDst))
+	got, want := ConvertUTF8ToUTF16WithErrors(invalid, invalidDst), ConvertUTF8ToUTF16LEWithErrors(invalid, invalidLEDst)
+	if got != want || got.Error == Success {
+		t.Fatalf("invalid input = %+v, want %+v with non-Success error", got, want)
+	}
+}
