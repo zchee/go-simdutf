@@ -20,6 +20,7 @@ package simdutf
 
 // Archsimd Base64 providers without GOEXPERIMENT=simd: forceable scalar stubs
 // that keep the eight dispatch cells distinct until the simd experiment is on.
+// With goexperiment.simd, base64_archsimd.go owns Contiguous AVX2 decode/encode.
 
 //go:noinline
 func binaryLengthFromBase64Archsimd(input []byte) int {
