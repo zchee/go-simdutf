@@ -194,6 +194,7 @@ func EvidenceRegistryDigestV1(registry *EvidenceRegistryV1) (string, error) {
 	}
 	return SHA256Hex(index), nil
 }
+
 func (r *EvidenceRegistryV1) addValidated(record EvidenceRecordV1) error {
 	key, err := r.validateAdd(record)
 	if err != nil {
@@ -247,31 +248,6 @@ func evidenceStateKeyV1(record EvidenceRecordV1) string {
 	}, "\x00")
 }
 func initialState(subject string, r EvidenceRecordV1) string { return r.InitialState }
-
-func ValidateEvidenceJSONV1(input, contents []byte, context EvidenceValidationContextV1, registry *EvidenceRegistryV1) (EvidenceRecordV1, error) {
-	var r EvidenceRecordV1
-	if registry == nil {
-		return r, errors.New("evidence validation requires a semantic evidence registry")
-	}
-	d := json.NewDecoder(bytes.NewReader(input))
-	d.DisallowUnknownFields()
-	if err := d.Decode(&r); err != nil {
-		return r, err
-	}
-	var trailing any
-	if err := d.Decode(&trailing); err != io.EOF {
-		return r, errors.New("trailing JSON")
-	}
-	canonical, err := json.Marshal(r)
-	if err != nil {
-		return r, err
-	}
-	canonical = append(canonical, '\n')
-	if !bytes.Equal(input, canonical) {
-		return r, errors.New("noncanonical evidence JSON")
-	}
-	return r, ValidateEvidenceRecordV1(r, contents, context, registry)
-}
 func ValidateEvidenceRecordV1(r EvidenceRecordV1, contents []byte, c EvidenceValidationContextV1, registry *EvidenceRegistryV1) error {
 	if registry == nil {
 		return errors.New("evidence validation requires a semantic evidence registry")
@@ -306,6 +282,7 @@ func ValidateEvidenceMetadataV1(r EvidenceRecordV1, size int64, digest string, c
 	}
 	return nil
 }
+
 func validateEvidenceMetadataV1(r EvidenceRecordV1, c EvidenceValidationContextV1) error {
 	_, err := validateEvidenceEnvelopeV1(r, r.Size, r.Digest, c)
 	return err
@@ -408,6 +385,7 @@ func validateEvidenceEnvelopeV1(r EvidenceRecordV1, size int64, digest string, c
 	}
 	return binding, nil
 }
+
 func identitySetDigestV1(c EvidenceValidationContextV1) string {
 	return SHA256Hex(EncodeTupleV1(
 		"evidence-identity-set-v1",
@@ -616,6 +594,7 @@ func validateContext(c EvidenceValidationContextV1) error {
 	}
 	return nil
 }
+
 func bindingFor(r EvidenceRecordV1, c EvidenceValidationContextV1) (EvidenceBindingV1, error) {
 	var found *EvidenceBindingV1
 	for i := range c.ExpectedBindings {
@@ -632,12 +611,14 @@ func bindingFor(r EvidenceRecordV1, c EvidenceValidationContextV1) (EvidenceBind
 	}
 	return *found, nil
 }
+
 func validateKeyAndBinding(r EvidenceRecordV1, b EvidenceBindingV1) error {
 	if r.DisplayID != b.DisplayID || r.TupleHex != b.TupleHex || r.RowID != b.RowID || r.CellID != b.CellID || r.SymbolID != b.SymbolID || r.BatchID != b.BatchID || r.TransactionID != b.TransactionID || r.OperationID != b.OperationID || r.Backend != b.Backend || r.DirectSymbol != b.DirectSymbol || !sameStrings(r.OrderedMembers, b.OrderedMembers) || r.InitialState != b.InitialState || r.Provider != b.Provider {
 		return errors.New("record differs from frozen binding")
 	}
 	return validateTypedEvidenceKey(r)
 }
+
 func validateCommand(r EvidenceRecordV1, b EvidenceBindingV1, c EvidenceValidationContextV1) error {
 	for _, cmd := range c.ExpectedCommands {
 		if cmd.ID != r.CommandID {
@@ -655,6 +636,7 @@ func validateCommand(r EvidenceRecordV1, b EvidenceBindingV1, c EvidenceValidati
 	}
 	return errors.New("unknown frozen command")
 }
+
 func validateRecordSourceIdentityV1(r EvidenceRecordV1, c EvidenceValidationContextV1) error {
 	role := r.CommandRole
 	sourceRole := "new"
@@ -1576,12 +1558,15 @@ func evaluateQualificationOutcomeV1(contract QualificationContractV1, rows []Qua
 	}
 	return "pass", nil
 }
+
 func legalRowTransition(a, b string) bool {
 	return map[string]string{"snapshot_planned": "scalar_private", "scalar_private": "scalar_green", "scalar_green": "family_published", "family_published": "complete"}[a] == b
 }
+
 func legalCellTransition(a, b string) bool {
 	return map[string]map[string]bool{"eligible": {"direct_built": true, "not_applicable": true}, "direct_built": {"hard_gates_green": true}, "hard_gates_green": {"dispatch_candidate": true}, "dispatch_candidate": {"selected": true, "direct_only": true}}[a][b]
 }
+
 func validateBindingTopology(b EvidenceBindingV1) error {
 	if !safeEvidencePart(b.CommandID) || !safeEvidencePart(b.OutputID) || !evidenceKindsV1[b.Kind] || !safeEvidencePart(b.Provider) || (b.InitialState != "snapshot_planned" && b.InitialState != "eligible") {
 		return errors.New("malformed frozen evidence binding")
@@ -1777,6 +1762,7 @@ func requireDirectOnlyProofV1(kinds map[string]bool) bool {
 func validOriginPath(v string) bool {
 	return v != "" && v != "." && !strings.HasPrefix(v, "/") && !strings.ContainsAny(v, "%\\\r\n") && !strings.Contains(v, "..") && path.Clean(v) == v
 }
+
 func ReceiptIDV1(r EvidenceRecordV1) string {
 	fields := []string{
 		"evidence-receipt-v1", r.AuthoritySHA256, r.FamilyID, r.CampaignID, r.LaneID,
@@ -1798,6 +1784,7 @@ func ReceiptIDV1(r EvidenceRecordV1) string {
 	sum := sha256.Sum256(EncodeTupleV1(fields...))
 	return "receipt-v1-" + hex.EncodeToString(sum[:])
 }
+
 func validRawEvidencePath(r EvidenceRecordV1, c EvidenceValidationContextV1) bool {
 	if err := validateContext(c); err != nil || r.AuthoritySHA256 != c.AuthoritySHA256 {
 		return false
@@ -1814,6 +1801,7 @@ func validRawEvidenceRecordPathV1(r EvidenceRecordV1) bool {
 	dot := strings.LastIndexByte(name, '.')
 	return strings.HasPrefix(r.Path, prefix) && dot > 0 && name[:dot] == r.Digest && safeEvidencePart(name[dot+1:]) && !strings.Contains(name, "/") && !strings.ContainsAny(r.Path, "%\\") && !strings.Contains(r.Path, "..") && path.Clean(r.Path) == r.Path
 }
+
 func safeEvidencePart(v string) bool {
 	if v == "" || timestampLike(v) || strings.Contains(v, "latest") {
 		return false
@@ -1825,6 +1813,7 @@ func safeEvidencePart(v string) bool {
 	}
 	return true
 }
+
 func timestampLike(v string) bool {
 	if len(v) != 8 && len(v) != 10 && len(v) != 13 {
 		return false
@@ -1836,6 +1825,7 @@ func timestampLike(v string) bool {
 	}
 	return true
 }
+
 func lowerHex(v string, n int) bool {
 	if len(v) != n {
 		return false
@@ -1847,6 +1837,7 @@ func lowerHex(v string, n int) bool {
 	}
 	return true
 }
+
 func decodeNestedTuple(v string) ([]string, error) {
 	for n := 0; n <= len(v)/2+1; n++ {
 		if f, e := DecodeTupleV1([]byte(v), n); e == nil {
@@ -1855,6 +1846,7 @@ func decodeNestedTuple(v string) ([]string, error) {
 	}
 	return nil, errors.New("invalid nested tuple")
 }
+
 func sameStrings(a, b []string) bool {
 	if len(a) != len(b) {
 		return false

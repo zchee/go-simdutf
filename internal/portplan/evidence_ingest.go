@@ -165,22 +165,6 @@ func safeDescriptorComponentV1(part string) bool {
 	return part != "" && part != "." && part != ".." && !strings.ContainsAny(part, "/\\")
 }
 
-// ValidateReturnIndexV1 validates the canonical complete receipt index for all
-// required command outputs in the frozen context.
-func ValidateReturnIndexV1(indexBytes []byte, context EvidenceValidationContextV1, registry *EvidenceRegistryV1) error {
-	canonical, err := RenderReturnIndexV1(context, registry)
-	if err != nil {
-		return err
-	}
-	if len(canonical) == len(returnIndexHeaderV1) {
-		return errors.New("return index has no required outputs")
-	}
-	if !bytes.Equal(indexBytes, canonical) {
-		return errors.New("return index is not the canonical complete index")
-	}
-	return nil
-}
-
 // RenderEvidenceRegistryIndexV1 renders the canonical global return index for
 // every semantically registered receipt, including retained historical campaigns.
 func RenderEvidenceRegistryIndexV1(registry *EvidenceRegistryV1) ([]byte, error) {

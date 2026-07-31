@@ -35,6 +35,7 @@ var qualificationPolicyHeaderV1 = [...]string{
 	"maximum_p_value_millionths", "no_statistically_significant_slowdown",
 	"inconclusive_outcome", "failure_outcome", "selected_outcome", "required_evidence_kinds",
 }
+
 var qualificationBenchmarkSourceHeaderV1 = [...]string{
 	"schema_version", "ordinal", "operation_ordinal", "operation_id", "public_wrapper", "family_contract_id",
 	"corpus_id", "class", "input_unit", "size_units", "set_bytes_denominator", "options_id", "benchmark_name",
@@ -171,11 +172,6 @@ type QualificationValidationContextV1 struct {
 	BenchmarkSourceBytes []byte
 	BenchmarkOrderBytes  []byte
 	CorpusContractBytes  []byte
-}
-
-// QualificationPolicyHeaderV1 returns a copy of the policy TSV header.
-func QualificationPolicyHeaderV1() []string {
-	return append([]string(nil), qualificationPolicyHeaderV1[:]...)
 }
 
 // RenderQualificationBenchmarkOrderV1 renders the exact frozen primary-key
@@ -550,6 +546,7 @@ func validateQualificationContractV1(contract QualificationContractV1, policy []
 	}
 	return nil
 }
+
 func qualificationApplicabilityV1(family string, context QualificationValidationContextV1) ([]string, []QualificationOperationStatusV1, error) {
 	operations := make(map[string]ClassificationRowV1)
 	for _, row := range context.ClassificationRows {

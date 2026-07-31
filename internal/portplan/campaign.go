@@ -15,12 +15,8 @@
 package portplan
 
 import (
-	"bytes"
-	"crypto/sha256"
-	"encoding/hex"
 	"encoding/json"
 	"errors"
-	"io"
 	"path"
 	"strings"
 )
@@ -53,19 +49,6 @@ type CampaignCommandV1 struct {
 	Provider       string            `json:"provider"`
 }
 
-// CommandRequirementV1 is one exact required command population.
-type CommandRequirementV1 struct {
-	Action, Role, OperationID, BatchID, RowID, CellID, Provider string
-	Count                                                       int
-}
-
-// CommandValidationContextV1 binds a manifest to already-validated inputs.
-type CommandValidationContextV1 struct {
-	Evidence         EvidenceValidationContextV1
-	ExpectedCommands []CampaignCommandV1
-	Requirements     []CommandRequirementV1
-}
-
 var campaignActionsV1 = map[string]bool{
 	"source_commit": true, "source_tree": true, "source_parent": true, "source_status": true,
 	"host_uname": true, "host_cpu": true, "go_version": true, "file_digest": true,
@@ -75,15 +58,6 @@ var campaignActionsV1 = map[string]bool{
 	"quiet_affinity_recheck": true, "state_transition": true, "not_applicable": true, "return_index": true,
 }
 var campaignRolesV1 = map[string]bool{"host": true, "old": true, "new": true, "direct": true, "selector": true, "object": true}
-
-// CampaignCommandTopologyKeyV1 returns the exact command coverage key.
-func CampaignCommandTopologyKeyV1(command CampaignCommandV1) string {
-	key := []string{command.Action, command.Role, command.OperationID, command.BatchID, command.RowID, command.CellID, command.Provider}
-	if command.Action == "file_digest" {
-		key = append(key, command.Argv[len(command.Argv)-1])
-	}
-	return strings.Join(key, "\x00")
-}
 
 // CampaignCacheRootV1 returns the only cache root permitted for a source role.
 func CampaignCacheRootV1(context EvidenceValidationContextV1, sourceRole string) (string, error) {
@@ -124,51 +98,6 @@ func RenderCanonicalCampaignCommandsV1(commands []CampaignCommandV1) ([]byte, er
 		return nil, err
 	}
 	return append(encoded, '\n'), nil
-}
-
-// ValidateCampaignCommandsV1 rejects noncanonical JSON and anything other than
-// the trusted, required command topology.
-func ValidateCampaignCommandsV1(input []byte, context CommandValidationContextV1) ([]CampaignCommandV1, error) {
-	if err := validateContext(context.Evidence); err != nil {
-		return nil, err
-	}
-	var commands []CampaignCommandV1
-	decoder := json.NewDecoder(bytes.NewReader(input))
-	decoder.DisallowUnknownFields()
-	if err := decoder.Decode(&commands); err != nil {
-		return nil, err
-	}
-	var trailing any
-	if err := decoder.Decode(&trailing); err != io.EOF {
-		return nil, errors.New("trailing JSON data")
-	}
-	for i := range commands {
-		if err := validateCampaignCommandV1(commands[i], i+1, context.Evidence); err != nil {
-			return nil, err
-		}
-	}
-	canonical, err := RenderCanonicalCampaignCommandsV1(commands)
-	if err != nil {
-		return nil, err
-	}
-	if !bytes.Equal(input, canonical) {
-		return nil, errors.New("noncanonical command JSON")
-	}
-	expected, err := RenderCanonicalCampaignCommandsV1(context.ExpectedCommands)
-	if err != nil {
-		return nil, err
-	}
-	sum := sha256.Sum256(expected)
-	if context.Evidence.CommandManifestSHA256 != hex.EncodeToString(sum[:]) {
-		return nil, errors.New("trusted command digest does not match context")
-	}
-	if !bytes.Equal(canonical, expected) {
-		return nil, errors.New("command array does not match trusted input")
-	}
-	if err := validateCommandRequirementsV1(commands, context.Requirements); err != nil {
-		return nil, err
-	}
-	return commands, nil
 }
 
 func validateCampaignCommandV1(c CampaignCommandV1, ordinal int, evidence EvidenceValidationContextV1) error {
@@ -225,6 +154,7 @@ func allowedActionRoleV1(action, role string) bool {
 	}
 	return false
 }
+
 func commandCWDV1(action, role string) string {
 	if role == "old" {
 		return "source/old"
@@ -339,6 +269,7 @@ func validateArgvV1(c CampaignCommandV1) error {
 		return errors.New("unsupported command executable profile")
 	}
 }
+
 func exactArgsV1(got, want []string) error {
 	if len(got) != len(want) {
 		return errors.New("incorrect command argv")
@@ -490,6 +421,7 @@ func benchstatInputPathsV1(argv []string) (string, string, bool) {
 	}
 	return incumbent, candidate, incumbent != "" && candidate != "" && incumbent != candidate
 }
+
 func literalTestNameV1(arg, prefix string) bool {
 	name := strings.TrimSuffix(strings.TrimPrefix(arg, prefix), "$")
 	if !strings.HasPrefix(arg, prefix) || !strings.HasSuffix(arg, "$") || name == "" {
@@ -518,6 +450,7 @@ func literalSymbolV1(value string) bool {
 	}
 	return true
 }
+
 func literalCPUSetV1(value string) bool {
 	if value == "" {
 		return false
@@ -637,6 +570,7 @@ func validateEnvV1(c CampaignCommandV1, evidence EvidenceValidationContextV1) er
 	}
 	return nil
 }
+
 func laneSettingsV1(lane string) (string, string, string) {
 	switch lane {
 	case "darwin-arm64-nosimd":
@@ -654,6 +588,7 @@ func laneSettingsV1(lane string) (string, string, string) {
 	}
 	return "", "", ""
 }
+
 func validateCachesV1(c CampaignCommandV1, e EvidenceValidationContextV1) error {
 	if c.Role != "old" && c.Role != "new" {
 		if c.Env["GOCACHE"] == "" || c.Env["GOMODCACHE"] == "" || c.Env["GOCACHE"] == c.Env["GOMODCACHE"] || path.Clean(c.Env["GOCACHE"]) != c.Env["GOCACHE"] || path.Clean(c.Env["GOMODCACHE"]) != c.Env["GOMODCACHE"] {
@@ -732,35 +667,6 @@ func outputExtensionV1(id string) string {
 		return ".json"
 	}
 	return ".txt"
-}
-func validateCommandRequirementsV1(commands []CampaignCommandV1, requirements []CommandRequirementV1) error {
-	if len(requirements) == 0 {
-		return errors.New("command requirements are empty")
-	}
-	required := make(map[string]int, len(requirements))
-	for _, r := range requirements {
-		if r.Count < 1 || !campaignActionsV1[r.Action] || !campaignRolesV1[r.Role] || !allowedActionRoleV1(r.Action, r.Role) || !validID(r.OperationID, "op-v1-") || !validID(r.BatchID, "batch-v1-") || !validID(r.RowID, "rk-v1-") || !validID(r.CellID, "cell-v1-") || !canonicalProviderV1(r.Provider) {
-			return errors.New("invalid command requirement")
-		}
-		key := strings.Join([]string{r.Action, r.Role, r.OperationID, r.BatchID, r.RowID, r.CellID, r.Provider}, "\x00")
-		if _, exists := required[key]; exists {
-			return errors.New("duplicate command requirement")
-		}
-		required[key] = r.Count
-	}
-	actual := make(map[string]int, len(commands))
-	for _, c := range commands {
-		actual[CampaignCommandTopologyKeyV1(c)]++
-	}
-	if len(actual) != len(required) {
-		return errors.New("command topology does not match requirements")
-	}
-	for key, count := range required {
-		if actual[key] != count {
-			return errors.New("command requirement does not match topology")
-		}
-	}
-	return validateBenchmarkTopologyV1(commands)
 }
 
 func validateBenchmarkTopologyV1(commands []CampaignCommandV1) error {

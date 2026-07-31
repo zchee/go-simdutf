@@ -20,24 +20,22 @@ import (
 	"strings"
 )
 
-var reviewedMappingHeaderV1 = [...]string{"mapping_version", "manifest_ordinal", "go_symbol", "family_contract_display_id", "isa_ordinal_or_scalar", "canonical_kernel_name", "westmere_outcome", "westmere_direct_symbol", "westmere_na_reason", "westmere_evidence_anchor", "haswell_outcome", "haswell_direct_symbol", "haswell_na_reason", "haswell_evidence_anchor", "archsimd_outcome", "archsimd_direct_symbol", "archsimd_na_reason", "archsimd_evidence_anchor", "neon_outcome", "neon_direct_symbol", "neon_na_reason", "neon_evidence_anchor"}
-var existingMemberHeaderV1 = [...]string{"mapping_version", "go_symbol", "isa_ordinal_or_scalar", "evidence_anchor"}
-var finalOperationsHeaderV1 = [...]string{"mapping_version", "isa_ordinal", "isa_semantic_operation_exact", "semantic_operation_id", "initial_row_count", "initial_cell_count", "existing_row_count", "reconciliation", "evidence_anchor"}
-var finalCellsHeaderV1 = [...]string{"mapping_version", "row_key_v1", "manifest_ordinal", "canonical_row_rank", "family_contract_display_id", "backend", "cell_storage_id", "semantic_operation_id", "isa_ordinal_or_scalar", "backend_outcome", "backend_na_reason", "backend_evidence_anchor", "direct_symbol", "direct_symbol_storage_id", "shared_kernel_id", "kernel_owner_cell_key", "kernel_owner_dependency_id", "kernel_batch_display_id", "kernel_batch_storage_id", "evidence_batch_display_id", "evidence_batch_storage_id"}
-var kernelRegistryHeaderV1 = [...]string{"mapping_version", "backend", "canonical_kernel_name", "shared_kernel_id", "family_contract_display_id", "semantic_operation_id", "kernel_owner_cell_key", "member_count"}
+var (
+	reviewedMappingHeaderV1 = [...]string{"mapping_version", "manifest_ordinal", "go_symbol", "family_contract_display_id", "isa_ordinal_or_scalar", "canonical_kernel_name", "westmere_outcome", "westmere_direct_symbol", "westmere_na_reason", "westmere_evidence_anchor", "haswell_outcome", "haswell_direct_symbol", "haswell_na_reason", "haswell_evidence_anchor", "archsimd_outcome", "archsimd_direct_symbol", "archsimd_na_reason", "archsimd_evidence_anchor", "neon_outcome", "neon_direct_symbol", "neon_na_reason", "neon_evidence_anchor"}
+	existingMemberHeaderV1  = [...]string{"mapping_version", "go_symbol", "isa_ordinal_or_scalar", "evidence_anchor"}
+	finalOperationsHeaderV1 = [...]string{"mapping_version", "isa_ordinal", "isa_semantic_operation_exact", "semantic_operation_id", "initial_row_count", "initial_cell_count", "existing_row_count", "reconciliation", "evidence_anchor"}
+	finalCellsHeaderV1      = [...]string{"mapping_version", "row_key_v1", "manifest_ordinal", "canonical_row_rank", "family_contract_display_id", "backend", "cell_storage_id", "semantic_operation_id", "isa_ordinal_or_scalar", "backend_outcome", "backend_na_reason", "backend_evidence_anchor", "direct_symbol", "direct_symbol_storage_id", "shared_kernel_id", "kernel_owner_cell_key", "kernel_owner_dependency_id", "kernel_batch_display_id", "kernel_batch_storage_id", "evidence_batch_display_id", "evidence_batch_storage_id"}
+	kernelRegistryHeaderV1  = [...]string{"mapping_version", "backend", "canonical_kernel_name", "shared_kernel_id", "family_contract_display_id", "semantic_operation_id", "kernel_owner_cell_key", "member_count"}
+)
 
-func ReviewedMappingHeaderV1() []string { return append([]string(nil), reviewedMappingHeaderV1[:]...) }
-func ExistingMemberHeaderV1() []string  { return append([]string(nil), existingMemberHeaderV1[:]...) }
-func FinalOperationsHeaderV1() []string { return append([]string(nil), finalOperationsHeaderV1[:]...) }
-func FinalCellsHeaderV1() []string      { return append([]string(nil), finalCellsHeaderV1[:]...) }
-func KernelRegistryHeaderV1() []string  { return append([]string(nil), kernelRegistryHeaderV1[:]...) }
-
-type BackendMappingV1 struct{ Outcome, DirectSymbol, NAReason, EvidenceAnchor string }
-type ReviewedMappingV1 struct {
-	ManifestOrdinal                                                            int
-	GoSymbol, FamilyContractDisplayID, ISAOrdinalOrScalar, CanonicalKernelName string
-	Backends                                                                   [4]BackendMappingV1
-}
+type (
+	BackendMappingV1  struct{ Outcome, DirectSymbol, NAReason, EvidenceAnchor string }
+	ReviewedMappingV1 struct {
+		ManifestOrdinal                                                            int
+		GoSymbol, FamilyContractDisplayID, ISAOrdinalOrScalar, CanonicalKernelName string
+		Backends                                                                   [4]BackendMappingV1
+	}
+)
 type ExistingMemberV1 struct{ GoSymbol, ISAOrdinalOrScalar, EvidenceAnchor string }
 
 func ParseReviewedMappingsV1(data []byte, planned []ManifestRowV1, ledger []ISARowV1) ([]ReviewedMappingV1, error) {
@@ -103,6 +101,7 @@ func ParseReviewedMappingsV1(data []byte, planned []ManifestRowV1, ledger []ISAR
 	}
 	return out, nil
 }
+
 func ParseReviewedExistingMembersV1(data []byte, manifest []ManifestRowV1, ledger []ISARowV1) ([]ExistingMemberV1, error) {
 	lines, e := parseLines(data, "reviewed existing members")
 	if e != nil {
@@ -146,6 +145,7 @@ func ParseReviewedExistingMembersV1(data []byte, manifest []ManifestRowV1, ledge
 	}
 	return out, nil
 }
+
 func ledgerForMapping(m ReviewedMappingV1, ledger []ISARowV1) *ISARowV1 {
 	if m.ISAOrdinalOrScalar == "scalar" {
 		return nil
@@ -215,6 +215,7 @@ func validateBackendMapping(m ReviewedMappingV1, index int, manifest ManifestRow
 	}
 	return nil
 }
+
 func sourcePathToken(source string) string {
 	source = strings.TrimSpace(source)
 	if i := strings.IndexAny(source, ";("); i >= 0 {
@@ -222,6 +223,7 @@ func sourcePathToken(source string) string {
 	}
 	return source
 }
+
 func FamilyContractDisplayIDV1(family string) string {
 	switch family {
 	case "Encoding detection":
@@ -240,6 +242,7 @@ func FamilyContractDisplayIDV1(family string) string {
 		return ""
 	}
 }
+
 func validNAReason(reason string) bool {
 	switch reason {
 	case "native_wrapper_delegates_explicit_endian", "primitive_gap", "composite_wrapper_delegates_accelerated_core":
