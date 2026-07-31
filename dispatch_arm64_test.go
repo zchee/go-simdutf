@@ -318,8 +318,8 @@ func TestMakeImplementationARM64DetectEncodingsQualificationSelection(t *testing
 
 
 func TestMakeImplementationARM64Base64QualificationSelection(t *testing.T) {
-	// FC-v1-base64 SIMD providers are forceable but remain scalar-first until
-	// qualification dispositions promote them.
+	// FC-v1-base64 darwin-arm64 dispositions are direct_only; keep scalar-first
+	// with NEON forceable via SIMDUTF_FORCE_PROVIDER.
 	for _, input := range []selectionInput{
 		{},
 		{features: cpuNEON},

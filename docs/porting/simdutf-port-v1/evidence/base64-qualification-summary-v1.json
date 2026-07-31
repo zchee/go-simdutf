@@ -1,0 +1,104 @@
+{
+  "family_contract_id": "FC-v1-base64",
+  "head": "bbe53062f80c9a00e6baa8fb8ef0c9115bc21332",
+  "lanes": {
+    "darwin-arm64-nosimd-neon": {
+      "host": "darwin-arm64-apple-m3-max",
+      "incumbent": "scalar",
+      "lane": "darwin-arm64-nosimd",
+      "ops": {
+        "Base64ToBinary": "direct_only",
+        "Base64ToBinaryDetails": "direct_only",
+        "Base64ToBinaryDetailsUTF16": "direct_only",
+        "Base64ToBinaryUTF16": "direct_only",
+        "BinaryLengthFromBase64": "direct_only",
+        "BinaryLengthFromBase64UTF16": "direct_only",
+        "BinaryToBase64": "direct_only",
+        "BinaryToBase64WithLines": "direct_only"
+      },
+      "provider_candidate": "neon",
+      "source": "base64-darwin-neon-dispositions-v1.json"
+    },
+    "linux-amd64-none-haswell": {
+      "host": "linux-amd64-debian-13-xeon-platinum-8481c",
+      "incumbent": "scalar",
+      "lane": "linux-amd64-none",
+      "ops": {
+        "Base64ToBinary": "direct_only",
+        "Base64ToBinaryDetails": "direct_only",
+        "Base64ToBinaryDetailsUTF16": "direct_only",
+        "Base64ToBinaryUTF16": "direct_only",
+        "BinaryLengthFromBase64": "selected",
+        "BinaryLengthFromBase64UTF16": "direct_only",
+        "BinaryToBase64": "direct_only",
+        "BinaryToBase64WithLines": "direct_only"
+      },
+      "provider_candidate": "haswell",
+      "source": "base64-linux-haswell-dispositions-v1.json"
+    },
+    "linux-amd64-none-westmere": {
+      "host": "linux-amd64-debian-13-xeon-platinum-8481c",
+      "incumbent": "scalar",
+      "lane": "linux-amd64-none",
+      "ops": {
+        "Base64ToBinary": "direct_only",
+        "Base64ToBinaryDetails": "direct_only",
+        "Base64ToBinaryDetailsUTF16": "direct_only",
+        "Base64ToBinaryUTF16": "direct_only",
+        "BinaryLengthFromBase64": "selected",
+        "BinaryLengthFromBase64UTF16": "direct_only",
+        "BinaryToBase64": "direct_only",
+        "BinaryToBase64WithLines": "direct_only"
+      },
+      "provider_candidate": "westmere",
+      "source": "base64-linux-westmere-dispositions-v1.json"
+    },
+    "linux-amd64-simd-archsimd": {
+      "host": "linux-amd64-debian-13-xeon-platinum-8481c",
+      "incumbent": "scalar",
+      "lane": "linux-amd64-simd",
+      "ops": {
+        "Base64ToBinary": "direct_only",
+        "Base64ToBinaryDetails": "direct_only",
+        "Base64ToBinaryDetailsUTF16": "direct_only",
+        "Base64ToBinaryUTF16": "direct_only",
+        "BinaryLengthFromBase64": "direct_only",
+        "BinaryLengthFromBase64UTF16": "direct_only",
+        "BinaryToBase64": "direct_only",
+        "BinaryToBase64WithLines": "direct_only"
+      },
+      "provider_candidate": "archsimd",
+      "source": "base64-linux-archsimd-dispositions-v1.json"
+    }
+  },
+  "notes": [
+    "Promote only selected providers ahead of scalar in public dispatch order.",
+    "Direct-only providers remain registered after scalar and forceable via SIMDUTF_FORCE_PROVIDER / SIMDUTF_BENCH_EXPECT_TIER.",
+    "Do not emit/promote until both host campaigns have DONE and every ConvertUTF16* pair is complete."
+  ],
+  "pending_lanes": [],
+  "public_selection": {
+    "darwin-arm64": {
+      "Base64ToBinary": "scalar",
+      "Base64ToBinaryDetails": "scalar",
+      "Base64ToBinaryDetailsUTF16": "scalar",
+      "Base64ToBinaryUTF16": "scalar",
+      "BinaryLengthFromBase64": "scalar",
+      "BinaryLengthFromBase64UTF16": "scalar",
+      "BinaryToBase64": "scalar",
+      "BinaryToBase64WithLines": "scalar"
+    },
+    "linux-amd64": {
+      "Base64ToBinary": "scalar",
+      "Base64ToBinaryDetails": "scalar",
+      "Base64ToBinaryDetailsUTF16": "scalar",
+      "Base64ToBinaryUTF16": "scalar",
+      "BinaryLengthFromBase64": "haswell",
+      "BinaryLengthFromBase64UTF16": "scalar",
+      "BinaryToBase64": "scalar",
+      "BinaryToBase64WithLines": "scalar"
+    }
+  },
+  "schema": "simdutf-base64-qualification-summary-v1",
+  "version": 1
+}

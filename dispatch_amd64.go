@@ -640,10 +640,10 @@ func makeImplementation(input selectionInput) implementation {
 		),
 		binaryLengthFromBase64: selectVariant(
 			input,
-			variant[func([]byte) int]{value: binaryLengthFromBase64Scalar, kind: implementationScalar, available: true},
-			variant[func([]byte) int]{value: binaryLengthFromBase64Archsimd, kind: implementationArchsimd, required: cpuAVX2, available: true},
 			variant[func([]byte) int]{value: binaryLengthFromBase64Haswell, kind: implementationHaswell, required: cpuAVX2, available: true},
 			variant[func([]byte) int]{value: binaryLengthFromBase64Westmere, kind: implementationWestmere, required: cpuSSSE3, available: true},
+			variant[func([]byte) int]{value: binaryLengthFromBase64Scalar, kind: implementationScalar, available: true},
+			variant[func([]byte) int]{value: binaryLengthFromBase64Archsimd, kind: implementationArchsimd, required: cpuAVX2, available: true},
 		),
 		binaryLengthFromBase64UTF16: selectVariant(
 			input,

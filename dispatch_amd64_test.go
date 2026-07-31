@@ -416,8 +416,8 @@ func TestMakeImplementationAMD64UTF32SourceQualificationSelection(t *testing.T) 
 
 
 func TestMakeImplementationAMD64Base64QualificationSelection(t *testing.T) {
-	// FC-v1-base64 SIMD providers are forceable but remain scalar-first until
-	// qualification dispositions promote them.
+	// FC-v1-base64 stays scalar-first except BinaryLengthFromBase64, which
+	// qualification selected as haswell/westmere on linux-amd64.
 	for _, input := range []selectionInput{
 		{},
 		{features: cpuSSSE3},
@@ -426,7 +426,13 @@ func TestMakeImplementationAMD64Base64QualificationSelection(t *testing.T) {
 		{features: cpuSSSE3 | cpuAVX2, archsimdAVX2: true},
 	} {
 		got := makeImplementation(input)
-		if !sameFunction(got.binaryLengthFromBase64, binaryLengthFromBase64Scalar) ||
+		wantLen := binaryLengthFromBase64Scalar
+		if input.features&cpuAVX2 != 0 {
+			wantLen = binaryLengthFromBase64Haswell
+		} else if input.features&cpuSSSE3 != 0 {
+			wantLen = binaryLengthFromBase64Westmere
+		}
+		if !sameFunction(got.binaryLengthFromBase64, wantLen) ||
 			!sameFunction(got.binaryLengthFromBase64UTF16, binaryLengthFromBase64UTF16Scalar) ||
 			!sameFunction(got.base64ToBinary, base64ToBinaryScalar) ||
 			!sameFunction(got.base64ToBinaryUTF16, base64ToBinaryUTF16Scalar) ||
@@ -434,7 +440,7 @@ func TestMakeImplementationAMD64Base64QualificationSelection(t *testing.T) {
 			!sameFunction(got.base64ToBinaryDetailsUTF16, base64ToBinaryDetailsUTF16Scalar) ||
 			!sameFunction(got.binaryToBase64, binaryToBase64Scalar) ||
 			!sameFunction(got.binaryToBase64WithLines, binaryToBase64WithLinesScalar) {
-			t.Fatalf("Base64 providers leaked ahead of scalar for %#v", input)
+			t.Fatalf("Base64 selection mismatch for %#v", input)
 		}
 	}
 }
