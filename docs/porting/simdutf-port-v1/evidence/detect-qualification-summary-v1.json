@@ -1,6 +1,6 @@
 {
   "family_contract_id": "FC-v1-detection",
-  "head": "ead04b683e939f9242d559e94080fc6d3b299d06",
+  "head": "fb628e913a404b453da085062768abfa4d80a00e",
   "lanes": {
     "darwin-arm64-nosimd-neon": {
       "host": "darwin-arm64-apple-m3-max",

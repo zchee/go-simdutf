@@ -1,8 +1,8 @@
 {
   "corpus": "Q-byte-zero;Q-emoji;Q-arabic-lipsum",
-  "family_contract_id": "FC-v1-utf16-source",
-  "generated_at": "2026-07-31T09:31:01Z",
-  "head": "ead04b683e939f9242d559e94080fc6d3b299d06",
+  "family_contract_id": "FC-v1-detection",
+  "generated_at": "2026-07-31T09:43:59Z",
+  "head": "fb628e913a404b453da085062768abfa4d80a00e",
   "host": "linux-amd64-debian-13-xeon-platinum-8481c",
   "incumbent": "scalar",
   "lane": "linux-amd64-none",
