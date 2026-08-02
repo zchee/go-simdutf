@@ -16,7 +16,9 @@ package simdutf
 
 import (
 	"bytes"
+	"maps"
 	"os"
+	"slices"
 	"testing"
 )
 
@@ -103,22 +105,17 @@ func invokeRunnableVariants(tb testing.TB, input selectionInput, variants ...dir
 	}
 }
 
-type provenanceExpectation struct {
-	name              string
-	requiredFragments []string
-}
-
-func requireProvenance(tb testing.TB, expectations ...provenanceExpectation) {
+func requireProvenance(tb testing.TB, expectations map[string][]string) {
 	tb.Helper()
-	for _, file := range expectations {
-		contents, err := os.ReadFile(file.name)
+	for _, name := range slices.Sorted(maps.Keys(expectations)) {
+		contents, err := os.ReadFile(name)
 		if err != nil {
-			tb.Errorf("read %s: %v", file.name, err)
+			tb.Errorf("read %s: %v", name, err)
 			continue
 		}
-		for _, fragment := range file.requiredFragments {
+		for _, fragment := range expectations[name] {
 			if !bytes.Contains(contents, []byte(fragment)) {
-				tb.Errorf("%s does not record required provenance fragment %q", file.name, fragment)
+				tb.Errorf("%s does not record required provenance fragment %q", name, fragment)
 			}
 		}
 	}
