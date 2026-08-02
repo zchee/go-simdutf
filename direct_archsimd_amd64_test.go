@@ -20,7 +20,10 @@ import (
 	"bytes"
 	"encoding/binary"
 	"fmt"
+	"os"
 	"slices"
+	"strconv"
+	"strings"
 	"testing"
 	"unicode/utf8"
 )
@@ -2139,4 +2142,710 @@ func FuzzUTFValidationArchsimdAgainstScalar(f *testing.F) {
 			t.Fatalf("UTF-32 result=%+v want=%+v input=%x", got, want, input32)
 		}
 	})
+}
+
+// Independently adapted direct differential coverage for the algorithms at
+// simdutf/simdutf@611becc2a08c27a4edc77d9a45ff74c97130129b (tree
+// c8292790d793212ca0a1faf6ae42e7f8e7b70d4f):
+// src/generic/ascii_validation.h:6-45 and
+// src/haswell/implementation.cpp:278-307. The direct archsimd invocation guard
+// follows Go 1.26.5 src/simd/archsimd/cpu_amd64.go:7-61.
+
+var asciiArchsimdTestLengths = [...]int{
+	0, 1, 15, 16, 17, 31, 32, 33, 63, 64, 65, 127, 128, 129,
+}
+
+var utf16ArchsimdTestLengths = [...]int{
+	0, 1, 7, 8, 9, 15, 16, 17, 31, 32, 33, 63, 64, 65,
+}
+
+func requireASCIIArchsimdAVX2(t *testing.T) {
+	t.Helper()
+	candidate := variant[func()]{
+		value:     func() {},
+		kind:      implementationArchsimd,
+		required:  cpuAVX2,
+		available: true,
+	}
+	if !candidate.supportedBy(detectSelectionInput()) {
+		t.Skip("direct archsimd AVX2 implementation is unsupported")
+	}
+}
+
+func TestValidateASCIIArchsimdMatchesScalar(t *testing.T) {
+	requireASCIIArchsimdAVX2(t)
+
+	for _, length := range asciiArchsimdTestLengths {
+		t.Run(fmt.Sprintf("length=%d/valid", length), func(t *testing.T) {
+			input := makeASCIIArchsimdInput(length)
+			if got, want := validateASCIIArchsimd(input), validateASCIIScalar(input); got != want {
+				t.Fatalf("validateASCIIArchsimd() = %t, want %t", got, want)
+			}
+			if got, want := validateASCIIWithErrorsArchsimd(input), validateASCIIWithErrorsScalar(input); got != want {
+				t.Fatalf("validateASCIIWithErrorsArchsimd() = %+v, want %+v", got, want)
+			}
+		})
+
+		for position := 0; position < length; position++ {
+			t.Run(fmt.Sprintf("length=%d/invalid=%d", length, position), func(t *testing.T) {
+				input := makeASCIIArchsimdInput(length)
+				input[position] = 0x80 | byte(position&0x7f)
+				if got, want := validateASCIIArchsimd(input), validateASCIIScalar(input); got != want {
+					t.Fatalf("validateASCIIArchsimd() = %t, want %t", got, want)
+				}
+				want := Result{Error: TooLarge, Count: position}
+				if got := validateASCIIWithErrorsArchsimd(input); got != want {
+					t.Fatalf("validateASCIIWithErrorsArchsimd() = %+v, want %+v", got, want)
+				}
+			})
+		}
+
+		if length > 1 {
+			t.Run(fmt.Sprintf("length=%d/multiple", length), func(t *testing.T) {
+				input := makeASCIIArchsimdInput(length)
+				positions := [...]int{0, length / 2, length - 1}
+				for _, position := range positions {
+					input[position] = 0xff
+				}
+				if validateASCIIArchsimd(input) {
+					t.Fatal("validateASCIIArchsimd() = true, want false")
+				}
+				want := Result{Error: TooLarge, Count: positions[0]}
+				if got := validateASCIIWithErrorsArchsimd(input); got != want {
+					t.Fatalf("validateASCIIWithErrorsArchsimd() = %+v, want %+v", got, want)
+				}
+			})
+		}
+	}
+}
+
+func TestValidateUTF16AsASCIIArchsimdMatchesScalar(t *testing.T) {
+	requireASCIIArchsimdAVX2(t)
+
+	tests := [...]struct {
+		name       string
+		validRaw   uint16
+		invalidRaw uint16
+		archsimd   func([]uint16) bool
+		scalar     func([]uint16) bool
+	}{
+		{
+			name:       "little-endian-raw",
+			validRaw:   0x007f,
+			invalidRaw: 0x0080,
+			archsimd:   validateUTF16LEAsASCIIArchsimd,
+			scalar:     validateUTF16LEAsASCIIScalar,
+		},
+		{
+			name:       "big-endian-raw",
+			validRaw:   0x7f00,
+			invalidRaw: 0x8000,
+			archsimd:   validateUTF16BEAsASCIIArchsimd,
+			scalar:     validateUTF16BEAsASCIIScalar,
+		},
+	}
+
+	for _, test := range tests {
+		t.Run(test.name, func(t *testing.T) {
+			for _, length := range utf16ArchsimdTestLengths {
+				t.Run(fmt.Sprintf("length=%d/valid", length), func(t *testing.T) {
+					input := make([]uint16, length)
+					for i := range input {
+						input[i] = test.validRaw
+					}
+					if got, want := test.archsimd(input), test.scalar(input); got != want {
+						t.Fatalf("archsimd() = %t, want scalar %t", got, want)
+					}
+				})
+
+				for position := 0; position < length; position++ {
+					t.Run(fmt.Sprintf("length=%d/invalid=%d", length, position), func(t *testing.T) {
+						input := make([]uint16, length)
+						for i := range input {
+							input[i] = test.validRaw
+						}
+						input[position] = test.invalidRaw
+						if got, want := test.archsimd(input), test.scalar(input); got != want {
+							t.Fatalf("archsimd() = %t, want scalar %t", got, want)
+						}
+					})
+				}
+			}
+		})
+	}
+}
+
+func makeASCIIArchsimdInput(length int) []byte {
+	input := make([]byte, length)
+	for i := range input {
+		input[i] = byte((i*29 + 7) & 0x7f)
+	}
+	return input
+}
+
+// Hand-authored Go-only benchmark registration for the independent archsimd
+// adaptation of simdutf/simdutf@611becc2a08c27a4edc77d9a45ff74c97130129b
+// (tree c8292790d793212ca0a1faf6ae42e7f8e7b70d4f),
+// src/generic/ascii_validation.h:6-45. It uses the test-only registry defined
+// by ascii_direct_variants_test.go and adds no benchmark procedure or result.
+
+func init() {
+	registerASCIIDirectBenchmarkVariants(
+		"archsimd",
+		variant[func([]byte) bool]{
+			value:     validateASCIIArchsimd,
+			kind:      implementationArchsimd,
+			required:  cpuAVX2,
+			available: true,
+		},
+		variant[func([]byte) Result]{
+			value:     validateASCIIWithErrorsArchsimd,
+			kind:      implementationArchsimd,
+			required:  cpuAVX2,
+			available: true,
+		},
+	)
+}
+
+// Hand-authored Go-only direct fuzz registration for the archsimd adaptation
+// pinned to simdutf/simdutf@611becc2a08c27a4edc77d9a45ff74c97130129b:
+// src/generic/ascii_validation.h:6-45 and src/generic/validate_utf16.h:128-158.
+// It registers test functions only and adds no product behavior.
+
+func init() {
+	registerASCIIFuzzVariant(asciiFuzzVariant{
+		name: "archsimd",
+		validate: variant[func([]byte) bool]{
+			value: validateASCIIArchsimd, kind: implementationArchsimd,
+			required: cpuAVX2, available: true,
+		},
+		withErrors: variant[func([]byte) Result]{
+			value: validateASCIIWithErrorsArchsimd, kind: implementationArchsimd,
+			required: cpuAVX2, available: true,
+		},
+	})
+	registerUTF16ASCIIFuzzVariant(utf16ASCIIFuzzVariant{
+		name: "archsimd",
+		le: variant[func([]uint16) bool]{
+			value: validateUTF16LEAsASCIIArchsimd, kind: implementationArchsimd,
+			required: cpuAVX2, available: true,
+		},
+		be: variant[func([]uint16) bool]{
+			value: validateUTF16BEAsASCIIArchsimd, kind: implementationArchsimd,
+			required: cpuAVX2, available: true,
+		},
+	})
+}
+
+// Hand-authored Go-only direct scalar-differential coverage for the archsimd
+// Haswell count_code_points_bytemask adaptation pinned to
+// simdutf/simdutf@611becc2a08c27a4edc77d9a45ff74c97130129b (tree
+// c8292790d793212ca0a1faf6ae42e7f8e7b70d4f): src/generic/utf8.h:21-68 and
+// src/haswell/implementation.cpp:1115-1119.
+
+func TestCountUTF8ArchsimdScalarParity(t *testing.T) {
+	requireCountUTF8ArchsimdAVX2(t)
+	lengths := []int{0, 1, 31, 32, 33, 63, 64, 65, 95, 96, 97, 127, 128, 129, 255, 256, 257, 8063, 8064, 8065, 8191, 8192, 8193}
+	for _, length := range lengths {
+		for alignment := 0; alignment < 32; alignment++ {
+			t.Run("length="+strconv.Itoa(length)+"/alignment="+strconv.Itoa(alignment), func(t *testing.T) {
+				storage := make([]byte, alignment+length+32)
+				input := storage[alignment : alignment+length]
+				for i := range input {
+					input[i] = byte(i*131 + length*17 + alignment)
+				}
+				checkCountUTF8Archsimd(t, input)
+			})
+		}
+	}
+}
+
+func TestCountUTF8ArchsimdAllByteClasses(t *testing.T) {
+	requireCountUTF8ArchsimdAVX2(t)
+	classes := make([]byte, 256)
+	for value := range classes {
+		classes[value] = byte(value)
+		checkCountUTF8Archsimd(t, bytes.Repeat([]byte{byte(value)}, 129))
+	}
+	checkCountUTF8Archsimd(t, classes)
+	checkCountUTF8Archsimd(t, append(slices.Clone(classes), classes...))
+	checkCountUTF8Archsimd(t, bytes.Repeat([]byte{0x00, 0x7f, 0x80, 0xbf, 0xc0, 0xff}, 1400))
+}
+
+func TestCountUTF8ArchsimdAccumulatorFlushBoundaries(t *testing.T) {
+	requireCountUTF8ArchsimdAVX2(t)
+	for _, value := range []byte{0x00, 0x80} {
+		for _, length := range []int{8063, 8064, 8065, 8191, 8192, 8193, 3*8064 + 1, 1 << 20} {
+			t.Run("byte="+strconv.Itoa(int(value))+"/length="+strconv.Itoa(length), func(t *testing.T) {
+				checkCountUTF8Archsimd(t, bytes.Repeat([]byte{value}, length))
+			})
+		}
+	}
+}
+
+func TestCountUTF8ArchsimdCanariesAndImmutability(t *testing.T) {
+	requireCountUTF8ArchsimdAVX2(t)
+	for _, length := range []int{0, 1, 127, 128, 129, 8063, 8064, 8065, 8191, 8192, 8193} {
+		guard := newGuardedSlice(37, length, 41, byte(0xa5))
+		for i := range guard.body {
+			guard.body[i] = byte(i*73 + length)
+		}
+		before := slices.Clone(guard.storage)
+		checkCountUTF8Archsimd(t, guard.body)
+		guard.requireCanariesIntact(t)
+		if !slices.Equal(guard.storage, before) {
+			t.Fatalf("length %d input or canary modified", length)
+		}
+	}
+}
+
+func TestCountUTF8ArchsimdShortInputScalarCutoffSourceContract(t *testing.T) {
+	// The pinned generic driver enters the four-vector bytemask loop only for a
+	// complete 128-byte Haswell block. Lock the wrapper control flow so shorter
+	// inputs return through the scalar oracle before vector state is initialized.
+	source, err := os.ReadFile("count_utf8_archsimd_amd64.go")
+	if err != nil {
+		t.Fatal(err)
+	}
+	want := `func countUTF8Archsimd(input []byte) int {
+	if len(input) < 128 {
+		return countUTF8Scalar(input)
+	}`
+	if count := strings.Count(string(source), want); count != 1 {
+		t.Fatalf("exact short-input scalar cutoff contract occurs %d times, want 1\n%s", count, want)
+	}
+}
+
+func checkCountUTF8Archsimd(t *testing.T, input []byte) {
+	t.Helper()
+	if got, want := countUTF8Archsimd(input), countUTF8Scalar(input); got != want {
+		t.Errorf("countUTF8Archsimd = %d, scalar = %d for %d bytes", got, want, len(input))
+	}
+}
+
+func requireCountUTF8ArchsimdAVX2(t *testing.T) {
+	t.Helper()
+	selection := detectSelectionInput()
+	if selection.features&cpuAVX2 != cpuAVX2 || !selection.archsimdAVX2 {
+		t.Skip("archsimd CountUTF8 requires repository and archsimd AVX2 gates")
+	}
+}
+
+// Go-only direct benchmark and differential-fuzz registration for the tagged
+// CountUTF8 adaptation pinned to
+// simdutf/simdutf@611becc2a08c27a4edc77d9a45ff74c97130129b. It changes no
+// frozen benchmark name, corpus, or setup.
+func init() {
+	candidate := variant[func([]byte) int]{
+		value: countUTF8Archsimd, kind: implementationArchsimd,
+		required: cpuAVX2, available: true,
+	}
+	registerCountUTF8DirectVariant(countUTF8DirectVariant{name: "archsimd", variant: candidate})
+	registerCountUTF8FuzzVariant(countUTF8FuzzVariant{name: "archsimd", variant: candidate})
+}
+
+// Direct differential coverage for the lookup4 algorithm at
+// simdutf/simdutf@611becc2a08c27a4edc77d9a45ff74c97130129b:
+// src/generic/utf8_validation/utf8_lookup4_algorithm.h:12-216 and
+// src/generic/utf8_validation/utf8_validator.h:10-80.
+
+func requireUTF8ArchsimdAVX2(t *testing.T) {
+	t.Helper()
+	candidate := variant[func()]{value: func() {}, kind: implementationArchsimd, required: cpuAVX2, available: true}
+	if !candidate.supportedBy(detectSelectionInput()) {
+		t.Skip("direct UTF-8 archsimd AVX2 implementation is unsupported")
+	}
+}
+
+func TestValidateUTF8ArchsimdMatchesScalar(t *testing.T) {
+	requireUTF8ArchsimdAVX2(t)
+
+	validSequences := [][]byte{
+		{'a'},
+		{0xc2, 0x80},
+		{0xe0, 0xa0, 0x80},
+		{0xed, 0x9f, 0xbf},
+		{0xf0, 0x90, 0x80, 0x80},
+		{0xf4, 0x8f, 0xbf, 0xbf},
+	}
+	invalidSequences := [][]byte{
+		{0x80},
+		{0xff},
+		{0xc0, 0x80},
+		{0xe0, 0x80, 0x80},
+		{0xed, 0xa0, 0x80},
+		{0xf0, 0x80, 0x80, 0x80},
+		{0xf4, 0x90, 0x80, 0x80},
+		{0xf5, 0x80, 0x80, 0x80},
+		{0xc2},
+		{0xe1, 0x80},
+		{0xf0, 0x90, 0x80},
+		{0xe1, 0x80, 'x'},
+	}
+
+	inputs := [][]byte{nil, {}}
+	for _, length := range []int{1, 15, 16, 17, 31, 32, 33, 61, 62, 63, 64, 65, 66, 67, 68, 95, 96, 97, 127, 128, 129, 191, 192, 193} {
+		inputs = append(inputs, bytes.Repeat([]byte{'a'}, length))
+		for _, invalid := range invalidSequences {
+			for _, position := range []int{0, length / 2, length} {
+				input := bytes.Repeat([]byte{'a'}, position)
+				input = append(input, invalid...)
+				input = append(input, bytes.Repeat([]byte{'b'}, length-position)...)
+				inputs = append(inputs, input)
+			}
+		}
+	}
+	for _, boundary := range []int{16, 32, 48, 63, 64, 65, 80, 96, 127, 128} {
+		for _, sequence := range validSequences[1:] {
+			for split := 1; split < len(sequence); split++ {
+				input := bytes.Repeat([]byte{'a'}, boundary-split)
+				input = append(input, sequence...)
+				input = append(input, bytes.Repeat([]byte{'b'}, 67)...)
+				inputs = append(inputs, input)
+			}
+		}
+	}
+
+	for i, input := range inputs {
+		t.Run(fmt.Sprintf("case=%d/length=%d", i, len(input)), func(t *testing.T) {
+			backing := make([]byte, len(input)+2)
+			backing[0], backing[len(backing)-1] = 0xa5, 0x5a
+			copy(backing[1:], input)
+			before := slices.Clone(backing)
+			guarded := backing[1 : len(backing)-1]
+			if got, want := validateUTF8Archsimd(guarded), validateUTF8Scalar(guarded); got != want {
+				t.Fatalf("validateUTF8Archsimd() = %t, scalar = %t for %x", got, want, guarded)
+			}
+			if got, want := validateUTF8WithErrorsArchsimd(guarded), validateUTF8WithErrorsScalar(guarded); got != want {
+				t.Fatalf("validateUTF8WithErrorsArchsimd() = %+v, scalar = %+v for %x", got, want, guarded)
+			}
+			if !slices.Equal(backing, before) {
+				t.Fatal("archsimd UTF-8 validation modified input or canaries")
+			}
+		})
+	}
+}
+
+func TestValidateUTF8PrefixArchsimdStopsAtFirstFailingBlock(t *testing.T) {
+	requireUTF8ArchsimdAVX2(t)
+	for _, test := range []struct {
+		position int
+		want     int
+	}{{30, 0}, {94, 64}, {158, 128}} {
+		input := bytes.Repeat([]byte{'a'}, 192)
+		input[test.position] = 0x80
+		if got := validateUTF8PrefixArchsimd(input); got != test.want {
+			t.Errorf("error at %d: prefix = %d, want %d", test.position, got, test.want)
+		}
+	}
+}
+
+func TestValidateUTF8ArchsimdLaneBridgeOrientation(t *testing.T) {
+	requireUTF8ArchsimdAVX2(t)
+	for _, position := range []int{16, 32, 48} {
+		input := bytes.Repeat([]byte{'a'}, 64)
+		input[position] = 0xff
+		if got := validateUTF8PrefixArchsimd(input); got != 0 {
+			t.Errorf("invalid byte at lane boundary %d: prefix = %d, want 0", position, got)
+		}
+		if got, want := validateUTF8WithErrorsArchsimd(input), validateUTF8WithErrorsScalar(input); got != want {
+			t.Errorf("invalid byte at lane boundary %d: with errors = %+v, scalar = %+v", position, got, want)
+		}
+	}
+	for _, boundary := range []int{16, 32, 48} {
+		input := bytes.Repeat([]byte{'a'}, boundary-2)
+		input = append(input, 0xf0, 0x90, 0x80, 0x80)
+		input = append(input, bytes.Repeat([]byte{'b'}, 66-len(input))...)
+		if got, want := validateUTF8WithErrorsArchsimd(input), validateUTF8WithErrorsScalar(input); got != want {
+			t.Errorf("valid sequence across lane boundary %d: with errors = %+v, scalar = %+v", boundary, got, want)
+		}
+	}
+}
+
+// Go-only direct benchmark and scalar-differential fuzz registration for the
+// tagged lookup4 adaptation pinned to
+// simdutf/simdutf@611becc2a08c27a4edc77d9a45ff74c97130129b.
+
+func init() {
+	validate := variant[func([]byte) bool]{value: validateUTF8Archsimd, kind: implementationArchsimd, required: cpuAVX2, available: true}
+	withErrors := variant[func([]byte) Result]{value: validateUTF8WithErrorsArchsimd, kind: implementationArchsimd, required: cpuAVX2, available: true}
+	registerUTF8DirectVariant(utf8DirectVariant{name: "archsimd", validate: validate, withErrors: withErrors})
+	registerUTF8FuzzVariant(utf8FuzzVariant{name: "archsimd", validate: validate, withErrors: withErrors})
+}
+
+func TestUTF8LengthArchsimdAllByteValues(t *testing.T) {
+	requireUTF8LengthArchsimdFeatures(t)
+	all := make([]byte, 256)
+	for value := range all {
+		all[value] = byte(value)
+		checkUTF8LengthArchsimd(t, bytes.Repeat([]byte{byte(value)}, 129))
+	}
+	checkUTF8LengthArchsimd(t, all)
+	checkUTF8LengthArchsimd(t, append(slices.Clone(all), all...))
+	checkUTF8LengthArchsimd(t, bytes.Repeat([]byte{0x00, 0x7f, 0x80, 0xbf, 0xc0, 0xef, 0xf0, 0xff}, 1050))
+}
+
+func TestUTF8LengthArchsimdAlignmentsAndBoundaries(t *testing.T) {
+	requireUTF8LengthArchsimdFeatures(t)
+	lengths := []int{
+		0, 1, 31, 32, 33, 63, 64, 65, 127, 128, 129,
+		4063, 4064, 4065, 8063, 8064, 8065, 8127, 8128, 8129,
+	}
+	for _, length := range lengths {
+		for alignment := 0; alignment < 32; alignment++ {
+			t.Run("length="+strconv.Itoa(length)+"/alignment="+strconv.Itoa(alignment), func(t *testing.T) {
+				storage := make([]byte, alignment+length+32)
+				input := storage[alignment : alignment+length]
+				for i := range input {
+					input[i] = byte(i*131 + length*17 + alignment)
+				}
+				checkUTF8LengthArchsimd(t, input)
+			})
+		}
+	}
+}
+
+func TestUTF16LengthFromUTF8ArchsimdAccumulatorFlushes(t *testing.T) {
+	requireUTF8LengthArchsimdFeatures(t)
+	for _, value := range []byte{0x00, 0x80, 0xf0, 0xff} {
+		for _, length := range []int{4063, 4064, 4065, 8127, 8128, 8129, 3*4064 + 17, 1 << 20} {
+			t.Run("byte="+strconv.Itoa(int(value))+"/length="+strconv.Itoa(length), func(t *testing.T) {
+				input := bytes.Repeat([]byte{value}, length)
+				if got, want := utf16LengthFromUTF8Archsimd(input), utf16LengthFromUTF8Scalar(input); got != want {
+					t.Errorf("utf16 archsimd = %d, scalar = %d", got, want)
+				}
+			})
+		}
+	}
+}
+
+func TestUTF32LengthFromUTF8ArchsimdBlocksAndTails(t *testing.T) {
+	requireUTF8LengthArchsimdFeatures(t)
+	for _, length := range []int{0, 1, 31, 32, 33, 63, 64, 65, 127, 128, 129, 191, 192, 193, 4095, 4096, 4097} {
+		input := make([]byte, length)
+		for i := range input {
+			input[i] = []byte{0x00, 0x7f, 0x80, 0xbf, 0xc0, 0xef, 0xf0, 0xff}[i&7]
+		}
+		if got, want := utf32LengthFromUTF8Archsimd(input), utf32LengthFromUTF8Scalar(input); got != want {
+			t.Errorf("length %d: utf32 archsimd = %d, scalar = %d", length, got, want)
+		}
+	}
+}
+
+func TestUTF8LengthArchsimdCanariesAndImmutability(t *testing.T) {
+	requireUTF8LengthArchsimdFeatures(t)
+	for _, length := range []int{0, 1, 31, 32, 33, 63, 64, 65, 127, 128, 129, 4063, 4064, 4065, 8127, 8128, 8129} {
+		guard := newGuardedSlice(37, length, 41, byte(0xa5))
+		for i := range guard.body {
+			guard.body[i] = byte(i*73 + length)
+		}
+		before := slices.Clone(guard.storage)
+		checkUTF8LengthArchsimd(t, guard.body)
+		guard.requireCanariesIntact(t)
+		if !slices.Equal(guard.storage, before) {
+			t.Fatalf("length %d input or canary modified", length)
+		}
+	}
+}
+
+func TestUTF8LengthArchsimdSourceContracts(t *testing.T) {
+	source, err := os.ReadFile("utf8_length_archsimd_amd64.go")
+	if err != nil {
+		t.Fatal(err)
+	}
+	text := string(source)
+	contracts := map[string]int{
+		"return countUTF8Archsimd(input)":                       1,
+		"chunk.Min(fourByteThreshold).Equal(fourByteThreshold)": 1,
+		"if iterations == 127":                                  1,
+		"local.SumAbsDiff(zero)":                                2,
+		"mask := uint64(mask0) | uint64(mask1)<<32":             1,
+		"bits.OnesCount64(mask)":                                1,
+	}
+	for contract, want := range contracts {
+		if got := strings.Count(text, contract); got != want {
+			t.Errorf("source contract %q occurs %d times, want %d", contract, got, want)
+		}
+	}
+	if strings.Contains(text, ".GreaterEqual(") {
+		t.Error("generic unsigned GreaterEqual must not implement the four-byte test")
+	}
+	if strings.Contains(text, "countUTF8Archsimd(input[offset:])") {
+		t.Error("UTF-32 archsimd must not reuse CountUTF8 for its SIMD blocks")
+	}
+}
+
+func checkUTF8LengthArchsimd(t *testing.T, input []byte) {
+	t.Helper()
+	checks := []struct {
+		name string
+		got  int
+		want int
+	}{
+		{name: "latin1", got: latin1LengthFromUTF8Archsimd(input), want: latin1LengthFromUTF8Scalar(input)},
+		{name: "utf16", got: utf16LengthFromUTF8Archsimd(input), want: utf16LengthFromUTF8Scalar(input)},
+		{name: "utf32", got: utf32LengthFromUTF8Archsimd(input), want: utf32LengthFromUTF8Scalar(input)},
+	}
+	for _, check := range checks {
+		if check.got != check.want {
+			t.Errorf("%s archsimd = %d, scalar = %d for %d bytes", check.name, check.got, check.want, len(input))
+		}
+	}
+}
+
+func requireUTF8LengthArchsimdFeatures(t *testing.T) {
+	t.Helper()
+	selection := detectSelectionInput()
+	if selection.features&(cpuAVX2|cpuPOPCNT) != cpuAVX2|cpuPOPCNT || !selection.archsimdAVX2 {
+		t.Skip("archsimd UTF-8 length tests require repository AVX2/POPCNT and archsimd AVX2 gates")
+	}
+}
+
+func init() {
+	registerUTF8LengthDirectVariant(utf8LengthDirectVariant{
+		name:   "archsimd",
+		latin1: variant[func([]byte) int]{value: latin1LengthFromUTF8Archsimd, kind: implementationArchsimd, required: cpuAVX2, available: true},
+		utf16:  variant[func([]byte) int]{value: utf16LengthFromUTF8Archsimd, kind: implementationArchsimd, required: cpuAVX2, available: true},
+		utf32:  variant[func([]byte) int]{value: utf32LengthFromUTF8Archsimd, kind: implementationArchsimd, required: cpuAVX2 | cpuPOPCNT, available: true},
+	})
+}
+
+func TestUTF8LengthArchsimdDirectRegistration(t *testing.T) {
+	candidate := findUTF8LengthArchsimdDirectVariant(t)
+	checkUTF8LengthArchsimdRegistration(t, candidate.latin1, candidate.utf16, candidate.utf32)
+}
+
+func findUTF8LengthArchsimdDirectVariant(t *testing.T) utf8LengthDirectVariant {
+	t.Helper()
+	var found *utf8LengthDirectVariant
+	for i := range utf8LengthDirectVariants {
+		if utf8LengthDirectVariants[i].name != "archsimd" {
+			continue
+		}
+		if found != nil {
+			t.Fatal("duplicate archsimd direct registration")
+		}
+		found = &utf8LengthDirectVariants[i]
+	}
+	if found == nil {
+		t.Fatal("archsimd direct registration not found")
+	}
+	return *found
+}
+
+func checkUTF8LengthArchsimdRegistration(
+	t *testing.T,
+	latin1, utf16, utf32 variant[func([]byte) int],
+) {
+	t.Helper()
+	checks := []struct {
+		name     string
+		cell     variant[func([]byte) int]
+		want     func([]byte) int
+		required cpuFeatures
+	}{
+		{name: "latin1", cell: latin1, want: latin1LengthFromUTF8Archsimd, required: cpuAVX2},
+		{name: "utf16", cell: utf16, want: utf16LengthFromUTF8Archsimd, required: cpuAVX2},
+		{name: "utf32", cell: utf32, want: utf32LengthFromUTF8Archsimd, required: cpuAVX2 | cpuPOPCNT},
+	}
+	for _, check := range checks {
+		if !sameFunction(check.cell.value, check.want) || check.cell.kind != implementationArchsimd ||
+			check.cell.required != check.required || !check.cell.available {
+			t.Errorf("%s metadata/function mismatch: kind %d required %#x available %t",
+				check.name, check.cell.kind, check.cell.required, check.cell.available)
+		}
+		if !check.cell.supportedBy(selectionInput{features: check.required, archsimdAVX2: true}) {
+			t.Errorf("%s unsupported with all required gates", check.name)
+		}
+		if check.cell.supportedBy(selectionInput{features: check.required}) {
+			t.Errorf("%s supported without archsimd AVX2 gate", check.name)
+		}
+		for feature := cpuFeatures(1); feature <= cpuNEON; feature <<= 1 {
+			if check.required&feature == 0 {
+				continue
+			}
+			if check.cell.supportedBy(selectionInput{features: check.required &^ feature, archsimdAVX2: true}) {
+				t.Errorf("%s supported with feature %#x missing", check.name, feature)
+			}
+		}
+	}
+}
+
+func init() {
+	registerUTF8LengthFuzzVariant(utf8LengthFuzzVariant{
+		name:   "archsimd",
+		latin1: variant[func([]byte) int]{value: latin1LengthFromUTF8Archsimd, kind: implementationArchsimd, required: cpuAVX2, available: true},
+		utf16:  variant[func([]byte) int]{value: utf16LengthFromUTF8Archsimd, kind: implementationArchsimd, required: cpuAVX2, available: true},
+		utf32:  variant[func([]byte) int]{value: utf32LengthFromUTF8Archsimd, kind: implementationArchsimd, required: cpuAVX2 | cpuPOPCNT, available: true},
+	})
+}
+
+func TestUTF8LengthArchsimdFuzzRegistration(t *testing.T) {
+	var found *utf8LengthFuzzVariant
+	for i := range utf8LengthFuzzVariants {
+		if utf8LengthFuzzVariants[i].name != "archsimd" {
+			continue
+		}
+		if found != nil {
+			t.Fatal("duplicate archsimd fuzz registration")
+		}
+		found = &utf8LengthFuzzVariants[i]
+	}
+	if found == nil {
+		t.Fatal("archsimd fuzz registration not found")
+	}
+	checkUTF8LengthArchsimdRegistration(t, found.latin1, found.utf16, found.utf32)
+}
+
+func TestValidateUTF16ArchsimdDifferential(t *testing.T) {
+	cases := [][]uint16{
+		nil,
+		make([]uint16, 15), make([]uint16, 16), make([]uint16, 17),
+		append(make([]uint16, 15), 0xd800),
+		append(make([]uint16, 16), 0xdc00),
+		append(append(make([]uint16, 15), 0xd800), 0xdc00),
+		{0xdc00, 0xd800, 0x61},
+		{0xd800, 0x61},
+		{0xd800},
+	}
+	for _, input := range cases {
+		for _, bigEndian := range []bool{false, true} {
+			raw := append([]uint16(nil), input...)
+			if bigEndian {
+				for i := range raw {
+					raw[i] = raw[i]>>8 | raw[i]<<8
+				}
+			}
+			var got, want Result
+			var gotBool, wantBool bool
+			if bigEndian {
+				got, want = validateUTF16BEWithErrorsArchsimd(raw), validateUTF16BEWithErrorsScalar(raw)
+				gotBool, wantBool = validateUTF16BEArchsimd(raw), validateUTF16BEScalar(raw)
+			} else {
+				got, want = validateUTF16LEWithErrorsArchsimd(raw), validateUTF16LEWithErrorsScalar(raw)
+				gotBool, wantBool = validateUTF16LEArchsimd(raw), validateUTF16LEScalar(raw)
+			}
+			if got != want || gotBool != wantBool {
+				t.Fatalf("input=%#v be=%t got=(%v,%t) want=(%v,%t)", input, bigEndian, got, gotBool, want, wantBool)
+			}
+		}
+	}
+}
+
+func TestValidateUTF32ArchsimdDifferential(t *testing.T) {
+	cases := [][]uint32{
+		nil, make([]uint32, 7), make([]uint32, 8), make([]uint32, 9),
+		{0x10ffff, 0x61, 0xd7ff},
+		{0xd800},
+		{0xdfff},
+		{0x110000},
+		append(make([]uint32, 7), 0x110000), append(make([]uint32, 8), 0xd800),
+	}
+	for _, input := range cases {
+		got, want := validateUTF32WithErrorsArchsimd(input), validateUTF32WithErrorsScalar(input)
+		gotBool, wantBool := validateUTF32Archsimd(input), validateUTF32Scalar(input)
+		if got != want || gotBool != wantBool {
+			t.Fatalf("input=%#v got=(%v,%t) want=(%v,%t)", input, got, gotBool, want, wantBool)
+		}
+	}
 }

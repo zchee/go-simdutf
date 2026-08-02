@@ -18,8 +18,13 @@ package simdutf
 
 import (
 	"bytes"
+	"encoding/binary"
 	"math/bits"
+	"os"
+	"regexp"
 	"slices"
+	"strconv"
+	"strings"
 	"testing"
 	"unicode/utf8"
 )
@@ -1673,4 +1678,762 @@ func FuzzUTFValidationNEONAgainstScalar(f *testing.F) {
 			t.Fatalf("UTF-32 result=%+v want=%+v input=%x", got, want, input32)
 		}
 	})
+}
+
+// Hand-authored Go-only tests for arm64 assembly slice boundaries, raw-storage
+// endian handling, exact scalar fallback errors, and input immutability. The
+// algorithm under test is independently translated from
+// simdutf/simdutf@611becc2a08c27a4edc77d9a45ff74c97130129b:
+// src/generic/ascii_validation.h:6-45, src/arm64/implementation.cpp:13-16,
+// and src/arm64/arm_validate_utf16.cpp:71-91.
+
+func TestValidateASCIINEONBoundaries(t *testing.T) {
+	lengths := [...]int{0, 1, 15, 16, 17, 31, 32, 33, 63, 64, 65, 127, 128, 129}
+	for _, length := range lengths {
+		t.Run(testNameForLength(length), func(t *testing.T) {
+			valid := make([]byte, length)
+			for i := range valid {
+				valid[i] = byte(i % 0x80)
+			}
+			checkASCIINEON(t, valid)
+
+			positions := uniquePositions(length)
+			for _, pos := range positions {
+				input := slices.Clone(valid)
+				input[pos] = 0x80
+				checkASCIINEON(t, input)
+			}
+
+			if length > 1 {
+				input := slices.Clone(valid)
+				input[0], input[length/2], input[length-1] = 0x80, 0xff, 0x81
+				checkASCIINEON(t, input)
+			}
+		})
+	}
+}
+
+func TestValidateASCIIPrefixNEON(t *testing.T) {
+	for _, length := range [...]int{0, 1, 63, 64, 65, 127, 128, 129} {
+		valid := make([]byte, length)
+		if got, want := validateASCIIPrefixNEON(valid), length&^63; got != want {
+			t.Errorf("valid prefix length %d = %d, want %d", length, got, want)
+		}
+		for _, pos := range uniquePositions(length) {
+			input := slices.Clone(valid)
+			input[pos] = 0x80
+			want := length &^ 63
+			if pos < want {
+				want = pos &^ 63
+			}
+			if got := validateASCIIPrefixNEON(input); got != want {
+				t.Errorf("invalid prefix length %d position %d = %d, want %d", length, pos, got, want)
+			}
+		}
+	}
+}
+
+func TestValidateUTF16AsASCIINEONBoundaries(t *testing.T) {
+	lengths := [...]int{0, 1, 7, 8, 9, 15, 16, 17, 31, 32, 33, 63, 64, 65}
+	variants := [...]struct {
+		name   string
+		little bool
+		prefix func([]uint16) int
+		neon   func([]uint16) bool
+		scalar func([]uint16) bool
+	}{
+		{"little-endian", true, validateUTF16LEASCIIPrefixNEON, validateUTF16LEAsASCIINEON, validateUTF16LEAsASCIIScalar},
+		{"big-endian", false, validateUTF16BEASCIIPrefixNEON, validateUTF16BEAsASCIINEON, validateUTF16BEAsASCIIScalar},
+	}
+
+	for _, variant := range variants {
+		t.Run(variant.name, func(t *testing.T) {
+			for _, length := range lengths {
+				t.Run(testNameForLength(length), func(t *testing.T) {
+					valid := make([]uint16, length)
+					for i := range valid {
+						valid[i] = rawUTF16ASCIIWord(uint16(i%0x80), variant.little)
+					}
+					checkUTF16ASCIINEON(t, valid, variant.prefix, variant.neon, variant.scalar)
+
+					for _, pos := range uniquePositions(length) {
+						for _, semantic := range [...]uint16{0x7f, 0x80} {
+							input := slices.Clone(valid)
+							input[pos] = rawUTF16ASCIIWord(semantic, variant.little)
+							checkUTF16ASCIINEON(t, input, variant.prefix, variant.neon, variant.scalar)
+						}
+					}
+				})
+			}
+		})
+	}
+}
+
+func TestASCIINEONDoesNotWriteInput(t *testing.T) {
+	bytes := make([]byte, 129)
+	bytes[63], bytes[128] = 0x80, 0xff
+	wantBytes := slices.Clone(bytes)
+	validateASCIIPrefixNEON(bytes)
+	validateASCIINEON(bytes)
+	validateASCIIWithErrorsNEON(bytes)
+	if !slices.Equal(bytes, wantBytes) {
+		t.Fatal("byte validators modified input")
+	}
+
+	words := make([]uint16, 65)
+	words[15], words[64] = 0x80, 0xffff
+	wantWords := slices.Clone(words)
+	validateUTF16LEASCIIPrefixNEON(words)
+	validateUTF16BEASCIIPrefixNEON(words)
+	validateUTF16LEAsASCIINEON(words)
+	validateUTF16BEAsASCIINEON(words)
+	if !slices.Equal(words, wantWords) {
+		t.Fatal("UTF-16 validators modified input")
+	}
+}
+
+func checkASCIINEON(t *testing.T, input []byte) {
+	t.Helper()
+	if got, want := validateASCIINEON(input), validateASCIIScalar(input); got != want {
+		t.Errorf("validateASCIINEON = %v, want %v", got, want)
+	}
+	if got, want := validateASCIIWithErrorsNEON(input), validateASCIIWithErrorsScalar(input); got != want {
+		t.Errorf("validateASCIIWithErrorsNEON = %+v, want %+v", got, want)
+	}
+}
+
+func checkUTF16ASCIINEON(
+	t *testing.T,
+	input []uint16,
+	prefix func([]uint16) int,
+	neon func([]uint16) bool,
+	scalar func([]uint16) bool,
+) {
+	t.Helper()
+	wantValid := scalar(input)
+	if got := neon(input); got != wantValid {
+		t.Errorf("NEON validator = %v, want %v for %#x", got, wantValid, input)
+	}
+	wantPrefix := len(input) &^ 15
+	if !wantValid {
+		for i := 0; i < wantPrefix; i += 16 {
+			if !scalar(input[i : i+16]) {
+				wantPrefix = i
+				break
+			}
+		}
+	}
+	if got := prefix(input); got != wantPrefix {
+		t.Errorf("NEON prefix = %d, want %d for %#x", got, wantPrefix, input)
+	}
+}
+
+func rawUTF16ASCIIWord(semantic uint16, little bool) uint16 {
+	if little == nativeLittleEndian() {
+		return semantic
+	}
+	return bits.ReverseBytes16(semantic)
+}
+
+func uniquePositions(length int) []int {
+	if length == 0 {
+		return nil
+	}
+	positions := []int{0, length / 2, length - 1}
+	return slices.Compact(positions)
+}
+
+func testNameForLength(length int) string {
+	return "length_" + strconv.Itoa(length)
+}
+
+// Go-only registration of the direct arm64 implementation. It defines no
+// product dispatch behavior and translates no upstream algorithm.
+func init() {
+	registerASCIIDirectBenchmarkVariants(
+		"neon",
+		variant[func([]byte) bool]{
+			value:     validateASCIINEON,
+			kind:      implementationNEON,
+			required:  cpuNEON,
+			available: true,
+		},
+		variant[func([]byte) Result]{
+			value:     validateASCIIWithErrorsNEON,
+			kind:      implementationNEON,
+			required:  cpuNEON,
+			available: true,
+		},
+	)
+}
+
+// Hand-authored Go-only direct fuzz registration for the assembly port pinned
+// to simdutf/simdutf@611becc2a08c27a4edc77d9a45ff74c97130129b:
+// src/generic/ascii_validation.h:6-45 and src/arm64/arm_validate_utf16.cpp:71-91.
+// It registers test functions only and adds no product behavior.
+
+func init() {
+	registerASCIIFuzzVariant(asciiFuzzVariant{
+		name: "neon",
+		validate: variant[func([]byte) bool]{
+			value: validateASCIINEON, kind: implementationNEON,
+			required: cpuNEON, available: true,
+		},
+		withErrors: variant[func([]byte) Result]{
+			value: validateASCIIWithErrorsNEON, kind: implementationNEON,
+			required: cpuNEON, available: true,
+		},
+	})
+	registerUTF16ASCIIFuzzVariant(utf16ASCIIFuzzVariant{
+		name: "neon",
+		le: variant[func([]uint16) bool]{
+			value: validateUTF16LEAsASCIINEON, kind: implementationNEON,
+			required: cpuNEON, available: true,
+		},
+		be: variant[func([]uint16) bool]{
+			value: validateUTF16BEAsASCIINEON, kind: implementationNEON,
+			required: cpuNEON, available: true,
+		},
+	})
+}
+
+// Hand-authored Go-only direct scalar-differential coverage for the count port
+// pinned to simdutf/simdutf@611becc2a08c27a4edc77d9a45ff74c97130129b:
+// src/generic/utf8.h:8-17, src/arm64/implementation.cpp:1113-1117, and
+// src/simdutf/arm64/simd.h:446-555.
+
+func TestCountUTF8NEONScalarParity(t *testing.T) {
+	checkCountUTF8NEON(t, nil)
+	checkCountUTF8NEON(t, []byte{})
+
+	lengths := []int{0, 1, 15, 16, 17, 31, 32, 33, 61, 62, 63, 64, 65, 66, 67, 68, 95, 96, 97, 127, 128, 129, 256, 1024, 4097, 65536}
+	for _, length := range lengths {
+		for alignment := range 16 {
+			t.Run("length="+strconv.Itoa(length)+"/alignment="+strconv.Itoa(alignment), func(t *testing.T) {
+				storage := make([]byte, alignment+length+16)
+				input := storage[alignment : alignment+length]
+				for i := range input {
+					input[i] = byte((i*131 + length*17 + alignment) & 0xff)
+				}
+				checkCountUTF8NEON(t, input)
+			})
+		}
+	}
+}
+
+func TestCountUTF8NEONAllByteClasses(t *testing.T) {
+	classes := make([]byte, 256)
+	for i := range classes {
+		classes[i] = byte(i)
+	}
+	for _, input := range [][]byte{
+		classes,
+		append(slices.Clone(classes), classes...),
+		bytes.Repeat([]byte{0x80, 0xbf, 0x00, 0x7f, 0xc0, 0xff}, 257),
+	} {
+		checkCountUTF8NEON(t, input)
+	}
+	for value := 0; value <= 0xff; value++ {
+		checkCountUTF8NEON(t, bytes.Repeat([]byte{byte(value)}, 129))
+	}
+}
+
+// TestCountUTF8NEONByteClassLoweringMatchesSignedGT locks the exact lowering
+// used because Go 1.26's Plan 9 arm64 assembler has VCMEQ but no signed integer
+// VCMGT mnemonic: (byte >> 6) == 2 is the complement of int8(byte) > -65, so
+// subtracting its population yields upstream's non-continuation count.
+func TestCountUTF8NEONByteClassLoweringMatchesSignedGT(t *testing.T) {
+	for value := 0; value <= 0xff; value++ {
+		continuationByNEONLowering := byte(value)>>6 == 2
+		continuationByPinnedComparison := !(int8(byte(value)) > -65)
+		if continuationByNEONLowering != continuationByPinnedComparison {
+			t.Fatalf("byte %#02x lowering continuation = %t, pinned comparison = %t", value, continuationByNEONLowering, continuationByPinnedComparison)
+		}
+	}
+}
+
+func TestCountUTF8BlocksNEONCompleteBlockContract(t *testing.T) {
+	for _, length := range []int{0, 1, 63, 64, 65, 127, 128, 129, 4097, 65536} {
+		input := make([]byte, length)
+		for i := range input {
+			input[i] = byte(i*29 + length)
+		}
+		complete := length &^ 63
+		if got, want := countUTF8BlocksNEON(input), countUTF8Scalar(input[:complete]); got != want {
+			t.Errorf("length %d block count = %d, want %d", length, got, want)
+		}
+	}
+}
+
+func TestCountUTF8NEONCanariesAndImmutability(t *testing.T) {
+	for _, length := range []int{0, 63, 64, 65, 127, 128, 129, 4097} {
+		guard := newGuardedSlice(17, length, 19, byte(0xa5))
+		for i := range guard.body {
+			guard.body[i] = byte(i*73 + length)
+		}
+		before := slices.Clone(guard.storage)
+		checkCountUTF8NEON(t, guard.body)
+		guard.requireCanariesIntact(t)
+		if !slices.Equal(guard.storage, before) {
+			t.Fatalf("length %d input or canary modified", length)
+		}
+	}
+}
+
+func checkCountUTF8NEON(t *testing.T, input []byte) {
+	t.Helper()
+	if got, want := countUTF8NEON(input), countUTF8Scalar(input); got != want {
+		t.Errorf("countUTF8NEON = %d, scalar = %d for %d bytes", got, want, len(input))
+	}
+}
+
+// Go-only direct benchmark registration for the arm64 count port pinned to
+// simdutf/simdutf@611becc2a08c27a4edc77d9a45ff74c97130129b. It changes no
+// frozen benchmark name, corpus, or setup.
+func init() {
+	registerCountUTF8DirectVariant(countUTF8DirectVariant{
+		name: "neon",
+		variant: variant[func([]byte) int]{
+			value: countUTF8NEON, kind: implementationNEON,
+			required: cpuNEON, available: true,
+		},
+	})
+}
+
+// Hand-authored Go-only direct fuzz registration for the arm64 assembly port
+// pinned to simdutf/simdutf@611becc2a08c27a4edc77d9a45ff74c97130129b:
+// src/generic/utf8.h:8-17 and src/arm64/implementation.cpp:1113-1117.
+func init() {
+	registerCountUTF8FuzzVariant(countUTF8FuzzVariant{
+		name: "neon",
+		variant: variant[func([]byte) int]{
+			value: countUTF8NEON, kind: implementationNEON,
+			required: cpuNEON, available: true,
+		},
+	})
+}
+
+// Hand-authored Go-only direct differential coverage for the lookup4 assembly
+// port pinned to simdutf/simdutf@611becc2a08c27a4edc77d9a45ff74c97130129b:
+// src/generic/utf8_validation/utf8_lookup4_algorithm.h:12-216 and
+// src/generic/utf8_validation/utf8_validator.h:10-80.
+
+func TestValidateUTF8NEONLookupTablesMatchPinnedUpstream(t *testing.T) {
+	// Pinned table bytes from simdutf/simdutf@611becc2a08c27a4edc77d9a45ff74c97130129b:
+	// src/generic/utf8_validation/utf8_lookup4_algorithm.h:37-153.
+	tables := []struct {
+		name string
+		want [16]byte
+	}{
+		{
+			name: "utf8Lookup4Byte1HighNEON",
+			want: [16]byte{
+				0x02, 0x02, 0x02, 0x02, 0x02, 0x02, 0x02, 0x02,
+				0x80, 0x80, 0x80, 0x80, 0x21, 0x01, 0x15, 0x49,
+			},
+		},
+		{
+			name: "utf8Lookup4Byte1LowNEON",
+			want: [16]byte{
+				0xe7, 0xa3, 0x83, 0x83, 0x8b, 0xcb, 0xcb, 0xcb,
+				0xcb, 0xcb, 0xcb, 0xcb, 0xcb, 0xdb, 0xcb, 0xcb,
+			},
+		},
+		{
+			name: "utf8Lookup4Byte2HighNEON",
+			want: [16]byte{
+				0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01,
+				0xe6, 0xae, 0xba, 0xba, 0x01, 0x01, 0x01, 0x01,
+			},
+		},
+		{
+			name: "utf8Lookup4IncompleteMaxNEON",
+			want: [16]byte{
+				0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff,
+				0xff, 0xff, 0xff, 0xff, 0xff, 0xef, 0xdf, 0xbf,
+			},
+		},
+	}
+
+	source, err := os.ReadFile("utf8_arm64.s")
+	if err != nil {
+		t.Fatal(err)
+	}
+	dataPattern := regexp.MustCompile(`^DATA ·([[:alnum:]]+)<>\+([0-9]+)\(SB\)/8, \$(0x[0-9a-fA-F]{16})$`)
+	globlPattern := regexp.MustCompile(`^GLOBL ·([[:alnum:]]+)<>\(SB\), RODATA\|NOPTR, \$16$`)
+	var dataRecords, globlRecords [][]string
+	for lineNumber, line := range strings.Split(string(source), "\n") {
+		switch {
+		case strings.HasPrefix(line, "DATA "):
+			match := dataPattern.FindStringSubmatch(line)
+			if match == nil {
+				t.Fatalf("utf8_arm64.s:%d: malformed DATA declaration %q", lineNumber+1, line)
+			}
+			dataRecords = append(dataRecords, match)
+		case strings.HasPrefix(line, "GLOBL "):
+			match := globlPattern.FindStringSubmatch(line)
+			if match == nil {
+				t.Fatalf("utf8_arm64.s:%d: malformed GLOBL declaration %q", lineNumber+1, line)
+			}
+			globlRecords = append(globlRecords, match)
+		}
+	}
+
+	if got, want := len(dataRecords), len(tables)*2; got != want {
+		t.Fatalf("DATA /8 declaration count = %d, want %d", got, want)
+	}
+	if got, want := len(globlRecords), len(tables); got != want {
+		t.Fatalf("GLOBL RODATA|NOPTR, $16 declaration count = %d, want %d", got, want)
+	}
+	for tableIndex, table := range tables {
+		var got [16]byte
+		for chunk := range 2 {
+			record := dataRecords[tableIndex*2+chunk]
+			if record[1] != table.name {
+				t.Fatalf("DATA declaration %d symbol = %q, want %q", tableIndex*2+chunk, record[1], table.name)
+			}
+			wantOffset := strconv.Itoa(chunk * 8)
+			if record[2] != wantOffset {
+				t.Fatalf("DATA declaration %d offset = %q, want %q", tableIndex*2+chunk, record[2], wantOffset)
+			}
+			literal, err := strconv.ParseUint(record[3], 0, 64)
+			if err != nil {
+				t.Fatalf("DATA declaration %d literal %q: %v", tableIndex*2+chunk, record[3], err)
+			}
+			binary.LittleEndian.PutUint64(got[chunk*8:], literal)
+		}
+		if !slices.Equal(got[:], table.want[:]) {
+			t.Errorf("%s bytes = % x, want % x", table.name, got, table.want)
+		}
+		if gotName := globlRecords[tableIndex][1]; gotName != table.name {
+			t.Errorf("GLOBL declaration %d symbol = %q, want exact declaration for %q", tableIndex, gotName, table.name)
+		}
+	}
+}
+
+func TestValidateUTF8NEONScalarParity(t *testing.T) {
+	inputs := [][]byte{nil, {}}
+	for _, length := range []int{15, 16, 17, 31, 32, 33, 63, 64, 65, 127, 128, 129} {
+		inputs = append(inputs, bytes.Repeat([]byte{'a'}, length))
+	}
+	validSequences := [][]byte{{0xc2, 0x80}, {0xe0, 0xa0, 0x80}, {0xf0, 0x90, 0x80, 0x80}}
+	for _, boundary := range []int{16, 32, 48, 64, 80, 128} {
+		for _, sequence := range validSequences {
+			for split := 1; split < len(sequence); split++ {
+				start := boundary - split
+				input := bytes.Repeat([]byte{'a'}, start)
+				input = append(input, sequence...)
+				input = append(input, bytes.Repeat([]byte{'b'}, 17)...)
+				inputs = append(inputs, input)
+			}
+		}
+	}
+	invalid := [][]byte{
+		{0x80},
+		{0xff},
+		{0xc0, 0x80},
+		{0xe0, 0x80, 0x80},
+		{0xed, 0xa0, 0x80},
+		{0xf0, 0x80, 0x80, 0x80},
+		{0xf4, 0x90, 0x80, 0x80},
+		{0xc2},
+		{0xe1, 0x80},
+		{0xf0, 0x90, 0x80},
+	}
+	for _, prefix := range []int{0, 19, 64, 81, 128} {
+		for _, suffix := range invalid {
+			input := bytes.Repeat([]byte{'a'}, prefix)
+			inputs = append(inputs, append(input, suffix...))
+		}
+	}
+	for i, input := range inputs {
+		t.Run(strconv.Itoa(i)+"/length="+strconv.Itoa(len(input)), func(t *testing.T) {
+			checkUTF8NEON(t, input)
+		})
+	}
+}
+
+func TestValidateUTF8NEONIncompleteAndNextBlockErrors(t *testing.T) {
+	for _, position := range []int{63, 64, 127} {
+		for _, lead := range []byte{0xc2, 0xe1, 0xf1} {
+			input := bytes.Repeat([]byte{'a'}, position)
+			input = append(input, lead)
+			checkUTF8NEON(t, input)
+		}
+	}
+	for _, position := range []int{63, 127} {
+		input := bytes.Repeat([]byte{'a'}, position)
+		input = append(input, 0xe1, 0x80, 'x')
+		var remainder [64]byte
+		copy(remainder[:], input[len(input)&^63:])
+		count, hasError := validateUTF8Lookup4NEON(input, &remainder)
+		wantCount := (position + 1) &^ 63
+		if hasError == 0 || count != wantCount {
+			t.Errorf("error at %d raw result = (%d, %#x), want observing block %d", position, count, hasError, wantCount)
+		}
+		checkUTF8NEON(t, input)
+	}
+}
+
+func TestValidateUTF8NEONDoesNotWriteInput(t *testing.T) {
+	backing := make([]byte, 131)
+	backing[0], backing[len(backing)-1] = 0xa5, 0x5a
+	for i := 1; i < len(backing)-1; i++ {
+		backing[i] = byte(i & 0x7f)
+	}
+	backing[64] = 0xf0
+	before := slices.Clone(backing)
+	input := backing[1 : len(backing)-1]
+	validateUTF8NEON(input)
+	validateUTF8WithErrorsNEON(input)
+	if !slices.Equal(backing, before) {
+		t.Fatal("NEON UTF-8 validators modified input or canaries")
+	}
+}
+
+func checkUTF8NEON(t *testing.T, input []byte) {
+	t.Helper()
+	if got, want := validateUTF8NEON(input), validateUTF8Scalar(input); got != want {
+		t.Errorf("validateUTF8NEON = %t, scalar = %t for %x", got, want, input)
+	}
+	if got, want := validateUTF8WithErrorsNEON(input), validateUTF8WithErrorsScalar(input); got != want {
+		t.Errorf("validateUTF8WithErrorsNEON = %+v, scalar = %+v for %x", got, want, input)
+	}
+}
+
+// Go-only registration of the direct arm64 lookup4 implementation pinned to
+// simdutf/simdutf@611becc2a08c27a4edc77d9a45ff74c97130129b. It defines no
+// product dispatch behavior and translates no additional upstream algorithm.
+
+func init() {
+	registerUTF8DirectVariant(utf8DirectVariant{
+		name: "neon",
+		validate: variant[func([]byte) bool]{
+			value: validateUTF8NEON, kind: implementationNEON,
+			required: cpuNEON, available: true,
+		},
+		withErrors: variant[func([]byte) Result]{
+			value: validateUTF8WithErrorsNEON, kind: implementationNEON,
+			required: cpuNEON, available: true,
+		},
+	})
+}
+
+// Hand-authored Go-only direct fuzz registration for the lookup4 assembly port
+// pinned to simdutf/simdutf@611becc2a08c27a4edc77d9a45ff74c97130129b. It
+// registers test functions only and adds no product behavior.
+
+func init() {
+	registerUTF8FuzzVariant(utf8FuzzVariant{
+		name: "neon",
+		validate: variant[func([]byte) bool]{
+			value: validateUTF8NEON, kind: implementationNEON,
+			required: cpuNEON, available: true,
+		},
+		withErrors: variant[func([]byte) Result]{
+			value: validateUTF8WithErrorsNEON, kind: implementationNEON,
+			required: cpuNEON, available: true,
+		},
+	})
+}
+
+// Hand-authored Go-only direct scalar-differential coverage for the arm64
+// UTF-8 length ports pinned to
+// simdutf/simdutf@611becc2a08c27a4edc77d9a45ff74c97130129b (tree
+// c8292790d793212ca0a1faf6ae42e7f8e7b70d4f): src/generic/utf8.h:8-17,72-86,
+// src/arm64/implementation.cpp:1121-1124,1178-1181,1292-1295, and
+// src/simdutf/arm64/simd.h:446-555.
+
+func TestUTF8LengthNEONScalarParity(t *testing.T) {
+	for _, input := range [][]byte{
+		nil,
+		{},
+		[]byte("plain ASCII"),
+		{'a', 0xc2, 0xa2, 0xe2, 0x82, 0xac, 0xf0, 0x90, 0x8d, 0x88},
+		{0x00, 0x7f, 0x80, 0xbf, 0xc0, 0xef, 0xf0, 0xf4, 0xf8, 0xff},
+	} {
+		checkUTF8LengthNEON(t, input)
+	}
+
+	lengths := []int{0, 1, 15, 16, 17, 31, 32, 33, 63, 64, 65, 127, 128, 129, 255, 256, 257, 1024, 4097, 65536}
+	for _, length := range lengths {
+		for alignment := range 32 {
+			t.Run("length="+strconv.Itoa(length)+"/alignment="+strconv.Itoa(alignment), func(t *testing.T) {
+				guard := newGuardedSlice(alignment, length, 33, byte(0xa5))
+				for i := range guard.body {
+					guard.body[i] = byte(i*131 + length*17 + alignment)
+				}
+				before := slices.Clone(guard.storage)
+				checkUTF8LengthNEON(t, guard.body)
+				guard.requireCanariesIntact(t)
+				if !slices.Equal(guard.storage, before) {
+					t.Fatal("UTF-8 length NEON input or canary modified")
+				}
+			})
+		}
+	}
+}
+
+func TestUTF8LengthNEONAllByteValues(t *testing.T) {
+	all := make([]byte, 256)
+	for i := range all {
+		all[i] = byte(i)
+	}
+	for _, input := range [][]byte{
+		all,
+		append(slices.Clone(all), all...),
+		bytes.Repeat([]byte{0x00, 0x7f, 0x80, 0xbf, 0xc0, 0xef, 0xf0, 0xff}, 257),
+	} {
+		checkUTF8LengthNEON(t, input)
+	}
+	for value := 0; value <= 0xff; value++ {
+		checkUTF8LengthNEON(t, bytes.Repeat([]byte{byte(value)}, 257))
+	}
+}
+
+// TestUTF16LengthFromUTF8NEONByteClassLowering locks the exact all-byte
+// equivalence used by the Plan 9 NEON kernel: continuation bytes are
+// (byte>>6)==2, and four-byte leads are (byte>>4)==15.
+func TestUTF16LengthFromUTF8NEONByteClassLowering(t *testing.T) {
+	for value := 0; value <= 0xff; value++ {
+		input := byte(value)
+		nonContinuation := input>>6 != 2
+		pinnedNonContinuation := int8(input) > -65
+		if nonContinuation != pinnedNonContinuation {
+			t.Errorf("byte %#02x non-continuation lowering = %t, pinned = %t", value, nonContinuation, pinnedNonContinuation)
+		}
+		fourByteLead := input>>4 == 15
+		pinnedFourByteLead := input >= 0xf0
+		if fourByteLead != pinnedFourByteLead {
+			t.Errorf("byte %#02x four-byte lowering = %t, pinned = %t", value, fourByteLead, pinnedFourByteLead)
+		}
+		got := 0
+		if nonContinuation {
+			got++
+		}
+		if fourByteLead {
+			got++
+		}
+		if want := utf16LengthFromUTF8Scalar([]byte{input}); got != want {
+			t.Errorf("byte %#02x lowered contribution = %d, scalar = %d", value, got, want)
+		}
+	}
+}
+
+func TestUTF16LengthFromUTF8BlocksNEONCompleteBlockContract(t *testing.T) {
+	lengths := []int{0, 1, 15, 16, 17, 31, 32, 33, 63, 64, 65, 127, 128, 129, 255, 256, 257, 4097, 65536}
+	for _, length := range lengths {
+		for alignment := range 32 {
+			storage := make([]byte, alignment+length+32)
+			input := storage[alignment : alignment+length]
+			for i := range input {
+				input[i] = byte(i*29 + length + alignment)
+			}
+			complete := length &^ 63
+			if got, want := utf16LengthFromUTF8BlocksNEON(input), utf16LengthFromUTF8Scalar(input[:complete]); got != want {
+				t.Errorf("length %d alignment %d block length = %d, scalar = %d", length, alignment, got, want)
+			}
+		}
+	}
+}
+
+func checkUTF8LengthNEON(t *testing.T, input []byte) {
+	t.Helper()
+	if got, want := latin1LengthFromUTF8NEON(input), latin1LengthFromUTF8Scalar(input); got != want {
+		t.Errorf("latin1LengthFromUTF8NEON = %d, scalar = %d for %d bytes", got, want, len(input))
+	}
+	if got, want := utf16LengthFromUTF8NEON(input), utf16LengthFromUTF8Scalar(input); got != want {
+		t.Errorf("utf16LengthFromUTF8NEON = %d, scalar = %d for %d bytes", got, want, len(input))
+	}
+	if got, want := utf32LengthFromUTF8NEON(input), utf32LengthFromUTF8Scalar(input); got != want {
+		t.Errorf("utf32LengthFromUTF8NEON = %d, scalar = %d for %d bytes", got, want, len(input))
+	}
+}
+
+// Go-only direct benchmark registration for the arm64 UTF-8 length ports
+// pinned to simdutf/simdutf@611becc2a08c27a4edc77d9a45ff74c97130129b (tree
+// c8292790d793212ca0a1faf6ae42e7f8e7b70d4f):
+// src/arm64/implementation.cpp:1121-1124,1178-1181,1292-1295. It changes no
+// frozen benchmark name, corpus, setup, or product dispatch.
+func init() {
+	registerUTF8LengthDirectVariant(utf8LengthDirectVariant{
+		name: "neon",
+		latin1: variant[func([]byte) int]{
+			value: latin1LengthFromUTF8NEON, kind: implementationNEON,
+			required: cpuNEON, available: true,
+		},
+		utf16: variant[func([]byte) int]{
+			value: utf16LengthFromUTF8NEON, kind: implementationNEON,
+			required: cpuNEON, available: true,
+		},
+		utf32: variant[func([]byte) int]{
+			value: utf32LengthFromUTF8NEON, kind: implementationNEON,
+			required: cpuNEON, available: true,
+		},
+	})
+}
+
+func TestUTF8LengthNEONDirectRegistration(t *testing.T) {
+	for _, candidate := range utf8LengthDirectVariants {
+		if candidate.name != "neon" {
+			continue
+		}
+		selection := selectionInput{features: cpuNEON}
+		if !candidate.latin1.supportedBy(selection) ||
+			!candidate.utf16.supportedBy(selection) ||
+			!candidate.utf32.supportedBy(selection) {
+			t.Fatal("neon direct benchmark registration is not supported by cpuNEON")
+		}
+		if !sameFunction(candidate.latin1.value, latin1LengthFromUTF8NEON) ||
+			!sameFunction(candidate.utf16.value, utf16LengthFromUTF8NEON) ||
+			!sameFunction(candidate.utf32.value, utf32LengthFromUTF8NEON) {
+			t.Fatal("neon direct benchmark registration has unexpected functions")
+		}
+		return
+	}
+	t.Fatal("neon direct benchmark registration not found")
+}
+
+// Hand-authored Go-only direct fuzz registration for the arm64 UTF-8 length
+// ports pinned to simdutf/simdutf@611becc2a08c27a4edc77d9a45ff74c97130129b
+// (tree c8292790d793212ca0a1faf6ae42e7f8e7b70d4f):
+// src/generic/utf8.h:8-17,72-86 and
+// src/arm64/implementation.cpp:1121-1124,1178-1181,1292-1295.
+func init() {
+	registerUTF8LengthFuzzVariant(utf8LengthFuzzVariant{
+		name: "neon",
+		latin1: variant[func([]byte) int]{
+			value: latin1LengthFromUTF8NEON, kind: implementationNEON,
+			required: cpuNEON, available: true,
+		},
+		utf16: variant[func([]byte) int]{
+			value: utf16LengthFromUTF8NEON, kind: implementationNEON,
+			required: cpuNEON, available: true,
+		},
+		utf32: variant[func([]byte) int]{
+			value: utf32LengthFromUTF8NEON, kind: implementationNEON,
+			required: cpuNEON, available: true,
+		},
+	})
+}
+
+func TestUTF8LengthNEONFuzzRegistration(t *testing.T) {
+	for _, candidate := range utf8LengthFuzzVariants {
+		if candidate.name != "neon" {
+			continue
+		}
+		selection := selectionInput{features: cpuNEON}
+		if !candidate.latin1.supportedBy(selection) ||
+			!candidate.utf16.supportedBy(selection) ||
+			!candidate.utf32.supportedBy(selection) {
+			t.Fatal("neon differential-fuzz registration is not supported by cpuNEON")
+		}
+		if !sameFunction(candidate.latin1.value, latin1LengthFromUTF8NEON) ||
+			!sameFunction(candidate.utf16.value, utf16LengthFromUTF8NEON) ||
+			!sameFunction(candidate.utf32.value, utf32LengthFromUTF8NEON) {
+			t.Fatal("neon differential-fuzz registration has unexpected functions")
+		}
+		return
+	}
+	t.Fatal("neon differential-fuzz registration not found")
 }

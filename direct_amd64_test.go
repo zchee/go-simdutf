@@ -18,8 +18,17 @@ package simdutf
 
 import (
 	"bytes"
+	"encoding/binary"
+	"go/ast"
+	"go/parser"
+	"go/token"
 	"math/bits"
+	"os"
 	"reflect"
+	"regexp"
+	"slices"
+	"strconv"
+	"strings"
 	"testing"
 	"unicode/utf8"
 )
@@ -2592,4 +2601,1017 @@ func FuzzUTFValidationAMD64AgainstScalar(f *testing.F) {
 			}
 		}
 	})
+}
+
+// Test-only direct benchmark registration for the independent Go assembly
+// translation pinned to simdutf/simdutf@611becc2a08c27a4edc77d9a45ff74c97130129b
+// (tree c8292790d793212ca0a1faf6ae42e7f8e7b70d4f),
+// src/generic/ascii_validation.h:6-45.
+
+func init() {
+	registerASCIIDirectBenchmarkVariants(
+		"westmere",
+		variant[func([]byte) bool]{
+			value:     validateASCIIWestmere,
+			kind:      implementationWestmere,
+			available: true,
+		},
+		variant[func([]byte) Result]{
+			value:     validateASCIIWithErrorsWestmere,
+			kind:      implementationWestmere,
+			available: true,
+		},
+	)
+	registerASCIIDirectBenchmarkVariants(
+		"haswell",
+		variant[func([]byte) bool]{
+			value:     validateASCIIHaswell,
+			kind:      implementationHaswell,
+			required:  cpuAVX2,
+			available: true,
+		},
+		variant[func([]byte) Result]{
+			value:     validateASCIIWithErrorsHaswell,
+			kind:      implementationHaswell,
+			required:  cpuAVX2,
+			available: true,
+		},
+	)
+}
+
+// Hand-authored Go-only direct fuzz registration for the assembly port pinned
+// to simdutf/simdutf@611becc2a08c27a4edc77d9a45ff74c97130129b:
+// src/generic/ascii_validation.h:6-45 and src/generic/validate_utf16.h:128-158.
+// It registers test functions only and adds no product behavior.
+
+func init() {
+	registerASCIIFuzzVariant(asciiFuzzVariant{
+		name: "westmere",
+		validate: variant[func([]byte) bool]{
+			value: validateASCIIWestmere, kind: implementationWestmere,
+			available: true,
+		},
+		withErrors: variant[func([]byte) Result]{
+			value: validateASCIIWithErrorsWestmere, kind: implementationWestmere,
+			available: true,
+		},
+	})
+	registerUTF16ASCIIFuzzVariant(utf16ASCIIFuzzVariant{
+		name: "westmere",
+		le: variant[func([]uint16) bool]{
+			value: validateUTF16LEAsASCIIWestmere, kind: implementationWestmere,
+			available: true,
+		},
+		be: variant[func([]uint16) bool]{
+			value: validateUTF16BEAsASCIIWestmere, kind: implementationWestmere,
+			available: true,
+		},
+	})
+
+	registerASCIIFuzzVariant(asciiFuzzVariant{
+		name: "haswell",
+		validate: variant[func([]byte) bool]{
+			value: validateASCIIHaswell, kind: implementationHaswell,
+			required: cpuAVX2, available: true,
+		},
+		withErrors: variant[func([]byte) Result]{
+			value: validateASCIIWithErrorsHaswell, kind: implementationHaswell,
+			required: cpuAVX2, available: true,
+		},
+	})
+	registerUTF16ASCIIFuzzVariant(utf16ASCIIFuzzVariant{
+		name: "haswell",
+		le: variant[func([]uint16) bool]{
+			value: validateUTF16LEAsASCIIHaswell, kind: implementationHaswell,
+			required: cpuAVX2, available: true,
+		},
+		be: variant[func([]uint16) bool]{
+			value: validateUTF16BEAsASCIIHaswell, kind: implementationHaswell,
+			required: cpuAVX2, available: true,
+		},
+	})
+}
+
+// Hand-authored Go-only direct differential coverage for the separate
+// Westmere and Haswell count_code_points_bytemask ports pinned to
+// simdutf/simdutf@611becc2a08c27a4edc77d9a45ff74c97130129b (tree
+// c8292790d793212ca0a1faf6ae42e7f8e7b70d4f): src/generic/utf8.h:21-68.
+
+func TestCountUTF8AMD64ScalarParity(t *testing.T) {
+	lengths := []int{0, 1, 15, 16, 17, 31, 32, 33, 63, 64, 65, 127, 128, 129, 4031, 4032, 4033, 4095, 4096, 4097, 8063, 8064, 8065, 8191, 8192, 8193, 16128, 65536}
+	for _, length := range lengths {
+		for alignment := 0; alignment < 32; alignment++ {
+			t.Run("length="+strconv.Itoa(length)+"/alignment="+strconv.Itoa(alignment), func(t *testing.T) {
+				storage := make([]byte, alignment+length+32)
+				input := storage[alignment : alignment+length]
+				for i := range input {
+					input[i] = byte(i*131 + length*17 + alignment)
+				}
+				checkCountUTF8AMD64(t, input)
+			})
+		}
+	}
+}
+
+func TestCountUTF8AMD64AllByteClassesAndSignedPredicate(t *testing.T) {
+	classes := make([]byte, 256)
+	for value := range classes {
+		classes[value] = byte(value)
+		want := 0
+		if int8(byte(value)) > -65 {
+			want = 1
+		}
+		if got := countUTF8Scalar([]byte{byte(value)}); got != want {
+			t.Fatalf("byte %#02x scalar predicate = %d, signed > -65 = %d", value, got, want)
+		}
+		checkCountUTF8AMD64(t, bytes.Repeat([]byte{byte(value)}, 129))
+	}
+	checkCountUTF8AMD64(t, classes)
+	checkCountUTF8AMD64(t, append(slices.Clone(classes), classes...))
+	checkCountUTF8AMD64(t, bytes.Repeat([]byte{0x80, 0xbf, 0x00, 0x7f, 0xc0, 0xff}, 1400))
+}
+
+func TestCountUTF8AMD64RawBlockContracts(t *testing.T) {
+	for _, length := range []int{0, 1, 63, 64, 65, 127, 128, 129, 4031, 4032, 4033, 4095, 4096, 4097, 8063, 8064, 8065, 8191, 8192, 8193, 16128, 65536} {
+		input := make([]byte, length)
+		for i := range input {
+			input[i] = byte(i*29 + length)
+		}
+		if got, want := countUTF8BlocksWestmere(input), countUTF8Scalar(input[:length&^63]); got != want {
+			t.Errorf("Westmere raw length %d = %d, want %d", length, got, want)
+		}
+		if hasCountUTF8AVX2() {
+			if got, want := countUTF8BlocksHaswell(input), countUTF8Scalar(input[:length&^127]); got != want {
+				t.Errorf("Haswell raw length %d = %d, want %d", length, got, want)
+			}
+		}
+	}
+}
+
+func TestCountUTF8AMD64AccumulatorFlushBoundaries(t *testing.T) {
+	lengths := []int{4031, 4032, 4033, 4095, 4096, 4097, 8063, 8064, 8065, 8191, 8192, 8193, 3*8064 + 1, 1 << 20}
+	for _, value := range []byte{0x00, 0x80} {
+		for _, length := range lengths {
+			t.Run("byte="+strconv.Itoa(int(value))+"/length="+strconv.Itoa(length), func(t *testing.T) {
+				input := bytes.Repeat([]byte{value}, length)
+				checkCountUTF8AMD64(t, input)
+				if got, want := countUTF8BlocksWestmere(input), countUTF8Scalar(input[:length&^63]); got != want {
+					t.Errorf("Westmere raw = %d, want %d", got, want)
+				}
+				if hasCountUTF8AVX2() {
+					if got, want := countUTF8BlocksHaswell(input), countUTF8Scalar(input[:length&^127]); got != want {
+						t.Errorf("Haswell raw = %d, want %d", got, want)
+					}
+				}
+			})
+		}
+	}
+}
+
+func TestCountUTF8AMD64CanariesAndImmutability(t *testing.T) {
+	for _, length := range []int{0, 63, 64, 65, 127, 128, 129, 4031, 4032, 4033, 4095, 4096, 4097, 8063, 8064, 8065, 8191, 8192, 8193} {
+		guard := newGuardedSlice(37, length, 41, byte(0xa5))
+		for i := range guard.body {
+			guard.body[i] = byte(i*73 + length)
+		}
+		before := slices.Clone(guard.storage)
+		checkCountUTF8AMD64(t, guard.body)
+		guard.requireCanariesIntact(t)
+		if !slices.Equal(guard.storage, before) {
+			t.Fatalf("length %d input or canary modified", length)
+		}
+	}
+}
+
+func checkCountUTF8AMD64(t *testing.T, input []byte) {
+	t.Helper()
+	want := countUTF8Scalar(input)
+	if got := countUTF8Westmere(input); got != want {
+		t.Errorf("countUTF8Westmere = %d, scalar = %d for %d bytes", got, want, len(input))
+	}
+	if hasCountUTF8AVX2() {
+		if got := countUTF8Haswell(input); got != want {
+			t.Errorf("countUTF8Haswell = %d, scalar = %d for %d bytes", got, want, len(input))
+		}
+	}
+}
+
+func hasCountUTF8AVX2() bool {
+	return detectHostFeatures()&cpuAVX2 == cpuAVX2
+}
+
+// Go-only direct benchmark registration for the amd64 count ports pinned to
+// simdutf/simdutf@611becc2a08c27a4edc77d9a45ff74c97130129b. It changes no
+// frozen benchmark name, corpus, or setup.
+func init() {
+	registerCountUTF8DirectVariant(countUTF8DirectVariant{
+		name: "westmere",
+		variant: variant[func([]byte) int]{
+			value: countUTF8Westmere, kind: implementationWestmere, available: true,
+		},
+	})
+	registerCountUTF8DirectVariant(countUTF8DirectVariant{
+		name: "haswell",
+		variant: variant[func([]byte) int]{
+			value: countUTF8Haswell, kind: implementationHaswell, required: cpuAVX2, available: true,
+		},
+	})
+}
+
+// Hand-authored Go-only direct fuzz registration for the separate Westmere
+// and Haswell count_code_points_bytemask assembly ports pinned to
+// simdutf/simdutf@611becc2a08c27a4edc77d9a45ff74c97130129b.
+func init() {
+	registerCountUTF8FuzzVariant(countUTF8FuzzVariant{
+		name: "westmere",
+		variant: variant[func([]byte) int]{
+			value: countUTF8Westmere, kind: implementationWestmere, available: true,
+		},
+	})
+	registerCountUTF8FuzzVariant(countUTF8FuzzVariant{
+		name: "haswell",
+		variant: variant[func([]byte) int]{
+			value: countUTF8Haswell, kind: implementationHaswell, required: cpuAVX2, available: true,
+		},
+	})
+}
+
+// Hand-authored Go-only direct differential and complete-block contract
+// coverage for the lookup4 assembly ports pinned to
+// simdutf/simdutf@611becc2a08c27a4edc77d9a45ff74c97130129b:
+// src/generic/utf8_validation/utf8_lookup4_algorithm.h:12-216 and
+// src/generic/utf8_validation/utf8_validator.h:10-80.
+
+func TestValidateUTF8AMD64Lookup4RODATA(t *testing.T) {
+	// Exact lookup bytes and masks derive from the pinned
+	// src/generic/utf8_validation/utf8_lookup4_algorithm.h:16-108. The 0x60
+	// and 0x70 subtraction constants derive from the pinned
+	// src/westmere/implementation.cpp:19-28 and
+	// src/haswell/implementation.cpp:19-28 continuation predicates. Haswell
+	// VPSHUFB requires each 16-byte lookup table in both 128-bit lanes.
+	tables := []struct {
+		name string
+		want [32]byte
+	}{
+		{
+			name: "utf8LookupHigh",
+			want: [32]byte{
+				0x02, 0x02, 0x02, 0x02, 0x02, 0x02, 0x02, 0x02,
+				0x80, 0x80, 0x80, 0x80, 0x21, 0x01, 0x15, 0x49,
+				0x02, 0x02, 0x02, 0x02, 0x02, 0x02, 0x02, 0x02,
+				0x80, 0x80, 0x80, 0x80, 0x21, 0x01, 0x15, 0x49,
+			},
+		},
+		{
+			name: "utf8LookupLow",
+			want: [32]byte{
+				0xe7, 0xa3, 0x83, 0x83, 0x8b, 0xcb, 0xcb, 0xcb,
+				0xcb, 0xcb, 0xcb, 0xcb, 0xcb, 0xdb, 0xcb, 0xcb,
+				0xe7, 0xa3, 0x83, 0x83, 0x8b, 0xcb, 0xcb, 0xcb,
+				0xcb, 0xcb, 0xcb, 0xcb, 0xcb, 0xdb, 0xcb, 0xcb,
+			},
+		},
+		{
+			name: "utf8LookupInput",
+			want: [32]byte{
+				0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01,
+				0xe6, 0xae, 0xba, 0xba, 0x01, 0x01, 0x01, 0x01,
+				0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01,
+				0xe6, 0xae, 0xba, 0xba, 0x01, 0x01, 0x01, 0x01,
+			},
+		},
+		{name: "utf8NibbleMask", want: repeatedUTF8AMD64TableByte(0x0f)},
+		{name: "utf8Sub60", want: repeatedUTF8AMD64TableByte(0x60)},
+		{name: "utf8Sub70", want: repeatedUTF8AMD64TableByte(0x70)},
+		{name: "utf8Bit80", want: repeatedUTF8AMD64TableByte(0x80)},
+	}
+
+	source, err := os.ReadFile("utf8_amd64.s")
+	if err != nil {
+		t.Fatal(err)
+	}
+	dataPattern := regexp.MustCompile(`^DATA ·([[:alnum:]]+)<>\+([0-9]+)\(SB\)/8, \$(0x[0-9a-fA-F]{16})$`)
+	globlPattern := regexp.MustCompile(`^GLOBL ·([[:alnum:]]+)<>\(SB\), RODATA\|NOPTR, \$32$`)
+	var dataRecords, globlRecords [][]string
+	for lineNumber, line := range strings.Split(string(source), "\n") {
+		switch {
+		case strings.HasPrefix(line, "DATA "):
+			match := dataPattern.FindStringSubmatch(line)
+			if match == nil {
+				t.Fatalf("utf8_amd64.s:%d: malformed DATA declaration %q", lineNumber+1, line)
+			}
+			dataRecords = append(dataRecords, match)
+		case strings.HasPrefix(line, "GLOBL "):
+			match := globlPattern.FindStringSubmatch(line)
+			if match == nil {
+				t.Fatalf("utf8_amd64.s:%d: malformed GLOBL declaration %q", lineNumber+1, line)
+			}
+			globlRecords = append(globlRecords, match)
+		}
+	}
+
+	if got, want := len(dataRecords), len(tables)*4; got != want {
+		t.Fatalf("DATA /8 declaration count = %d, want %d", got, want)
+	}
+	if got, want := len(globlRecords), len(tables); got != want {
+		t.Fatalf("GLOBL RODATA|NOPTR, $32 declaration count = %d, want %d", got, want)
+	}
+	for tableIndex, table := range tables {
+		var got [32]byte
+		for word := 0; word < 4; word++ {
+			recordIndex := tableIndex*4 + word
+			record := dataRecords[recordIndex]
+			if record[1] != table.name {
+				t.Fatalf("DATA declaration %d symbol = %q, want %q", recordIndex, record[1], table.name)
+			}
+			wantOffset := strconv.Itoa(word * 8)
+			if record[2] != wantOffset {
+				t.Fatalf("DATA declaration %d offset = %q, want %q", recordIndex, record[2], wantOffset)
+			}
+			literal, err := strconv.ParseUint(record[3], 0, 64)
+			if err != nil {
+				t.Fatalf("DATA declaration %d literal %q: %v", recordIndex, record[3], err)
+			}
+			binary.LittleEndian.PutUint64(got[word*8:], literal)
+		}
+		if got != table.want {
+			t.Errorf("%s bytes = % x, want % x", table.name, got, table.want)
+		}
+		if gotName := globlRecords[tableIndex][1]; gotName != table.name {
+			t.Errorf("GLOBL declaration %d symbol = %q, want exact declaration for %q", tableIndex, gotName, table.name)
+		}
+	}
+}
+
+func TestValidateUTF8AMD64ScalarCutoffSourceContract(t *testing.T) {
+	// The pinned generic driver only enters lookup4 while it has a complete
+	// 64-byte block. Westmere preserves that structural cutoff. Haswell requires
+	// two complete blocks because the one-block class regresses against scalar on
+	// the required amd64 host. Lock both Go wrapper policies before an ABI0 prefix
+	// symbol can be invoked.
+	source, err := os.ReadFile("utf8_amd64.go")
+	if err != nil {
+		t.Fatal(err)
+	}
+	for name, want := range map[string]string{
+		"ValidateUTF8/Westmere": `func validateUTF8Westmere(input []byte) bool {
+	if len(input) < 64 {
+		return validateUTF8Scalar(input)
+	}
+	return validateUTF8AMD64FromPrefix(input, validateUTF8PrefixWestmere(input)).Error == Success
+}`,
+		"ValidateUTF8WithErrors/Westmere": `func validateUTF8WithErrorsWestmere(input []byte) Result {
+	if len(input) < 64 {
+		return validateUTF8WithErrorsScalar(input)
+	}
+	return validateUTF8AMD64FromPrefix(input, validateUTF8PrefixWestmere(input))
+}`,
+		"ValidateUTF8/Haswell": `func validateUTF8Haswell(input []byte) bool {
+	if len(input) < 128 {
+		return validateUTF8Scalar(input)
+	}
+	return validateUTF8AMD64FromPrefix(input, validateUTF8PrefixHaswell(input)).Error == Success
+}`,
+		"ValidateUTF8WithErrors/Haswell": `func validateUTF8WithErrorsHaswell(input []byte) Result {
+	if len(input) < 128 {
+		return validateUTF8WithErrorsScalar(input)
+	}
+	return validateUTF8AMD64FromPrefix(input, validateUTF8PrefixHaswell(input))
+}`,
+	} {
+		t.Run(name, func(t *testing.T) {
+			if count := strings.Count(string(source), want); count != 1 {
+				t.Fatalf("exact short-input scalar cutoff contract occurs %d times, want 1\n%s", count, want)
+			}
+		})
+	}
+}
+
+func repeatedUTF8AMD64TableByte(value byte) (table [32]byte) {
+	for i := range table {
+		table[i] = value
+	}
+	return table
+}
+
+func TestValidateUTF8AMD64VariantRegistries(t *testing.T) {
+	want := map[string]struct {
+		kind     implementationKind
+		required cpuFeatures
+	}{
+		"westmere": {implementationWestmere, cpuSSSE3},
+		"haswell":  {implementationHaswell, cpuAVX2},
+	}
+	// The direct archsimd implementation remains registered for benchmarks and
+	// scalar-differential fuzzing even when the performance no-go keeps its
+	// production provider unavailable.
+	if archsimdUTF8DirectVariantsExpected() {
+		want["archsimd"] = struct {
+			kind     implementationKind
+			required cpuFeatures
+		}{implementationArchsimd, cpuAVX2}
+	}
+	check := func(name string, variants []utf8DirectVariant) {
+		t.Helper()
+		if len(variants) != len(want) {
+			t.Fatalf("%s registry has %d variants, want %d", name, len(variants), len(want))
+		}
+		for _, candidate := range variants {
+			expected, ok := want[candidate.name]
+			if !ok {
+				t.Errorf("%s registry contains unexpected variant %q", name, candidate.name)
+				continue
+			}
+			if candidate.validate.value == nil || !candidate.validate.available || candidate.validate.kind != expected.kind || candidate.validate.required != expected.required {
+				t.Errorf("%s %s ValidateUTF8 registration = {kind:%v required:%#x available:%t}, want {kind:%v required:%#x available:true}", name, candidate.name, candidate.validate.kind, candidate.validate.required, candidate.validate.available, expected.kind, expected.required)
+			}
+			if candidate.withErrors.value == nil || !candidate.withErrors.available || candidate.withErrors.kind != expected.kind || candidate.withErrors.required != expected.required {
+				t.Errorf("%s %s ValidateUTF8WithErrors registration = {kind:%v required:%#x available:%t}, want {kind:%v required:%#x available:true}", name, candidate.name, candidate.withErrors.kind, candidate.withErrors.required, candidate.withErrors.available, expected.kind, expected.required)
+			}
+		}
+	}
+
+	check("direct", utf8DirectVariants)
+	fuzz := make([]utf8DirectVariant, len(utf8FuzzVariants))
+	for i, candidate := range utf8FuzzVariants {
+		fuzz[i] = utf8DirectVariant(candidate)
+	}
+	check("fuzz", fuzz)
+}
+
+func TestValidateUTF8WestmereVariantFeatureGate(t *testing.T) {
+	for _, candidate := range utf8DirectVariants {
+		if candidate.name != "westmere" {
+			continue
+		}
+		withSSSE3 := selectionInput{features: cpuSSSE3}
+		if !candidate.validate.supportedBy(withSSSE3) {
+			t.Error("ValidateUTF8 Westmere cell rejected SSSE3")
+		}
+		if !candidate.withErrors.supportedBy(withSSSE3) {
+			t.Error("ValidateUTF8WithErrors Westmere cell rejected SSSE3")
+		}
+		if candidate.validate.supportedBy(selectionInput{}) {
+			t.Error("ValidateUTF8 Westmere cell accepted missing SSSE3")
+		}
+		if candidate.withErrors.supportedBy(selectionInput{}) {
+			t.Error("ValidateUTF8WithErrors Westmere cell accepted missing SSSE3")
+		}
+		return
+	}
+	t.Fatal("direct registry has no Westmere variant")
+}
+
+func TestValidateUTF8AMD64ScalarParity(t *testing.T) {
+	inputs := [][]byte{nil, {}}
+	for _, length := range []int{15, 16, 17, 31, 32, 33, 63, 64, 65, 66, 67, 68, 95, 96, 97, 127, 128, 129} {
+		inputs = append(inputs, bytes.Repeat([]byte{'a'}, length))
+	}
+	valid := [][]byte{{0xc2, 0x80}, {0xe0, 0xa0, 0x80}, {0xed, 0x9f, 0xbf}, {0xf0, 0x90, 0x80, 0x80}, {0xf4, 0x8f, 0xbf, 0xbf}}
+	for _, boundary := range []int{16, 32, 48, 64, 80, 96, 128} {
+		for _, sequence := range valid {
+			for split := 1; split < len(sequence); split++ {
+				input := bytes.Repeat([]byte{'a'}, boundary-split)
+				input = append(input, sequence...)
+				input = append(input, bytes.Repeat([]byte{'b'}, 67)...)
+				inputs = append(inputs, input)
+			}
+		}
+	}
+	invalid := [][]byte{
+		{0x80},
+		{0xff},
+		{0xc0, 0x80},
+		{0xe0, 0x80, 0x80},
+		{0xed, 0xa0, 0x80},
+		{0xf0, 0x80, 0x80, 0x80},
+		{0xf4, 0x90, 0x80, 0x80},
+		{0xf5, 0x80, 0x80, 0x80},
+		{0xc2},
+		{0xe1, 0x80},
+		{0xf0, 0x90, 0x80},
+		{0xe1, 0x80, 'x'},
+	}
+	for _, prefix := range []int{0, 15, 16, 31, 32, 61, 62, 63, 64, 65, 81, 126, 127, 128} {
+		for _, suffix := range invalid {
+			input := bytes.Repeat([]byte{'a'}, prefix)
+			inputs = append(inputs, append(input, suffix...))
+		}
+	}
+	for i, input := range inputs {
+		t.Run(strconv.Itoa(i)+"/length="+strconv.Itoa(len(input)), func(t *testing.T) {
+			checkUTF8AMD64Variants(t, input)
+		})
+	}
+}
+
+func TestValidateUTF8AMD64PrefixStopsAtFirstFailingBlock(t *testing.T) {
+	for _, test := range []struct {
+		name string
+		pos  int
+		want int
+	}{
+		{"first block", 30, 0},
+		{"second block", 64 + 30, 64},
+		{"third block", 128 + 30, 128},
+	} {
+		t.Run(test.name, func(t *testing.T) {
+			input := bytes.Repeat([]byte{'a'}, 192)
+			input[test.pos] = 0x80
+			for _, candidate := range utf8AMD64RawVariants() {
+				if !candidate.supported {
+					continue
+				}
+				if got := candidate.prefix(input); got != test.want {
+					t.Errorf("%s prefix = %d, want %d", candidate.name, got, test.want)
+				}
+			}
+			checkUTF8AMD64Variants(t, input)
+		})
+	}
+}
+
+func TestValidateUTF8AMD64PrefixAcceleratesNonASCIIBlocks(t *testing.T) {
+	sequence := []byte{0xc2, 0x80, 0xe0, 0xa0, 0x80, 0xf0, 0x90, 0x80, 0x80}
+	input := make([]byte, 0, 128)
+	for len(input)+len(sequence) <= 128 {
+		input = append(input, sequence...)
+	}
+	input = append(input, bytes.Repeat([]byte{'a'}, 128-len(input))...)
+	for _, candidate := range utf8AMD64RawVariants() {
+		if !candidate.supported {
+			continue
+		}
+		if got := candidate.prefix(input); got != len(input) {
+			t.Errorf("%s non-ASCII prefix = %d, want %d", candidate.name, got, len(input))
+		}
+	}
+	checkUTF8AMD64Variants(t, input)
+}
+
+func TestValidateUTF8AMD64IncompleteFullBlockAndNextBlock(t *testing.T) {
+	for _, position := range []int{61, 62, 63, 125, 126, 127} {
+		for _, tail := range [][]byte{{0xc2}, {0xe1, 0x80}, {0xf1, 0x80, 0x80}, {0xe1, 0x80, 'x'}} {
+			input := bytes.Repeat([]byte{'a'}, position)
+			input = append(input, tail...)
+			checkUTF8AMD64Variants(t, input)
+		}
+	}
+}
+
+func TestValidateUTF8AMD64DoesNotWriteInput(t *testing.T) {
+	backing := make([]byte, 259)
+	backing[0], backing[len(backing)-1] = 0xa5, 0x5a
+	for i := 1; i < len(backing)-1; i++ {
+		backing[i] = byte(i & 0x7f)
+	}
+	backing[64] = 0xf0
+	before := slices.Clone(backing)
+	input := backing[1 : len(backing)-1]
+	checkUTF8AMD64Variants(t, input)
+	if !slices.Equal(backing, before) {
+		t.Fatal("amd64 UTF-8 validators modified input or canaries")
+	}
+}
+
+type utf8AMD64RawVariant struct {
+	name      string
+	supported bool
+	prefix    func([]byte) int
+	validate  func([]byte) bool
+	errors    func([]byte) Result
+}
+
+func utf8AMD64RawVariants() []utf8AMD64RawVariant {
+	features := detectSelectionInput().features
+	return []utf8AMD64RawVariant{
+		{"westmere", features&cpuSSSE3 == cpuSSSE3, validateUTF8PrefixWestmere, validateUTF8Westmere, validateUTF8WithErrorsWestmere},
+		{"haswell", features&cpuAVX2 == cpuAVX2, validateUTF8PrefixHaswell, validateUTF8Haswell, validateUTF8WithErrorsHaswell},
+	}
+}
+
+func checkUTF8AMD64Variants(t *testing.T, input []byte) {
+	t.Helper()
+	wantBool := validateUTF8Scalar(input)
+	wantResult := validateUTF8WithErrorsScalar(input)
+	for _, candidate := range utf8AMD64RawVariants() {
+		if !candidate.supported {
+			continue
+		}
+		if got := candidate.validate(input); got != wantBool {
+			t.Errorf("%s validate = %t, scalar = %t for %x", candidate.name, got, wantBool, input)
+		}
+		if got := candidate.errors(input); got != wantResult {
+			t.Errorf("%s with errors = %+v, scalar = %+v for %x", candidate.name, got, wantResult, input)
+		}
+	}
+}
+
+// Go-only registration of the direct amd64 lookup4 implementations pinned to
+// simdutf/simdutf@611becc2a08c27a4edc77d9a45ff74c97130129b. It defines no
+// additional product behavior and translates no additional upstream algorithm.
+
+func init() {
+	registerUTF8DirectVariant(utf8DirectVariant{
+		name:       "westmere",
+		validate:   variant[func([]byte) bool]{value: validateUTF8Westmere, kind: implementationWestmere, required: cpuSSSE3, available: true},
+		withErrors: variant[func([]byte) Result]{value: validateUTF8WithErrorsWestmere, kind: implementationWestmere, required: cpuSSSE3, available: true},
+	})
+	registerUTF8DirectVariant(utf8DirectVariant{
+		name:       "haswell",
+		validate:   variant[func([]byte) bool]{value: validateUTF8Haswell, kind: implementationHaswell, required: cpuAVX2, available: true},
+		withErrors: variant[func([]byte) Result]{value: validateUTF8WithErrorsHaswell, kind: implementationHaswell, required: cpuAVX2, available: true},
+	})
+}
+
+// Hand-authored Go-only direct fuzz registration for the amd64 lookup4
+// assembly ports pinned to simdutf/simdutf@611becc2a08c27a4edc77d9a45ff74c97130129b.
+// It registers test functions only and adds no product behavior.
+
+func init() {
+	registerUTF8FuzzVariant(utf8FuzzVariant{
+		name:       "westmere",
+		validate:   variant[func([]byte) bool]{value: validateUTF8Westmere, kind: implementationWestmere, required: cpuSSSE3, available: true},
+		withErrors: variant[func([]byte) Result]{value: validateUTF8WithErrorsWestmere, kind: implementationWestmere, required: cpuSSSE3, available: true},
+	})
+	registerUTF8FuzzVariant(utf8FuzzVariant{
+		name:       "haswell",
+		validate:   variant[func([]byte) bool]{value: validateUTF8Haswell, kind: implementationHaswell, required: cpuAVX2, available: true},
+		withErrors: variant[func([]byte) Result]{value: validateUTF8WithErrorsHaswell, kind: implementationHaswell, required: cpuAVX2, available: true},
+	})
+}
+
+// Hand-authored Go-only direct scalar-differential coverage for the pinned
+// Westmere and Haswell UTF-8 length families in
+// simdutf/simdutf@611becc2a08c27a4edc77d9a45ff74c97130129b (tree
+// c8292790d793212ca0a1faf6ae42e7f8e7b70d4f):
+// src/generic/utf8/utf16_length_from_utf8_bytemask.h,
+// src/generic/utf8.h:8-20, and the corresponding target simd.h files.
+
+func TestUTF8LengthAMD64ScalarParity(t *testing.T) {
+	for _, input := range [][]byte{
+		nil,
+		{},
+		[]byte("plain ASCII"),
+		{'a', 0xc2, 0xa2, 0xe2, 0x82, 0xac, 0xf0, 0x90, 0x8d, 0x88},
+		{0x00, 0x7f, 0x80, 0xbf, 0xc0, 0xef, 0xf0, 0xf4, 0xf8, 0xff},
+	} {
+		checkUTF8LengthAMD64(t, input)
+	}
+
+	lengths := []int{0, 1, 15, 16, 17, 31, 32, 33, 63, 64, 65, 127, 128, 129, 255, 256, 257, 1024, 4097, 65536}
+	for _, length := range lengths {
+		for alignment := 0; alignment < 32; alignment++ {
+			t.Run("length="+strconv.Itoa(length)+"/alignment="+strconv.Itoa(alignment), func(t *testing.T) {
+				guard := newGuardedSlice(alignment, length, 33, byte(0xa5))
+				for i := range guard.body {
+					guard.body[i] = byte(i*131 + length*17 + alignment)
+				}
+				before := slices.Clone(guard.storage)
+				checkUTF8LengthAMD64(t, guard.body)
+				guard.requireCanariesIntact(t)
+				if !slices.Equal(guard.storage, before) {
+					t.Fatal("UTF-8 length amd64 input or canary modified")
+				}
+			})
+		}
+	}
+}
+
+func TestUTF8LengthAMD64ShortInputGuardContracts(t *testing.T) {
+	fset := token.NewFileSet()
+	file, err := parser.ParseFile(fset, "utf8_length_amd64.go", nil, 0)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	functions := make(map[string]*ast.FuncDecl)
+	for _, declaration := range file.Decls {
+		if function, ok := declaration.(*ast.FuncDecl); ok {
+			functions[function.Name.Name] = function
+		}
+	}
+	tests := []struct {
+		wrapper string
+		scalar  string
+		raw     string
+	}{
+		{"utf16LengthFromUTF8Westmere", "utf16LengthFromUTF8Scalar", "utf16LengthFromUTF8BlocksWestmere"},
+		{"utf16LengthFromUTF8Haswell", "utf16LengthFromUTF8Scalar", "utf16LengthFromUTF8BlocksHaswell"},
+		{"utf32LengthFromUTF8Westmere", "utf32LengthFromUTF8Scalar", "utf32LengthFromUTF8BlocksWestmere"},
+		{"utf32LengthFromUTF8Haswell", "utf32LengthFromUTF8Scalar", "utf32LengthFromUTF8BlocksHaswell"},
+	}
+	for _, test := range tests {
+		t.Run(test.wrapper, func(t *testing.T) {
+			function := functions[test.wrapper]
+			if function == nil || function.Body == nil {
+				t.Fatalf("function %s not found", test.wrapper)
+			}
+
+			guardIndex, rawCallIndex := -1, -1
+			for index, statement := range function.Body.List {
+				if rawCallIndex < 0 && callsNamed(statement, test.raw) {
+					rawCallIndex = index
+				}
+				guard, ok := statement.(*ast.IfStmt)
+				if guardIndex >= 0 || !ok {
+					continue
+				}
+				condition, ok := guard.Cond.(*ast.BinaryExpr)
+				if !ok || condition.Op != token.EQL {
+					continue
+				}
+				complete, completeOK := condition.X.(*ast.Ident)
+				zero, zeroOK := condition.Y.(*ast.BasicLit)
+				if !completeOK || complete.Name != "complete" || !zeroOK || zero.Kind != token.INT || zero.Value != "0" {
+					continue
+				}
+				guardIndex = index
+				if guard.Else != nil || len(guard.Body.List) != 1 {
+					t.Fatal("complete == 0 guard must have one unconditional return")
+				}
+				result, ok := guard.Body.List[0].(*ast.ReturnStmt)
+				if !ok || len(result.Results) != 1 || !callsNamed(result.Results[0], test.scalar) {
+					t.Fatalf("complete == 0 guard must return %s(input)", test.scalar)
+				}
+			}
+			if guardIndex < 0 {
+				t.Fatal("complete == 0 guard not found")
+			}
+			if rawCallIndex < 0 {
+				t.Fatalf("function does not call %s", test.raw)
+			}
+			if guardIndex >= rawCallIndex {
+				t.Fatalf("complete == 0 guard must precede %s", test.raw)
+			}
+		})
+	}
+}
+
+func callsNamed(node ast.Node, function string) bool {
+	found := false
+	ast.Inspect(node, func(node ast.Node) bool {
+		call, ok := node.(*ast.CallExpr)
+		if !ok {
+			return true
+		}
+		identifier, ok := call.Fun.(*ast.Ident)
+		if ok && identifier.Name == function {
+			found = true
+		}
+		return !found
+	})
+	return found
+}
+
+func TestUTF8LengthAMD64AllByteValues(t *testing.T) {
+	all := make([]byte, 256)
+	for i := range all {
+		all[i] = byte(i)
+	}
+	if got := latin1LengthFromUTF8Scalar(all); got != 192 {
+		t.Fatalf("one-cycle Latin-1 length = %d, want 192", got)
+	}
+	if got := utf16LengthFromUTF8Scalar(all); got != 208 {
+		t.Fatalf("one-cycle UTF-16 length = %d, want 208", got)
+	}
+	if got := utf32LengthFromUTF8Scalar(all); got != 192 {
+		t.Fatalf("one-cycle UTF-32 length = %d, want 192", got)
+	}
+	for _, input := range [][]byte{
+		all,
+		append(slices.Clone(all), all...),
+		bytes.Repeat([]byte{0x00, 0x7f, 0x80, 0xbf, 0xc0, 0xef, 0xf0, 0xff}, 257),
+	} {
+		checkUTF8LengthAMD64(t, input)
+	}
+	for value := 0; value <= 0xff; value++ {
+		checkUTF8LengthAMD64(t, bytes.Repeat([]byte{byte(value)}, 257))
+	}
+}
+
+func TestUTF8LengthAMD64RawContracts(t *testing.T) {
+	lengths := []int{0, 1, 15, 16, 17, 31, 32, 33, 63, 64, 65, 127, 128, 129, 255, 256, 257, 2031, 2032, 2033, 2047, 2048, 2049, 4063, 4064, 4065, 4095, 4096, 4097, 65536}
+	for _, length := range lengths {
+		input := make([]byte, length)
+		for i := range input {
+			input[i] = byte(i*29 + length)
+		}
+		if got, want := utf16LengthFromUTF8BlocksWestmere(input), utf16LengthFromUTF8Scalar(input[:length&^15]); got != want {
+			t.Errorf("Westmere raw UTF-16 length %d = %d, scalar = %d", length, got, want)
+		}
+		if hasUTF8LengthAVX2() {
+			if got, want := utf16LengthFromUTF8BlocksHaswell(input), utf16LengthFromUTF8Scalar(input[:length&^31]); got != want {
+				t.Errorf("Haswell raw UTF-16 length %d = %d, scalar = %d", length, got, want)
+			}
+		}
+		if hasUTF8LengthPOPCNT() {
+			if got, want := utf32LengthFromUTF8BlocksWestmere(input), utf32LengthFromUTF8Scalar(input[:length&^63]); got != want {
+				t.Errorf("Westmere raw UTF-32 length %d = %d, scalar = %d", length, got, want)
+			}
+		}
+		if hasUTF8LengthAVX2() && hasUTF8LengthPOPCNT() {
+			if got, want := utf32LengthFromUTF8BlocksHaswell(input), utf32LengthFromUTF8Scalar(input[:length&^63]); got != want {
+				t.Errorf("Haswell raw UTF-32 length %d = %d, scalar = %d", length, got, want)
+			}
+		}
+	}
+}
+
+func TestUTF16LengthFromUTF8AMD64FlushBoundaries(t *testing.T) {
+	westmere := []int{2031, 2032, 2033, 2047, 2048, 2049, 2*2032 - 1, 2 * 2032, 2*2032 + 1, 1 << 20}
+	haswell := []int{4063, 4064, 4065, 4095, 4096, 4097, 2*4064 - 1, 2 * 4064, 2*4064 + 1, 1 << 20}
+	for _, value := range []byte{0x00, 0x80, 0xf0, 0xff} {
+		for _, length := range westmere {
+			input := bytes.Repeat([]byte{value}, length)
+			if got, want := utf16LengthFromUTF8Westmere(input), utf16LengthFromUTF8Scalar(input); got != want {
+				t.Errorf("Westmere byte %#02x length %d = %d, scalar = %d", value, length, got, want)
+			}
+		}
+		if hasUTF8LengthAVX2() {
+			for _, length := range haswell {
+				input := bytes.Repeat([]byte{value}, length)
+				if got, want := utf16LengthFromUTF8Haswell(input), utf16LengthFromUTF8Scalar(input); got != want {
+					t.Errorf("Haswell byte %#02x length %d = %d, scalar = %d", value, length, got, want)
+				}
+			}
+		}
+	}
+}
+
+func checkUTF8LengthAMD64(t *testing.T, input []byte) {
+	t.Helper()
+	if got, want := latin1LengthFromUTF8Westmere(input), latin1LengthFromUTF8Scalar(input); got != want {
+		t.Errorf("latin1LengthFromUTF8Westmere = %d, scalar = %d", got, want)
+	}
+	if got, want := utf16LengthFromUTF8Westmere(input), utf16LengthFromUTF8Scalar(input); got != want {
+		t.Errorf("utf16LengthFromUTF8Westmere = %d, scalar = %d", got, want)
+	}
+	if hasUTF8LengthAVX2() {
+		if got, want := latin1LengthFromUTF8Haswell(input), latin1LengthFromUTF8Scalar(input); got != want {
+			t.Errorf("latin1LengthFromUTF8Haswell = %d, scalar = %d", got, want)
+		}
+		if got, want := utf16LengthFromUTF8Haswell(input), utf16LengthFromUTF8Scalar(input); got != want {
+			t.Errorf("utf16LengthFromUTF8Haswell = %d, scalar = %d", got, want)
+		}
+	}
+	if hasUTF8LengthPOPCNT() {
+		if got, want := utf32LengthFromUTF8Westmere(input), utf32LengthFromUTF8Scalar(input); got != want {
+			t.Errorf("utf32LengthFromUTF8Westmere = %d, scalar = %d", got, want)
+		}
+	}
+	if hasUTF8LengthAVX2() && hasUTF8LengthPOPCNT() {
+		if got, want := utf32LengthFromUTF8Haswell(input), utf32LengthFromUTF8Scalar(input); got != want {
+			t.Errorf("utf32LengthFromUTF8Haswell = %d, scalar = %d", got, want)
+		}
+	}
+}
+
+func hasUTF8LengthAVX2() bool {
+	return detectHostFeatures()&cpuAVX2 == cpuAVX2
+}
+
+func hasUTF8LengthPOPCNT() bool {
+	return detectHostFeatures()&cpuPOPCNT == cpuPOPCNT
+}
+
+// Go-only direct benchmark registration for the pinned amd64 UTF-8 length
+// families. It changes no frozen benchmark name, corpus, setup, or product
+// dispatch. Source authority is
+// simdutf/simdutf@611becc2a08c27a4edc77d9a45ff74c97130129b (tree
+// c8292790d793212ca0a1faf6ae42e7f8e7b70d4f): src/westmere/implementation.cpp
+// and src/haswell/implementation.cpp length routes.
+
+func init() {
+	registerUTF8LengthDirectVariant(utf8LengthDirectVariant{
+		name:   "westmere",
+		latin1: variant[func([]byte) int]{value: latin1LengthFromUTF8Westmere, kind: implementationWestmere, available: true},
+		utf16:  variant[func([]byte) int]{value: utf16LengthFromUTF8Westmere, kind: implementationWestmere, available: true},
+		utf32:  variant[func([]byte) int]{value: utf32LengthFromUTF8Westmere, kind: implementationWestmere, required: cpuPOPCNT, available: true},
+	})
+	registerUTF8LengthDirectVariant(utf8LengthDirectVariant{
+		name:   "haswell",
+		latin1: variant[func([]byte) int]{value: latin1LengthFromUTF8Haswell, kind: implementationHaswell, required: cpuAVX2, available: true},
+		utf16:  variant[func([]byte) int]{value: utf16LengthFromUTF8Haswell, kind: implementationHaswell, required: cpuAVX2, available: true},
+		utf32:  variant[func([]byte) int]{value: utf32LengthFromUTF8Haswell, kind: implementationHaswell, required: cpuAVX2 | cpuPOPCNT, available: true},
+	})
+}
+
+func TestUTF8LengthAMD64DirectRegistrations(t *testing.T) {
+	seen := make(map[string]bool, 2)
+	for _, candidate := range utf8LengthDirectVariants {
+		if candidate.name != "westmere" && candidate.name != "haswell" {
+			continue
+		}
+		if seen[candidate.name] {
+			t.Fatalf("duplicate %s direct registration", candidate.name)
+		}
+		seen[candidate.name] = true
+		checkUTF8LengthAMD64Registration(t, candidate.name, candidate.latin1, candidate.utf16, candidate.utf32)
+	}
+	for _, name := range []string{"westmere", "haswell"} {
+		if !seen[name] {
+			t.Errorf("%s direct registration not found", name)
+		}
+	}
+}
+
+func checkUTF8LengthAMD64Registration(
+	t *testing.T,
+	name string,
+	latin1, utf16, utf32 variant[func([]byte) int],
+) {
+	t.Helper()
+	var wantLatin1, wantUTF16, wantUTF32 func([]byte) int
+	var wantKind implementationKind
+	var latin1Required, utf16Required, utf32Required cpuFeatures
+	switch name {
+	case "westmere":
+		wantLatin1 = latin1LengthFromUTF8Westmere
+		wantUTF16 = utf16LengthFromUTF8Westmere
+		wantUTF32 = utf32LengthFromUTF8Westmere
+		wantKind = implementationWestmere
+		utf32Required = cpuPOPCNT
+	case "haswell":
+		wantLatin1 = latin1LengthFromUTF8Haswell
+		wantUTF16 = utf16LengthFromUTF8Haswell
+		wantUTF32 = utf32LengthFromUTF8Haswell
+		wantKind = implementationHaswell
+		latin1Required = cpuAVX2
+		utf16Required = cpuAVX2
+		utf32Required = cpuAVX2 | cpuPOPCNT
+	default:
+		t.Fatalf("unexpected amd64 registration %q", name)
+	}
+	if !sameFunction(latin1.value, wantLatin1) ||
+		!sameFunction(utf16.value, wantUTF16) ||
+		!sameFunction(utf32.value, wantUTF32) {
+		t.Errorf("%s registration has unexpected functions", name)
+	}
+	for operation, check := range map[string]struct {
+		cell     variant[func([]byte) int]
+		required cpuFeatures
+	}{
+		"latin1": {latin1, latin1Required},
+		"utf16":  {utf16, utf16Required},
+		"utf32":  {utf32, utf32Required},
+	} {
+		if check.cell.kind != wantKind || check.cell.required != check.required || !check.cell.available {
+			t.Errorf("%s %s metadata = kind %d required %#x available %t, want kind %d required %#x available true",
+				name, operation, check.cell.kind, check.cell.required, check.cell.available, wantKind, check.required)
+		}
+		if !check.cell.supportedBy(selectionInput{features: check.required}) {
+			t.Errorf("%s %s is not supported with required features %#x", name, operation, check.required)
+		}
+		for feature := cpuFeatures(1); feature <= cpuNEON; feature <<= 1 {
+			if check.required&feature == 0 {
+				continue
+			}
+			missing := check.required &^ feature
+			if check.cell.supportedBy(selectionInput{features: missing}) {
+				t.Errorf("%s %s supported with required feature %#x missing", name, operation, feature)
+			}
+		}
+	}
+}
+
+// Hand-authored Go-only differential-fuzz registration for the pinned amd64
+// UTF-8 length routes in
+// simdutf/simdutf@611becc2a08c27a4edc77d9a45ff74c97130129b (tree
+// c8292790d793212ca0a1faf6ae42e7f8e7b70d4f):
+// src/generic/utf8/utf16_length_from_utf8_bytemask.h, src/generic/utf8.h:8-20,
+// and the Westmere/Haswell implementation routes.
+
+func init() {
+	registerUTF8LengthFuzzVariant(utf8LengthFuzzVariant{
+		name:   "westmere",
+		latin1: variant[func([]byte) int]{value: latin1LengthFromUTF8Westmere, kind: implementationWestmere, available: true},
+		utf16:  variant[func([]byte) int]{value: utf16LengthFromUTF8Westmere, kind: implementationWestmere, available: true},
+		utf32:  variant[func([]byte) int]{value: utf32LengthFromUTF8Westmere, kind: implementationWestmere, required: cpuPOPCNT, available: true},
+	})
+	registerUTF8LengthFuzzVariant(utf8LengthFuzzVariant{
+		name:   "haswell",
+		latin1: variant[func([]byte) int]{value: latin1LengthFromUTF8Haswell, kind: implementationHaswell, required: cpuAVX2, available: true},
+		utf16:  variant[func([]byte) int]{value: utf16LengthFromUTF8Haswell, kind: implementationHaswell, required: cpuAVX2, available: true},
+		utf32:  variant[func([]byte) int]{value: utf32LengthFromUTF8Haswell, kind: implementationHaswell, required: cpuAVX2 | cpuPOPCNT, available: true},
+	})
+}
+
+func TestUTF8LengthAMD64FuzzRegistrations(t *testing.T) {
+	seen := make(map[string]bool, 2)
+	for _, candidate := range utf8LengthFuzzVariants {
+		if candidate.name != "westmere" && candidate.name != "haswell" {
+			continue
+		}
+		if seen[candidate.name] {
+			t.Fatalf("duplicate %s fuzz registration", candidate.name)
+		}
+		seen[candidate.name] = true
+		checkUTF8LengthAMD64Registration(t, candidate.name, candidate.latin1, candidate.utf16, candidate.utf32)
+	}
+	for _, name := range []string{"westmere", "haswell"} {
+		if !seen[name] {
+			t.Errorf("%s fuzz registration not found", name)
+		}
+	}
 }
