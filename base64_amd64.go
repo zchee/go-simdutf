@@ -204,7 +204,7 @@ func binaryToBase64WithLinesAMD64(input, dst []byte, lineLength int, options Bas
 // whitespace, garbage-accept, and ignore-garbage payloads stay scalar.
 
 //go:noinline
-func base64ToBinaryWestmere(input []byte, dst []byte, options Base64Options, lastChunk LastChunkHandlingOptions) Result {
+func base64ToBinaryWestmere(input, dst []byte, options Base64Options, lastChunk LastChunkHandlingOptions) Result {
 	required := maximalBinaryLengthFromBase64Scalar(input)
 	if len(dst) < required {
 		panic("simdutf: destination is too short")
@@ -213,7 +213,7 @@ func base64ToBinaryWestmere(input []byte, dst []byte, options Base64Options, las
 }
 
 //go:noinline
-func base64ToBinaryHaswell(input []byte, dst []byte, options Base64Options, lastChunk LastChunkHandlingOptions) Result {
+func base64ToBinaryHaswell(input, dst []byte, options Base64Options, lastChunk LastChunkHandlingOptions) Result {
 	required := maximalBinaryLengthFromBase64Scalar(input)
 	if len(dst) < required {
 		panic("simdutf: destination is too short")
@@ -240,7 +240,7 @@ func base64ToBinaryUTF16Haswell(input []uint16, dst []byte, options Base64Option
 }
 
 //go:noinline
-func base64ToBinaryDetailsWestmere(input []byte, dst []byte, options Base64Options, lastChunk LastChunkHandlingOptions) FullResult {
+func base64ToBinaryDetailsWestmere(input, dst []byte, options Base64Options, lastChunk LastChunkHandlingOptions) FullResult {
 	if fr, ok := base64ToBinaryDetailsAMD64Contiguous(input, dst, options, lastChunk, base64DecodeBlocksWestmere); ok {
 		return fr
 	}
@@ -248,7 +248,7 @@ func base64ToBinaryDetailsWestmere(input []byte, dst []byte, options Base64Optio
 }
 
 //go:noinline
-func base64ToBinaryDetailsHaswell(input []byte, dst []byte, options Base64Options, lastChunk LastChunkHandlingOptions) FullResult {
+func base64ToBinaryDetailsHaswell(input, dst []byte, options Base64Options, lastChunk LastChunkHandlingOptions) FullResult {
 	if fr, ok := base64ToBinaryDetailsAMD64Contiguous(input, dst, options, lastChunk, base64DecodeBlocksHaswell); ok {
 		return fr
 	}
@@ -274,7 +274,7 @@ func base64ToBinaryDetailsUTF16Haswell(input []uint16, dst []byte, options Base6
 // base64ToBinaryDetailsAMD64Contiguous accelerates contiguous valid Base64 (no
 // ignorable bytes in the payload) with SSSE3/AVX2 64→48 decode blocks.
 // Whitespace, garbage-accept, and mixed payloads fall back to the scalar oracle.
-func base64ToBinaryDetailsAMD64Contiguous(input []byte, dst []byte, options Base64Options, lastChunk LastChunkHandlingOptions, decodeBlocks func([]byte, []byte)) (FullResult, bool) {
+func base64ToBinaryDetailsAMD64Contiguous(input, dst []byte, options Base64Options, lastChunk LastChunkHandlingOptions, decodeBlocks func([]byte, []byte)) (FullResult, bool) {
 	if base64IgnoreGarbage(options) || len(input) < 64 {
 		return FullResult{}, false
 	}

@@ -83,10 +83,19 @@ var dispatchQualificationByteSizes = [...]struct {
 	size  int
 	class string
 }{
-	{1, "short"}, {15, "short"}, {16, "short"}, {17, "short"},
-	{31, "short"}, {32, "short"}, {33, "short"},
-	{63, "boundary"}, {64, "boundary"}, {65, "boundary"},
-	{127, "boundary"}, {128, "boundary"}, {129, "boundary"},
+	{1, "short"},
+	{15, "short"},
+	{16, "short"},
+	{17, "short"},
+	{31, "short"},
+	{32, "short"},
+	{33, "short"},
+	{63, "boundary"},
+	{64, "boundary"},
+	{65, "boundary"},
+	{127, "boundary"},
+	{128, "boundary"},
+	{129, "boundary"},
 	{4096, "bulk"},
 }
 
@@ -94,11 +103,22 @@ var dispatchQualificationUint16Sizes = [...]struct {
 	size  int
 	class string
 }{
-	{1, "short"}, {7, "short"}, {8, "short"}, {9, "short"},
-	{15, "short"}, {16, "short"}, {17, "short"},
-	{31, "boundary"}, {32, "boundary"}, {33, "boundary"},
-	{63, "boundary"}, {64, "boundary"}, {65, "boundary"},
-	{127, "boundary"}, {128, "boundary"}, {129, "boundary"},
+	{1, "short"},
+	{7, "short"},
+	{8, "short"},
+	{9, "short"},
+	{15, "short"},
+	{16, "short"},
+	{17, "short"},
+	{31, "boundary"},
+	{32, "boundary"},
+	{33, "boundary"},
+	{63, "boundary"},
+	{64, "boundary"},
+	{65, "boundary"},
+	{127, "boundary"},
+	{128, "boundary"},
+	{129, "boundary"},
 	{2048, "bulk"},
 }
 
@@ -106,10 +126,19 @@ var dispatchQualificationUint32Sizes = [...]struct {
 	size  int
 	class string
 }{
-	{1, "short"}, {3, "short"}, {4, "short"}, {5, "short"},
-	{7, "short"}, {8, "short"}, {9, "short"},
-	{15, "boundary"}, {16, "boundary"}, {17, "boundary"},
-	{31, "boundary"}, {32, "boundary"}, {33, "boundary"},
+	{1, "short"},
+	{3, "short"},
+	{4, "short"},
+	{5, "short"},
+	{7, "short"},
+	{8, "short"},
+	{9, "short"},
+	{15, "boundary"},
+	{16, "boundary"},
+	{17, "boundary"},
+	{31, "boundary"},
+	{32, "boundary"},
+	{33, "boundary"},
 	{1024, "bulk"},
 }
 

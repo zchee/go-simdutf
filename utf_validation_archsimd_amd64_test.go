@@ -25,7 +25,9 @@ func TestValidateUTF16ArchsimdDifferential(t *testing.T) {
 		append(make([]uint16, 15), 0xd800),
 		append(make([]uint16, 16), 0xdc00),
 		append(append(make([]uint16, 15), 0xd800), 0xdc00),
-		{0xdc00, 0xd800, 0x61}, {0xd800, 0x61}, {0xd800},
+		{0xdc00, 0xd800, 0x61},
+		{0xd800, 0x61},
+		{0xd800},
 	}
 	for _, input := range cases {
 		for _, bigEndian := range []bool{false, true} {
@@ -54,7 +56,10 @@ func TestValidateUTF16ArchsimdDifferential(t *testing.T) {
 func TestValidateUTF32ArchsimdDifferential(t *testing.T) {
 	cases := [][]uint32{
 		nil, make([]uint32, 7), make([]uint32, 8), make([]uint32, 9),
-		{0x10ffff, 0x61, 0xd7ff}, {0xd800}, {0xdfff}, {0x110000},
+		{0x10ffff, 0x61, 0xd7ff},
+		{0xd800},
+		{0xdfff},
+		{0x110000},
 		append(make([]uint32, 7), 0x110000), append(make([]uint32, 8), 0xd800),
 	}
 	for _, input := range cases {

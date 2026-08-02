@@ -49,18 +49,21 @@ func validateUTF16LEWestmere(input []uint16) bool {
 	}
 	return validateUTF16AMD64(input, false, utf16NoSurrogateWestmere)
 }
+
 func validateUTF16BEWestmere(input []uint16) bool {
 	if len(input) < 8 {
 		return validateUTF16BEScalar(input)
 	}
 	return validateUTF16AMD64(input, true, utf16NoSurrogateWestmere)
 }
+
 func validateUTF16LEHaswell(input []uint16) bool {
 	if len(input) < 16 {
 		return validateUTF16LEScalar(input)
 	}
 	return validateUTF16AMD64(input, false, utf16NoSurrogateHaswell)
 }
+
 func validateUTF16BEHaswell(input []uint16) bool {
 	if len(input) < 16 {
 		return validateUTF16BEScalar(input)
@@ -74,18 +77,21 @@ func validateUTF16LEWithErrorsWestmere(input []uint16) Result {
 	}
 	return validateUTF16WithErrorsAMD64(input, false, utf16NoSurrogateWestmere)
 }
+
 func validateUTF16BEWithErrorsWestmere(input []uint16) Result {
 	if len(input) < 8 {
 		return validateUTF16BEWithErrorsScalar(input)
 	}
 	return validateUTF16WithErrorsAMD64(input, true, utf16NoSurrogateWestmere)
 }
+
 func validateUTF16LEWithErrorsHaswell(input []uint16) Result {
 	if len(input) < 16 {
 		return validateUTF16LEWithErrorsScalar(input)
 	}
 	return validateUTF16WithErrorsAMD64(input, false, utf16NoSurrogateHaswell)
 }
+
 func validateUTF16BEWithErrorsHaswell(input []uint16) Result {
 	if len(input) < 16 {
 		return validateUTF16BEWithErrorsScalar(input)
@@ -112,6 +118,7 @@ func toWellFormedUTF16LEWestmere(input, dst []uint16) {
 	}
 	toWellFormedUTF16AMD64(input, dst, false, utf16NoSurrogateWestmere, utf16CopyWestmere)
 }
+
 func toWellFormedUTF16BEWestmere(input, dst []uint16) {
 	if len(input) < 8 {
 		toWellFormedUTF16BEScalar(input, dst)
@@ -119,6 +126,7 @@ func toWellFormedUTF16BEWestmere(input, dst []uint16) {
 	}
 	toWellFormedUTF16AMD64(input, dst, true, utf16NoSurrogateWestmere, utf16CopyWestmere)
 }
+
 func toWellFormedUTF16LEHaswell(input, dst []uint16) {
 	if len(input) < 16 {
 		toWellFormedUTF16LEScalar(input, dst)
@@ -126,6 +134,7 @@ func toWellFormedUTF16LEHaswell(input, dst []uint16) {
 	}
 	toWellFormedUTF16AMD64(input, dst, false, utf16NoSurrogateHaswell, utf16CopyHaswell)
 }
+
 func toWellFormedUTF16BEHaswell(input, dst []uint16) {
 	if len(input) < 16 {
 		toWellFormedUTF16BEScalar(input, dst)
@@ -151,18 +160,21 @@ func validateUTF32Westmere(input []uint32) bool {
 	}
 	return validateUTF32AMD64(input, utf32ASCIIPrefixWestmere)
 }
+
 func validateUTF32Haswell(input []uint32) bool {
 	if len(input) < 8 {
 		return validateUTF32Scalar(input)
 	}
 	return validateUTF32AMD64(input, utf32ASCIIPrefixHaswell)
 }
+
 func validateUTF32WithErrorsWestmere(input []uint32) Result {
 	if len(input) < 4 {
 		return validateUTF32WithErrorsScalar(input)
 	}
 	return validateUTF32WithErrorsAMD64(input, utf32ASCIIPrefixWestmere)
 }
+
 func validateUTF32WithErrorsHaswell(input []uint32) Result {
 	if len(input) < 8 {
 		return validateUTF32WithErrorsScalar(input)

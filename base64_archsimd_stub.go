@@ -33,7 +33,7 @@ func binaryLengthFromBase64UTF16Archsimd(input []uint16) int {
 }
 
 //go:noinline
-func base64ToBinaryArchsimd(input []byte, dst []byte, options Base64Options, lastChunk LastChunkHandlingOptions) Result {
+func base64ToBinaryArchsimd(input, dst []byte, options Base64Options, lastChunk LastChunkHandlingOptions) Result {
 	return base64ToBinaryScalar(input, dst, options, lastChunk)
 }
 
@@ -43,7 +43,7 @@ func base64ToBinaryUTF16Archsimd(input []uint16, dst []byte, options Base64Optio
 }
 
 //go:noinline
-func base64ToBinaryDetailsArchsimd(input []byte, dst []byte, options Base64Options, lastChunk LastChunkHandlingOptions) FullResult {
+func base64ToBinaryDetailsArchsimd(input, dst []byte, options Base64Options, lastChunk LastChunkHandlingOptions) FullResult {
 	return base64ToBinaryDetailsScalar(input, dst, options, lastChunk)
 }
 

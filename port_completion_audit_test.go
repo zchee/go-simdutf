@@ -232,7 +232,7 @@ func countManifestStatuses(rows []portplan.ManifestRowV1) (implemented, planned,
 			excluded++
 		}
 	}
-	return
+	return implemented, planned, excluded
 }
 
 func lockedSetContainsEvidenceLane(locked []byte, lane string) bool {

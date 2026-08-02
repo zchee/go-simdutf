@@ -55,7 +55,8 @@ func TestDirectArchsimdUTF32ConvertAgainstScalar(t *testing.T) {
 		{name: "too-large", input: []uint32{'a', 0x110000, 'b'}},
 	}
 	for _, length := range [...]int{7, 8, 9, 15, 16, 17, 31, 32, 33} {
-		tests = append(tests,
+		tests = append(
+			tests,
 			struct {
 				name  string
 				input []uint32

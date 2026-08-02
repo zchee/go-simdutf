@@ -24,8 +24,13 @@ import (
 
 func TestDirectAMD64UTFValidationAgainstScalar(t *testing.T) {
 	utf16Cases := [][]uint16{
-		nil, {0x41}, {0xd800}, {0xdc00}, {0xd800, 0xdc00},
-		{0x41, 0xd800, 0x42}, {0x41, 0xdc00, 0x42},
+		nil,
+		{0x41},
+		{0xd800},
+		{0xdc00},
+		{0xd800, 0xdc00},
+		{0x41, 0xd800, 0x42},
+		{0x41, 0xdc00, 0x42},
 		{0x41, 0x42, 0x43, 0x44, 0x45, 0x46, 0x47, 0xd800, 0xdc00, 0x48},
 	}
 	providers := []struct {
@@ -85,8 +90,10 @@ func TestDirectAMD64ToWellFormedAgainstScalar(t *testing.T) {
 		big  bool
 		fn   func([]uint16, []uint16)
 	}{
-		{"westmere-le", false, toWellFormedUTF16LEWestmere}, {"haswell-le", false, toWellFormedUTF16LEHaswell},
-		{"westmere-be", true, toWellFormedUTF16BEWestmere}, {"haswell-be", true, toWellFormedUTF16BEHaswell},
+		{"westmere-le", false, toWellFormedUTF16LEWestmere},
+		{"haswell-le", false, toWellFormedUTF16LEHaswell},
+		{"westmere-be", true, toWellFormedUTF16BEWestmere},
+		{"haswell-be", true, toWellFormedUTF16BEHaswell},
 	}
 	for _, p := range providers {
 		in := append([]uint16(nil), input...)

@@ -267,7 +267,7 @@ func base64DecodeBlocksArchsimd(input, dst []byte) {
 // whitespace, garbage-accept, and ignore-garbage payloads stay scalar.
 
 //go:noinline
-func base64ToBinaryArchsimd(input []byte, dst []byte, options Base64Options, lastChunk LastChunkHandlingOptions) Result {
+func base64ToBinaryArchsimd(input, dst []byte, options Base64Options, lastChunk LastChunkHandlingOptions) Result {
 	required := maximalBinaryLengthFromBase64Scalar(input)
 	if len(dst) < required {
 		panic("simdutf: destination is too short")
@@ -285,7 +285,7 @@ func base64ToBinaryUTF16Archsimd(input []uint16, dst []byte, options Base64Optio
 }
 
 //go:noinline
-func base64ToBinaryDetailsArchsimd(input []byte, dst []byte, options Base64Options, lastChunk LastChunkHandlingOptions) FullResult {
+func base64ToBinaryDetailsArchsimd(input, dst []byte, options Base64Options, lastChunk LastChunkHandlingOptions) FullResult {
 	if fr, ok := base64ToBinaryDetailsAMD64Contiguous(input, dst, options, lastChunk, base64DecodeBlocksArchsimd); ok {
 		return fr
 	}

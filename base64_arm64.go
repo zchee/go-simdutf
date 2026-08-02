@@ -151,7 +151,7 @@ func binaryToBase64WithLinesNEON(input, dst []byte, lineLength int, options Base
 	return out
 }
 
-func base64ToBinaryNEON(input []byte, dst []byte, options Base64Options, lastChunk LastChunkHandlingOptions) Result {
+func base64ToBinaryNEON(input, dst []byte, options Base64Options, lastChunk LastChunkHandlingOptions) Result {
 	required := maximalBinaryLengthFromBase64Scalar(input)
 	if len(dst) < required {
 		panic("simdutf: destination is too short")
@@ -167,7 +167,7 @@ func base64ToBinaryUTF16NEON(input []uint16, dst []byte, options Base64Options, 
 	return base64ToBinaryDetailsUTF16NEON(input, dst, options, lastChunk).Result()
 }
 
-func base64ToBinaryDetailsNEON(input []byte, dst []byte, options Base64Options, lastChunk LastChunkHandlingOptions) FullResult {
+func base64ToBinaryDetailsNEON(input, dst []byte, options Base64Options, lastChunk LastChunkHandlingOptions) FullResult {
 	if fr, ok := base64ToBinaryDetailsNEONContiguous(input, dst, options, lastChunk); ok {
 		return fr
 	}
@@ -184,7 +184,7 @@ func base64ToBinaryDetailsUTF16NEON(input []uint16, dst []byte, options Base64Op
 // base64ToBinaryDetailsNEONContiguous accelerates contiguous valid Base64 (no
 // ignorable bytes in the payload) with NEON 64→48 decode blocks. Whitespace,
 // garbage-accept, and mixed payloads fall back to the scalar oracle.
-func base64ToBinaryDetailsNEONContiguous(input []byte, dst []byte, options Base64Options, lastChunk LastChunkHandlingOptions) (FullResult, bool) {
+func base64ToBinaryDetailsNEONContiguous(input, dst []byte, options Base64Options, lastChunk LastChunkHandlingOptions) (FullResult, bool) {
 	if base64IgnoreGarbage(options) || len(input) < 64 {
 		return FullResult{}, false
 	}

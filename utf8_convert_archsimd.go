@@ -28,9 +28,11 @@ import (
 func convertUTF8ToLatin1Archsimd(input, dst []byte) int {
 	return convertUTF8ToLatin1ArchsimdASCII(input, dst, convertUTF8ToLatin1Scalar)
 }
+
 func convertValidUTF8ToLatin1Archsimd(input, dst []byte) int {
 	return convertUTF8ToLatin1ArchsimdASCII(input, dst, convertValidUTF8ToLatin1Scalar)
 }
+
 func convertUTF8ToLatin1ArchsimdASCII(input, dst []byte, tail func([]byte, []byte) int) int {
 	if len(dst) < latin1LengthFromUTF8Scalar(input) {
 		panic("simdutf: destination is too short")
@@ -90,15 +92,19 @@ func convertUTF8ToLatin1WithErrorsArchsimd(input, dst []byte) Result {
 func convertUTF8ToUTF16LEArchsimd(input []byte, dst []uint16) int {
 	return convertUTF8ToUTF16Archsimd(input, dst, false, convertUTF8ToUTF16LEScalar)
 }
+
 func convertUTF8ToUTF16BEArchsimd(input []byte, dst []uint16) int {
 	return convertUTF8ToUTF16Archsimd(input, dst, true, convertUTF8ToUTF16BEScalar)
 }
+
 func convertValidUTF8ToUTF16LEArchsimd(input []byte, dst []uint16) int {
 	return convertUTF8ToUTF16Archsimd(input, dst, false, convertValidUTF8ToUTF16LEScalar)
 }
+
 func convertValidUTF8ToUTF16BEArchsimd(input []byte, dst []uint16) int {
 	return convertUTF8ToUTF16Archsimd(input, dst, true, convertValidUTF8ToUTF16BEScalar)
 }
+
 func convertUTF8ToUTF16Archsimd(input []byte, dst []uint16, bigEndian bool, tail func([]byte, []uint16) int) int {
 	if len(dst) < utf16LengthFromUTF8Scalar(input) {
 		panic("simdutf: destination is too short")
@@ -136,9 +142,11 @@ func convertUTF8ToUTF16Archsimd(input []byte, dst []uint16, bigEndian bool, tail
 func convertUTF8ToUTF16LEWithErrorsArchsimd(input []byte, dst []uint16) Result {
 	return convertUTF8ToUTF16WithErrorsArchsimd(input, dst, false, convertUTF8ToUTF16LEWithErrorsScalar)
 }
+
 func convertUTF8ToUTF16BEWithErrorsArchsimd(input []byte, dst []uint16) Result {
 	return convertUTF8ToUTF16WithErrorsArchsimd(input, dst, true, convertUTF8ToUTF16BEWithErrorsScalar)
 }
+
 func convertUTF8ToUTF16WithErrorsArchsimd(input []byte, dst []uint16, bigEndian bool, tail func([]byte, []uint16) Result) Result {
 	if len(dst) < utf16LengthFromUTF8Scalar(input) {
 		panic("simdutf: destination is too short")
@@ -178,9 +186,11 @@ func convertUTF8ToUTF16WithErrorsArchsimd(input []byte, dst []uint16, bigEndian 
 func convertUTF8ToUTF32Archsimd(input []byte, dst []uint32) int {
 	return convertUTF8ToUTF32ArchsimdASCII(input, dst, convertUTF8ToUTF32Scalar)
 }
+
 func convertValidUTF8ToUTF32Archsimd(input []byte, dst []uint32) int {
 	return convertUTF8ToUTF32ArchsimdASCII(input, dst, convertValidUTF8ToUTF32Scalar)
 }
+
 func convertUTF8ToUTF32ArchsimdASCII(input []byte, dst []uint32, tail func([]byte, []uint32) int) int {
 	if len(dst) < utf32LengthFromUTF8Scalar(input) {
 		panic("simdutf: destination is too short")

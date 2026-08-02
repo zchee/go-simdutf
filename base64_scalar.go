@@ -200,7 +200,7 @@ func patchTailResult(r FullResult, previousInput, previousOutput, equalLocation,
 	return r
 }
 
-func base64TailDecodeByte(dst []byte, src []byte, paddingCharacters int, options Base64Options, lastChunk LastChunkHandlingOptions, checkCapacity bool) FullResult {
+func base64TailDecodeByte(dst, src []byte, paddingCharacters int, options Base64Options, lastChunk LastChunkHandlingOptions, checkCapacity bool) FullResult {
 	return base64TailDecodeImplByte(dst, src, paddingCharacters, options, lastChunk, checkCapacity)
 }
 
@@ -306,7 +306,7 @@ func base64LengthFromBinaryWithLinesScalar(length int, options Base64Options, li
 	return base64Length + lines - 1
 }
 
-func base64TailDecodeImplByte(dst []byte, src []byte, paddingCharacters int, options Base64Options, lastChunk LastChunkHandlingOptions, checkCapacity bool) FullResult {
+func base64TailDecodeImplByte(dst, src []byte, paddingCharacters int, options Base64Options, lastChunk LastChunkHandlingOptions, checkCapacity bool) FullResult {
 	return base64TailDecodeImplGeneric(
 		dst,
 		len(src),
@@ -469,7 +469,7 @@ func base64TailDecodeImplGeneric(
 	}
 }
 
-func base64ToBinaryDetailsScalar(input []byte, dst []byte, options Base64Options, lastChunk LastChunkHandlingOptions) FullResult {
+func base64ToBinaryDetailsScalar(input, dst []byte, options Base64Options, lastChunk LastChunkHandlingOptions) FullResult {
 	return base64ToBinaryDetailsByte(input, dst, options, lastChunk, false)
 }
 
@@ -477,7 +477,7 @@ func base64ToBinaryDetailsUTF16Scalar(input []uint16, dst []byte, options Base64
 	return base64ToBinaryDetailsUTF16Inner(input, dst, options, lastChunk, false)
 }
 
-func base64ToBinaryDetailsSafeScalar(input []byte, dst []byte, options Base64Options, lastChunk LastChunkHandlingOptions) FullResult {
+func base64ToBinaryDetailsSafeScalar(input, dst []byte, options Base64Options, lastChunk LastChunkHandlingOptions) FullResult {
 	return base64ToBinaryDetailsByte(input, dst, options, lastChunk, true)
 }
 
@@ -485,7 +485,7 @@ func base64ToBinaryDetailsSafeUTF16Scalar(input []uint16, dst []byte, options Ba
 	return base64ToBinaryDetailsUTF16Inner(input, dst, options, lastChunk, true)
 }
 
-func base64ToBinaryDetailsByte(input []byte, dst []byte, options Base64Options, lastChunk LastChunkHandlingOptions, checkCapacity bool) FullResult {
+func base64ToBinaryDetailsByte(input, dst []byte, options Base64Options, lastChunk LastChunkHandlingOptions, checkCapacity bool) FullResult {
 	ignoreGarbage := base64IgnoreGarbage(options)
 	ri := findEndBase64Byte(input, options)
 	equalsigns := ri.equalSigns
@@ -551,7 +551,7 @@ func base64ToBinaryDetailsUTF16Inner(input []uint16, dst []byte, options Base64O
 	return r
 }
 
-func base64ToBinaryScalar(input []byte, dst []byte, options Base64Options, lastChunk LastChunkHandlingOptions) Result {
+func base64ToBinaryScalar(input, dst []byte, options Base64Options, lastChunk LastChunkHandlingOptions) Result {
 	required := maximalBinaryLengthFromBase64Scalar(input)
 	if len(dst) < required {
 		panic("simdutf: destination is too short")
@@ -821,7 +821,7 @@ func tailEncodeBase64(dst, src []byte, options Base64Options, useLines bool, lin
 	return out
 }
 
-func base64ToBinarySafeScalar(input []byte, dst []byte, options Base64Options, lastChunk LastChunkHandlingOptions, decodeUpToBadChar bool) (Result, int) {
+func base64ToBinarySafeScalar(input, dst []byte, options Base64Options, lastChunk LastChunkHandlingOptions, decodeUpToBadChar bool) (Result, int) {
 	if decodeUpToBadChar {
 		return slowBase64ToBinarySafeByte(input, dst, options, lastChunk)
 	}
@@ -837,7 +837,7 @@ func base64ToBinarySafeUTF16Scalar(input []uint16, dst []byte, options Base64Opt
 	return Result{Error: r.Error, Count: r.InputCount}, r.OutputCount
 }
 
-func slowBase64ToBinarySafeByte(input []byte, dst []byte, options Base64Options, lastChunk LastChunkHandlingOptions) (Result, int) {
+func slowBase64ToBinarySafeByte(input, dst []byte, options Base64Options, lastChunk LastChunkHandlingOptions) (Result, int) {
 	ignoreGarbage := base64IgnoreGarbage(options)
 	ri := findEndBase64Byte(input, options)
 	if ri.srcLen == 0 {

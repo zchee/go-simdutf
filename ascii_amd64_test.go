@@ -54,7 +54,8 @@ func TestValidateASCIIAMD64Direct(t *testing.T) {
 			for _, length := range lengths {
 				invalidPositions := [][]int{nil}
 				if length != 0 {
-					invalidPositions = append(invalidPositions,
+					invalidPositions = append(
+						invalidPositions,
 						[]int{0},
 						[]int{length / 2},
 						[]int{length - 1},

@@ -40,7 +40,7 @@ func BinaryLengthFromBase64UTF16(input []uint16) int {
 
 // Base64ToBinary decodes base64 input into dst. It panics before writing when
 // dst is shorter than MaximalBinaryLengthFromBase64(input).
-func Base64ToBinary(input []byte, dst []byte, options Base64Options, lastChunk LastChunkHandlingOptions) Result {
+func Base64ToBinary(input, dst []byte, options Base64Options, lastChunk LastChunkHandlingOptions) Result {
 	return activeImplementation.base64ToBinary(input, dst, options, lastChunk)
 }
 
@@ -73,7 +73,7 @@ func BinaryToBase64WithLines(input, dst []byte, lineLength int, options Base64Op
 
 // Base64ToBinaryDetails decodes base64 input and returns FullResult details.
 // It panics before writing when dst is shorter than MaximalBinaryLengthFromBase64(input).
-func Base64ToBinaryDetails(input []byte, dst []byte, options Base64Options, lastChunk LastChunkHandlingOptions) FullResult {
+func Base64ToBinaryDetails(input, dst []byte, options Base64Options, lastChunk LastChunkHandlingOptions) FullResult {
 	required := MaximalBinaryLengthFromBase64(input)
 	if len(dst) < required {
 		panic("simdutf: destination is too short")
@@ -121,7 +121,7 @@ func Base64ValidOrPaddingUTF16(value uint16, options Base64Options) bool {
 }
 
 // Base64ToBinarySafe decodes as much as fits in dst without panicking on short output.
-func Base64ToBinarySafe(input []byte, dst []byte, options Base64Options, lastChunk LastChunkHandlingOptions, decodeUpToBadChar bool) (Result, int) {
+func Base64ToBinarySafe(input, dst []byte, options Base64Options, lastChunk LastChunkHandlingOptions, decodeUpToBadChar bool) (Result, int) {
 	return base64ToBinarySafeScalar(input, dst, options, lastChunk, decodeUpToBadChar)
 }
 

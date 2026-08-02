@@ -52,9 +52,11 @@ func utf8ASCIIToUTF32BlocksHaswell(input []byte, dst []uint32) (consumed int)
 func convertUTF8ToLatin1Westmere(input, dst []byte) int {
 	return convertUTF8ToLatin1AMD64(input, dst, utf8ASCIIToLatin1BlocksWestmere)
 }
+
 func convertUTF8ToLatin1Haswell(input, dst []byte) int {
 	return convertUTF8ToLatin1AMD64(input, dst, utf8ASCIIToLatin1BlocksHaswell)
 }
+
 func convertUTF8ToLatin1AMD64(input, dst []byte, blocks func([]byte, []byte) int) int {
 	if len(dst) < latin1LengthFromUTF8Scalar(input) {
 		panic("simdutf: destination is too short")
@@ -76,9 +78,11 @@ func convertUTF8ToLatin1AMD64(input, dst []byte, blocks func([]byte, []byte) int
 func convertUTF8ToLatin1WithErrorsWestmere(input, dst []byte) Result {
 	return convertUTF8ToLatin1WithErrorsAMD64(input, dst, utf8ASCIIToLatin1BlocksWestmere)
 }
+
 func convertUTF8ToLatin1WithErrorsHaswell(input, dst []byte) Result {
 	return convertUTF8ToLatin1WithErrorsAMD64(input, dst, utf8ASCIIToLatin1BlocksHaswell)
 }
+
 func convertUTF8ToLatin1WithErrorsAMD64(input, dst []byte, blocks func([]byte, []byte) int) Result {
 	if len(dst) < latin1LengthFromUTF8Scalar(input) {
 		panic("simdutf: destination is too short")
@@ -102,9 +106,11 @@ func convertUTF8ToLatin1WithErrorsAMD64(input, dst []byte, blocks func([]byte, [
 func convertValidUTF8ToLatin1Westmere(input, dst []byte) int {
 	return convertValidUTF8ToLatin1AMD64(input, dst, utf8ASCIIToLatin1BlocksWestmere)
 }
+
 func convertValidUTF8ToLatin1Haswell(input, dst []byte) int {
 	return convertValidUTF8ToLatin1AMD64(input, dst, utf8ASCIIToLatin1BlocksHaswell)
 }
+
 func convertValidUTF8ToLatin1AMD64(input, dst []byte, blocks func([]byte, []byte) int) int {
 	if len(dst) < latin1LengthFromUTF8Scalar(input) {
 		panic("simdutf: destination is too short")
@@ -126,16 +132,20 @@ func convertValidUTF8ToLatin1AMD64(input, dst []byte, blocks func([]byte, []byte
 func convertUTF8ToUTF16LEWestmere(input []byte, dst []uint16) int {
 	return convertUTF8ToUTF16AMD64(input, dst, utf8ASCIIToUTF16LEBlocksWestmere, convertUTF8ToUTF16LEScalar)
 }
+
 func convertUTF8ToUTF16BEWestmere(input []byte, dst []uint16) int {
 	return convertUTF8ToUTF16AMD64(input, dst, utf8ASCIIToUTF16BEBlocksWestmere, convertUTF8ToUTF16BEScalar)
 }
+
 func convertUTF8ToUTF16LEHaswell(input []byte, dst []uint16) int {
 	return convertUTF8ToUTF16AMD64(input, dst, utf8ASCIIToUTF16LEBlocksHaswell, convertUTF8ToUTF16LEScalar)
 }
+
 func convertUTF8ToUTF16BEHaswell(input []byte, dst []uint16) int {
 	return convertUTF8ToUTF16AMD64(input, dst, utf8ASCIIToUTF16BEBlocksHaswell, convertUTF8ToUTF16BEScalar)
 }
-func convertUTF8ToUTF16AMD64(input []byte, dst []uint16, blocks func([]byte, []uint16) int, tail func([]byte, []uint16) int) int {
+
+func convertUTF8ToUTF16AMD64(input []byte, dst []uint16, blocks, tail func([]byte, []uint16) int) int {
 	if len(dst) < utf16LengthFromUTF8Scalar(input) {
 		panic("simdutf: destination is too short")
 	}
@@ -156,15 +166,19 @@ func convertUTF8ToUTF16AMD64(input []byte, dst []uint16, blocks func([]byte, []u
 func convertUTF8ToUTF16LEWithErrorsWestmere(input []byte, dst []uint16) Result {
 	return convertUTF8ToUTF16WithErrorsAMD64(input, dst, utf8ASCIIToUTF16LEBlocksWestmere, convertUTF8ToUTF16LEWithErrorsScalar)
 }
+
 func convertUTF8ToUTF16BEWithErrorsWestmere(input []byte, dst []uint16) Result {
 	return convertUTF8ToUTF16WithErrorsAMD64(input, dst, utf8ASCIIToUTF16BEBlocksWestmere, convertUTF8ToUTF16BEWithErrorsScalar)
 }
+
 func convertUTF8ToUTF16LEWithErrorsHaswell(input []byte, dst []uint16) Result {
 	return convertUTF8ToUTF16WithErrorsAMD64(input, dst, utf8ASCIIToUTF16LEBlocksHaswell, convertUTF8ToUTF16LEWithErrorsScalar)
 }
+
 func convertUTF8ToUTF16BEWithErrorsHaswell(input []byte, dst []uint16) Result {
 	return convertUTF8ToUTF16WithErrorsAMD64(input, dst, utf8ASCIIToUTF16BEBlocksHaswell, convertUTF8ToUTF16BEWithErrorsScalar)
 }
+
 func convertUTF8ToUTF16WithErrorsAMD64(input []byte, dst []uint16, blocks func([]byte, []uint16) int, tail func([]byte, []uint16) Result) Result {
 	if len(dst) < utf16LengthFromUTF8Scalar(input) {
 		panic("simdutf: destination is too short")
@@ -188,16 +202,20 @@ func convertUTF8ToUTF16WithErrorsAMD64(input []byte, dst []uint16, blocks func([
 func convertValidUTF8ToUTF16LEWestmere(input []byte, dst []uint16) int {
 	return convertValidUTF8ToUTF16AMD64(input, dst, utf8ASCIIToUTF16LEBlocksWestmere, convertValidUTF8ToUTF16LEScalar)
 }
+
 func convertValidUTF8ToUTF16BEWestmere(input []byte, dst []uint16) int {
 	return convertValidUTF8ToUTF16AMD64(input, dst, utf8ASCIIToUTF16BEBlocksWestmere, convertValidUTF8ToUTF16BEScalar)
 }
+
 func convertValidUTF8ToUTF16LEHaswell(input []byte, dst []uint16) int {
 	return convertValidUTF8ToUTF16AMD64(input, dst, utf8ASCIIToUTF16LEBlocksHaswell, convertValidUTF8ToUTF16LEScalar)
 }
+
 func convertValidUTF8ToUTF16BEHaswell(input []byte, dst []uint16) int {
 	return convertValidUTF8ToUTF16AMD64(input, dst, utf8ASCIIToUTF16BEBlocksHaswell, convertValidUTF8ToUTF16BEScalar)
 }
-func convertValidUTF8ToUTF16AMD64(input []byte, dst []uint16, blocks func([]byte, []uint16) int, tail func([]byte, []uint16) int) int {
+
+func convertValidUTF8ToUTF16AMD64(input []byte, dst []uint16, blocks, tail func([]byte, []uint16) int) int {
 	if len(dst) < utf16LengthFromUTF8Scalar(input) {
 		panic("simdutf: destination is too short")
 	}
@@ -218,9 +236,11 @@ func convertValidUTF8ToUTF16AMD64(input []byte, dst []uint16, blocks func([]byte
 func convertUTF8ToUTF32Westmere(input []byte, dst []uint32) int {
 	return convertUTF8ToUTF32AMD64(input, dst, utf8ASCIIToUTF32BlocksWestmere)
 }
+
 func convertUTF8ToUTF32Haswell(input []byte, dst []uint32) int {
 	return convertUTF8ToUTF32AMD64(input, dst, utf8ASCIIToUTF32BlocksHaswell)
 }
+
 func convertUTF8ToUTF32AMD64(input []byte, dst []uint32, blocks func([]byte, []uint32) int) int {
 	if len(dst) < utf32LengthFromUTF8Scalar(input) {
 		panic("simdutf: destination is too short")
@@ -242,9 +262,11 @@ func convertUTF8ToUTF32AMD64(input []byte, dst []uint32, blocks func([]byte, []u
 func convertUTF8ToUTF32WithErrorsWestmere(input []byte, dst []uint32) Result {
 	return convertUTF8ToUTF32WithErrorsAMD64(input, dst, utf8ASCIIToUTF32BlocksWestmere)
 }
+
 func convertUTF8ToUTF32WithErrorsHaswell(input []byte, dst []uint32) Result {
 	return convertUTF8ToUTF32WithErrorsAMD64(input, dst, utf8ASCIIToUTF32BlocksHaswell)
 }
+
 func convertUTF8ToUTF32WithErrorsAMD64(input []byte, dst []uint32, blocks func([]byte, []uint32) int) Result {
 	if len(dst) < utf32LengthFromUTF8Scalar(input) {
 		panic("simdutf: destination is too short")
@@ -268,9 +290,11 @@ func convertUTF8ToUTF32WithErrorsAMD64(input []byte, dst []uint32, blocks func([
 func convertValidUTF8ToUTF32Westmere(input []byte, dst []uint32) int {
 	return convertValidUTF8ToUTF32AMD64(input, dst, utf8ASCIIToUTF32BlocksWestmere)
 }
+
 func convertValidUTF8ToUTF32Haswell(input []byte, dst []uint32) int {
 	return convertValidUTF8ToUTF32AMD64(input, dst, utf8ASCIIToUTF32BlocksHaswell)
 }
+
 func convertValidUTF8ToUTF32AMD64(input []byte, dst []uint32, blocks func([]byte, []uint32) int) int {
 	if len(dst) < utf32LengthFromUTF8Scalar(input) {
 		panic("simdutf: destination is too short")

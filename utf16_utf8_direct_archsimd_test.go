@@ -52,7 +52,8 @@ func TestDirectArchsimdUTF16ToUTF8AgainstScalar(t *testing.T) {
 		{name: "truncated-high", native: []uint16{'a', 0xd800}},
 	}
 	for _, length := range [...]int{7, 8, 15, 16, 17, 31, 32, 33, 63, 64, 65} {
-		tests = append(tests,
+		tests = append(
+			tests,
 			struct {
 				name   string
 				native []uint16

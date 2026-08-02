@@ -53,7 +53,7 @@ func convertUTF16BEToLatin1Haswell(input []uint16, dst []byte) int {
 	return convertUTF16ToLatin1AMD64(input, dst, utf16BEToLatin1BlocksHaswell, convertUTF16BEToLatin1Scalar, 16)
 }
 
-func convertUTF16ToLatin1AMD64(input []uint16, dst []byte, blocks func([]uint16, []byte) int, tail func([]uint16, []byte) int, minBlock int) int {
+func convertUTF16ToLatin1AMD64(input []uint16, dst []byte, blocks, tail func([]uint16, []byte) int, minBlock int) int {
 	if len(dst) < latin1LengthFromUTF16Scalar(len(input)) {
 		panic("simdutf: destination is too short")
 	}
@@ -119,7 +119,7 @@ func convertValidUTF16BEToLatin1Haswell(input []uint16, dst []byte) int {
 	return convertValidUTF16ToLatin1AMD64(input, dst, utf16BEToLatin1BlocksHaswell, convertValidUTF16BEToLatin1Scalar, 16)
 }
 
-func convertValidUTF16ToLatin1AMD64(input []uint16, dst []byte, blocks func([]uint16, []byte) int, tail func([]uint16, []byte) int, minBlock int) int {
+func convertValidUTF16ToLatin1AMD64(input []uint16, dst []byte, blocks, tail func([]uint16, []byte) int, minBlock int) int {
 	if len(dst) < latin1LengthFromUTF16Scalar(len(input)) {
 		panic("simdutf: destination is too short")
 	}

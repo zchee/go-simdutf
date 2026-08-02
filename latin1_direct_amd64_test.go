@@ -80,6 +80,7 @@ func TestDirectAMD64Latin1AgainstScalar(t *testing.T) {
 		})
 	}
 }
+
 func TestDirectAMD64Latin1PreflightPreservesDestination(t *testing.T) {
 	input := bytes.Repeat([]byte{0xff}, 65)
 	variants := []struct {
@@ -148,6 +149,7 @@ func FuzzLatin1AMD64AgainstScalar(f *testing.F) {
 		}
 	})
 }
+
 func checkLatin1Direct(t *testing.T, input []byte, to8 func([]byte, []byte) int, to16le, to16be func([]byte, []uint16) int, to32 func([]byte, []uint32) int, length func([]byte) int) {
 	want8 := make([]byte, utf8LengthFromLatin1Scalar(input))
 	convertLatin1ToUTF8Scalar(input, want8)
@@ -173,6 +175,7 @@ func checkLatin1Direct(t *testing.T, input []byte, to8 func([]byte, []byte) int,
 		t.Fatal("UTF-32 differential mismatch")
 	}
 }
+
 func equalU16(a, b []uint16) bool {
 	if len(a) != len(b) {
 		return false
@@ -184,6 +187,7 @@ func equalU16(a, b []uint16) bool {
 	}
 	return true
 }
+
 func equalU32(a, b []uint32) bool {
 	if len(a) != len(b) {
 		return false

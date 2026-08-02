@@ -94,10 +94,12 @@ func convertValidUTF8ToLatin1NEON(input, dst []byte) int {
 func convertUTF8ToUTF16LENEON(input []byte, dst []uint16) int {
 	return convertUTF8ToUTF16NEON(input, dst, utf8ASCIIToUTF16LEBlocksNEON, convertUTF8ToUTF16LEScalar)
 }
+
 func convertUTF8ToUTF16BENEON(input []byte, dst []uint16) int {
 	return convertUTF8ToUTF16NEON(input, dst, utf8ASCIIToUTF16BEBlocksNEON, convertUTF8ToUTF16BEScalar)
 }
-func convertUTF8ToUTF16NEON(input []byte, dst []uint16, blocks func([]byte, []uint16) int, tail func([]byte, []uint16) int) int {
+
+func convertUTF8ToUTF16NEON(input []byte, dst []uint16, blocks, tail func([]byte, []uint16) int) int {
 	if len(dst) < utf16LengthFromUTF8Scalar(input) {
 		panic("simdutf: destination is too short")
 	}
@@ -118,9 +120,11 @@ func convertUTF8ToUTF16NEON(input []byte, dst []uint16, blocks func([]byte, []ui
 func convertUTF8ToUTF16LEWithErrorsNEON(input []byte, dst []uint16) Result {
 	return convertUTF8ToUTF16WithErrorsNEON(input, dst, utf8ASCIIToUTF16LEBlocksNEON, convertUTF8ToUTF16LEWithErrorsScalar)
 }
+
 func convertUTF8ToUTF16BEWithErrorsNEON(input []byte, dst []uint16) Result {
 	return convertUTF8ToUTF16WithErrorsNEON(input, dst, utf8ASCIIToUTF16BEBlocksNEON, convertUTF8ToUTF16BEWithErrorsScalar)
 }
+
 func convertUTF8ToUTF16WithErrorsNEON(input []byte, dst []uint16, blocks func([]byte, []uint16) int, tail func([]byte, []uint16) Result) Result {
 	if len(dst) < utf16LengthFromUTF8Scalar(input) {
 		panic("simdutf: destination is too short")
@@ -144,10 +148,12 @@ func convertUTF8ToUTF16WithErrorsNEON(input []byte, dst []uint16, blocks func([]
 func convertValidUTF8ToUTF16LENEON(input []byte, dst []uint16) int {
 	return convertValidUTF8ToUTF16NEON(input, dst, utf8ASCIIToUTF16LEBlocksNEON, convertValidUTF8ToUTF16LEScalar)
 }
+
 func convertValidUTF8ToUTF16BENEON(input []byte, dst []uint16) int {
 	return convertValidUTF8ToUTF16NEON(input, dst, utf8ASCIIToUTF16BEBlocksNEON, convertValidUTF8ToUTF16BEScalar)
 }
-func convertValidUTF8ToUTF16NEON(input []byte, dst []uint16, blocks func([]byte, []uint16) int, tail func([]byte, []uint16) int) int {
+
+func convertValidUTF8ToUTF16NEON(input []byte, dst []uint16, blocks, tail func([]byte, []uint16) int) int {
 	if len(dst) < utf16LengthFromUTF8Scalar(input) {
 		panic("simdutf: destination is too short")
 	}

@@ -56,7 +56,7 @@ func convertUTF16BEToUTF8Haswell(input []uint16, dst []byte) int {
 	return convertUTF16ToUTF8AMD64(input, dst, utf16BEToUTF8ASCIIBlocksHaswell, convertUTF16BEToUTF8Scalar, utf8LengthFromUTF16BEScalar, 16)
 }
 
-func convertUTF16ToUTF8AMD64(input []uint16, dst []byte, blocks func([]uint16, []byte) int, tail func([]uint16, []byte) int, length func([]uint16) int, minBlock int) int {
+func convertUTF16ToUTF8AMD64(input []uint16, dst []byte, blocks, tail func([]uint16, []byte) int, length func([]uint16) int, minBlock int) int {
 	if len(dst) < length(input) {
 		panic("simdutf: destination is too short")
 	}
@@ -126,7 +126,7 @@ func convertUTF16BEToUTF8WithReplacementHaswell(input []uint16, dst []byte) int 
 	return convertUTF16ToUTF8WithReplacementAMD64(input, dst, utf16BEToUTF8ASCIIBlocksHaswell, convertUTF16BEToUTF8WithReplacementScalar, utf8LengthFromUTF16BEWithReplacementScalar, 16)
 }
 
-func convertUTF16ToUTF8WithReplacementAMD64(input []uint16, dst []byte, blocks func([]uint16, []byte) int, tail func([]uint16, []byte) int, length func([]uint16) Result, minBlock int) int {
+func convertUTF16ToUTF8WithReplacementAMD64(input []uint16, dst []byte, blocks, tail func([]uint16, []byte) int, length func([]uint16) Result, minBlock int) int {
 	need := length(input)
 	if len(dst) < need.Count {
 		panic("simdutf: destination is too short")
@@ -157,7 +157,7 @@ func convertValidUTF16BEToUTF8Haswell(input []uint16, dst []byte) int {
 	return convertValidUTF16ToUTF8AMD64(input, dst, utf16BEToUTF8ASCIIBlocksHaswell, convertValidUTF16BEToUTF8Scalar, utf8LengthFromUTF16BEScalar, 16)
 }
 
-func convertValidUTF16ToUTF8AMD64(input []uint16, dst []byte, blocks func([]uint16, []byte) int, tail func([]uint16, []byte) int, length func([]uint16) int, minBlock int) int {
+func convertValidUTF16ToUTF8AMD64(input []uint16, dst []byte, blocks, tail func([]uint16, []byte) int, length func([]uint16) int, minBlock int) int {
 	if len(dst) < length(input) {
 		panic("simdutf: destination is too short")
 	}

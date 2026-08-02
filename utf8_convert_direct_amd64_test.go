@@ -249,7 +249,8 @@ func FuzzUTF8ConvertAMD64AgainstScalar(f *testing.F) {
 	f.Add(append(bytes.Repeat([]byte{'A'}, 64), 0xc2))
 	f.Fuzz(func(t *testing.T, input []byte) {
 		if detectAMD64Features()&cpuSSSE3 == cpuSSSE3 {
-			checkUTF8ConvertDirectAMD64(t, input,
+			checkUTF8ConvertDirectAMD64(
+				t, input,
 				convertUTF8ToLatin1Westmere, convertUTF8ToLatin1WithErrorsWestmere, convertValidUTF8ToLatin1Westmere,
 				convertUTF8ToUTF16LEWestmere, convertUTF8ToUTF16BEWestmere,
 				convertUTF8ToUTF16LEWithErrorsWestmere, convertUTF8ToUTF16BEWithErrorsWestmere,
@@ -258,7 +259,8 @@ func FuzzUTF8ConvertAMD64AgainstScalar(f *testing.F) {
 			)
 		}
 		if detectAMD64Features()&cpuAVX2 == cpuAVX2 {
-			checkUTF8ConvertDirectAMD64(t, input,
+			checkUTF8ConvertDirectAMD64(
+				t, input,
 				convertUTF8ToLatin1Haswell, convertUTF8ToLatin1WithErrorsHaswell, convertValidUTF8ToLatin1Haswell,
 				convertUTF8ToUTF16LEHaswell, convertUTF8ToUTF16BEHaswell,
 				convertUTF8ToUTF16LEWithErrorsHaswell, convertUTF8ToUTF16BEWithErrorsHaswell,

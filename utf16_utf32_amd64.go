@@ -54,7 +54,7 @@ func convertUTF16BEToUTF32Haswell(input []uint16, dst []uint32) int {
 	return convertUTF16ToUTF32AMD64(input, dst, utf16BEToUTF32BlocksHaswell, convertUTF16BEToUTF32Scalar, utf32LengthFromUTF16BEScalar, 16)
 }
 
-func convertUTF16ToUTF32AMD64(input []uint16, dst []uint32, blocks func([]uint16, []uint32) int, tail func([]uint16, []uint32) int, length func([]uint16) int, minBlock int) int {
+func convertUTF16ToUTF32AMD64(input []uint16, dst []uint32, blocks, tail func([]uint16, []uint32) int, length func([]uint16) int, minBlock int) int {
 	if len(dst) < length(input) {
 		panic("simdutf: destination is too short")
 	}
@@ -120,7 +120,7 @@ func convertValidUTF16BEToUTF32Haswell(input []uint16, dst []uint32) int {
 	return convertValidUTF16ToUTF32AMD64(input, dst, utf16BEToUTF32BlocksHaswell, convertValidUTF16BEToUTF32Scalar, utf32LengthFromUTF16BEScalar, 16)
 }
 
-func convertValidUTF16ToUTF32AMD64(input []uint16, dst []uint32, blocks func([]uint16, []uint32) int, tail func([]uint16, []uint32) int, length func([]uint16) int, minBlock int) int {
+func convertValidUTF16ToUTF32AMD64(input []uint16, dst []uint32, blocks, tail func([]uint16, []uint32) int, length func([]uint16) int, minBlock int) int {
 	if len(dst) < length(input) {
 		panic("simdutf: destination is too short")
 	}

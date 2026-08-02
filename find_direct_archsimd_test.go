@@ -56,7 +56,8 @@ func TestDirectArchsimdFindAgainstScalar(t *testing.T) {
 		for i := range input {
 			input[i] = byte(i%251 + 1)
 		}
-		byteCases = append(byteCases,
+		byteCases = append(
+			byteCases,
 			struct {
 				name  string
 				input []byte
@@ -108,7 +109,8 @@ func TestDirectArchsimdFindAgainstScalar(t *testing.T) {
 		for i := range input {
 			input[i] = uint16(i%1009 + 1)
 		}
-		utf16Cases = append(utf16Cases,
+		utf16Cases = append(
+			utf16Cases,
 			struct {
 				name  string
 				input []uint16

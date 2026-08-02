@@ -49,7 +49,8 @@ func TestDirectArchsimdUTF16ToLatin1AgainstScalar(t *testing.T) {
 		{name: "too-large-short", native: []uint16{'a', 0x100, 'b'}},
 	}
 	for _, length := range [...]int{7, 8, 15, 16, 17, 31, 32, 33, 63, 64, 65} {
-		tests = append(tests,
+		tests = append(
+			tests,
 			struct {
 				name   string
 				native []uint16

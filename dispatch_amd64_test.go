@@ -291,6 +291,7 @@ func TestMakeImplementationAMD64FindQualificationSelection(t *testing.T) {
 		}
 	}
 }
+
 func TestMakeImplementationAMD64DetectEncodingsQualificationSelection(t *testing.T) {
 	// detectEncodings providers are forceable but remain scalar-first until
 	// qualification dispositions promote selected backends.
