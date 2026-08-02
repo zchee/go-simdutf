@@ -12,8 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-// These are Go ABI shims for an independently written amd64 feature probe.
-// The required feature contract is pinned to
+// This is the Go ABI shim for an independently written amd64 LZCNT probe;
+// golang.org/x/sys/cpu covers the rest of the feature contract pinned to
 // simdutf/simdutf@611becc2a08c27a4edc77d9a45ff74c97130129b:
 // src/simdutf/westmere.h and src/simdutf/haswell.h. No policy or code from
 // include/simdutf/internal/isadetection.h is reproduced here.
@@ -29,12 +29,4 @@ TEXT ·cpuid(SB), NOSPLIT, $0-24
 	MOVL BX, ebx+12(FP)
 	MOVL CX, ecx+16(FP)
 	MOVL DX, edx+20(FP)
-	RET
-
-// func xgetbv0() (eax, edx uint32)
-TEXT ·xgetbv0(SB), NOSPLIT, $0-8
-	MOVL $0, CX
-	XGETBV
-	MOVL AX, eax+0(FP)
-	MOVL DX, edx+4(FP)
 	RET

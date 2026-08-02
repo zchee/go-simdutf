@@ -16,17 +16,18 @@
 
 package simdutf
 
+import "golang.org/x/sys/cpu"
+
 // The feature contract follows the target declarations at
 // simdutf/simdutf@611becc2a08c27a4edc77d9a45ff74c97130129b:
-// src/simdutf/westmere.h and src/simdutf/haswell.h. This probe is an
-// independent implementation of the architectural CPUID/XGETBV contract; it
-// is not translated or structurally copied from
+// src/simdutf/westmere.h and src/simdutf/haswell.h. golang.org/x/sys/cpu
+// supplies the CPUID/XGETBV probe for every required feature except LZCNT,
+// which x/sys/cpu does not expose and instead comes from an
+// independent implementation of the architectural CPUID extended-leaf
+// query below; it is not translated or structurally copied from
 // include/simdutf/internal/isadetection.h, which has separate provenance.
 
-type (
-	cpuidFunc  func(eax, ecx uint32) (a, b, c, d uint32)
-	xgetbvFunc func() (eax, edx uint32)
-)
+type cpuidFunc func(eax, ecx uint32) (a, b, c, d uint32)
 
 // cpuSSSE3 is amd64-local because no other architecture selector consumes it.
 // It represents CPUID leaf 1 ECX bit 9 exactly; the UTF-8 Westmere kernel uses
@@ -36,59 +37,38 @@ const cpuSSSE3 cpuFeatures = 1 << 7
 //go:noescape
 func cpuid(eaxArg, ecxArg uint32) (eax, ebx, ecx, edx uint32)
 
-//go:noescape
-func xgetbv0() (eax, edx uint32)
-
 func detectAMD64Features() cpuFeatures {
-	return detectAMD64FeaturesWith(cpuid, xgetbv0)
+	var features cpuFeatures
+	if cpu.X86.HasSSSE3 {
+		features |= cpuSSSE3
+	}
+	if cpu.X86.HasSSE42 {
+		features |= cpuSSE42
+	}
+	if cpu.X86.HasPOPCNT {
+		features |= cpuPOPCNT
+	}
+	if cpu.X86.HasBMI1 {
+		features |= cpuBMI1
+	}
+	if cpu.X86.HasBMI2 {
+		features |= cpuBMI2
+	}
+	if cpu.X86.HasAVX2 {
+		features |= cpuAVX2
+	}
+	if hasLZCNT(cpuid) {
+		features |= cpuLZCNT
+	}
+	return features
 }
 
-func detectAMD64FeaturesWith(cpuid cpuidFunc, xgetbv xgetbvFunc) cpuFeatures {
-	maxBasic, _, _, _ := cpuid(0, 0)
-
-	var features cpuFeatures
-	var avx, osxsave bool
-	if maxBasic >= 1 {
-		_, _, ecx, _ := cpuid(1, 0)
-		if ecx&(1<<9) != 0 {
-			features |= cpuSSSE3
-		}
-		if ecx&(1<<20) != 0 {
-			features |= cpuSSE42
-		}
-		if ecx&(1<<23) != 0 {
-			features |= cpuPOPCNT
-		}
-		osxsave = ecx&(1<<27) != 0
-		avx = ecx&(1<<28) != 0
-	}
-
-	var rawAVX2 bool
-	if maxBasic >= 7 {
-		_, ebx, _, _ := cpuid(7, 0)
-		if ebx&(1<<3) != 0 {
-			features |= cpuBMI1
-		}
-		rawAVX2 = ebx&(1<<5) != 0
-		if ebx&(1<<8) != 0 {
-			features |= cpuBMI2
-		}
-	}
-
-	if rawAVX2 && avx && osxsave {
-		eax, _ := xgetbv()
-		if eax&0x6 == 0x6 {
-			features |= cpuAVX2
-		}
-	}
-
+// hasLZCNT reports CPUID extended leaf 0x80000001 ECX bit 5 (LZCNT/ABM).
+func hasLZCNT(cpuid cpuidFunc) bool {
 	maxExtended, _, _, _ := cpuid(0x80000000, 0)
-	if maxExtended >= 0x80000001 {
-		_, _, ecx, _ := cpuid(0x80000001, 0)
-		if ecx&(1<<5) != 0 {
-			features |= cpuLZCNT
-		}
+	if maxExtended < 0x80000001 {
+		return false
 	}
-
-	return features
+	_, _, ecx, _ := cpuid(0x80000001, 0)
+	return ecx&(1<<5) != 0
 }
