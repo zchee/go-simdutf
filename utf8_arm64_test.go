@@ -101,7 +101,7 @@ func TestValidateUTF8NEONLookupTablesMatchPinnedUpstream(t *testing.T) {
 	}
 	for tableIndex, table := range tables {
 		var got [16]byte
-		for chunk := 0; chunk < 2; chunk++ {
+		for chunk := range 2 {
 			record := dataRecords[tableIndex*2+chunk]
 			if record[1] != table.name {
 				t.Fatalf("DATA declaration %d symbol = %q, want %q", tableIndex*2+chunk, record[1], table.name)

@@ -209,12 +209,12 @@ func TestValidateUTF8PinnedReferenceCorruption(t *testing.T) {
 	for profileIndex, profile := range profiles {
 		t.Run(fmt.Sprintf("profile-%d", profileIndex), func(t *testing.T) {
 			rng := rand.New(rand.NewSource(1234))
-			for sample := 0; sample < 10; sample++ {
+			for sample := range 10 {
 				input := generatePinnedReferenceUTF8(rng, 1000, profile)
 				if !ValidateUTF8(input) || !validateUTF8Scalar(input) || !validateUTF8PinnedReference(input) {
 					t.Fatal("generated input is not valid UTF-8")
 				}
-				for mutation := 0; mutation < 1000; mutation++ {
+				for mutation := range 1000 {
 					index := rng.Intn(len(input))
 					original := input[index]
 					input[index] = byte(rng.Uint32())
@@ -234,12 +234,12 @@ func TestValidateUTF8PinnedReferenceCorruption(t *testing.T) {
 
 func TestValidateUTF8PinnedReferenceBruteForce(t *testing.T) {
 	rng := rand.New(rand.NewSource(1234))
-	for sample := 0; sample < 1000; sample++ {
+	for sample := range 1000 {
 		input := generatePinnedReferenceUTF8(rng, rng.Intn(256), utf8WidthWeights{1, 1, 1, 1})
 		if !ValidateUTF8(input) || !validateUTF8Scalar(input) || !validateUTF8PinnedReference(input) {
 			t.Fatal("generated input is not valid UTF-8")
 		}
-		for mutation := 0; mutation < 1000; mutation++ {
+		for mutation := range 1000 {
 			input[rng.Intn(len(input))] = byte(1 << rng.Intn(8))
 			want := validateUTF8PinnedReference(input)
 			if got := ValidateUTF8(input); got != want {

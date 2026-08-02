@@ -34,7 +34,7 @@ func TestCountUTF8NEONScalarParity(t *testing.T) {
 
 	lengths := []int{0, 1, 15, 16, 17, 31, 32, 33, 61, 62, 63, 64, 65, 66, 67, 68, 95, 96, 97, 127, 128, 129, 256, 1024, 4097, 65536}
 	for _, length := range lengths {
-		for alignment := 0; alignment < 16; alignment++ {
+		for alignment := range 16 {
 			t.Run("length="+strconv.Itoa(length)+"/alignment="+strconv.Itoa(alignment), func(t *testing.T) {
 				storage := make([]byte, alignment+length+16)
 				input := storage[alignment : alignment+length]

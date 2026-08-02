@@ -43,7 +43,7 @@ func TestUTF8LengthNEONScalarParity(t *testing.T) {
 
 	lengths := []int{0, 1, 15, 16, 17, 31, 32, 33, 63, 64, 65, 127, 128, 129, 255, 256, 257, 1024, 4097, 65536}
 	for _, length := range lengths {
-		for alignment := 0; alignment < 32; alignment++ {
+		for alignment := range 32 {
 			t.Run("length="+strconv.Itoa(length)+"/alignment="+strconv.Itoa(alignment), func(t *testing.T) {
 				guard := newGuardedSlice(alignment, length, 33, byte(0xa5))
 				for i := range guard.body {
@@ -109,7 +109,7 @@ func TestUTF16LengthFromUTF8NEONByteClassLowering(t *testing.T) {
 func TestUTF16LengthFromUTF8BlocksNEONCompleteBlockContract(t *testing.T) {
 	lengths := []int{0, 1, 15, 16, 17, 31, 32, 33, 63, 64, 65, 127, 128, 129, 255, 256, 257, 4097, 65536}
 	for _, length := range lengths {
-		for alignment := 0; alignment < 32; alignment++ {
+		for alignment := range 32 {
 			storage := make([]byte, alignment+length+32)
 			input := storage[alignment : alignment+length]
 			for i := range input {

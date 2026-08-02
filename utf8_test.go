@@ -136,7 +136,7 @@ func TestValidateUTF8WithErrorsDeterministicMutations(t *testing.T) {
 	two, three, four, leads := utf8MutationSites(base)
 	multibyte := append(append(append([]int(nil), two...), three...), four...)
 
-	for trial := 0; trial < trials; trial++ {
+	for trial := range trials {
 		seed := int64(1234 + trial)
 		rng := rand.New(rand.NewSource(seed))
 		mutate := func(name string, start, width int, want Result, apply func([]byte)) {
@@ -298,7 +298,7 @@ func TestValidateUTF8GuardedInputUnchanged(t *testing.T) {
 
 func TestValidateUTF8UpstreamRewindRegressions(t *testing.T) {
 	tooShort := append(bytes.Repeat([]byte{' '}, 64), 0xf2, 0x80, 0x80)
-	for offset := 0; offset < 5; offset++ {
+	for offset := range 5 {
 		want := Result{Error: TooShort, Count: 64 - offset}
 		if got := ValidateUTF8WithErrors(tooShort[offset:]); got != want {
 			t.Errorf("offset %d: ValidateUTF8WithErrors() = %+v, want %+v", offset, got, want)
