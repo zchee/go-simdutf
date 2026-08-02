@@ -124,3 +124,126 @@ func countUTF8Fixture(size int, codePoints [][]byte) ([]byte, int) {
 	}
 	return input, count
 }
+
+// Hand-authored Go-only direct CountUTF8 benchmark registry scaffolding for
+// simdutf/simdutf@611becc2a08c27a4edc77d9a45ff74c97130129b. It defines
+// test-only variant slots and adds no product behavior.
+
+type countUTF8DirectVariant struct {
+	name string
+	variant[func([]byte) int]
+}
+
+var countUTF8DirectVariants []countUTF8DirectVariant
+
+func registerCountUTF8DirectVariant(candidate countUTF8DirectVariant) {
+	if candidate.name == "" || candidate.value == nil {
+		panic("simdutf: invalid direct CountUTF8 benchmark variant")
+	}
+	for _, registered := range countUTF8DirectVariants {
+		if registered.name == candidate.name {
+			panic("simdutf: duplicate direct CountUTF8 benchmark variant " + candidate.name)
+		}
+	}
+	countUTF8DirectVariants = append(countUTF8DirectVariants, candidate)
+}
+
+func TestRegisterCountUTF8DirectVariant(t *testing.T) {
+	saved := countUTF8DirectVariants
+	defer func() { countUTF8DirectVariants = saved }()
+	registerCountUTF8DirectVariant(countUTF8DirectVariant{
+		name: "test-scalar",
+		variant: variant[func([]byte) int]{
+			value:     countUTF8Scalar,
+			kind:      implementationScalar,
+			available: true,
+		},
+	})
+	got := countUTF8DirectVariants[len(countUTF8DirectVariants)-1]
+	if got.name != "test-scalar" || !sameFunction(got.value, countUTF8Scalar) {
+		t.Fatalf("registered direct variant = %q %p, want test-scalar %p", got.name, got.value, countUTF8Scalar)
+	}
+}
+
+// Hand-authored Go-only direct CountUTF8 differential fuzz registry
+// scaffolding for
+// simdutf/simdutf@611becc2a08c27a4edc77d9a45ff74c97130129b. It defines test
+// metadata only and adds no product behavior.
+
+type countUTF8FuzzVariant struct {
+	name string
+	variant[func([]byte) int]
+}
+
+var countUTF8FuzzVariants []countUTF8FuzzVariant
+
+func registerCountUTF8FuzzVariant(candidate countUTF8FuzzVariant) {
+	if candidate.name == "" || candidate.value == nil {
+		panic("simdutf: invalid direct CountUTF8 fuzz variant")
+	}
+	for _, registered := range countUTF8FuzzVariants {
+		if registered.name == candidate.name {
+			panic("simdutf: duplicate direct CountUTF8 fuzz variant " + candidate.name)
+		}
+	}
+	countUTF8FuzzVariants = append(countUTF8FuzzVariants, candidate)
+}
+
+func TestRegisterCountUTF8FuzzVariant(t *testing.T) {
+	saved := countUTF8FuzzVariants
+	defer func() { countUTF8FuzzVariants = saved }()
+	registerCountUTF8FuzzVariant(countUTF8FuzzVariant{
+		name: "test-scalar",
+		variant: variant[func([]byte) int]{
+			value:     countUTF8Scalar,
+			kind:      implementationScalar,
+			available: true,
+		},
+	})
+	got := countUTF8FuzzVariants[len(countUTF8FuzzVariants)-1]
+	if got.name != "test-scalar" || !sameFunction(got.value, countUTF8Scalar) {
+		t.Fatalf("registered fuzz variant = %q %p, want test-scalar %p", got.name, got.value, countUTF8Scalar)
+	}
+}
+
+// Go-only public-versus-scalar differential fuzz scaffold for the count_utf8
+// port pinned to simdutf/simdutf@611becc2a08c27a4edc77d9a45ff74c97130129b:
+// fuzz/conversion.cpp and tests/count_utf8.cpp:11-84. The scalar function is
+// the explicit oracle for the public entry point and every registered direct
+// accelerated implementation.
+
+func FuzzCountUTF8(f *testing.F) {
+	for _, seed := range [][]byte{
+		nil,
+		{},
+		[]byte("köttbulle"),
+		{'a', 0xc2, 0xa2, 0xe2, 0x82, 0xac, 0xf0, 0x90, 0x8d, 0x88},
+		{0x00, 0x7f, 0x80, 0xbf, 0xc0, 0xff},
+		bytes.Repeat([]byte{'a'}, 67),
+		bytes.Repeat([]byte{0x00, 0x7f, 0x80, 0xbf, 0xc0, 0xff}, 1344),
+	} {
+		f.Add(seed)
+	}
+	f.Fuzz(func(t *testing.T, input []byte) {
+		guard := newGuardedSlice(2, len(input), 3, byte(0xa5))
+		copy(guard.body, input)
+		before := bytes.Clone(guard.storage)
+		want := countUTF8Scalar(guard.body)
+		if got := CountUTF8(guard.body); got != want {
+			t.Errorf("CountUTF8() = %d, scalar = %d", got, want)
+		}
+		selection := detectSelectionInput()
+		for _, candidate := range countUTF8FuzzVariants {
+			if !candidate.supportedBy(selection) {
+				continue
+			}
+			if got := candidate.value(guard.body); got != want {
+				t.Errorf("%s CountUTF8() = %d, scalar = %d", candidate.name, got, want)
+			}
+		}
+		guard.requireCanariesIntact(t)
+		if !bytes.Equal(guard.storage, before) {
+			t.Fatal("CountUTF8 modified input or canaries")
+		}
+	})
+}

@@ -159,3 +159,57 @@ func makeASCIIArchsimdInput(length int) []byte {
 	}
 	return input
 }
+
+// Hand-authored Go-only benchmark registration for the independent archsimd
+// adaptation of simdutf/simdutf@611becc2a08c27a4edc77d9a45ff74c97130129b
+// (tree c8292790d793212ca0a1faf6ae42e7f8e7b70d4f),
+// src/generic/ascii_validation.h:6-45. It uses the test-only registry defined
+// by ascii_direct_variants_test.go and adds no benchmark procedure or result.
+
+func init() {
+	registerASCIIDirectBenchmarkVariants(
+		"archsimd",
+		variant[func([]byte) bool]{
+			value:     validateASCIIArchsimd,
+			kind:      implementationArchsimd,
+			required:  cpuAVX2,
+			available: true,
+		},
+		variant[func([]byte) Result]{
+			value:     validateASCIIWithErrorsArchsimd,
+			kind:      implementationArchsimd,
+			required:  cpuAVX2,
+			available: true,
+		},
+	)
+}
+
+// Hand-authored Go-only direct fuzz registration for the archsimd adaptation
+// pinned to simdutf/simdutf@611becc2a08c27a4edc77d9a45ff74c97130129b:
+// src/generic/ascii_validation.h:6-45 and src/generic/validate_utf16.h:128-158.
+// It registers test functions only and adds no product behavior.
+
+func init() {
+	registerASCIIFuzzVariant(asciiFuzzVariant{
+		name: "archsimd",
+		validate: variant[func([]byte) bool]{
+			value: validateASCIIArchsimd, kind: implementationArchsimd,
+			required: cpuAVX2, available: true,
+		},
+		withErrors: variant[func([]byte) Result]{
+			value: validateASCIIWithErrorsArchsimd, kind: implementationArchsimd,
+			required: cpuAVX2, available: true,
+		},
+	})
+	registerUTF16ASCIIFuzzVariant(utf16ASCIIFuzzVariant{
+		name: "archsimd",
+		le: variant[func([]uint16) bool]{
+			value: validateUTF16LEAsASCIIArchsimd, kind: implementationArchsimd,
+			required: cpuAVX2, available: true,
+		},
+		be: variant[func([]uint16) bool]{
+			value: validateUTF16BEAsASCIIArchsimd, kind: implementationArchsimd,
+			required: cpuAVX2, available: true,
+		},
+	})
+}

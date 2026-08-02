@@ -140,3 +140,14 @@ func TestValidateUTF8ArchsimdLaneBridgeOrientation(t *testing.T) {
 		}
 	}
 }
+
+// Go-only direct benchmark and scalar-differential fuzz registration for the
+// tagged lookup4 adaptation pinned to
+// simdutf/simdutf@611becc2a08c27a4edc77d9a45ff74c97130129b.
+
+func init() {
+	validate := variant[func([]byte) bool]{value: validateUTF8Archsimd, kind: implementationArchsimd, required: cpuAVX2, available: true}
+	withErrors := variant[func([]byte) Result]{value: validateUTF8WithErrorsArchsimd, kind: implementationArchsimd, required: cpuAVX2, available: true}
+	registerUTF8DirectVariant(utf8DirectVariant{name: "archsimd", validate: validate, withErrors: withErrors})
+	registerUTF8FuzzVariant(utf8FuzzVariant{name: "archsimd", validate: validate, withErrors: withErrors})
+}

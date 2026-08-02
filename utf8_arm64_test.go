@@ -214,3 +214,39 @@ func checkUTF8NEON(t *testing.T, input []byte) {
 		t.Errorf("validateUTF8WithErrorsNEON = %+v, scalar = %+v for %x", got, want, input)
 	}
 }
+
+// Go-only registration of the direct arm64 lookup4 implementation pinned to
+// simdutf/simdutf@611becc2a08c27a4edc77d9a45ff74c97130129b. It defines no
+// product dispatch behavior and translates no additional upstream algorithm.
+
+func init() {
+	registerUTF8DirectVariant(utf8DirectVariant{
+		name: "neon",
+		validate: variant[func([]byte) bool]{
+			value: validateUTF8NEON, kind: implementationNEON,
+			required: cpuNEON, available: true,
+		},
+		withErrors: variant[func([]byte) Result]{
+			value: validateUTF8WithErrorsNEON, kind: implementationNEON,
+			required: cpuNEON, available: true,
+		},
+	})
+}
+
+// Hand-authored Go-only direct fuzz registration for the lookup4 assembly port
+// pinned to simdutf/simdutf@611becc2a08c27a4edc77d9a45ff74c97130129b. It
+// registers test functions only and adds no product behavior.
+
+func init() {
+	registerUTF8FuzzVariant(utf8FuzzVariant{
+		name: "neon",
+		validate: variant[func([]byte) bool]{
+			value: validateUTF8NEON, kind: implementationNEON,
+			required: cpuNEON, available: true,
+		},
+		withErrors: variant[func([]byte) Result]{
+			value: validateUTF8WithErrorsNEON, kind: implementationNEON,
+			required: cpuNEON, available: true,
+		},
+	})
+}

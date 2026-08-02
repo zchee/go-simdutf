@@ -397,3 +397,37 @@ func checkUTF8AMD64Variants(t *testing.T, input []byte) {
 		}
 	}
 }
+
+// Go-only registration of the direct amd64 lookup4 implementations pinned to
+// simdutf/simdutf@611becc2a08c27a4edc77d9a45ff74c97130129b. It defines no
+// additional product behavior and translates no additional upstream algorithm.
+
+func init() {
+	registerUTF8DirectVariant(utf8DirectVariant{
+		name:       "westmere",
+		validate:   variant[func([]byte) bool]{value: validateUTF8Westmere, kind: implementationWestmere, required: cpuSSSE3, available: true},
+		withErrors: variant[func([]byte) Result]{value: validateUTF8WithErrorsWestmere, kind: implementationWestmere, required: cpuSSSE3, available: true},
+	})
+	registerUTF8DirectVariant(utf8DirectVariant{
+		name:       "haswell",
+		validate:   variant[func([]byte) bool]{value: validateUTF8Haswell, kind: implementationHaswell, required: cpuAVX2, available: true},
+		withErrors: variant[func([]byte) Result]{value: validateUTF8WithErrorsHaswell, kind: implementationHaswell, required: cpuAVX2, available: true},
+	})
+}
+
+// Hand-authored Go-only direct fuzz registration for the amd64 lookup4
+// assembly ports pinned to simdutf/simdutf@611becc2a08c27a4edc77d9a45ff74c97130129b.
+// It registers test functions only and adds no product behavior.
+
+func init() {
+	registerUTF8FuzzVariant(utf8FuzzVariant{
+		name:       "westmere",
+		validate:   variant[func([]byte) bool]{value: validateUTF8Westmere, kind: implementationWestmere, required: cpuSSSE3, available: true},
+		withErrors: variant[func([]byte) Result]{value: validateUTF8WithErrorsWestmere, kind: implementationWestmere, required: cpuSSSE3, available: true},
+	})
+	registerUTF8FuzzVariant(utf8FuzzVariant{
+		name:       "haswell",
+		validate:   variant[func([]byte) bool]{value: validateUTF8Haswell, kind: implementationHaswell, required: cpuAVX2, available: true},
+		withErrors: variant[func([]byte) Result]{value: validateUTF8WithErrorsHaswell, kind: implementationHaswell, required: cpuAVX2, available: true},
+	})
+}

@@ -288,3 +288,412 @@ func TestTrimPartialUTF8UpstreamTailCases(t *testing.T) {
 		})
 	}
 }
+
+// Hand-authored Go-only direct UTF-8 length benchmark registry scaffolding for
+// simdutf/simdutf@611becc2a08c27a4edc77d9a45ff74c97130129b (tree
+// c8292790d793212ca0a1faf6ae42e7f8e7b70d4f):
+// benchmarks/shortbench.cpp:29-65,419-422,493-497,520-526 and
+// benchmarks/src/benchmark.cpp:167-169,999-1011. It defines test-only named
+// variant slots and adds no product behavior or mutable dispatch override.
+
+type utf8LengthDirectVariant struct {
+	name   string
+	latin1 variant[func([]byte) int]
+	utf16  variant[func([]byte) int]
+	utf32  variant[func([]byte) int]
+}
+
+var utf8LengthDirectVariants []utf8LengthDirectVariant
+
+func registerUTF8LengthDirectVariant(candidate utf8LengthDirectVariant) {
+	if candidate.name == "" || !validUTF8LengthVariantCells(candidate.latin1, candidate.utf16, candidate.utf32) {
+		panic("simdutf: invalid direct UTF-8 length benchmark variant")
+	}
+	for _, registered := range utf8LengthDirectVariants {
+		if registered.name == candidate.name {
+			panic("simdutf: duplicate direct UTF-8 length benchmark variant " + candidate.name)
+		}
+	}
+	utf8LengthDirectVariants = append(utf8LengthDirectVariants, candidate)
+}
+
+func validUTF8LengthVariantCells(cells ...variant[func([]byte) int]) bool {
+	implemented := false
+	for _, cell := range cells {
+		if cell.value == nil {
+			if cell.available || cell.kind != implementationScalar || cell.required != 0 {
+				panic("simdutf: inconsistent absent UTF-8 length variant cell")
+			}
+			continue
+		}
+		if !cell.available {
+			panic("simdutf: unavailable UTF-8 length variant cell has a function")
+		}
+		implemented = true
+	}
+	return implemented
+}
+
+func TestRegisterUTF8LengthDirectVariant(t *testing.T) {
+	saved := utf8LengthDirectVariants
+	defer func() { utf8LengthDirectVariants = saved }()
+
+	tests := []struct {
+		name          string
+		backend       string
+		implemented   uint8
+		availableNil  uint8
+		unavailableFn uint8
+		duplicate     bool
+		wantPanic     bool
+	}{
+		{name: "partial UTF16 only", backend: "test-utf16", implemented: 1 << 1},
+		{name: "partial UTF32 only", backend: "test-utf32", implemented: 1 << 2},
+		{name: "mixed implemented and not applicable", backend: "test-mixed", implemented: 1<<0 | 1<<2},
+		{name: "empty name", implemented: 1 << 1, wantPanic: true},
+		{name: "no implemented cells", backend: "test-empty", wantPanic: true},
+		{name: "available operation with nil value", backend: "test-nil", availableNil: 1 << 1, wantPanic: true},
+		{name: "unavailable operation with value", backend: "test-unavailable", unavailableFn: 1 << 2, wantPanic: true},
+		{name: "duplicate name", backend: "test-duplicate", implemented: 1 << 1, duplicate: true, wantPanic: true},
+	}
+	for _, test := range tests {
+		t.Run(test.name, func(t *testing.T) {
+			utf8LengthDirectVariants = nil
+			var invoked [3]int
+			candidate := makeUTF8LengthDirectTestVariant(test.backend, test.implemented, &invoked)
+			setInvalidUTF8LengthDirectTestCell(&candidate, test.availableNil, true)
+			setInvalidUTF8LengthDirectTestCell(&candidate, test.unavailableFn, false)
+			if test.duplicate {
+				registerUTF8LengthDirectVariant(candidate)
+			}
+
+			panicked := didPanic(func() { registerUTF8LengthDirectVariant(candidate) })
+			if panicked != test.wantPanic {
+				t.Fatalf("register panic = %t, want %t", panicked, test.wantPanic)
+			}
+			if test.wantPanic {
+				return
+			}
+
+			got := utf8LengthDirectVariants[len(utf8LengthDirectVariants)-1]
+			input := []byte("a\xf0\x90\x8d\x88")
+			want := [...]int{
+				latin1LengthFromUTF8Scalar(input),
+				utf16LengthFromUTF8Scalar(input),
+				utf32LengthFromUTF8Scalar(input),
+			}
+			cells := [...]variant[func([]byte) int]{got.latin1, got.utf16, got.utf32}
+			for i, cell := range cells {
+				if !cell.supportedBy(selectionInput{}) {
+					if cell.value != nil {
+						t.Fatalf("unsupported cell %d has a function", i)
+					}
+					continue
+				}
+				if result := cell.value(input); result != want[i] {
+					t.Errorf("cell %d result = %d, scalar = %d", i, result, want[i])
+				}
+			}
+			for i := range invoked {
+				wantInvoked := 0
+				if test.implemented&(1<<i) != 0 {
+					wantInvoked = 1
+				}
+				if invoked[i] != wantInvoked {
+					t.Errorf("cell %d invoked %d times, want %d", i, invoked[i], wantInvoked)
+				}
+			}
+		})
+	}
+}
+
+func makeUTF8LengthDirectTestVariant(name string, implemented uint8, invoked *[3]int) utf8LengthDirectVariant {
+	functions := [...]func([]byte) int{
+		func(input []byte) int { invoked[0]++; return latin1LengthFromUTF8Scalar(input) },
+		func(input []byte) int { invoked[1]++; return utf16LengthFromUTF8Scalar(input) },
+		func(input []byte) int { invoked[2]++; return utf32LengthFromUTF8Scalar(input) },
+	}
+	cells := [3]variant[func([]byte) int]{}
+	for i := range cells {
+		if implemented&(1<<i) != 0 {
+			cells[i] = variant[func([]byte) int]{value: functions[i], available: true}
+		}
+	}
+	return utf8LengthDirectVariant{name: name, latin1: cells[0], utf16: cells[1], utf32: cells[2]}
+}
+
+func setInvalidUTF8LengthDirectTestCell(candidate *utf8LengthDirectVariant, mask uint8, available bool) {
+	if mask == 0 {
+		return
+	}
+	cell := variant[func([]byte) int]{available: available}
+	if !available {
+		cell.value = utf32LengthFromUTF8Scalar
+	}
+	switch mask {
+	case 1 << 0:
+		candidate.latin1 = cell
+	case 1 << 1:
+		candidate.utf16 = cell
+	case 1 << 2:
+		candidate.utf32 = cell
+	}
+}
+
+func didPanic(run func()) (panicked bool) {
+	defer func() { panicked = recover() != nil }()
+	run()
+	return false
+}
+
+// Hand-authored Go-only direct UTF-8 length differential fuzz registry
+// scaffolding for
+// simdutf/simdutf@611becc2a08c27a4edc77d9a45ff74c97130129b (tree
+// c8292790d793212ca0a1faf6ae42e7f8e7b70d4f): fuzz/conversion.cpp,
+// fuzz/roundtrip.cpp, fuzz/misc.cpp, and include/simdutf/scalar/utf8.h:258-325.
+// It defines test metadata only and adds no product behavior or mutable
+// dispatch override.
+
+type utf8LengthFuzzVariant struct {
+	name   string
+	latin1 variant[func([]byte) int]
+	utf16  variant[func([]byte) int]
+	utf32  variant[func([]byte) int]
+}
+
+var utf8LengthFuzzVariants []utf8LengthFuzzVariant
+
+func registerUTF8LengthFuzzVariant(candidate utf8LengthFuzzVariant) {
+	if candidate.name == "" || !validUTF8LengthVariantCells(candidate.latin1, candidate.utf16, candidate.utf32) {
+		panic("simdutf: invalid direct UTF-8 length fuzz variant")
+	}
+	for _, registered := range utf8LengthFuzzVariants {
+		if registered.name == candidate.name {
+			panic("simdutf: duplicate direct UTF-8 length fuzz variant " + candidate.name)
+		}
+	}
+	utf8LengthFuzzVariants = append(utf8LengthFuzzVariants, candidate)
+}
+
+func TestRegisterUTF8LengthFuzzVariant(t *testing.T) {
+	saved := utf8LengthFuzzVariants
+	defer func() { utf8LengthFuzzVariants = saved }()
+
+	tests := []struct {
+		name          string
+		backend       string
+		implemented   uint8
+		availableNil  uint8
+		unavailableFn uint8
+		duplicate     bool
+		wantPanic     bool
+	}{
+		{name: "partial UTF16 only", backend: "test-utf16", implemented: 1 << 1},
+		{name: "partial UTF32 only", backend: "test-utf32", implemented: 1 << 2},
+		{name: "mixed implemented and not applicable", backend: "test-mixed", implemented: 1<<0 | 1<<2},
+		{name: "empty name", implemented: 1 << 1, wantPanic: true},
+		{name: "no implemented cells", backend: "test-empty", wantPanic: true},
+		{name: "available operation with nil value", backend: "test-nil", availableNil: 1 << 1, wantPanic: true},
+		{name: "unavailable operation with value", backend: "test-unavailable", unavailableFn: 1 << 2, wantPanic: true},
+		{name: "duplicate name", backend: "test-duplicate", implemented: 1 << 1, duplicate: true, wantPanic: true},
+	}
+	for _, test := range tests {
+		t.Run(test.name, func(t *testing.T) {
+			utf8LengthFuzzVariants = nil
+			var invoked [3]int
+			candidate := makeUTF8LengthFuzzTestVariant(test.backend, test.implemented, &invoked)
+			setInvalidUTF8LengthFuzzTestCell(&candidate, test.availableNil, true)
+			setInvalidUTF8LengthFuzzTestCell(&candidate, test.unavailableFn, false)
+			if test.duplicate {
+				registerUTF8LengthFuzzVariant(candidate)
+			}
+
+			panicked := didPanic(func() { registerUTF8LengthFuzzVariant(candidate) })
+			if panicked != test.wantPanic {
+				t.Fatalf("register panic = %t, want %t", panicked, test.wantPanic)
+			}
+			if test.wantPanic {
+				return
+			}
+
+			got := utf8LengthFuzzVariants[len(utf8LengthFuzzVariants)-1]
+			input := []byte("a\xf0\x90\x8d\x88")
+			want := [...]int{
+				latin1LengthFromUTF8Scalar(input),
+				utf16LengthFromUTF8Scalar(input),
+				utf32LengthFromUTF8Scalar(input),
+			}
+			cells := [...]variant[func([]byte) int]{got.latin1, got.utf16, got.utf32}
+			for i, cell := range cells {
+				if !cell.supportedBy(selectionInput{}) {
+					if cell.value != nil {
+						t.Fatalf("unsupported cell %d has a function", i)
+					}
+					continue
+				}
+				if result := cell.value(input); result != want[i] {
+					t.Errorf("cell %d result = %d, scalar = %d", i, result, want[i])
+				}
+			}
+			for i := range invoked {
+				wantInvoked := 0
+				if test.implemented&(1<<i) != 0 {
+					wantInvoked = 1
+				}
+				if invoked[i] != wantInvoked {
+					t.Errorf("cell %d invoked %d times, want %d", i, invoked[i], wantInvoked)
+				}
+			}
+		})
+	}
+}
+
+func makeUTF8LengthFuzzTestVariant(name string, implemented uint8, invoked *[3]int) utf8LengthFuzzVariant {
+	functions := [...]func([]byte) int{
+		func(input []byte) int { invoked[0]++; return latin1LengthFromUTF8Scalar(input) },
+		func(input []byte) int { invoked[1]++; return utf16LengthFromUTF8Scalar(input) },
+		func(input []byte) int { invoked[2]++; return utf32LengthFromUTF8Scalar(input) },
+	}
+	cells := [3]variant[func([]byte) int]{}
+	for i := range cells {
+		if implemented&(1<<i) != 0 {
+			cells[i] = variant[func([]byte) int]{value: functions[i], available: true}
+		}
+	}
+	return utf8LengthFuzzVariant{name: name, latin1: cells[0], utf16: cells[1], utf32: cells[2]}
+}
+
+func setInvalidUTF8LengthFuzzTestCell(candidate *utf8LengthFuzzVariant, mask uint8, available bool) {
+	if mask == 0 {
+		return
+	}
+	cell := variant[func([]byte) int]{available: available}
+	if !available {
+		cell.value = utf32LengthFromUTF8Scalar
+	}
+	switch mask {
+	case 1 << 0:
+		candidate.latin1 = cell
+	case 1 << 1:
+		candidate.utf16 = cell
+	case 1 << 2:
+		candidate.utf32 = cell
+	}
+}
+
+// Go-only public/direct-dispatch-versus-scalar differential fuzz scaffold for
+// simdutf/simdutf@611becc2a08c27a4edc77d9a45ff74c97130129b (tree
+// c8292790d793212ca0a1faf6ae42e7f8e7b70d4f): fuzz/conversion.cpp,
+// fuzz/roundtrip.cpp, fuzz/misc.cpp, and include/simdutf/scalar/utf8.h:258-325.
+// The scalar functions are the permanent arbitrary-byte Go oracles.
+
+func FuzzUTF8Lengths(f *testing.F) {
+	for _, seed := range [][]byte{
+		nil,
+		{},
+		[]byte("hello"),
+		{'a', 0xc2, 0xa2, 0xe2, 0x82, 0xac, 0xf0, 0x90, 0x8d, 0x88},
+		{0x00, 0x7f, 0x80, 0xbf, 0xc0, 0xef, 0xf0, 0xf4, 0xf8, 0xff},
+	} {
+		f.Add(seed)
+	}
+	for _, boundary := range []int{16, 32, 64, 128} {
+		for _, size := range []int{boundary - 1, boundary, boundary + 1} {
+			seed := bytes.Repeat([]byte{'a'}, size)
+			seed[len(seed)-1] = 0x80
+			// Start four bytes before the first byte past the boundary so the
+			// complete boundary+1 seed carries a four-byte sequence across it.
+			lead := boundary - 3
+			if lead < len(seed) {
+				seed[lead] = 0xf0
+				for i := lead + 1; i < len(seed) && i < lead+4; i++ {
+					seed[i] = 0x80
+				}
+			}
+			f.Add(seed)
+		}
+	}
+	selection := detectSelectionInput()
+	f.Fuzz(func(t *testing.T, input []byte) {
+		for _, prefix := range [...]int{1, 2, 3, 5, 7, 15, 31, 63} {
+			guard := newGuardedSlice(prefix, len(input), 67, byte(0xa5))
+			copy(guard.body, input)
+			before := bytes.Clone(guard.storage)
+			wantLatin1 := latin1LengthFromUTF8Scalar(guard.body)
+			wantUTF16 := utf16LengthFromUTF8Scalar(guard.body)
+			wantUTF32 := utf32LengthFromUTF8Scalar(guard.body)
+			if got := Latin1LengthFromUTF8(guard.body); got != wantLatin1 {
+				t.Errorf("prefix %d: Latin1LengthFromUTF8() = %d, scalar = %d", prefix, got, wantLatin1)
+			}
+			if got := activeImplementation.latin1LengthFromUTF8(guard.body); got != wantLatin1 {
+				t.Errorf("prefix %d: direct latin1LengthFromUTF8() = %d, scalar = %d", prefix, got, wantLatin1)
+			}
+			if got := UTF16LengthFromUTF8(guard.body); got != wantUTF16 {
+				t.Errorf("prefix %d: UTF16LengthFromUTF8() = %d, scalar = %d", prefix, got, wantUTF16)
+			}
+			if got := activeImplementation.utf16LengthFromUTF8(guard.body); got != wantUTF16 {
+				t.Errorf("prefix %d: direct utf16LengthFromUTF8() = %d, scalar = %d", prefix, got, wantUTF16)
+			}
+			if got := UTF32LengthFromUTF8(guard.body); got != wantUTF32 {
+				t.Errorf("prefix %d: UTF32LengthFromUTF8() = %d, scalar = %d", prefix, got, wantUTF32)
+			}
+			if got := activeImplementation.utf32LengthFromUTF8(guard.body); got != wantUTF32 {
+				t.Errorf("prefix %d: direct utf32LengthFromUTF8() = %d, scalar = %d", prefix, got, wantUTF32)
+			}
+			for _, candidate := range utf8LengthFuzzVariants {
+				if candidate.latin1.supportedBy(selection) {
+					if got := candidate.latin1.value(guard.body); got != wantLatin1 {
+						t.Errorf("prefix %d: %s Latin1LengthFromUTF8() = %d, scalar = %d", prefix, candidate.name, got, wantLatin1)
+					}
+				}
+				if candidate.utf16.supportedBy(selection) {
+					if got := candidate.utf16.value(guard.body); got != wantUTF16 {
+						t.Errorf("prefix %d: %s UTF16LengthFromUTF8() = %d, scalar = %d", prefix, candidate.name, got, wantUTF16)
+					}
+				}
+				if candidate.utf32.supportedBy(selection) {
+					if got := candidate.utf32.value(guard.body); got != wantUTF32 {
+						t.Errorf("prefix %d: %s UTF32LengthFromUTF8() = %d, scalar = %d", prefix, candidate.name, got, wantUTF32)
+					}
+				}
+			}
+			guard.requireCanariesIntact(t)
+			if !bytes.Equal(guard.storage, before) {
+				t.Errorf("prefix %d: UTF-8 length helper modified input or canaries", prefix)
+			}
+		}
+	})
+}
+
+func FuzzTrimPartialUTF8(f *testing.F) {
+	for _, seed := range [][]byte{
+		nil,
+		{},
+		[]byte("abc"),
+		{'a', 0xc3},
+		{'a', 0xe2, 0x82},
+		{'a', 0xf0, 0x90, 0x8d},
+	} {
+		f.Add(seed)
+	}
+	f.Fuzz(func(t *testing.T, input []byte) {
+		guard := newGuardedSlice(5, len(input), 7, byte(0xa5))
+		copy(guard.body, input)
+		before := bytes.Clone(guard.storage)
+		got := TrimPartialUTF8(guard.body)
+		if want := trimPartialUTF8Scalar(guard.body); got != want {
+			t.Errorf("TrimPartialUTF8() = %d, scalar = %d", got, want)
+		}
+		// Pinned fuzz/misc.cpp rejects ret + 3 < N or ret > N. Express the
+		// same bounds without overflowing an addition to the returned length.
+		if got > len(guard.body) {
+			t.Errorf("TrimPartialUTF8() = %d, input length = %d", got, len(guard.body))
+		} else if len(guard.body)-got > 3 {
+			t.Errorf("TrimPartialUTF8() removed %d bytes, want at most 3", len(guard.body)-got)
+		}
+		guard.requireCanariesIntact(t)
+		if !bytes.Equal(guard.storage, before) {
+			t.Fatal("TrimPartialUTF8 modified input or canaries")
+		}
+	})
+}

@@ -187,3 +187,53 @@ func uniquePositions(length int) []int {
 func testNameForLength(length int) string {
 	return "length_" + strconv.Itoa(length)
 }
+
+// Go-only registration of the direct arm64 implementation. It defines no
+// product dispatch behavior and translates no upstream algorithm.
+func init() {
+	registerASCIIDirectBenchmarkVariants(
+		"neon",
+		variant[func([]byte) bool]{
+			value:     validateASCIINEON,
+			kind:      implementationNEON,
+			required:  cpuNEON,
+			available: true,
+		},
+		variant[func([]byte) Result]{
+			value:     validateASCIIWithErrorsNEON,
+			kind:      implementationNEON,
+			required:  cpuNEON,
+			available: true,
+		},
+	)
+}
+
+// Hand-authored Go-only direct fuzz registration for the assembly port pinned
+// to simdutf/simdutf@611becc2a08c27a4edc77d9a45ff74c97130129b:
+// src/generic/ascii_validation.h:6-45 and src/arm64/arm_validate_utf16.cpp:71-91.
+// It registers test functions only and adds no product behavior.
+
+func init() {
+	registerASCIIFuzzVariant(asciiFuzzVariant{
+		name: "neon",
+		validate: variant[func([]byte) bool]{
+			value: validateASCIINEON, kind: implementationNEON,
+			required: cpuNEON, available: true,
+		},
+		withErrors: variant[func([]byte) Result]{
+			value: validateASCIIWithErrorsNEON, kind: implementationNEON,
+			required: cpuNEON, available: true,
+		},
+	})
+	registerUTF16ASCIIFuzzVariant(utf16ASCIIFuzzVariant{
+		name: "neon",
+		le: variant[func([]uint16) bool]{
+			value: validateUTF16LEAsASCIINEON, kind: implementationNEON,
+			required: cpuNEON, available: true,
+		},
+		be: variant[func([]uint16) bool]{
+			value: validateUTF16BEAsASCIINEON, kind: implementationNEON,
+			required: cpuNEON, available: true,
+		},
+	})
+}

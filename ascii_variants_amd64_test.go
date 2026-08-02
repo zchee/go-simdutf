@@ -16,6 +16,42 @@
 
 package simdutf
 
+// Test-only direct benchmark registration for the independent Go assembly
+// translation pinned to simdutf/simdutf@611becc2a08c27a4edc77d9a45ff74c97130129b
+// (tree c8292790d793212ca0a1faf6ae42e7f8e7b70d4f),
+// src/generic/ascii_validation.h:6-45.
+
+func init() {
+	registerASCIIDirectBenchmarkVariants(
+		"westmere",
+		variant[func([]byte) bool]{
+			value:     validateASCIIWestmere,
+			kind:      implementationWestmere,
+			available: true,
+		},
+		variant[func([]byte) Result]{
+			value:     validateASCIIWithErrorsWestmere,
+			kind:      implementationWestmere,
+			available: true,
+		},
+	)
+	registerASCIIDirectBenchmarkVariants(
+		"haswell",
+		variant[func([]byte) bool]{
+			value:     validateASCIIHaswell,
+			kind:      implementationHaswell,
+			required:  cpuAVX2,
+			available: true,
+		},
+		variant[func([]byte) Result]{
+			value:     validateASCIIWithErrorsHaswell,
+			kind:      implementationHaswell,
+			required:  cpuAVX2,
+			available: true,
+		},
+	)
+}
+
 // Hand-authored Go-only direct fuzz registration for the assembly port pinned
 // to simdutf/simdutf@611becc2a08c27a4edc77d9a45ff74c97130129b:
 // src/generic/ascii_validation.h:6-45 and src/generic/validate_utf16.h:128-158.

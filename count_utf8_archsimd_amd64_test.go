@@ -118,3 +118,16 @@ func requireCountUTF8ArchsimdAVX2(t *testing.T) {
 		t.Skip("archsimd CountUTF8 requires repository and archsimd AVX2 gates")
 	}
 }
+
+// Go-only direct benchmark and differential-fuzz registration for the tagged
+// CountUTF8 adaptation pinned to
+// simdutf/simdutf@611becc2a08c27a4edc77d9a45ff74c97130129b. It changes no
+// frozen benchmark name, corpus, or setup.
+func init() {
+	candidate := variant[func([]byte) int]{
+		value: countUTF8Archsimd, kind: implementationArchsimd,
+		required: cpuAVX2, available: true,
+	}
+	registerCountUTF8DirectVariant(countUTF8DirectVariant{name: "archsimd", variant: candidate})
+	registerCountUTF8FuzzVariant(countUTF8FuzzVariant{name: "archsimd", variant: candidate})
+}

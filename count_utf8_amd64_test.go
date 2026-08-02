@@ -130,3 +130,39 @@ func checkCountUTF8AMD64(t *testing.T, input []byte) {
 func hasCountUTF8AVX2() bool {
 	return detectHostFeatures()&cpuAVX2 == cpuAVX2
 }
+
+// Go-only direct benchmark registration for the amd64 count ports pinned to
+// simdutf/simdutf@611becc2a08c27a4edc77d9a45ff74c97130129b. It changes no
+// frozen benchmark name, corpus, or setup.
+func init() {
+	registerCountUTF8DirectVariant(countUTF8DirectVariant{
+		name: "westmere",
+		variant: variant[func([]byte) int]{
+			value: countUTF8Westmere, kind: implementationWestmere, available: true,
+		},
+	})
+	registerCountUTF8DirectVariant(countUTF8DirectVariant{
+		name: "haswell",
+		variant: variant[func([]byte) int]{
+			value: countUTF8Haswell, kind: implementationHaswell, required: cpuAVX2, available: true,
+		},
+	})
+}
+
+// Hand-authored Go-only direct fuzz registration for the separate Westmere
+// and Haswell count_code_points_bytemask assembly ports pinned to
+// simdutf/simdutf@611becc2a08c27a4edc77d9a45ff74c97130129b.
+func init() {
+	registerCountUTF8FuzzVariant(countUTF8FuzzVariant{
+		name: "westmere",
+		variant: variant[func([]byte) int]{
+			value: countUTF8Westmere, kind: implementationWestmere, available: true,
+		},
+	})
+	registerCountUTF8FuzzVariant(countUTF8FuzzVariant{
+		name: "haswell",
+		variant: variant[func([]byte) int]{
+			value: countUTF8Haswell, kind: implementationHaswell, required: cpuAVX2, available: true,
+		},
+	})
+}

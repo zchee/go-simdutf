@@ -394,3 +394,305 @@ func mustDecodeASCIIHex(encoded string) string {
 	}
 	return string(decoded)
 }
+
+// Hand-authored Go-only benchmark registry scaffolding for the port pinned to
+// simdutf/simdutf@611becc2a08c27a4edc77d9a45ff74c97130129b and
+// docs/porting/benchmark-contract.md. This file provides test-only direct
+// variant slots; it defines no product behavior and translates no upstream
+// algorithm.
+
+type asciiBoolBenchmarkVariant struct {
+	name string
+	variant[func([]byte) bool]
+}
+
+type asciiResultBenchmarkVariant struct {
+	name string
+	variant[func([]byte) Result]
+}
+
+var asciiBenchmarkSelectionInput = detectSelectionInput()
+
+var validateASCIIBenchmarkVariants = [...]asciiBoolBenchmarkVariant{
+	{name: "public", variant: variant[func([]byte) bool]{
+		value:     ValidateASCII,
+		kind:      implementationScalar,
+		available: true,
+	}},
+	{name: "scalar", variant: variant[func([]byte) bool]{
+		value:     validateASCIIScalar,
+		kind:      implementationScalar,
+		available: true,
+	}},
+	{name: "westmere", variant: variant[func([]byte) bool]{kind: implementationWestmere}},
+	{name: "haswell", variant: variant[func([]byte) bool]{kind: implementationHaswell}},
+	{name: "neon", variant: variant[func([]byte) bool]{kind: implementationNEON}},
+	{name: "archsimd", variant: variant[func([]byte) bool]{kind: implementationArchsimd}},
+}
+
+var validateASCIIWithErrorsBenchmarkVariants = [...]asciiResultBenchmarkVariant{
+	{name: "public", variant: variant[func([]byte) Result]{
+		value:     ValidateASCIIWithErrors,
+		kind:      implementationScalar,
+		available: true,
+	}},
+	{name: "scalar", variant: variant[func([]byte) Result]{
+		value:     validateASCIIWithErrorsScalar,
+		kind:      implementationScalar,
+		available: true,
+	}},
+	{name: "westmere", variant: variant[func([]byte) Result]{kind: implementationWestmere}},
+	{name: "haswell", variant: variant[func([]byte) Result]{kind: implementationHaswell}},
+	{name: "neon", variant: variant[func([]byte) Result]{kind: implementationNEON}},
+	{name: "archsimd", variant: variant[func([]byte) Result]{kind: implementationArchsimd}},
+}
+
+func registerASCIIDirectBenchmarkVariants(
+	name string,
+	validate variant[func([]byte) bool],
+	validateWithErrors variant[func([]byte) Result],
+) {
+	for i := 2; i < len(validateASCIIBenchmarkVariants); i++ {
+		if validateASCIIBenchmarkVariants[i].name != name {
+			continue
+		}
+		if validate.value == nil || validateWithErrors.value == nil {
+			panic("simdutf: direct ASCII benchmark variant has a nil function")
+		}
+		if validate.kind != validateASCIIBenchmarkVariants[i].kind ||
+			validateWithErrors.kind != validateASCIIWithErrorsBenchmarkVariants[i].kind {
+			panic("simdutf: direct ASCII benchmark variant has the wrong implementation kind")
+		}
+		if validateASCIIBenchmarkVariants[i].available ||
+			validateASCIIWithErrorsBenchmarkVariants[i].available {
+			panic("simdutf: direct ASCII benchmark variant registered twice")
+		}
+		validateASCIIBenchmarkVariants[i].variant = validate
+		validateASCIIWithErrorsBenchmarkVariants[i].variant = validateWithErrors
+		return
+	}
+	panic("simdutf: unknown direct ASCII benchmark variant " + name)
+}
+
+func TestASCIIBenchmarkVariantRegistry(t *testing.T) {
+	wantNames := [...]string{"public", "scalar", "westmere", "haswell", "neon", "archsimd"}
+	wantKinds := [...]implementationKind{
+		implementationScalar,
+		implementationScalar,
+		implementationWestmere,
+		implementationHaswell,
+		implementationNEON,
+		implementationArchsimd,
+	}
+	if len(validateASCIIBenchmarkVariants) != len(wantNames) ||
+		len(validateASCIIWithErrorsBenchmarkVariants) != len(wantNames) {
+		t.Fatalf("ASCII benchmark registry lengths = (%d, %d), want (%d, %d)",
+			len(validateASCIIBenchmarkVariants), len(validateASCIIWithErrorsBenchmarkVariants),
+			len(wantNames), len(wantNames))
+	}
+	for i := range wantNames {
+		boolVariant := validateASCIIBenchmarkVariants[i]
+		resultVariant := validateASCIIWithErrorsBenchmarkVariants[i]
+		if boolVariant.name != wantNames[i] || resultVariant.name != wantNames[i] {
+			t.Errorf("ASCII benchmark registry names at %d = (%q, %q), want %q",
+				i, boolVariant.name, resultVariant.name, wantNames[i])
+		}
+		if boolVariant.kind != wantKinds[i] || resultVariant.kind != wantKinds[i] {
+			t.Errorf("ASCII benchmark registry kinds at %d = (%d, %d), want %d",
+				i, boolVariant.kind, resultVariant.kind, wantKinds[i])
+		}
+		if boolVariant.supportedBy(asciiBenchmarkSelectionInput) && boolVariant.value == nil {
+			t.Errorf("runnable ValidateASCII variant %q has a nil function", wantNames[i])
+		}
+		if resultVariant.supportedBy(asciiBenchmarkSelectionInput) && resultVariant.value == nil {
+			t.Errorf("runnable ValidateASCIIWithErrors variant %q has a nil function", wantNames[i])
+		}
+	}
+}
+
+func TestRegisterASCIIDirectBenchmarkVariantsRejectsUnknownName(t *testing.T) {
+	defer func() {
+		if recover() == nil {
+			t.Fatal("unknown direct ASCII benchmark variant name did not panic")
+		}
+	}()
+	registerASCIIDirectBenchmarkVariants(
+		"unknown",
+		variant[func([]byte) bool]{value: validateASCIIScalar},
+		variant[func([]byte) Result]{value: validateASCIIWithErrorsScalar},
+	)
+}
+
+// Hand-authored Go-only direct differential fuzz registry scaffolding for the
+// port pinned to simdutf/simdutf@611becc2a08c27a4edc77d9a45ff74c97130129b:
+// src/generic/ascii_validation.h:6-45 and src/generic/validate_utf16.h:128-158.
+// It defines test metadata only and adds no product behavior.
+
+type asciiFuzzVariant struct {
+	name       string
+	validate   variant[func([]byte) bool]
+	withErrors variant[func([]byte) Result]
+}
+
+type utf16ASCIIFuzzVariant struct {
+	name string
+	le   variant[func([]uint16) bool]
+	be   variant[func([]uint16) bool]
+}
+
+var (
+	asciiFuzzVariants      []asciiFuzzVariant
+	utf16ASCIIFuzzVariants []utf16ASCIIFuzzVariant
+)
+
+func registerASCIIFuzzVariant(candidate asciiFuzzVariant) {
+	if candidate.name == "" || candidate.validate.value == nil || candidate.withErrors.value == nil {
+		panic("simdutf: invalid direct ASCII fuzz variant")
+	}
+	for _, registered := range asciiFuzzVariants {
+		if registered.name == candidate.name {
+			panic("simdutf: duplicate direct ASCII fuzz variant " + candidate.name)
+		}
+	}
+	asciiFuzzVariants = append(asciiFuzzVariants, candidate)
+}
+
+func registerUTF16ASCIIFuzzVariant(candidate utf16ASCIIFuzzVariant) {
+	if candidate.name == "" || candidate.le.value == nil || candidate.be.value == nil {
+		panic("simdutf: invalid direct UTF-16 ASCII fuzz variant")
+	}
+	for _, registered := range utf16ASCIIFuzzVariants {
+		if registered.name == candidate.name {
+			panic("simdutf: duplicate direct UTF-16 ASCII fuzz variant " + candidate.name)
+		}
+	}
+	utf16ASCIIFuzzVariants = append(utf16ASCIIFuzzVariants, candidate)
+}
+
+// Hand-authored Go-only family differential fuzz coverage for the port pinned
+// to simdutf/simdutf@611becc2a08c27a4edc77d9a45ff74c97130129b:
+// src/generic/ascii_validation.h:6-45 and src/generic/validate_utf16.h:128-158.
+// Scalar functions remain the explicit oracle; this adds no product behavior.
+
+func FuzzValidateASCII(f *testing.F) {
+	f.Add(true, uint8(0), []byte(nil))
+	f.Add(false, uint8(1), []byte{})
+	for index, length := range [...]int{15, 16, 17, 31, 32, 33, 63, 64, 65, 95, 96, 97, 127, 128, 129} {
+		valid := make([]byte, length)
+		for i := range valid {
+			valid[i] = byte((i*29 + 7) & 0x7f)
+		}
+		f.Add(false, uint8(index*3+2), valid)
+		invalid := slices.Clone(valid)
+		invalid[length-1] = 0x80 | byte(index)
+		f.Add(false, uint8(index*3+3), invalid)
+	}
+	f.Add(false, uint8(31), []byte{0x7f, 0x80, 0xff, 0x00})
+
+	f.Fuzz(func(t *testing.T, forceNil bool, alignment uint8, fuzzInput []byte) {
+		selection := detectSelectionInput()
+		if forceNil {
+			checkASCIIFuzzVariants(t, selection, nil)
+		}
+
+		prefix := int(alignment%32) + 1
+		guard := newGuardedSlice(prefix, len(fuzzInput), 33-prefix, byte(0xa5))
+		copy(guard.body, fuzzInput)
+		before := slices.Clone(guard.storage)
+		checkASCIIFuzzVariants(t, selection, guard.body)
+		guard.requireCanariesIntact(t)
+		if !slices.Equal(guard.storage, before) {
+			t.Fatal("direct ASCII validators modified guarded storage")
+		}
+	})
+}
+
+func FuzzValidateUTF16AsASCII(f *testing.F) {
+	f.Add(true, uint8(0), []byte(nil))
+	f.Add(false, uint8(1), []byte{})
+	for index, length := range [...]int{15, 16, 17, 31, 32, 33, 63, 64, 65} {
+		valid := make([]uint16, length)
+		for i := range valid {
+			valid[i] = uint16((i*29 + 7) & 0x7f)
+		}
+		f.Add(false, uint8(index*3+2), encodeASCIIFuzzWords(valid))
+		invalid := slices.Clone(valid)
+		invalid[length-1] = [...]uint16{0x0080, 0x8000, 0xffff}[index%3]
+		f.Add(false, uint8(index*3+3), encodeASCIIFuzzWords(invalid))
+	}
+	f.Add(false, uint8(15), encodeASCIIFuzzWords([]uint16{0x0000, 0x007f, 0x0080, 0x7f00, 0x8000, 0xffff}))
+
+	f.Fuzz(func(t *testing.T, forceNil bool, alignment uint8, raw []byte) {
+		selection := detectSelectionInput()
+		if forceNil {
+			checkUTF16ASCIIFuzzVariants(t, selection, nil)
+		}
+
+		input := decodeASCIIFuzzWords(raw)
+		prefix := int(alignment%16) + 1
+		guard := newGuardedSlice(prefix, len(input), 17-prefix, uint16(0xa55a))
+		copy(guard.body, input)
+		before := slices.Clone(guard.storage)
+		checkUTF16ASCIIFuzzVariants(t, selection, guard.body)
+		guard.requireCanariesIntact(t)
+		if !slices.Equal(guard.storage, before) {
+			t.Fatal("direct UTF-16 ASCII validators modified guarded storage")
+		}
+	})
+}
+
+func checkASCIIFuzzVariants(t *testing.T, selection selectionInput, input []byte) {
+	t.Helper()
+	wantBool := validateASCIIScalar(input)
+	wantResult := validateASCIIWithErrorsScalar(input)
+	for _, candidate := range asciiFuzzVariants {
+		if candidate.validate.supportedBy(selection) {
+			if got := candidate.validate.value(input); got != wantBool {
+				t.Errorf("%s ValidateASCII = %v, want scalar %v", candidate.name, got, wantBool)
+			}
+		}
+		if candidate.withErrors.supportedBy(selection) {
+			if got := candidate.withErrors.value(input); got != wantResult {
+				t.Errorf("%s ValidateASCIIWithErrors = %+v, want scalar %+v", candidate.name, got, wantResult)
+			}
+		}
+	}
+}
+
+func checkUTF16ASCIIFuzzVariants(t *testing.T, selection selectionInput, input []uint16) {
+	t.Helper()
+	wantLE := validateUTF16LEAsASCIIScalar(input)
+	wantBE := validateUTF16BEAsASCIIScalar(input)
+	for _, candidate := range utf16ASCIIFuzzVariants {
+		if candidate.le.supportedBy(selection) {
+			if got := candidate.le.value(input); got != wantLE {
+				t.Errorf("%s ValidateUTF16LEAsASCII = %v, want scalar %v", candidate.name, got, wantLE)
+			}
+		}
+		if candidate.be.supportedBy(selection) {
+			if got := candidate.be.value(input); got != wantBE {
+				t.Errorf("%s ValidateUTF16BEAsASCII = %v, want scalar %v", candidate.name, got, wantBE)
+			}
+		}
+	}
+}
+
+func encodeASCIIFuzzWords(words []uint16) []byte {
+	encoded := make([]byte, len(words)*2)
+	for i, word := range words {
+		encoded[2*i] = byte(word)
+		encoded[2*i+1] = byte(word >> 8)
+	}
+	return encoded
+}
+
+func decodeASCIIFuzzWords(raw []byte) []uint16 {
+	words := make([]uint16, (len(raw)+1)/2)
+	for i := range words {
+		words[i] = uint16(raw[2*i])
+		if 2*i+1 < len(raw) {
+			words[i] |= uint16(raw[2*i+1]) << 8
+		}
+	}
+	return words
+}

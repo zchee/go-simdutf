@@ -112,3 +112,29 @@ func checkCountUTF8NEON(t *testing.T, input []byte) {
 		t.Errorf("countUTF8NEON = %d, scalar = %d for %d bytes", got, want, len(input))
 	}
 }
+
+// Go-only direct benchmark registration for the arm64 count port pinned to
+// simdutf/simdutf@611becc2a08c27a4edc77d9a45ff74c97130129b. It changes no
+// frozen benchmark name, corpus, or setup.
+func init() {
+	registerCountUTF8DirectVariant(countUTF8DirectVariant{
+		name: "neon",
+		variant: variant[func([]byte) int]{
+			value: countUTF8NEON, kind: implementationNEON,
+			required: cpuNEON, available: true,
+		},
+	})
+}
+
+// Hand-authored Go-only direct fuzz registration for the arm64 assembly port
+// pinned to simdutf/simdutf@611becc2a08c27a4edc77d9a45ff74c97130129b:
+// src/generic/utf8.h:8-17 and src/arm64/implementation.cpp:1113-1117.
+func init() {
+	registerCountUTF8FuzzVariant(countUTF8FuzzVariant{
+		name: "neon",
+		variant: variant[func([]byte) int]{
+			value: countUTF8NEON, kind: implementationNEON,
+			required: cpuNEON, available: true,
+		},
+	})
+}

@@ -135,3 +135,91 @@ func checkUTF8LengthNEON(t *testing.T, input []byte) {
 		t.Errorf("utf32LengthFromUTF8NEON = %d, scalar = %d for %d bytes", got, want, len(input))
 	}
 }
+
+// Go-only direct benchmark registration for the arm64 UTF-8 length ports
+// pinned to simdutf/simdutf@611becc2a08c27a4edc77d9a45ff74c97130129b (tree
+// c8292790d793212ca0a1faf6ae42e7f8e7b70d4f):
+// src/arm64/implementation.cpp:1121-1124,1178-1181,1292-1295. It changes no
+// frozen benchmark name, corpus, setup, or product dispatch.
+func init() {
+	registerUTF8LengthDirectVariant(utf8LengthDirectVariant{
+		name: "neon",
+		latin1: variant[func([]byte) int]{
+			value: latin1LengthFromUTF8NEON, kind: implementationNEON,
+			required: cpuNEON, available: true,
+		},
+		utf16: variant[func([]byte) int]{
+			value: utf16LengthFromUTF8NEON, kind: implementationNEON,
+			required: cpuNEON, available: true,
+		},
+		utf32: variant[func([]byte) int]{
+			value: utf32LengthFromUTF8NEON, kind: implementationNEON,
+			required: cpuNEON, available: true,
+		},
+	})
+}
+
+func TestUTF8LengthNEONDirectRegistration(t *testing.T) {
+	for _, candidate := range utf8LengthDirectVariants {
+		if candidate.name != "neon" {
+			continue
+		}
+		selection := selectionInput{features: cpuNEON}
+		if !candidate.latin1.supportedBy(selection) ||
+			!candidate.utf16.supportedBy(selection) ||
+			!candidate.utf32.supportedBy(selection) {
+			t.Fatal("neon direct benchmark registration is not supported by cpuNEON")
+		}
+		if !sameFunction(candidate.latin1.value, latin1LengthFromUTF8NEON) ||
+			!sameFunction(candidate.utf16.value, utf16LengthFromUTF8NEON) ||
+			!sameFunction(candidate.utf32.value, utf32LengthFromUTF8NEON) {
+			t.Fatal("neon direct benchmark registration has unexpected functions")
+		}
+		return
+	}
+	t.Fatal("neon direct benchmark registration not found")
+}
+
+// Hand-authored Go-only direct fuzz registration for the arm64 UTF-8 length
+// ports pinned to simdutf/simdutf@611becc2a08c27a4edc77d9a45ff74c97130129b
+// (tree c8292790d793212ca0a1faf6ae42e7f8e7b70d4f):
+// src/generic/utf8.h:8-17,72-86 and
+// src/arm64/implementation.cpp:1121-1124,1178-1181,1292-1295.
+func init() {
+	registerUTF8LengthFuzzVariant(utf8LengthFuzzVariant{
+		name: "neon",
+		latin1: variant[func([]byte) int]{
+			value: latin1LengthFromUTF8NEON, kind: implementationNEON,
+			required: cpuNEON, available: true,
+		},
+		utf16: variant[func([]byte) int]{
+			value: utf16LengthFromUTF8NEON, kind: implementationNEON,
+			required: cpuNEON, available: true,
+		},
+		utf32: variant[func([]byte) int]{
+			value: utf32LengthFromUTF8NEON, kind: implementationNEON,
+			required: cpuNEON, available: true,
+		},
+	})
+}
+
+func TestUTF8LengthNEONFuzzRegistration(t *testing.T) {
+	for _, candidate := range utf8LengthFuzzVariants {
+		if candidate.name != "neon" {
+			continue
+		}
+		selection := selectionInput{features: cpuNEON}
+		if !candidate.latin1.supportedBy(selection) ||
+			!candidate.utf16.supportedBy(selection) ||
+			!candidate.utf32.supportedBy(selection) {
+			t.Fatal("neon differential-fuzz registration is not supported by cpuNEON")
+		}
+		if !sameFunction(candidate.latin1.value, latin1LengthFromUTF8NEON) ||
+			!sameFunction(candidate.utf16.value, utf16LengthFromUTF8NEON) ||
+			!sameFunction(candidate.utf32.value, utf32LengthFromUTF8NEON) {
+			t.Fatal("neon differential-fuzz registration has unexpected functions")
+		}
+		return
+	}
+	t.Fatal("neon differential-fuzz registration not found")
+}

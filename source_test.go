@@ -105,7 +105,7 @@ func TestSourcesRecordPinnedProvenance(t *testing.T) {
 			"it does\n// not claim byte-identical output",
 			"counts every byte except UTF-8 continuation bytes 0x80..0xbf",
 		}},
-		{"fuzz_count_utf8_test.go", []string{
+		{"count_utf8_test.go", []string{
 			upstreamSHA,
 			"fuzz/conversion.cpp and tests/count_utf8.cpp:11-84",
 			"Go-only public-versus-scalar differential fuzz scaffold",
@@ -132,7 +132,7 @@ func TestSourcesRecordPinnedProvenance(t *testing.T) {
 			"tests/readme_tests.cpp:122-141",
 			"include/simdutf/scalar/utf8.h:258-325",
 		}},
-		{"fuzz_utf8_length_test.go", []string{
+		{"utf8_length_test.go", []string{
 			upstreamSHA,
 			"c8292790d793212ca0a1faf6ae42e7f8e7b70d4f",
 			"Go-only public/direct-dispatch-versus-scalar differential fuzz scaffold",
@@ -142,14 +142,14 @@ func TestSourcesRecordPinnedProvenance(t *testing.T) {
 			"The scalar functions are the permanent arbitrary-byte Go oracles",
 			"ret + 3 < N",
 		}},
-		{"utf8_length_direct_variants_test.go", []string{
+		{"utf8_length_test.go", []string{
 			upstreamSHA,
 			"c8292790d793212ca0a1faf6ae42e7f8e7b70d4f",
 			"Hand-authored Go-only direct UTF-8 length benchmark registry scaffolding",
 			"benchmarks/shortbench.cpp:29-65,419-422,493-497,520-526",
 			"test-only named\n// variant slots and adds no product behavior or mutable dispatch override",
 		}},
-		{"utf8_length_fuzz_variants_test.go", []string{
+		{"utf8_length_test.go", []string{
 			upstreamSHA,
 			"c8292790d793212ca0a1faf6ae42e7f8e7b70d4f",
 			"Hand-authored Go-only direct UTF-8 length differential fuzz registry",
@@ -166,12 +166,12 @@ func TestSourcesRecordPinnedProvenance(t *testing.T) {
 			"Public, direct-dispatch, and scalar rows share identical setup",
 			"Latin1LengthFromUTF8 and TrimPartialUTF8 have no registered",
 		}},
-		{"count_utf8_direct_variants_test.go", []string{
+		{"count_utf8_test.go", []string{
 			upstreamSHA,
 			"Hand-authored Go-only direct CountUTF8 benchmark registry scaffolding",
 			"test-only variant slots and adds no product behavior",
 		}},
-		{"count_utf8_fuzz_variants_test.go", []string{
+		{"count_utf8_test.go", []string{
 			upstreamSHA,
 			"Hand-authored Go-only direct CountUTF8 differential fuzz registry",
 			"test\n// metadata only and adds no product behavior",
@@ -213,12 +213,12 @@ func TestSourcesRecordPinnedProvenance(t *testing.T) {
 			"src/simdutf/arm64/simd.h:446-555",
 			"Go 1.26's Plan 9 arm64 assembler has VCMEQ but no signed integer",
 		}},
-		{"count_utf8_direct_variants_arm64_test.go", []string{
+		{"count_utf8_arm64_test.go", []string{
 			upstreamSHA,
 			"Go-only direct benchmark registration",
 			"changes no\n// frozen benchmark name, corpus, or setup",
 		}},
-		{"count_utf8_fuzz_variants_arm64_test.go", []string{
+		{"count_utf8_arm64_test.go", []string{
 			upstreamSHA,
 			"Hand-authored Go-only direct fuzz registration",
 			"src/generic/utf8.h:8-17",
@@ -259,12 +259,12 @@ func TestSourcesRecordPinnedProvenance(t *testing.T) {
 			"Westmere and Haswell count_code_points_bytemask ports",
 			"src/generic/utf8.h:21-68",
 		}},
-		{"count_utf8_direct_variants_amd64_test.go", []string{
+		{"count_utf8_amd64_test.go", []string{
 			upstreamSHA,
 			"Go-only direct benchmark registration",
 			"changes no\n// frozen benchmark name, corpus, or setup",
 		}},
-		{"count_utf8_fuzz_variants_amd64_test.go", []string{
+		{"count_utf8_amd64_test.go", []string{
 			upstreamSHA,
 			"Hand-authored Go-only direct fuzz registration",
 			"Westmere\n// and Haswell count_code_points_bytemask assembly ports",
@@ -297,7 +297,7 @@ func TestSourcesRecordPinnedProvenance(t *testing.T) {
 			"src/generic/utf8.h:21-68",
 			"src/haswell/implementation.cpp:1115-1119",
 		}},
-		{"count_utf8_direct_variants_archsimd_amd64_test.go", []string{
+		{"count_utf8_archsimd_amd64_test.go", []string{
 			upstreamSHA,
 			"Go-only direct benchmark and differential-fuzz registration",
 			"changes no\n// frozen benchmark name, corpus, or setup",
@@ -326,7 +326,7 @@ func TestSourcesRecordPinnedProvenance(t *testing.T) {
 			"tests/validate_utf8_brute_force_tests.cpp:7-86",
 			"Go uses a deterministic Go",
 		}},
-		{"fuzz_utf8_test.go", []string{
+		{"utf8_test.go", []string{
 			upstreamSHA,
 			"fuzz/conversion.cpp:68-74",
 			"Go-only public-versus-scalar differential fuzz scaffold",
@@ -355,7 +355,7 @@ func TestSourcesRecordPinnedProvenance(t *testing.T) {
 			"src/generic/utf8_validation/utf8_validator.h:10-80",
 			"Direct differential coverage",
 		}},
-		{"utf8_direct_variants_archsimd_amd64_test.go", []string{
+		{"utf8_archsimd_amd64_test.go", []string{
 			upstreamSHA,
 			"Go-only direct benchmark and scalar-differential fuzz registration",
 			"tagged lookup4 adaptation",
@@ -382,12 +382,12 @@ func TestSourcesRecordPinnedProvenance(t *testing.T) {
 			"src/generic/utf8_validation/utf8_lookup4_algorithm.h:12-216",
 			"src/generic/utf8_validation/utf8_validator.h:10-80",
 		}},
-		{"utf8_direct_variants_amd64_test.go", []string{
+		{"utf8_amd64_test.go", []string{
 			upstreamSHA,
 			"Go-only registration of the direct amd64 lookup4 implementations",
 			"no\n// additional product behavior",
 		}},
-		{"utf8_fuzz_variants_amd64_test.go", []string{
+		{"utf8_amd64_test.go", []string{
 			upstreamSHA,
 			"Hand-authored Go-only direct fuzz registration",
 			"adds no product behavior",
@@ -424,22 +424,22 @@ func TestSourcesRecordPinnedProvenance(t *testing.T) {
 			"src/generic/utf8_validation/utf8_validator.h:10-80",
 			"Hand-authored Go-only direct differential coverage",
 		}},
-		{"utf8_fuzz_variants_test.go", []string{
+		{"utf8_test.go", []string{
 			upstreamSHA,
 			"Hand-authored Go-only direct UTF-8 differential fuzz registry scaffolding",
 			"test metadata only and adds no product behavior",
 		}},
-		{"utf8_fuzz_variants_arm64_test.go", []string{
+		{"utf8_arm64_test.go", []string{
 			upstreamSHA,
 			"Hand-authored Go-only direct fuzz registration",
 			"registers test functions only and adds no product behavior",
 		}},
-		{"utf8_direct_variants_test.go", []string{
+		{"utf8_test.go", []string{
 			upstreamSHA,
 			"Hand-authored Go-only direct UTF-8 benchmark registry scaffolding",
 			"test-only variant slots and adds no product behavior",
 		}},
-		{"utf8_direct_variants_arm64_test.go", []string{
+		{"utf8_arm64_test.go", []string{
 			upstreamSHA,
 			"Go-only registration of the direct arm64 lookup4 implementation",
 			"defines no\n// product dispatch behavior and translates no additional upstream algorithm",
@@ -669,26 +669,26 @@ func TestSourcesRecordPinnedProvenance(t *testing.T) {
 			"Corpus setup, integrity checks, and dispatch-provider",
 			"outside timed b.Loop bodies",
 		}},
-		{"ascii_direct_variants_test.go", []string{
+		{"ascii_test.go", []string{
 			upstreamSHA,
 			"docs/porting/benchmark-contract.md",
 			"Hand-authored Go-only benchmark registry scaffolding",
 			"test-only direct\n// variant slots",
 			"defines no product behavior and translates no upstream\n// algorithm",
 		}},
-		{"ascii_direct_variants_amd64_test.go", []string{
+		{"ascii_variants_amd64_test.go", []string{
 			upstreamSHA,
 			"src/generic/ascii_validation.h:6-45",
 			"Test-only direct benchmark registration",
 			"independent Go assembly\n// translation",
 		}},
-		{"ascii_direct_variants_archsimd_amd64_test.go", []string{
+		{"ascii_archsimd_amd64_test.go", []string{
 			upstreamSHA,
 			"src/generic/ascii_validation.h:6-45",
 			"Hand-authored Go-only benchmark registration",
 			"adds no benchmark procedure or result",
 		}},
-		{"ascii_direct_variants_arm64_test.go", []string{
+		{"ascii_arm64_test.go", []string{
 			"Go-only registration of the direct arm64 implementation",
 			"defines no\n// product dispatch behavior and translates no upstream algorithm",
 		}},
@@ -736,21 +736,21 @@ func TestSourcesRecordPinnedProvenance(t *testing.T) {
 			"exact implementation-table shape",
 			"not\n// upstream test vectors",
 		}},
-		{"ascii_fuzz_variants_test.go", []string{
+		{"ascii_test.go", []string{
 			upstreamSHA,
 			"src/generic/ascii_validation.h:6-45",
 			"src/generic/validate_utf16.h:128-158",
 			"Hand-authored Go-only direct differential fuzz registry scaffolding",
 			"test metadata only and adds no product behavior",
 		}},
-		{"ascii_fuzz_variants_amd64_test.go", []string{
+		{"ascii_variants_amd64_test.go", []string{
 			upstreamSHA,
 			"src/generic/ascii_validation.h:6-45",
 			"src/generic/validate_utf16.h:128-158",
 			"Hand-authored Go-only direct fuzz registration",
 			"registers test functions only and adds no product behavior",
 		}},
-		{"ascii_fuzz_variants_archsimd_amd64_test.go", []string{
+		{"ascii_archsimd_amd64_test.go", []string{
 			upstreamSHA,
 			"src/generic/ascii_validation.h:6-45",
 			"src/generic/validate_utf16.h:128-158",
@@ -758,7 +758,7 @@ func TestSourcesRecordPinnedProvenance(t *testing.T) {
 			"archsimd adaptation",
 			"registers test functions only and adds no product behavior",
 		}},
-		{"ascii_fuzz_variants_arm64_test.go", []string{
+		{"ascii_arm64_test.go", []string{
 			upstreamSHA,
 			"src/generic/ascii_validation.h:6-45",
 			"src/arm64/arm_validate_utf16.cpp:71-91",
@@ -766,7 +766,7 @@ func TestSourcesRecordPinnedProvenance(t *testing.T) {
 			"assembly port",
 			"registers test functions only and adds no product behavior",
 		}},
-		{"fuzz_ascii_test.go", []string{
+		{"ascii_test.go", []string{
 			upstreamSHA,
 			"src/generic/ascii_validation.h:6-45",
 			"src/generic/validate_utf16.h:128-158",
