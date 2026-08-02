@@ -27,6 +27,7 @@ import (
 	"maps"
 	"os"
 	"path/filepath"
+	"reflect"
 	"slices"
 	"strings"
 	"testing"
@@ -695,4 +696,343 @@ func lineDiff(want, got string) string {
 		}
 	}
 	return diff.String()
+}
+
+// Contract cases derived from simdutf commit 611becc2a08c27a4edc77d9a45ff74c97130129b,
+// include/simdutf/error.h:7-124.
+// Narrow Go-only scaffolding covers the underlying type, unknown values, and
+// Go zero values; these are not upstream test vectors.
+
+func TestErrorCode(t *testing.T) {
+	if kind := reflect.TypeOf(Success).Kind(); kind != reflect.Uint8 {
+		t.Fatalf("ErrorCode underlying kind = %v, want uint8", kind)
+	}
+
+	tests := []struct {
+		name string
+		code ErrorCode
+		want uint8
+		text string
+	}{
+		{"success", Success, 0, "SUCCESS"},
+		{"header bits", HeaderBits, 1, "HEADER_BITS"},
+		{"too short", TooShort, 2, "TOO_SHORT"},
+		{"too long", TooLong, 3, "TOO_LONG"},
+		{"overlong", Overlong, 4, "OVERLONG"},
+		{"too large", TooLarge, 5, "TOO_LARGE"},
+		{"surrogate", Surrogate, 6, "SURROGATE"},
+		{"invalid base64 character", InvalidBase64Character, 7, "INVALID_BASE64_CHARACTER"},
+		{"base64 input remainder", Base64InputRemainder, 8, "BASE64_INPUT_REMAINDER"},
+		{"base64 extra bits", Base64ExtraBits, 9, "BASE64_EXTRA_BITS"},
+		{"output buffer too small", OutputBufferTooSmall, 10, "OUTPUT_BUFFER_TOO_SMALL"},
+		{"other", Other, 11, "OTHER"},
+	}
+	for _, test := range tests {
+		t.Run(test.name, func(t *testing.T) {
+			if got := uint8(test.code); got != test.want {
+				t.Errorf("value = %d, want %d", got, test.want)
+			}
+			if got := ErrorToString(test.code); got != test.text {
+				t.Errorf("ErrorToString() = %q, want %q", got, test.text)
+			}
+		})
+	}
+}
+
+func TestErrorToStringUnknown(t *testing.T) {
+	for _, code := range []ErrorCode{12, 255} {
+		if got := ErrorToString(code); got != "OTHER" {
+			t.Errorf("ErrorToString(%d) = %q, want OTHER", code, got)
+		}
+	}
+}
+
+func TestResultStatus(t *testing.T) {
+	tests := []struct {
+		name    string
+		result  Result
+		wantOK  bool
+		wantErr bool
+	}{
+		{"zero value", Result{}, true, false},
+		{"success", Result{Error: Success, Count: 9}, true, false},
+		{"error", Result{Error: TooShort, Count: 3}, false, true},
+	}
+	for _, test := range tests {
+		t.Run(test.name, func(t *testing.T) {
+			if got := test.result.IsOK(); got != test.wantOK {
+				t.Errorf("IsOK() = %v, want %v", got, test.wantOK)
+			}
+			if got := test.result.IsErr(); got != test.wantErr {
+				t.Errorf("IsErr() = %v, want %v", got, test.wantErr)
+			}
+		})
+	}
+}
+
+func TestFullResultResult(t *testing.T) {
+	tests := []struct {
+		name string
+		full FullResult
+		want Result
+	}{
+		{"zero value", FullResult{}, Result{}},
+		{
+			"success uses output count",
+			FullResult{Error: Success, InputCount: 12, OutputCount: 7, PaddingError: true},
+			Result{Error: Success, Count: 7},
+		},
+		{
+			"error uses input count",
+			FullResult{Error: InvalidBase64Character, InputCount: 5, OutputCount: 3, PaddingError: true},
+			Result{Error: InvalidBase64Character, Count: 5},
+		},
+	}
+	for _, test := range tests {
+		t.Run(test.name, func(t *testing.T) {
+			if got := test.full.Result(); got != test.want {
+				t.Errorf("Result() = %+v, want %+v", got, test.want)
+			}
+		})
+	}
+}
+
+func TestFullResultZeroValue(t *testing.T) {
+	var result FullResult
+	if result.Error != Success {
+		t.Errorf("Error = %d, want Success", result.Error)
+	}
+	if result.InputCount != 0 {
+		t.Errorf("InputCount = %d, want 0", result.InputCount)
+	}
+	if result.OutputCount != 0 {
+		t.Errorf("OutputCount = %d, want 0", result.OutputCount)
+	}
+	if result.PaddingError {
+		t.Error("PaddingError = true, want false")
+	}
+}
+
+// Contract cases derived from simdutf commit 611becc2a08c27a4edc77d9a45ff74c97130129b,
+// include/simdutf/implementation.h:187-188,4094-4138,4194-4228.
+// Narrow Go-only scaffolding covers underlying types, unknown values, and
+// typed bit composition; these are not upstream test vectors.
+
+func TestBase64Options(t *testing.T) {
+	if kind := reflect.TypeOf(Base64Default).Kind(); kind != reflect.Uint64 {
+		t.Fatalf("Base64Options underlying kind = %v, want uint64", kind)
+	}
+
+	tests := []struct {
+		name    string
+		options Base64Options
+		value   uint64
+		text    string
+	}{
+		{"default", Base64Default, 0, "base64_default"},
+		{"URL", Base64URL, 1, "base64_url"},
+		{"default no padding", Base64DefaultNoPadding, 2, "base64_reverse_padding"},
+		{"URL with padding", Base64URLWithPadding, 3, "base64_url_with_padding"},
+		{"default accept garbage", Base64DefaultAcceptGarbage, 4, "base64_default_accept_garbage"},
+		{"URL accept garbage", Base64URLAcceptGarbage, 5, "base64_url_accept_garbage"},
+		{"default or URL", Base64DefaultOrURL, 8, "base64_default_or_url"},
+		{"default or URL accept garbage", Base64DefaultOrURLAcceptGarbage, 12, "base64_default_or_url_accept_garbage"},
+	}
+	for _, test := range tests {
+		t.Run(test.name, func(t *testing.T) {
+			if got := uint64(test.options); got != test.value {
+				t.Errorf("value = %d, want %d", got, test.value)
+			}
+			if got := Base64OptionsString(test.options); got != test.text {
+				t.Errorf("Base64OptionsString() = %q, want %q", got, test.text)
+			}
+		})
+	}
+}
+
+func TestBase64OptionConstants(t *testing.T) {
+	if kind := reflect.TypeOf(Base64ReversePadding).Kind(); kind != reflect.Uint64 {
+		t.Fatalf("Base64ReversePadding kind = %v, want uint64", kind)
+	}
+	if Base64ReversePadding != 2 {
+		t.Errorf("Base64ReversePadding = %d, want 2", Base64ReversePadding)
+	}
+	if got := Base64Default | Base64Options(Base64ReversePadding); got != Base64DefaultNoPadding {
+		t.Errorf("Base64Default | Base64ReversePadding = %d, want %d", got, Base64DefaultNoPadding)
+	}
+	if got := Base64URL | Base64Options(Base64ReversePadding); got != Base64URLWithPadding {
+		t.Errorf("Base64URL | Base64ReversePadding = %d, want %d", got, Base64URLWithPadding)
+	}
+	if kind := reflect.TypeOf(DefaultLineLength).Kind(); kind != reflect.Int {
+		t.Fatalf("DefaultLineLength kind = %v, want int", kind)
+	}
+	if DefaultLineLength != 76 {
+		t.Errorf("DefaultLineLength = %d, want 76", DefaultLineLength)
+	}
+}
+
+func TestBase64OptionsStringUnknown(t *testing.T) {
+	for _, options := range []Base64Options{6, 7, 255} {
+		if got := Base64OptionsString(options); got != "<unknown>" {
+			t.Errorf("Base64OptionsString(%d) = %q, want <unknown>", options, got)
+		}
+	}
+}
+
+func TestLastChunkHandlingOptions(t *testing.T) {
+	if kind := reflect.TypeOf(Loose).Kind(); kind != reflect.Uint64 {
+		t.Fatalf("LastChunkHandlingOptions underlying kind = %v, want uint64", kind)
+	}
+
+	tests := []struct {
+		name    string
+		options LastChunkHandlingOptions
+		value   uint64
+		text    string
+	}{
+		{"loose", Loose, 0, "loose"},
+		{"strict", Strict, 1, "strict"},
+		{"stop before partial", StopBeforePartial, 2, "stop_before_partial"},
+		{"only full chunks", OnlyFullChunks, 3, "only_full_chunks"},
+	}
+	for _, test := range tests {
+		t.Run(test.name, func(t *testing.T) {
+			if got := uint64(test.options); got != test.value {
+				t.Errorf("value = %d, want %d", got, test.value)
+			}
+			if got := LastChunkHandlingOptionsString(test.options); got != test.text {
+				t.Errorf("LastChunkHandlingOptionsString() = %q, want %q", got, test.text)
+			}
+		})
+	}
+}
+
+func TestIsPartial(t *testing.T) {
+	tests := []struct {
+		name    string
+		options LastChunkHandlingOptions
+		want    bool
+	}{
+		{"loose", Loose, false},
+		{"strict", Strict, false},
+		{"stop before partial", StopBeforePartial, true},
+		{"only full chunks", OnlyFullChunks, true},
+	}
+	for _, test := range tests {
+		t.Run(test.name, func(t *testing.T) {
+			if got := IsPartial(test.options); got != test.want {
+				t.Errorf("IsPartial() = %v, want %v", got, test.want)
+			}
+		})
+	}
+}
+
+func TestLastChunkHandlingOptionsStringUnknown(t *testing.T) {
+	for _, options := range []LastChunkHandlingOptions{4, 255} {
+		if got := LastChunkHandlingOptionsString(options); got != "<unknown>" {
+			t.Errorf("LastChunkHandlingOptionsString(%d) = %q, want <unknown>", options, got)
+		}
+	}
+}
+
+// Contract cases derived from simdutf commit 611becc2a08c27a4edc77d9a45ff74c97130129b,
+// include/simdutf/encoding_types.h:15-24 and src/encoding_types.cpp:3-64.
+// Narrow Go-only scaffolding covers the underlying type, unknown values,
+// truncated inputs, and non-prefix BOMs; these are not upstream test vectors.
+
+func TestEncoding(t *testing.T) {
+	if kind := reflect.TypeOf(Unspecified).Kind(); kind != reflect.Uint8 {
+		t.Fatalf("Encoding underlying kind = %v, want uint8", kind)
+	}
+
+	tests := []struct {
+		name     string
+		encoding Encoding
+		value    uint8
+		text     string
+	}{
+		{"unspecified", Unspecified, 0, "unknown"},
+		{"UTF-8", UTF8, 1, "UTF8"},
+		{"UTF-16LE", UTF16LE, 2, "UTF16 little-endian"},
+		{"UTF-16BE", UTF16BE, 4, "UTF16 big-endian"},
+		{"UTF-32LE", UTF32LE, 8, "UTF32 little-endian"},
+		{"UTF-32BE", UTF32BE, 16, "UTF32 big-endian"},
+		{"Latin-1", Latin1, 32, "error"},
+	}
+	for _, test := range tests {
+		t.Run(test.name, func(t *testing.T) {
+			if got := uint8(test.encoding); got != test.value {
+				t.Errorf("value = %d, want %d", got, test.value)
+			}
+			if got := EncodingString(test.encoding); got != test.text {
+				t.Errorf("EncodingString() = %q, want %q", got, test.text)
+			}
+		})
+	}
+}
+
+func TestEncodingStringUnknown(t *testing.T) {
+	for _, encoding := range []Encoding{3, 255} {
+		if got := EncodingString(encoding); got != "error" {
+			t.Errorf("EncodingString(%d) = %q, want error", encoding, got)
+		}
+	}
+}
+
+func TestCheckBOM(t *testing.T) {
+	tests := []struct {
+		name  string
+		input []byte
+		want  Encoding
+	}{
+		{"nil", nil, Unspecified},
+		{"empty", []byte{}, Unspecified},
+		{"one byte UTF-16LE prefix", []byte{0xff}, Unspecified},
+		{"one byte UTF-16BE prefix", []byte{0xfe}, Unspecified},
+		{"two byte UTF-8 prefix", []byte{0xef, 0xbb}, Unspecified},
+		{"three byte UTF-32BE prefix", []byte{0x00, 0x00, 0xfe}, Unspecified},
+		{"UTF-8", []byte{0xef, 0xbb, 0xbf}, UTF8},
+		{"UTF-8 with payload", []byte{0xef, 0xbb, 0xbf, 'x'}, UTF8},
+		{"UTF-16LE", []byte{0xff, 0xfe}, UTF16LE},
+		{"UTF-16LE three byte truncation", []byte{0xff, 0xfe, 0x00}, UTF16LE},
+		{"UTF-16LE non-UTF-32 suffix", []byte{0xff, 0xfe, 0x00, 0x01}, UTF16LE},
+		{"UTF-16BE", []byte{0xfe, 0xff}, UTF16BE},
+		{"UTF-32LE precedence", []byte{0xff, 0xfe, 0x00, 0x00}, UTF32LE},
+		{"UTF-32LE with payload", []byte{0xff, 0xfe, 0x00, 0x00, 'x'}, UTF32LE},
+		{"UTF-32BE", []byte{0x00, 0x00, 0xfe, 0xff}, UTF32BE},
+		{"non-prefix UTF-8", []byte{'x', 0xef, 0xbb, 0xbf}, Unspecified},
+		{"non-prefix UTF-16LE", []byte{'x', 0xff, 0xfe}, Unspecified},
+		{"no BOM", []byte("plain text"), Unspecified},
+	}
+	for _, test := range tests {
+		t.Run(test.name, func(t *testing.T) {
+			if got := CheckBOM(test.input); got != test.want {
+				t.Errorf("CheckBOM(% x) = %d, want %d", test.input, got, test.want)
+			}
+		})
+	}
+}
+
+func TestBOMByteSize(t *testing.T) {
+	tests := []struct {
+		name     string
+		encoding Encoding
+		want     int
+	}{
+		{"unspecified", Unspecified, 0},
+		{"UTF-8", UTF8, 3},
+		{"UTF-16LE", UTF16LE, 2},
+		{"UTF-16BE", UTF16BE, 2},
+		{"UTF-32LE", UTF32LE, 4},
+		{"UTF-32BE", UTF32BE, 4},
+		{"Latin-1", Latin1, 0},
+		{"unknown", Encoding(255), 0},
+	}
+	for _, test := range tests {
+		t.Run(test.name, func(t *testing.T) {
+			if got := BOMByteSize(test.encoding); got != test.want {
+				t.Errorf("BOMByteSize() = %d, want %d", got, test.want)
+			}
+		})
+	}
 }

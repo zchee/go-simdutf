@@ -162,3 +162,469 @@ func TestCheckBenchmarkCorpusRejectsInvalidCorpus(t *testing.T) {
 		t.Error("corpus with wrong digest was accepted")
 	}
 }
+
+// Hand-authored Go-only benchmarks pinned to
+// simdutf/simdutf@611becc2a08c27a4edc77d9a45ff74c97130129b:
+// benchmarks/shortbench.cpp:29-35,419-422,493-497,520-526;
+// benchmarks/src/benchmark.cpp:120-127,697-715; and
+// docs/porting/benchmark-contract.md. The ValidateASCII benchmark maps the
+// shortbench validate_ascii registration and zero-buffer prefix loop. The
+// ValidateASCIIWithErrors benchmark maps only the main benchmark registration
+// and runner; main-zero-128 is a procedure label, not a corpus ID.
+// Public rows call the exported functions literally so their wrappers remain
+// inlineable; direct diagnostic rows intentionally use registry indirection.
+
+func BenchmarkValidateASCII(b *testing.B) {
+	corpus := materializeShortbenchZero128()
+	if err := checkBenchmarkCorpus(shortbenchZero128Spec, corpus); err != nil {
+		b.Fatal(err)
+	}
+	selection := asciiBenchmarkSelectionInput
+
+	b.Run("shortbench-zero-128", func(b *testing.B) {
+		for _, prefix := range shortbenchZero128Spec.prefixes {
+			input := corpus[:prefix]
+			b.Run(fmt.Sprintf("%03dB", len(input)), func(b *testing.B) {
+				for _, candidate := range validateASCIIBenchmarkVariants {
+					b.Run(candidate.name, func(b *testing.B) {
+						b.ReportAllocs()
+						b.SetBytes(int64(len(input)))
+						if candidate.name == "public" {
+							for b.Loop() {
+								benchmarkBoolSink = ValidateASCII(input)
+							}
+							return
+						}
+						fn := candidate.value
+						if fn == nil || !candidate.variant.supportedBy(selection) {
+							b.Skip("direct variant is unavailable or unsupported")
+						}
+						for b.Loop() {
+							benchmarkBoolSink = fn(input)
+						}
+					})
+				}
+			})
+		}
+	})
+}
+
+func BenchmarkValidateASCIIWithErrors(b *testing.B) {
+	corpus := materializeShortbenchZero128()
+	if err := checkBenchmarkCorpus(shortbenchZero128Spec, corpus); err != nil {
+		b.Fatal(err)
+	}
+	selection := asciiBenchmarkSelectionInput
+	input := corpus
+
+	b.Run("main-zero-128", func(b *testing.B) {
+		b.Run("128B", func(b *testing.B) {
+			for _, candidate := range validateASCIIWithErrorsBenchmarkVariants {
+				b.Run(candidate.name, func(b *testing.B) {
+					b.ReportAllocs()
+					b.SetBytes(int64(len(input)))
+					if candidate.name == "public" {
+						for b.Loop() {
+							benchmarkResultSink = ValidateASCIIWithErrors(input)
+						}
+						return
+					}
+					fn := candidate.value
+					if fn == nil || !candidate.variant.supportedBy(selection) {
+						b.Skip("direct variant is unavailable or unsupported")
+					}
+					for b.Loop() {
+						benchmarkResultSink = fn(input)
+					}
+				})
+			}
+		})
+	})
+}
+
+// Benchmark mapped from
+// simdutf/simdutf@611becc2a08c27a4edc77d9a45ff74c97130129b:
+// benchmarks/shortbench.cpp:29-40,66-72,419-422,493-497,520-526 and
+// benchmarks/src/benchmark.cpp:3428-3443. CountUTF8 keeps shortbench's frozen
+// zero prefixes and the pinned benchmarks/dataset/emoji.txt main corpus.
+// Public and scalar rows deliberately share identical corpus setup and names;
+// later direct variants register through test-only scaffolding.
+
+func BenchmarkCountUTF8(b *testing.B) {
+	corpus := materializeShortbenchZero128()
+	if err := checkBenchmarkCorpus(shortbenchZero128Spec, corpus); err != nil {
+		b.Fatal(err)
+	}
+	selection := detectSelectionInput()
+	b.Run("shortbench-zero-128", func(b *testing.B) {
+		for _, prefix := range shortbenchZero128Spec.prefixes {
+			input := corpus[:prefix]
+			b.Run(fmt.Sprintf("%03dB", len(input)), func(b *testing.B) {
+				b.Run("public", func(b *testing.B) {
+					b.ReportAllocs()
+					b.SetBytes(int64(len(input)))
+					for b.Loop() {
+						benchmarkIntSink = CountUTF8(input)
+					}
+				})
+				b.Run("scalar", func(b *testing.B) {
+					b.ReportAllocs()
+					b.SetBytes(int64(len(input)))
+					for b.Loop() {
+						benchmarkIntSink = countUTF8Scalar(input)
+					}
+				})
+				for _, candidate := range countUTF8DirectVariants {
+					if !candidate.supportedBy(selection) {
+						continue
+					}
+					b.Run(candidate.name, func(b *testing.B) {
+						b.ReportAllocs()
+						b.SetBytes(int64(len(input)))
+						for b.Loop() {
+							benchmarkIntSink = candidate.value(input)
+						}
+					})
+				}
+			})
+		}
+	})
+
+	input := upstreamEmojiUTF8
+	if err := checkBenchmarkCorpus(upstreamEmojiUTF8Spec, input); err != nil {
+		b.Fatal(err)
+	}
+	b.Run("main-upstream-emoji-utf8", func(b *testing.B) {
+		b.Run("3150B", func(b *testing.B) {
+			b.Run("public", func(b *testing.B) {
+				b.ReportAllocs()
+				b.SetBytes(int64(len(input)))
+				for b.Loop() {
+					benchmarkIntSink = CountUTF8(input)
+				}
+			})
+			b.Run("scalar", func(b *testing.B) {
+				b.ReportAllocs()
+				b.SetBytes(int64(len(input)))
+				for b.Loop() {
+					benchmarkIntSink = countUTF8Scalar(input)
+				}
+			})
+			for _, candidate := range countUTF8DirectVariants {
+				if !candidate.supportedBy(selection) {
+					continue
+				}
+				b.Run(candidate.name, func(b *testing.B) {
+					b.ReportAllocs()
+					b.SetBytes(int64(len(input)))
+					for b.Loop() {
+						benchmarkIntSink = candidate.value(input)
+					}
+				})
+			}
+		})
+	})
+}
+
+// Benchmarks mapped from simdutf/simdutf@611becc2a08c27a4edc77d9a45ff74c97130129b:
+// benchmarks/shortbench.cpp:29-40,419-422,493-497,520-526 and
+// benchmarks/src/benchmark.cpp:611-645. ValidateUTF8 keeps shortbench's frozen
+// zero prefixes; ValidateUTF8WithErrors uses the exact pinned
+// benchmarks/dataset/emoji.txt corpus. Public and scalar rows deliberately
+// share identical corpus setup and benchmark names for a scalar baseline.
+
+func BenchmarkValidateUTF8(b *testing.B) {
+	corpus := materializeShortbenchZero128()
+	if err := checkBenchmarkCorpus(shortbenchZero128Spec, corpus); err != nil {
+		b.Fatal(err)
+	}
+	b.Run("shortbench-zero-128", func(b *testing.B) {
+		for _, prefix := range shortbenchZero128Spec.prefixes {
+			input := corpus[:prefix]
+			b.Run(fmt.Sprintf("%03dB", len(input)), func(b *testing.B) {
+				b.Run("public", func(b *testing.B) {
+					b.ReportAllocs()
+					b.SetBytes(int64(len(input)))
+					for b.Loop() {
+						benchmarkBoolSink = ValidateUTF8(input)
+					}
+				})
+				b.Run("scalar", func(b *testing.B) {
+					b.ReportAllocs()
+					b.SetBytes(int64(len(input)))
+					for b.Loop() {
+						benchmarkBoolSink = validateUTF8Scalar(input)
+					}
+				})
+				for _, candidate := range utf8DirectVariants {
+					if !candidate.validate.supportedBy(detectSelectionInput()) {
+						continue
+					}
+					b.Run(candidate.name, func(b *testing.B) {
+						b.ReportAllocs()
+						b.SetBytes(int64(len(input)))
+						for b.Loop() {
+							benchmarkBoolSink = candidate.validate.value(input)
+						}
+					})
+				}
+			})
+		}
+	})
+}
+
+func BenchmarkValidateUTF8WithErrors(b *testing.B) {
+	input := upstreamEmojiUTF8
+	if err := checkBenchmarkCorpus(upstreamEmojiUTF8Spec, input); err != nil {
+		b.Fatal(err)
+	}
+	b.Run("main-upstream-emoji-utf8", func(b *testing.B) {
+		b.Run("3150B", func(b *testing.B) {
+			b.Run("public", func(b *testing.B) {
+				b.ReportAllocs()
+				b.SetBytes(int64(len(input)))
+				for b.Loop() {
+					benchmarkResultSink = ValidateUTF8WithErrors(input)
+				}
+			})
+			b.Run("scalar", func(b *testing.B) {
+				b.ReportAllocs()
+				b.SetBytes(int64(len(input)))
+				for b.Loop() {
+					benchmarkResultSink = validateUTF8WithErrorsScalar(input)
+				}
+			})
+			for _, candidate := range utf8DirectVariants {
+				if !candidate.withErrors.supportedBy(detectSelectionInput()) {
+					continue
+				}
+				b.Run(candidate.name, func(b *testing.B) {
+					b.ReportAllocs()
+					b.SetBytes(int64(len(input)))
+					for b.Loop() {
+						benchmarkResultSink = candidate.withErrors.value(input)
+					}
+				})
+			}
+		})
+	})
+}
+
+// Benchmarks mapped from
+// simdutf/simdutf@611becc2a08c27a4edc77d9a45ff74c97130129b (tree
+// c8292790d793212ca0a1faf6ae42e7f8e7b70d4f):
+// benchmarks/shortbench.cpp:29-65,419-422,493-497,520-526 and
+// benchmarks/src/benchmark.cpp:167-169,999-1011. Pinned shortbench registers
+// UTF16LengthFromUTF8 and UTF32LengthFromUTF8; the main benchmark registers
+// only UTF16LengthFromUTF8 and processes input_data.size()/4 input bytes.
+// Public, direct-dispatch, and scalar rows share identical setup and input-byte
+// denominators. Latin1LengthFromUTF8 and TrimPartialUTF8 have no registered
+// standalone pinned benchmark procedure.
+//
+// The dispatch-boundary and UTF-32 emoji comparisons are Go-only diagnostics
+// over the same frozen corpora.
+
+func BenchmarkUTF16LengthFromUTF8(b *testing.B) {
+	corpus := materializeShortbenchZero128()
+	if err := checkBenchmarkCorpus(shortbenchZero128Spec, corpus); err != nil {
+		b.Fatal(err)
+	}
+	selection := detectSelectionInput()
+	b.Run("shortbench-zero-128", func(b *testing.B) {
+		for _, prefix := range shortbenchZero128Spec.prefixes {
+			input := corpus[:prefix]
+			b.Run(fmt.Sprintf("%03dB", len(input)), func(b *testing.B) {
+				b.Run("public", func(b *testing.B) {
+					b.ReportAllocs()
+					b.SetBytes(int64(len(input)))
+					for b.Loop() {
+						benchmarkIntSink = UTF16LengthFromUTF8(input)
+					}
+				})
+				b.Run("direct", func(b *testing.B) {
+					b.ReportAllocs()
+					b.SetBytes(int64(len(input)))
+					for b.Loop() {
+						benchmarkIntSink = activeImplementation.utf16LengthFromUTF8(input)
+					}
+				})
+				b.Run("scalar", func(b *testing.B) {
+					b.ReportAllocs()
+					b.SetBytes(int64(len(input)))
+					for b.Loop() {
+						benchmarkIntSink = utf16LengthFromUTF8Scalar(input)
+					}
+				})
+				for _, candidate := range utf8LengthDirectVariants {
+					if !candidate.utf16.supportedBy(selection) {
+						continue
+					}
+					b.Run(candidate.name, func(b *testing.B) {
+						b.ReportAllocs()
+						b.SetBytes(int64(len(input)))
+						for b.Loop() {
+							benchmarkIntSink = candidate.utf16.value(input)
+						}
+					})
+				}
+			})
+		}
+	})
+
+	b.Run("go-only-dispatch-boundary-zero-128", func(b *testing.B) {
+		for _, length := range [...]int{0, 1, 11, 15, 16, 17, 21} {
+			input := corpus[:length]
+			b.Run(fmt.Sprintf("%03dB", len(input)), func(b *testing.B) {
+				b.Run("public", func(b *testing.B) {
+					b.ReportAllocs()
+					b.SetBytes(int64(len(input)))
+					for b.Loop() {
+						benchmarkIntSink = UTF16LengthFromUTF8(input)
+					}
+				})
+				b.Run("scalar", func(b *testing.B) {
+					b.ReportAllocs()
+					b.SetBytes(int64(len(input)))
+					for b.Loop() {
+						benchmarkIntSink = utf16LengthFromUTF8Scalar(input)
+					}
+				})
+			})
+		}
+	})
+
+	if err := checkBenchmarkCorpus(upstreamEmojiUTF8Spec, upstreamEmojiUTF8); err != nil {
+		b.Fatal(err)
+	}
+	input := upstreamEmojiUTF8[:len(upstreamEmojiUTF8)/4]
+	b.Run("main-upstream-emoji-utf8", func(b *testing.B) {
+		b.Run(fmt.Sprintf("%04dB", len(input)), func(b *testing.B) {
+			b.Run("public", func(b *testing.B) {
+				b.ReportAllocs()
+				b.SetBytes(int64(len(input)))
+				for b.Loop() {
+					benchmarkIntSink = UTF16LengthFromUTF8(input)
+				}
+			})
+			b.Run("direct", func(b *testing.B) {
+				b.ReportAllocs()
+				b.SetBytes(int64(len(input)))
+				for b.Loop() {
+					benchmarkIntSink = activeImplementation.utf16LengthFromUTF8(input)
+				}
+			})
+			b.Run("scalar", func(b *testing.B) {
+				b.ReportAllocs()
+				b.SetBytes(int64(len(input)))
+				for b.Loop() {
+					benchmarkIntSink = utf16LengthFromUTF8Scalar(input)
+				}
+			})
+			for _, candidate := range utf8LengthDirectVariants {
+				if !candidate.utf16.supportedBy(selection) {
+					continue
+				}
+				b.Run(candidate.name, func(b *testing.B) {
+					b.ReportAllocs()
+					b.SetBytes(int64(len(input)))
+					for b.Loop() {
+						benchmarkIntSink = candidate.utf16.value(input)
+					}
+				})
+			}
+		})
+	})
+}
+
+func BenchmarkUTF32LengthFromUTF8(b *testing.B) {
+	corpus := materializeShortbenchZero128()
+	if err := checkBenchmarkCorpus(shortbenchZero128Spec, corpus); err != nil {
+		b.Fatal(err)
+	}
+	selection := detectSelectionInput()
+	b.Run("shortbench-zero-128", func(b *testing.B) {
+		for _, prefix := range shortbenchZero128Spec.prefixes {
+			input := corpus[:prefix]
+			b.Run(fmt.Sprintf("%03dB", len(input)), func(b *testing.B) {
+				b.Run("public", func(b *testing.B) {
+					b.ReportAllocs()
+					b.SetBytes(int64(len(input)))
+					for b.Loop() {
+						benchmarkIntSink = UTF32LengthFromUTF8(input)
+					}
+				})
+				b.Run("direct", func(b *testing.B) {
+					b.ReportAllocs()
+					b.SetBytes(int64(len(input)))
+					for b.Loop() {
+						benchmarkIntSink = activeImplementation.utf32LengthFromUTF8(input)
+					}
+				})
+				b.Run("scalar", func(b *testing.B) {
+					b.ReportAllocs()
+					b.SetBytes(int64(len(input)))
+					for b.Loop() {
+						benchmarkIntSink = utf32LengthFromUTF8Scalar(input)
+					}
+				})
+				for _, candidate := range utf8LengthDirectVariants {
+					if !candidate.utf32.supportedBy(selection) {
+						continue
+					}
+					b.Run(candidate.name, func(b *testing.B) {
+						b.ReportAllocs()
+						b.SetBytes(int64(len(input)))
+						for b.Loop() {
+							benchmarkIntSink = candidate.utf32.value(input)
+						}
+					})
+				}
+			})
+		}
+	})
+
+	b.Run("go-only-dispatch-boundary-zero-128", func(b *testing.B) {
+		for _, length := range [...]int{0, 1, 11, 61, 63, 64, 65, 71} {
+			input := corpus[:length]
+			b.Run(fmt.Sprintf("%03dB", len(input)), func(b *testing.B) {
+				b.Run("public", func(b *testing.B) {
+					b.ReportAllocs()
+					b.SetBytes(int64(len(input)))
+					for b.Loop() {
+						benchmarkIntSink = UTF32LengthFromUTF8(input)
+					}
+				})
+				b.Run("scalar", func(b *testing.B) {
+					b.ReportAllocs()
+					b.SetBytes(int64(len(input)))
+					for b.Loop() {
+						benchmarkIntSink = utf32LengthFromUTF8Scalar(input)
+					}
+				})
+			})
+		}
+	})
+
+	if err := checkBenchmarkCorpus(upstreamEmojiUTF8Spec, upstreamEmojiUTF8); err != nil {
+		b.Fatal(err)
+	}
+	input := upstreamEmojiUTF8[:len(upstreamEmojiUTF8)/4]
+	b.Run("go-only-upstream-emoji-utf8", func(b *testing.B) {
+		b.Run(fmt.Sprintf("%04dB", len(input)), func(b *testing.B) {
+			b.Run("public", func(b *testing.B) {
+				b.ReportAllocs()
+				b.SetBytes(int64(len(input)))
+				for b.Loop() {
+					benchmarkIntSink = UTF32LengthFromUTF8(input)
+				}
+			})
+			b.Run("scalar", func(b *testing.B) {
+				b.ReportAllocs()
+				b.SetBytes(int64(len(input)))
+				for b.Loop() {
+					benchmarkIntSink = utf32LengthFromUTF8Scalar(input)
+				}
+			})
+		})
+	})
+}

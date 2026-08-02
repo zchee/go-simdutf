@@ -157,7 +157,7 @@ func TestSourcesRecordPinnedProvenance(t *testing.T) {
 			"include/simdutf/scalar/utf8.h:258-325",
 			"test metadata only and adds no product behavior or mutable",
 		}},
-		{"utf8_length_benchmark_test.go", []string{
+		{"benchmark_test.go", []string{
 			upstreamSHA,
 			"c8292790d793212ca0a1faf6ae42e7f8e7b70d4f",
 			"benchmarks/shortbench.cpp:29-65,419-422,493-497,520-526",
@@ -176,7 +176,7 @@ func TestSourcesRecordPinnedProvenance(t *testing.T) {
 			"Hand-authored Go-only direct CountUTF8 differential fuzz registry",
 			"test\n// metadata only and adds no product behavior",
 		}},
-		{"count_utf8_benchmark_test.go", []string{
+		{"benchmark_test.go", []string{
 			upstreamSHA,
 			"benchmarks/shortbench.cpp:29-40,66-72,419-422,493-497,520-526",
 			"benchmarks/src/benchmark.cpp:3428-3443",
@@ -449,7 +449,7 @@ func TestSourcesRecordPinnedProvenance(t *testing.T) {
 			"Hand-authored Go-only deterministic no-overread coverage",
 			"invokes direct test functions only and adds no product behavior",
 		}},
-		{"utf8_benchmark_test.go", []string{
+		{"benchmark_test.go", []string{
 			upstreamSHA,
 			"benchmarks/shortbench.cpp:29-40,419-422,493-497,520-526",
 			"benchmarks/src/benchmark.cpp:611-645",
@@ -556,7 +556,7 @@ func TestSourcesRecordPinnedProvenance(t *testing.T) {
 			upstreamSHA,
 			"include/simdutf/implementation.h",
 		}},
-		{"errors_test.go", []string{
+		{"api_contract_test.go", []string{
 			upstreamSHA,
 			"include/simdutf/error.h:7-124",
 			"Narrow Go-only scaffolding",
@@ -564,7 +564,7 @@ func TestSourcesRecordPinnedProvenance(t *testing.T) {
 			"Go zero values",
 			"these are not upstream test vectors",
 		}},
-		{"encoding_test.go", []string{
+		{"api_contract_test.go", []string{
 			upstreamSHA,
 			"include/simdutf/encoding_types.h:15-24",
 			"src/encoding_types.cpp:3-64",
@@ -573,7 +573,7 @@ func TestSourcesRecordPinnedProvenance(t *testing.T) {
 			"truncated inputs, and non-prefix BOMs",
 			"these are not upstream test vectors",
 		}},
-		{"options_test.go", []string{
+		{"api_contract_test.go", []string{
 			upstreamSHA,
 			"include/simdutf/implementation.h:187-188,4094-4138,4194-4228",
 			"Narrow Go-only scaffolding",
@@ -730,7 +730,7 @@ func TestSourcesRecordPinnedProvenance(t *testing.T) {
 			"generic-target scalar dispatch",
 			"not\n// upstream test vectors",
 		}},
-		{"dispatch_table_test.go", []string{
+		{"dispatch_test.go", []string{
 			upstreamSHA + ":src/implementation.cpp",
 			"Hand-authored Go-only tests",
 			"exact implementation-table shape",
@@ -811,7 +811,7 @@ func TestSourcesRecordPinnedProvenance(t *testing.T) {
 			"Hand-authored Go-only deterministic no-overread coverage",
 			"invokes direct test functions only and adds no product behavior",
 		}},
-		{"ascii_benchmark_test.go", []string{
+		{"benchmark_test.go", []string{
 			upstreamSHA,
 			"benchmarks/shortbench.cpp:29-35,419-422,493-497,520-526",
 			"benchmarks/src/benchmark.cpp:120-127,697-715",
