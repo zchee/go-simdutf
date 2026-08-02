@@ -430,6 +430,7 @@ func completionEvidenceContextMatchesV1(record EvidenceRecordV1, context Complet
 		record.HostReceiptID == context.HostReceiptID &&
 		record.HostReceiptDigest == context.HostReceiptSHA256
 }
+
 func completionEvidenceRecordValidV1(record EvidenceRecordV1, rowKey, cellID, authority string) bool {
 	sourceRole := "new"
 	if record.CommandRole == "old" {
@@ -682,6 +683,7 @@ func validateCompletionMembershipV1(membership MembershipV1, frozen map[string]M
 	}
 	return nil
 }
+
 func validateCompletionClassificationV1(classification ClassificationV1, membership MembershipV1, frozen map[string]ManifestRowV1) error {
 	if err := validateCompletionMembershipV1(membership, frozen); err != nil {
 		return err
@@ -920,6 +922,7 @@ func completionCellEvidenceBindingMatchesV1(record EvidenceRecordV1, classificat
 		record.DirectSymbol == cell.DirectSymbol &&
 		record.BatchID == cell.EvidenceBatchStorageID
 }
+
 func requiredCellReceiptIDsV1(registry *EvidenceRegistryV1, classification ClassificationRowV1, cell CompletionCellV1, member FinalCellV1, context CompletionValidationContextV1) ([]string, error) {
 	rowKey := classification.RowKeyV1
 	family, err := FamilyKeyV1(member.FamilyContractDisplayID)
@@ -1046,6 +1049,7 @@ func validateFamilyPublicationEvidenceV1(classification ClassificationV1, comple
 	}
 	return nil
 }
+
 func requiredRowReceiptIDsV1(registry *EvidenceRegistryV1, classification ClassificationRowV1, evidence CompletionEvidenceContextV1, context CompletionValidationContextV1) ([]string, error) {
 	rowKey := classification.RowKeyV1
 	family, err := FamilyKeyV1(classification.FamilyContractDisplayID)

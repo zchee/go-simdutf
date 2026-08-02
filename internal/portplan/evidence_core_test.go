@@ -140,6 +140,7 @@ func TestEvidenceRegistryV1RejectedInsertionsAreAtomic(t *testing.T) {
 		assertUnchanged(t, before)
 	})
 }
+
 func TestEvidenceRecordV1RejectsOriginPathAndContextTopologyMutations(t *testing.T) {
 	contents := []byte("evidence")
 	record, context := validEvidenceRecordV1(t, contents)
@@ -181,6 +182,7 @@ func TestEvidenceRecordV1RejectsNilRegistry(t *testing.T) {
 		t.Fatal("accepted full evidence validation without a semantic registry")
 	}
 }
+
 func TestEvidenceStateV1RequiresEveryHardGateProof(t *testing.T) {
 	record := EvidenceRecordV1{
 		Kind: "state-transition", StateSubject: "backend_cell",
@@ -202,6 +204,7 @@ func TestEvidenceStateV1RequiresEveryHardGateProof(t *testing.T) {
 		t.Fatalf("rejected complete hard-gate proof set: %v", err)
 	}
 }
+
 func TestEvidenceSemanticArtifactsV1FailClosed(t *testing.T) {
 	state := EvidenceRecordV1{StateSubject: "backend_cell", PrerequisiteState: "dispatch_candidate", CurrentState: "direct_only", Disposition: "direct_only", GoQualification: "fail"}
 	if canonicalStateArtifactV1(state, []byte("arbitrary")) {

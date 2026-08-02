@@ -21,6 +21,7 @@ func TestFamilyContractDisplayIDV1(t *testing.T) {
 		t.Fatalf("FamilyContractDisplayIDV1(Base64) = %q", got)
 	}
 }
+
 func TestClassifyFamilyContractV1(t *testing.T) {
 	tests := []struct {
 		family, symbol, want string
@@ -72,6 +73,7 @@ func TestValidateBackendMappingV1RejectsSourceNAEligibility(t *testing.T) {
 		t.Fatal("eligible backend accepted despite source-declared N/A")
 	}
 }
+
 func TestValidateBackendMappingV1UsesGoSymbolAndPinnedLedgerSource(t *testing.T) {
 	var manifest ManifestRowV1
 	manifest.Cells[3] = "src/api.h:1"

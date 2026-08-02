@@ -42,6 +42,7 @@ type (
 		Repository, Commit, Tree, Parent, ArchiveSHA256, ArchiveRecipe, EvidenceAnchor string
 	}
 )
+
 type HostAuthorityV1 struct {
 	HostID, Transport, OS, Kernel, Arch, CPUModel                                       string
 	LogicalCPUCount                                                                     int
@@ -58,6 +59,7 @@ type (
 		CorpusID, State, ElementType, SizeUnits, ByteLengthOrPending, SHA256OrPending, SourceIdentity, Recipe, FamilyContracts string
 	}
 )
+
 type FrozenInputV1 struct {
 	Path   string
 	Size   int

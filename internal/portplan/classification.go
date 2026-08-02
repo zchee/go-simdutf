@@ -23,8 +23,10 @@ import (
 	"strings"
 )
 
-var classificationHeaderV1 = [...]string{"mapping_version", "row_key_v1", "manifest_ordinal", "canonical_row_rank", "canonical_dependency_rank", "go_symbol", "go_signature", "family_contract_display_id", "family_storage_id", "wave", "semantic_operation_id", "dependency_tuple_hex", "scalar_batch_display_id", "scalar_batch_storage_id", "api_transaction_display_id", "api_transaction_storage_id", "scalar_source", "test_source", "fuzz_source", "benchmark_source"}
-var batchesHeaderV1 = [...]string{"mapping_version", "batch_kind", "batch_display_id", "batch_storage_id", "family_contract_display_id", "backend", "sequence", "distinct_semantic_operation_count", "member_count", "member_tuple_hex"}
+var (
+	classificationHeaderV1 = [...]string{"mapping_version", "row_key_v1", "manifest_ordinal", "canonical_row_rank", "canonical_dependency_rank", "go_symbol", "go_signature", "family_contract_display_id", "family_storage_id", "wave", "semantic_operation_id", "dependency_tuple_hex", "scalar_batch_display_id", "scalar_batch_storage_id", "api_transaction_display_id", "api_transaction_storage_id", "scalar_source", "test_source", "fuzz_source", "benchmark_source"}
+	batchesHeaderV1        = [...]string{"mapping_version", "batch_kind", "batch_display_id", "batch_storage_id", "family_contract_display_id", "backend", "sequence", "distinct_semantic_operation_count", "member_count", "member_tuple_hex"}
+)
 
 // ClassificationRowV1 is the canonical publication row for one planned API.
 type ClassificationRowV1 struct {
@@ -381,7 +383,7 @@ func validMembershipBackend(backend string) bool {
 	return false
 }
 
-func classificationDependencies(deps []DependencyRecordV1, ranks map[string]int, cellByKey map[string]int, cells []FinalCellV1) (string, int, error) {
+func classificationDependencies(deps []DependencyRecordV1, ranks, cellByKey map[string]int, cells []FinalCellV1) (string, int, error) {
 	sort.Slice(deps, func(i, j int) bool { return dependencyEdgeKey(deps[i]) < dependencyEdgeKey(deps[j]) })
 	values := make([]string, len(deps))
 	rank := 125

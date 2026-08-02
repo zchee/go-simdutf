@@ -104,6 +104,7 @@ func TestValidateBenchmarkTopologyV1(t *testing.T) {
 		t.Fatal("new-before-old accepted")
 	}
 }
+
 func TestValidateCachesV1RequiresFullAuthorityNamespace(t *testing.T) {
 	command := campaignTestCommand(1, "go_test_full", "old", []string{"/home/zchee/sdk/go1.26.5/bin/go", "test", "."})
 	authority := strings.Repeat("a", 64)
@@ -153,6 +154,7 @@ func campaignArtifactKindV1(action, role string) string {
 	}
 	return map[string]string{"source_commit": "identity", "source_tree": "identity", "source_parent": "identity", "source_status": "identity", "host_uname": "identity", "host_cpu": "identity", "go_version": "identity", "file_digest": "identity", "go_test_focused": "test", "go_test_full": "test", "go_test_race": "race", "go_fuzz_replay": "fuzz", "go_fuzz": "fuzz", "benchstat": "benchstat", "provider_guard": "provider-guard", "selector_test": "selector", "final_selector_test": "final-selector", "go_object_build": "object", "go_objdump": "disassembly", "quiet_affinity_recheck": "quiet-affinity", "state_transition": "state-transition", "not_applicable": "not-applicable", "return_index": "index"}[action]
 }
+
 func cloneEnv(in map[string]string) map[string]string {
 	out := make(map[string]string, len(in))
 	maps.Copy(out, in)

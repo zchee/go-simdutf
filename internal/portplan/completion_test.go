@@ -381,6 +381,7 @@ func completionEvidenceContextFromRecordV1(record EvidenceRecordV1) CompletionEv
 		HostReceiptID: record.HostReceiptID, HostReceiptSHA256: record.HostReceiptDigest,
 	}
 }
+
 func TestCompletionV1EndToEndFixture(t *testing.T) {
 	completion, context := completionEndToEndFixtureV1(t)
 	if err := ValidateCompletionV1(completion, context); err != nil {

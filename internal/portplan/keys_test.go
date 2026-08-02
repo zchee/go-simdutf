@@ -251,6 +251,7 @@ func independentID(prefix, raw string) string {
 	sum := sha256.Sum256([]byte(raw))
 	return prefix + hex.EncodeToString(sum[:])
 }
+
 func independentTuple(fields ...string) string {
 	var tuple strings.Builder
 	for _, field := range fields {

@@ -363,6 +363,7 @@ func validateMembershipEmission(m MembershipV1, ledger []ISARowV1, existing []Ex
 	}
 	return nil
 }
+
 func ownerLess(a, b FinalCellV1) bool {
 	if a.CanonicalRowRank != b.CanonicalRowRank {
 		return a.CanonicalRowRank < b.CanonicalRowRank
@@ -401,6 +402,7 @@ func familyWave(family string) (int, bool) {
 		return 0, false
 	}
 }
+
 func RenderOperationsV1(rows []FinalOperationV1) []byte {
 	lines := []string{strings.Join(finalOperationsHeaderV1[:], "\t")}
 	for _, r := range rows {
@@ -408,6 +410,7 @@ func RenderOperationsV1(rows []FinalOperationV1) []byte {
 	}
 	return []byte(strings.Join(lines, "\n") + "\n")
 }
+
 func RenderCellsV1(rows []FinalCellV1) []byte {
 	lines := []string{strings.Join(finalCellsHeaderV1[:], "\t")}
 	for _, r := range rows {
@@ -415,6 +418,7 @@ func RenderCellsV1(rows []FinalCellV1) []byte {
 	}
 	return []byte(strings.Join(lines, "\n") + "\n")
 }
+
 func RenderKernelsV1(rows []KernelRegistryV1) []byte {
 	lines := []string{strings.Join(kernelRegistryHeaderV1[:], "\t")}
 	for _, r := range rows {

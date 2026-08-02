@@ -23,6 +23,7 @@ func TestRenderOperationsV1(t *testing.T) {
 		t.Fatalf("rendered header = %q", got)
 	}
 }
+
 func TestOwnerLessV1UsesWaveBeforeFamily(t *testing.T) {
 	utf16 := FinalCellV1{FamilyContractDisplayID: "FC-v1-utf16-source", SemanticOperationID: "a", ManifestOrdinal: 1, RowKeyV1: "a"}
 	detection := FinalCellV1{FamilyContractDisplayID: "FC-v1-detection", SemanticOperationID: "a", ManifestOrdinal: 1, RowKeyV1: "a"}
@@ -37,6 +38,7 @@ func TestOwnerLessV1UsesWaveBeforeFamily(t *testing.T) {
 		t.Fatal("unknown family accepted")
 	}
 }
+
 func TestValidateMembershipEmissionV1RejectsUnpinnedZeroInitial(t *testing.T) {
 	ledger := []ISARowV1{{LedgerOrdinal: 1, Cells: [17]string{16: "unfrozen"}}}
 	membership := MembershipV1{Operations: []FinalOperationV1{{

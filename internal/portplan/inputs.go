@@ -23,8 +23,10 @@ import (
 	"strings"
 )
 
-var dependencyHeaderV1 = [...]string{"mapping_version", "consumer_row_key_v1", "consumer_manifest_ordinal", "consumer_go_symbol", "dependency_kind", "owner_kind", "owner_logical_id", "owner_go_symbol_or_empty", "evidence_anchor"}
-var lockedSetHeaderV1 = [...]string{"schema_version", "set_name", "ordinal", "value_hex", "evidence_anchor"}
+var (
+	dependencyHeaderV1 = [...]string{"mapping_version", "consumer_row_key_v1", "consumer_manifest_ordinal", "consumer_go_symbol", "dependency_kind", "owner_kind", "owner_logical_id", "owner_go_symbol_or_empty", "evidence_anchor"}
+	lockedSetHeaderV1  = [...]string{"schema_version", "set_name", "ordinal", "value_hex", "evidence_anchor"}
+)
 
 // DependencyRecordV1 describes one reviewed implementation dependency.
 type DependencyRecordV1 struct {
@@ -425,7 +427,7 @@ func BuildCanonicalRowRanksV1(planned []ManifestRowV1, reviewed []ReviewedMappin
 }
 
 // ParseLockedSetsV1 parses the frozen locked-set contract.
-func ParseLockedSetsV1(data []byte, publicGolden []byte, planned []ManifestRowV1) (map[string][]LockedSetRecordV1, error) {
+func ParseLockedSetsV1(data, publicGolden []byte, planned []ManifestRowV1) (map[string][]LockedSetRecordV1, error) {
 	lines, err := parseLines(data, "locked sets")
 	if err != nil {
 		return nil, err
@@ -508,6 +510,7 @@ func canonicalPositive(s string) (int, error) {
 	}
 	return n, nil
 }
+
 func hasCycle(edges [][]int) bool {
 	state := make([]uint8, len(edges))
 	var visit func(int) bool
