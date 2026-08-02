@@ -224,7 +224,7 @@ func TestSourcesRecordPinnedProvenance(t *testing.T) {
 			"src/generic/utf8.h:8-17",
 			"src/arm64/implementation.cpp:1113-1117",
 		}},
-		{"count_utf8_page_guard_arm64_test.go", []string{
+		{"page_guard_arm64_test.go", []string{
 			upstreamSHA,
 			"Hand-authored Go-only guard-page coverage",
 			"complete-block-only loads",
@@ -269,7 +269,7 @@ func TestSourcesRecordPinnedProvenance(t *testing.T) {
 			"Hand-authored Go-only direct fuzz registration",
 			"Westmere\n// and Haswell count_code_points_bytemask assembly ports",
 		}},
-		{"count_utf8_page_guard_amd64_test.go", []string{
+		{"page_guard_amd64_test.go", []string{
 			upstreamSHA,
 			"Hand-authored Go-only guard-page coverage",
 			"complete-group-only loads",
@@ -302,7 +302,7 @@ func TestSourcesRecordPinnedProvenance(t *testing.T) {
 			"Go-only direct benchmark and differential-fuzz registration",
 			"changes no\n// frozen benchmark name, corpus, or setup",
 		}},
-		{"count_utf8_page_guard_archsimd_amd64_test.go", []string{
+		{"page_guard_archsimd_amd64_test.go", []string{
 			upstreamSHA,
 			"Hand-authored Go-only physical guard-page coverage",
 			"src/generic/utf8.h:21-68",
@@ -360,7 +360,7 @@ func TestSourcesRecordPinnedProvenance(t *testing.T) {
 			"Go-only direct benchmark and scalar-differential fuzz registration",
 			"tagged lookup4 adaptation",
 		}},
-		{"utf8_page_guard_archsimd_amd64_test.go", []string{
+		{"page_guard_archsimd_amd64_test.go", []string{
 			upstreamSHA,
 			"src/generic/utf8_validation/utf8_lookup4_algorithm.h:12-216",
 			"Hand-authored Go-only direct no-overread coverage",
@@ -392,7 +392,7 @@ func TestSourcesRecordPinnedProvenance(t *testing.T) {
 			"Hand-authored Go-only direct fuzz registration",
 			"adds no product behavior",
 		}},
-		{"utf8_page_guard_amd64_test.go", []string{
+		{"page_guard_amd64_test.go", []string{
 			upstreamSHA,
 			"Hand-authored Go-only deterministic no-overread coverage",
 			"invokes direct",
@@ -444,7 +444,7 @@ func TestSourcesRecordPinnedProvenance(t *testing.T) {
 			"Go-only registration of the direct arm64 lookup4 implementation",
 			"defines no\n// product dispatch behavior and translates no additional upstream algorithm",
 		}},
-		{"utf8_page_guard_arm64_test.go", []string{
+		{"page_guard_arm64_test.go", []string{
 			upstreamSHA,
 			"Hand-authored Go-only deterministic no-overread coverage",
 			"invokes direct test functions only and adds no product behavior",
@@ -797,14 +797,14 @@ func TestSourcesRecordPinnedProvenance(t *testing.T) {
 			"Test-only unsafe",
 			"adds no\n// product behavior",
 		}},
-		{"ascii_page_guard_arm64_test.go", []string{
+		{"page_guard_arm64_test.go", []string{
 			upstreamSHA,
 			"src/generic/ascii_validation.h:6-45",
 			"src/arm64/arm_validate_utf16.cpp:71-91",
 			"Hand-authored Go-only deterministic no-overread coverage",
 			"invokes direct test functions only and adds no product behavior",
 		}},
-		{"ascii_page_guard_archsimd_amd64_test.go", []string{
+		{"page_guard_archsimd_amd64_test.go", []string{
 			upstreamSHA,
 			"src/generic/ascii_validation.h:6-45",
 			"src/generic/validate_utf16.h:128-158",
