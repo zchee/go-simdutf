@@ -1825,7 +1825,7 @@ func TestDirectArchsimdUTF8ConvertWithErrorsAgainstScalar(t *testing.T) {
 	}
 	for _, tc := range invalids {
 		t.Run(tc.name, func(t *testing.T) {
-			checkUTF8ConvertErrorsArchsimd(t, tc.input)
+			checkUTF8ConvertArchsimd(t, tc.input)
 		})
 	}
 }
@@ -1885,16 +1885,23 @@ func checkUTF8ConvertArchsimd(t *testing.T, input []byte) {
 	want32Len := utf32LengthFromUTF8Scalar(input)
 	want32 := make([]uint32, want32Len)
 	got32 := make([]uint32, want32Len+8)
-	fillU32(got32[want32Len:], 0xa5a5a5a5)
+	refill32 := func() {
+		fillU32(want32, 0xa5a5a5a5)
+		fillU32(got32, 0xa5a5a5a5)
+	}
+
+	refill32()
 	wantN32 := convertUTF8ToUTF32Scalar(input, want32)
 	if got := convertUTF8ToUTF32Archsimd(input, got32); got != wantN32 || !slices.Equal(got32[:want32Len], want32) || !allU32(got32[want32Len:], 0xa5a5a5a5) {
 		t.Fatal("UTF-32 mismatch or canary overwrite")
 	}
+	refill32()
 	wantE32 := convertUTF8ToUTF32WithErrorsScalar(input, want32)
-	if got := convertUTF8ToUTF32WithErrorsArchsimd(input, got32); got != wantE32 || !allU32(got32[want32Len:], 0xa5a5a5a5) {
-		t.Fatalf("UTF-32 WithErrors = %#v, want %#v", got, wantE32)
+	if got := convertUTF8ToUTF32WithErrorsArchsimd(input, got32); got != wantE32 || !slices.Equal(got32[:want32Len], want32) || !allU32(got32[want32Len:], 0xa5a5a5a5) {
+		t.Fatalf("UTF-32 WithErrors = %#v, want %#v (or payload/canary mismatch)", got, wantE32)
 	}
 	if utf8.Valid(input) {
+		refill32()
 		wantV32 := convertValidUTF8ToUTF32Scalar(input, want32)
 		if got := convertValidUTF8ToUTF32Archsimd(input, got32); got != wantV32 || !slices.Equal(got32[:want32Len], want32) || !allU32(got32[want32Len:], 0xa5a5a5a5) {
 			t.Fatalf("Valid UTF-32 = %d, want %d", got, wantV32)
@@ -1907,44 +1914,39 @@ func checkUTF8ConvertArchsimd(t *testing.T, input []byte) {
 func checkUTF8ConvertArchsimdUTF16(t *testing.T, input []byte, bigEndian bool) {
 	t.Helper()
 
+	scalar, scalarE, scalarV := convertUTF8ToUTF16LEScalar, convertUTF8ToUTF16LEWithErrorsScalar, convertValidUTF8ToUTF16LEScalar
+	kernel, kernelE, kernelV := convertUTF8ToUTF16LEArchsimd, convertUTF8ToUTF16LEWithErrorsArchsimd, convertValidUTF8ToUTF16LEArchsimd
+	if bigEndian {
+		scalar, scalarE, scalarV = convertUTF8ToUTF16BEScalar, convertUTF8ToUTF16BEWithErrorsScalar, convertValidUTF8ToUTF16BEScalar
+		kernel, kernelE, kernelV = convertUTF8ToUTF16BEArchsimd, convertUTF8ToUTF16BEWithErrorsArchsimd, convertValidUTF8ToUTF16BEArchsimd
+	}
+
 	wantLen := utf16LengthFromUTF8Scalar(input)
 	want := make([]uint16, wantLen)
 	got := make([]uint16, wantLen+8)
-	fillU16(got[wantLen:], 0xa5a5)
-
-	var (
-		wantN      int
-		wantE      Result
-		converted  int
-		convertedE Result
-	)
-	if bigEndian {
-		wantN = convertUTF8ToUTF16BEScalar(input, want)
-		converted = convertUTF8ToUTF16BEArchsimd(input, got)
-		wantE = convertUTF8ToUTF16BEWithErrorsScalar(input, want)
-		convertedE = convertUTF8ToUTF16BEWithErrorsArchsimd(input, got)
-	} else {
-		wantN = convertUTF8ToUTF16LEScalar(input, want)
-		converted = convertUTF8ToUTF16LEArchsimd(input, got)
-		wantE = convertUTF8ToUTF16LEWithErrorsScalar(input, want)
-		convertedE = convertUTF8ToUTF16LEWithErrorsArchsimd(input, got)
+	// Sentinel-fill both bodies before every call so an unwritten unit whose
+	// correct value is zero still differs from the scalar reference, and a
+	// stale correct payload left by the previous variant cannot mask a kernel
+	// that wrote nothing.
+	refill := func() {
+		fillU16(want, 0xa5a5)
+		fillU16(got, 0xa5a5)
 	}
-	if converted != wantN || !slices.Equal(got[:wantLen], want) || !allU16(got[wantLen:], 0xa5a5) {
+
+	refill()
+	wantN := scalar(input, want)
+	if converted := kernel(input, got); converted != wantN || !slices.Equal(got[:wantLen], want) || !allU16(got[wantLen:], 0xa5a5) {
 		t.Fatal("UTF-16 mismatch or canary overwrite")
 	}
-	if convertedE != wantE || !allU16(got[wantLen:], 0xa5a5) {
-		t.Fatalf("UTF-16 WithErrors = %#v, want %#v", convertedE, wantE)
+	refill()
+	wantE := scalarE(input, want)
+	if convertedE := kernelE(input, got); convertedE != wantE || !slices.Equal(got[:wantLen], want) || !allU16(got[wantLen:], 0xa5a5) {
+		t.Fatalf("UTF-16 WithErrors = %#v, want %#v (or payload/canary mismatch)", convertedE, wantE)
 	}
 	if utf8.Valid(input) {
-		var wantV, convertedV int
-		if bigEndian {
-			wantV = convertValidUTF8ToUTF16BEScalar(input, want)
-			convertedV = convertValidUTF8ToUTF16BEArchsimd(input, got)
-		} else {
-			wantV = convertValidUTF8ToUTF16LEScalar(input, want)
-			convertedV = convertValidUTF8ToUTF16LEArchsimd(input, got)
-		}
-		if convertedV != wantV || !slices.Equal(got[:wantLen], want) || !allU16(got[wantLen:], 0xa5a5) {
+		refill()
+		wantV := scalarV(input, want)
+		if convertedV := kernelV(input, got); convertedV != wantV || !slices.Equal(got[:wantLen], want) || !allU16(got[wantLen:], 0xa5a5) {
 			t.Fatalf("Valid UTF-16 = %d, want %d", convertedV, wantV)
 		}
 	}
@@ -2019,32 +2021,6 @@ func checkUTF8ConvertArchsimdPreflight(t *testing.T, input []byte) {
 		if !allU32(dst32, 0xa5a5a5a5) {
 			t.Fatal("Valid UTF-32 short destination was modified")
 		}
-	}
-}
-
-func checkUTF8ConvertErrorsArchsimd(t *testing.T, input []byte) {
-	t.Helper()
-
-	dst8 := make([]byte, latin1LengthFromUTF8Scalar(input)+8)
-	want := convertUTF8ToLatin1WithErrorsScalar(input, dst8)
-	if got := convertUTF8ToLatin1WithErrorsArchsimd(input, dst8); got != want {
-		t.Fatalf("Latin1 WithErrors = %#v, want %#v", got, want)
-	}
-
-	dst16 := make([]uint16, utf16LengthFromUTF8Scalar(input)+8)
-	want = convertUTF8ToUTF16LEWithErrorsScalar(input, dst16)
-	if got := convertUTF8ToUTF16LEWithErrorsArchsimd(input, dst16); got != want {
-		t.Fatalf("UTF-16LE WithErrors = %#v, want %#v", got, want)
-	}
-	want = convertUTF8ToUTF16BEWithErrorsScalar(input, dst16)
-	if got := convertUTF8ToUTF16BEWithErrorsArchsimd(input, dst16); got != want {
-		t.Fatalf("UTF-16BE WithErrors = %#v, want %#v", got, want)
-	}
-
-	dst32 := make([]uint32, utf32LengthFromUTF8Scalar(input)+8)
-	want = convertUTF8ToUTF32WithErrorsScalar(input, dst32)
-	if got := convertUTF8ToUTF32WithErrorsArchsimd(input, dst32); got != want {
-		t.Fatalf("UTF-32 WithErrors = %#v, want %#v", got, want)
 	}
 }
 
