@@ -1288,7 +1288,7 @@ func TestUTF8ConvertNEONDirectWithErrorsAgainstScalar(t *testing.T) {
 	}
 	for _, tc := range invalids {
 		t.Run(tc.name, func(t *testing.T) {
-			checkUTF8ConvertErrorsNEON(t, tc.input)
+			checkUTF8ConvertDirectNEON(t, tc.input)
 		})
 	}
 }
@@ -1379,7 +1379,7 @@ func checkUTF8ConvertDirectNEON(t *testing.T, input []byte) {
 	}
 	got16 := guardedLatin1Destination[uint16](want16Len, 0xa5a5)
 	wantN16 := convertUTF8ToUTF16LEScalar(input, want16)
-	if got := convertUTF8ToUTF16LENEON(input, got16.body); got != wantN16 || !equalU16(got16.body, want16) {
+	if got := convertUTF8ToUTF16LENEON(input, got16.body); got != wantN16 || !slices.Equal(got16.body, want16) {
 		t.Fatalf("UTF-16LE = %d/%x, want %d/%x", got, got16.body, wantN16, want16)
 	}
 	got16.require(t)
@@ -1389,7 +1389,7 @@ func checkUTF8ConvertDirectNEON(t *testing.T, input []byte) {
 	}
 	got16 = guardedLatin1Destination[uint16](want16Len, 0xa5a5)
 	wantE16 := convertUTF8ToUTF16LEWithErrorsScalar(input, want16)
-	if got := convertUTF8ToUTF16LEWithErrorsNEON(input, got16.body); got != wantE16 || !equalU16(got16.body, want16) {
+	if got := convertUTF8ToUTF16LEWithErrorsNEON(input, got16.body); got != wantE16 || !slices.Equal(got16.body, want16) {
 		t.Fatalf("UTF-16LE WithErrors = %#v, want %#v", got, wantE16)
 	}
 	got16.require(t)
@@ -1400,7 +1400,7 @@ func checkUTF8ConvertDirectNEON(t *testing.T, input []byte) {
 		}
 		got16 = guardedLatin1Destination[uint16](want16Len, 0xa5a5)
 		wantV16 := convertValidUTF8ToUTF16LEScalar(input, want16)
-		if got := convertValidUTF8ToUTF16LENEON(input, got16.body); got != wantV16 || !equalU16(got16.body, want16) {
+		if got := convertValidUTF8ToUTF16LENEON(input, got16.body); got != wantV16 || !slices.Equal(got16.body, want16) {
 			t.Fatalf("Valid UTF-16LE = %d, want %d", got, wantV16)
 		}
 		got16.require(t)
@@ -1411,7 +1411,7 @@ func checkUTF8ConvertDirectNEON(t *testing.T, input []byte) {
 	}
 	got16 = guardedLatin1Destination[uint16](want16Len, 0xa5a5)
 	wantN16 = convertUTF8ToUTF16BEScalar(input, want16)
-	if got := convertUTF8ToUTF16BENEON(input, got16.body); got != wantN16 || !equalU16(got16.body, want16) {
+	if got := convertUTF8ToUTF16BENEON(input, got16.body); got != wantN16 || !slices.Equal(got16.body, want16) {
 		t.Fatalf("UTF-16BE = %d/%x, want %d/%x", got, got16.body, wantN16, want16)
 	}
 	got16.require(t)
@@ -1421,7 +1421,7 @@ func checkUTF8ConvertDirectNEON(t *testing.T, input []byte) {
 	}
 	got16 = guardedLatin1Destination[uint16](want16Len, 0xa5a5)
 	wantE16 = convertUTF8ToUTF16BEWithErrorsScalar(input, want16)
-	if got := convertUTF8ToUTF16BEWithErrorsNEON(input, got16.body); got != wantE16 || !equalU16(got16.body, want16) {
+	if got := convertUTF8ToUTF16BEWithErrorsNEON(input, got16.body); got != wantE16 || !slices.Equal(got16.body, want16) {
 		t.Fatalf("UTF-16BE WithErrors = %#v, want %#v", got, wantE16)
 	}
 	got16.require(t)
@@ -1432,7 +1432,7 @@ func checkUTF8ConvertDirectNEON(t *testing.T, input []byte) {
 		}
 		got16 = guardedLatin1Destination[uint16](want16Len, 0xa5a5)
 		wantV16 := convertValidUTF8ToUTF16BEScalar(input, want16)
-		if got := convertValidUTF8ToUTF16BENEON(input, got16.body); got != wantV16 || !equalU16(got16.body, want16) {
+		if got := convertValidUTF8ToUTF16BENEON(input, got16.body); got != wantV16 || !slices.Equal(got16.body, want16) {
 			t.Fatalf("Valid UTF-16BE = %d, want %d", got, wantV16)
 		}
 		got16.require(t)
@@ -1445,7 +1445,7 @@ func checkUTF8ConvertDirectNEON(t *testing.T, input []byte) {
 	}
 	got32 := guardedLatin1Destination[uint32](want32Len, 0xa5a5a5a5)
 	wantN32 := convertUTF8ToUTF32Scalar(input, want32)
-	if got := convertUTF8ToUTF32NEON(input, got32.body); got != wantN32 || !equalU32(got32.body, want32) {
+	if got := convertUTF8ToUTF32NEON(input, got32.body); got != wantN32 || !slices.Equal(got32.body, want32) {
 		t.Fatalf("UTF-32 = %d/%x, want %d/%x", got, got32.body, wantN32, want32)
 	}
 	got32.require(t)
@@ -1455,7 +1455,7 @@ func checkUTF8ConvertDirectNEON(t *testing.T, input []byte) {
 	}
 	got32 = guardedLatin1Destination[uint32](want32Len, 0xa5a5a5a5)
 	wantE32 := convertUTF8ToUTF32WithErrorsScalar(input, want32)
-	if got := convertUTF8ToUTF32WithErrorsNEON(input, got32.body); got != wantE32 || !equalU32(got32.body, want32) {
+	if got := convertUTF8ToUTF32WithErrorsNEON(input, got32.body); got != wantE32 || !slices.Equal(got32.body, want32) {
 		t.Fatalf("UTF-32 WithErrors = %#v, want %#v", got, wantE32)
 	}
 	got32.require(t)
@@ -1466,65 +1466,11 @@ func checkUTF8ConvertDirectNEON(t *testing.T, input []byte) {
 		}
 		got32 = guardedLatin1Destination[uint32](want32Len, 0xa5a5a5a5)
 		wantV32 := convertValidUTF8ToUTF32Scalar(input, want32)
-		if got := convertValidUTF8ToUTF32NEON(input, got32.body); got != wantV32 || !equalU32(got32.body, want32) {
+		if got := convertValidUTF8ToUTF32NEON(input, got32.body); got != wantV32 || !slices.Equal(got32.body, want32) {
 			t.Fatalf("Valid UTF-32 = %d, want %d", got, wantV32)
 		}
 		got32.require(t)
 	}
-}
-
-func checkUTF8ConvertErrorsNEON(t *testing.T, input []byte) {
-	t.Helper()
-
-	dst8 := make([]byte, latin1LengthFromUTF8Scalar(input)+8)
-	want := convertUTF8ToLatin1WithErrorsScalar(input, dst8)
-	if got := convertUTF8ToLatin1WithErrorsNEON(input, dst8); got != want {
-		t.Fatalf("Latin1 WithErrors = %#v, want %#v", got, want)
-	}
-
-	dst16 := make([]uint16, utf16LengthFromUTF8Scalar(input)+8)
-	want = convertUTF8ToUTF16LEWithErrorsScalar(input, dst16)
-	if got := convertUTF8ToUTF16LEWithErrorsNEON(input, dst16); got != want {
-		t.Fatalf("UTF-16LE WithErrors = %#v, want %#v", got, want)
-	}
-	want = convertUTF8ToUTF16BEWithErrorsScalar(input, dst16)
-	if got := convertUTF8ToUTF16BEWithErrorsNEON(input, dst16); got != want {
-		t.Fatalf("UTF-16BE WithErrors = %#v, want %#v", got, want)
-	}
-
-	dst32 := make([]uint32, utf32LengthFromUTF8Scalar(input)+8)
-	want = convertUTF8ToUTF32WithErrorsScalar(input, dst32)
-	if got := convertUTF8ToUTF32WithErrorsNEON(input, dst32); got != want {
-		t.Fatalf("UTF-32 WithErrors = %#v, want %#v", got, want)
-	}
-}
-
-// equalU16 reports whether a and b contain the same UTF-16 code units.
-// Duplicated because the amd64 latin1 helpers are build-tagged out on arm64.
-func equalU16(a, b []uint16) bool {
-	if len(a) != len(b) {
-		return false
-	}
-	for i := range a {
-		if a[i] != b[i] {
-			return false
-		}
-	}
-	return true
-}
-
-// equalU32 reports whether a and b contain the same UTF-32 code units.
-// Duplicated because the amd64 latin1 helpers are build-tagged out on arm64.
-func equalU32(a, b []uint32) bool {
-	if len(a) != len(b) {
-		return false
-	}
-	for i := range a {
-		if a[i] != b[i] {
-			return false
-		}
-	}
-	return true
 }
 
 // Portions Copyright 2021 The simdutf Authors.
@@ -1543,32 +1489,40 @@ func rawUTF16NEONTest(words []uint16, little bool) []uint16 {
 }
 
 func TestUTF16NEONDirectAgainstScalar(t *testing.T) {
-	semantic := []uint16{0x0061, 0xd800, 0xdc00, 0x0062, 0xdc00, 0x0063, 0xdbff, 0x0064, 0xd800}
+	check := func(t *testing.T, words []uint16, little bool) {
+		t.Helper()
+		input := rawUTF16NEONTest(words, little)
+		var gotBool, wantBool bool
+		var gotResult, wantResult Result
+		if little {
+			gotBool, wantBool = validateUTF16LENEON(input), validateUTF16LEScalar(input)
+			gotResult, wantResult = validateUTF16LEWithErrorsNEON(input), validateUTF16LEWithErrorsScalar(input)
+		} else {
+			gotBool, wantBool = validateUTF16BENEON(input), validateUTF16BEScalar(input)
+			gotResult, wantResult = validateUTF16BEWithErrorsNEON(input), validateUTF16BEWithErrorsScalar(input)
+		}
+		if gotBool != wantBool || gotResult != wantResult {
+			t.Fatalf("little=%t words=%x: bool=%t/%t result=%+v/%+v", little, words, gotBool, wantBool, gotResult, wantResult)
+		}
+	}
+	// Each injected unit is invalid on its own wherever it lands: a lone
+	// high surrogate, the last high surrogate, and a lone low surrogate.
+	invalid := []uint16{0xd800, 0xdbff, 0xdc00}
 	for _, little := range []bool{true, false} {
 		for _, n := range []int{0, 1, 15, 16, 17, 31, 32, 33} {
-			for _, bad := range []int{-1, 0, n / 2, n - 1} {
-				if bad >= n {
+			valid := make([]uint16, n)
+			for i := range valid {
+				valid[i] = 0x0061
+			}
+			check(t, valid, little)
+			for _, bad := range slices.Compact(slices.Sorted(slices.Values([]int{0, n / 2, n - 1}))) {
+				if bad < 0 || bad >= n {
 					continue
 				}
-				words := make([]uint16, n)
-				for i := range words {
-					words[i] = 0x0061
-				}
-				if bad >= 0 {
-					words[bad] = semantic[(bad+4)%len(semantic)]
-				}
-				input := rawUTF16NEONTest(words, little)
-				var gotBool, wantBool bool
-				var gotResult, wantResult Result
-				if little {
-					gotBool, wantBool = validateUTF16LENEON(input), validateUTF16LEScalar(input)
-					gotResult, wantResult = validateUTF16LEWithErrorsNEON(input), validateUTF16LEWithErrorsScalar(input)
-				} else {
-					gotBool, wantBool = validateUTF16BENEON(input), validateUTF16BEScalar(input)
-					gotResult, wantResult = validateUTF16BEWithErrorsNEON(input), validateUTF16BEWithErrorsScalar(input)
-				}
-				if gotBool != wantBool || gotResult != wantResult {
-					t.Fatalf("little=%t n=%d bad=%d: bool=%t/%t result=%+v/%+v", little, n, bad, gotBool, wantBool, gotResult, wantResult)
+				for _, unit := range invalid {
+					words := slices.Clone(valid)
+					words[bad] = unit
+					check(t, words, little)
 				}
 			}
 		}

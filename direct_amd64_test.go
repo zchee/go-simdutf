@@ -454,11 +454,11 @@ func TestDirectAMD64Latin1AgainstScalar(t *testing.T) {
 			for i := len(input); i < len(got16); i++ {
 				got16[i] = 0xa5a5
 			}
-			if n := v.utf16le(input, got16); n != len(input) || !equalU16(got16[:n], want16) || got16[len(input)] != 0xa5a5 {
+			if n := v.utf16le(input, got16); n != len(input) || !slices.Equal(got16[:n], want16) || got16[len(input)] != 0xa5a5 {
 				t.Fatal("UTF-16LE mismatch or canary overwrite")
 			}
 			convertLatin1ToUTF16BEScalar(input, want16)
-			if n := v.utf16be(input, got16); n != len(input) || !equalU16(got16[:n], want16) || got16[len(input)] != 0xa5a5 {
+			if n := v.utf16be(input, got16); n != len(input) || !slices.Equal(got16[:n], want16) || got16[len(input)] != 0xa5a5 {
 				t.Fatal("UTF-16BE mismatch or canary overwrite")
 			}
 			want32 := make([]uint32, len(input))
@@ -467,7 +467,7 @@ func TestDirectAMD64Latin1AgainstScalar(t *testing.T) {
 			for i := len(input); i < len(got32); i++ {
 				got32[i] = 0xa5a5a5a5
 			}
-			if n := v.utf32(input, got32); n != len(input) || !equalU32(got32[:n], want32) || got32[len(input)] != 0xa5a5a5a5 {
+			if n := v.utf32(input, got32); n != len(input) || !slices.Equal(got32[:n], want32) || got32[len(input)] != 0xa5a5a5a5 {
 				t.Fatal("UTF-32 mismatch or canary overwrite")
 			}
 			if got, want := v.length(input), len(want8); got != want {
@@ -556,44 +556,20 @@ func checkLatin1Direct(t *testing.T, input []byte, to8 func([]byte, []byte) int,
 	want16, got16 := make([]uint16, len(input)), make([]uint16, len(input))
 	convertLatin1ToUTF16LEScalar(input, want16)
 	to16le(input, got16)
-	if !equalU16(got16, want16) {
+	if !slices.Equal(got16, want16) {
 		t.Fatal("UTF-16LE differential mismatch")
 	}
 	convertLatin1ToUTF16BEScalar(input, want16)
 	to16be(input, got16)
-	if !equalU16(got16, want16) {
+	if !slices.Equal(got16, want16) {
 		t.Fatal("UTF-16BE differential mismatch")
 	}
 	want32, got32 := make([]uint32, len(input)), make([]uint32, len(input))
 	convertLatin1ToUTF32Scalar(input, want32)
 	to32(input, got32)
-	if !equalU32(got32, want32) {
+	if !slices.Equal(got32, want32) {
 		t.Fatal("UTF-32 differential mismatch")
 	}
-}
-
-func equalU16(a, b []uint16) bool {
-	if len(a) != len(b) {
-		return false
-	}
-	for i := range a {
-		if a[i] != b[i] {
-			return false
-		}
-	}
-	return true
-}
-
-func equalU32(a, b []uint32) bool {
-	if len(a) != len(b) {
-		return false
-	}
-	for i := range a {
-		if a[i] != b[i] {
-			return false
-		}
-	}
-	return true
 }
 
 func requireUTF16HelpersAMD64Variant(t *testing.T, feature cpuFeatures) {
@@ -686,7 +662,7 @@ func checkUTF16HelpersDirect(
 	got := make([]uint16, len(input))
 	changeEndiannessUTF16Scalar(input, want)
 	change(input, got)
-	if !equalU16(got, want) {
+	if !slices.Equal(got, want) {
 		t.Fatalf("changeEndianness mismatch input=%v want=%v got=%v", input, want, got)
 	}
 	if countLE(input) != countUTF16LEScalar(input) {
@@ -1220,7 +1196,7 @@ func checkUTF16UTF32Direct(t *testing.T, input []uint16, little bool, convert fu
 		wantN = convertUTF16BEToUTF32Scalar(input, want)
 		gotN = convert(input, got.body)
 	}
-	if gotN != wantN || !equalU32(got.body, want) {
+	if gotN != wantN || !slices.Equal(got.body, want) {
 		t.Fatalf("little=%t convert = %d/%x, want %d/%x", little, gotN, got.body, wantN, want)
 	}
 	got.require(t)
@@ -1234,7 +1210,7 @@ func checkUTF16UTF32Direct(t *testing.T, input []uint16, little bool, convert fu
 		wantE = convertUTF16BEToUTF32WithErrorsScalar(input, want)
 		gotE = convertErr(input, got.body)
 	}
-	if gotE != wantE || !equalU32(got.body, want) {
+	if gotE != wantE || !slices.Equal(got.body, want) {
 		t.Fatalf("little=%t with_errors = %#v/%x, want %#v/%x", little, gotE, got.body, wantE, want)
 	}
 	got.require(t)
@@ -1254,7 +1230,7 @@ func checkUTF16UTF32Direct(t *testing.T, input []uint16, little bool, convert fu
 		wantV = convertValidUTF16BEToUTF32Scalar(input, want)
 		gotV = convertValid(input, got.body)
 	}
-	if gotV != wantV || !equalU32(got.body, want) {
+	if gotV != wantV || !slices.Equal(got.body, want) {
 		t.Fatalf("little=%t valid = %d/%x, want %d/%x", little, gotV, got.body, wantV, want)
 	}
 	got.require(t)
@@ -2358,7 +2334,7 @@ func checkUTF8ConvertDirectAMD64(
 		want16[i] = 0
 	}
 	wantN16 := convertUTF8ToUTF16LEScalar(input, want16)
-	if got := utf16le(input, got16); got != wantN16 || !equalU16(got16[:want16Len], want16) || got16[want16Len] != 0xa5a5 {
+	if got := utf16le(input, got16); got != wantN16 || !slices.Equal(got16[:want16Len], want16) || got16[want16Len] != 0xa5a5 {
 		t.Fatal("UTF-16LE mismatch or canary overwrite")
 	}
 	wantE16 := convertUTF8ToUTF16LEWithErrorsScalar(input, want16)
@@ -2367,7 +2343,7 @@ func checkUTF8ConvertDirectAMD64(
 	}
 	if utf8.Valid(input) {
 		wantV16 := convertValidUTF8ToUTF16LEScalar(input, want16)
-		if got := utf16leV(input, got16); got != wantV16 || !equalU16(got16[:want16Len], want16) || got16[want16Len] != 0xa5a5 {
+		if got := utf16leV(input, got16); got != wantV16 || !slices.Equal(got16[:want16Len], want16) || got16[want16Len] != 0xa5a5 {
 			t.Fatalf("Valid UTF-16LE = %d, want %d", got, wantV16)
 		}
 	}
@@ -2382,7 +2358,7 @@ func checkUTF8ConvertDirectAMD64(
 		got16[i] = 0xa5a5
 	}
 	wantN16 = convertUTF8ToUTF16BEScalar(input, want16)
-	if got := utf16be(input, got16); got != wantN16 || !equalU16(got16[:want16Len], want16) || got16[want16Len] != 0xa5a5 {
+	if got := utf16be(input, got16); got != wantN16 || !slices.Equal(got16[:want16Len], want16) || got16[want16Len] != 0xa5a5 {
 		t.Fatal("UTF-16BE mismatch or canary overwrite")
 	}
 	wantE16 = convertUTF8ToUTF16BEWithErrorsScalar(input, want16)
@@ -2391,7 +2367,7 @@ func checkUTF8ConvertDirectAMD64(
 	}
 	if utf8.Valid(input) {
 		wantV16 := convertValidUTF8ToUTF16BEScalar(input, want16)
-		if got := utf16beV(input, got16); got != wantV16 || !equalU16(got16[:want16Len], want16) || got16[want16Len] != 0xa5a5 {
+		if got := utf16beV(input, got16); got != wantV16 || !slices.Equal(got16[:want16Len], want16) || got16[want16Len] != 0xa5a5 {
 			t.Fatalf("Valid UTF-16BE = %d, want %d", got, wantV16)
 		}
 	}
@@ -2403,7 +2379,7 @@ func checkUTF8ConvertDirectAMD64(
 		got32[i] = 0xa5a5a5a5
 	}
 	wantN32 := convertUTF8ToUTF32Scalar(input, want32)
-	if got := utf32(input, got32); got != wantN32 || !equalU32(got32[:want32Len], want32) || got32[want32Len] != 0xa5a5a5a5 {
+	if got := utf32(input, got32); got != wantN32 || !slices.Equal(got32[:want32Len], want32) || got32[want32Len] != 0xa5a5a5a5 {
 		t.Fatal("UTF-32 mismatch or canary overwrite")
 	}
 	wantE32 := convertUTF8ToUTF32WithErrorsScalar(input, want32)
@@ -2412,7 +2388,7 @@ func checkUTF8ConvertDirectAMD64(
 	}
 	if utf8.Valid(input) {
 		wantV32 := convertValidUTF8ToUTF32Scalar(input, want32)
-		if got := utf32V(input, got32); got != wantV32 || !equalU32(got32[:want32Len], want32) || got32[want32Len] != 0xa5a5a5a5 {
+		if got := utf32V(input, got32); got != wantV32 || !slices.Equal(got32[:want32Len], want32) || got32[want32Len] != 0xa5a5a5a5 {
 			t.Fatalf("Valid UTF-32 = %d, want %d", got, wantV32)
 		}
 	}

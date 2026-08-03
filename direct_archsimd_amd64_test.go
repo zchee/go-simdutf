@@ -527,7 +527,7 @@ func checkLatin1Archsimd(t *testing.T, input []byte) {
 	convertLatin1ToUTF32Scalar(input, want32)
 	got32 := make([]uint32, len(input)+8)
 	fillU32(got32[len(input):], 0xa5a5a5a5)
-	if got := convertLatin1ToUTF32Archsimd(input, got32); got != len(input) || !equalU32(got32[:got], want32) || !allU32(got32[got:], 0xa5a5a5a5) {
+	if got := convertLatin1ToUTF32Archsimd(input, got32); got != len(input) || !slices.Equal(got32[:got], want32) || !allU32(got32[got:], 0xa5a5a5a5) {
 		t.Fatal("UTF-32 mismatch or canary overwrite")
 	}
 
@@ -548,7 +548,7 @@ func checkLatin1ArchsimdUTF16(t *testing.T, input []byte, bigEndian bool) {
 		convertLatin1ToUTF16LEScalar(input, want)
 		converted = convertLatin1ToUTF16LEArchsimd(input, got)
 	}
-	if converted != len(input) || !equalU16(got[:converted], want) || !allU16(got[converted:], 0xa5a5) {
+	if converted != len(input) || !slices.Equal(got[:converted], want) || !allU16(got[converted:], 0xa5a5) {
 		t.Fatal("UTF-16 mismatch or canary overwrite")
 	}
 }
@@ -1887,7 +1887,7 @@ func checkUTF8ConvertArchsimd(t *testing.T, input []byte) {
 	got32 := make([]uint32, want32Len+8)
 	fillU32(got32[want32Len:], 0xa5a5a5a5)
 	wantN32 := convertUTF8ToUTF32Scalar(input, want32)
-	if got := convertUTF8ToUTF32Archsimd(input, got32); got != wantN32 || !equalU32(got32[:want32Len], want32) || !allU32(got32[want32Len:], 0xa5a5a5a5) {
+	if got := convertUTF8ToUTF32Archsimd(input, got32); got != wantN32 || !slices.Equal(got32[:want32Len], want32) || !allU32(got32[want32Len:], 0xa5a5a5a5) {
 		t.Fatal("UTF-32 mismatch or canary overwrite")
 	}
 	wantE32 := convertUTF8ToUTF32WithErrorsScalar(input, want32)
@@ -1896,7 +1896,7 @@ func checkUTF8ConvertArchsimd(t *testing.T, input []byte) {
 	}
 	if utf8.Valid(input) {
 		wantV32 := convertValidUTF8ToUTF32Scalar(input, want32)
-		if got := convertValidUTF8ToUTF32Archsimd(input, got32); got != wantV32 || !equalU32(got32[:want32Len], want32) || !allU32(got32[want32Len:], 0xa5a5a5a5) {
+		if got := convertValidUTF8ToUTF32Archsimd(input, got32); got != wantV32 || !slices.Equal(got32[:want32Len], want32) || !allU32(got32[want32Len:], 0xa5a5a5a5) {
 			t.Fatalf("Valid UTF-32 = %d, want %d", got, wantV32)
 		}
 	}
@@ -1929,7 +1929,7 @@ func checkUTF8ConvertArchsimdUTF16(t *testing.T, input []byte, bigEndian bool) {
 		wantE = convertUTF8ToUTF16LEWithErrorsScalar(input, want)
 		convertedE = convertUTF8ToUTF16LEWithErrorsArchsimd(input, got)
 	}
-	if converted != wantN || !equalU16(got[:wantLen], want) || !allU16(got[wantLen:], 0xa5a5) {
+	if converted != wantN || !slices.Equal(got[:wantLen], want) || !allU16(got[wantLen:], 0xa5a5) {
 		t.Fatal("UTF-16 mismatch or canary overwrite")
 	}
 	if convertedE != wantE || !allU16(got[wantLen:], 0xa5a5) {
@@ -1944,7 +1944,7 @@ func checkUTF8ConvertArchsimdUTF16(t *testing.T, input []byte, bigEndian bool) {
 			wantV = convertValidUTF8ToUTF16LEScalar(input, want)
 			convertedV = convertValidUTF8ToUTF16LEArchsimd(input, got)
 		}
-		if convertedV != wantV || !equalU16(got[:wantLen], want) || !allU16(got[wantLen:], 0xa5a5) {
+		if convertedV != wantV || !slices.Equal(got[:wantLen], want) || !allU16(got[wantLen:], 0xa5a5) {
 			t.Fatalf("Valid UTF-16 = %d, want %d", convertedV, wantV)
 		}
 	}
