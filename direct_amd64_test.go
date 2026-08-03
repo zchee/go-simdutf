@@ -3664,3 +3664,68 @@ func init() {
 		},
 	})
 }
+
+// Hand-authored Go-only direct Base64 encode differential fuzz registration
+// for the Westmere and Haswell ports pinned to
+// simdutf/simdutf@611becc2a08c27a4edc77d9a45ff74c97130129b:
+// src/westmere/sse_base64.cpp, src/haswell/avx2_base64.cpp and the
+// src/westmere/implementation.cpp and src/haswell/implementation.cpp Base64
+// entry points.
+func init() {
+	registerBinaryToBase64FuzzVariant(binaryToBase64FuzzVariant{
+		name: "westmere",
+		variant: variant[func([]byte, []byte, Base64Options) int]{
+			value: binaryToBase64Westmere, kind: implementationWestmere,
+			required: cpuSSSE3, available: true,
+		},
+	})
+	registerBinaryToBase64FuzzVariant(binaryToBase64FuzzVariant{
+		name: "haswell",
+		variant: variant[func([]byte, []byte, Base64Options) int]{
+			value: binaryToBase64Haswell, kind: implementationHaswell,
+			required: cpuAVX2, available: true,
+		},
+	})
+	registerBinaryToBase64WithLinesFuzzVariant(binaryToBase64WithLinesFuzzVariant{
+		name: "westmere",
+		variant: variant[func([]byte, []byte, int, Base64Options) int]{
+			value: binaryToBase64WithLinesWestmere, kind: implementationWestmere,
+			required: cpuSSSE3, available: true,
+		},
+	})
+	registerBinaryToBase64WithLinesFuzzVariant(binaryToBase64WithLinesFuzzVariant{
+		name: "haswell",
+		variant: variant[func([]byte, []byte, int, Base64Options) int]{
+			value: binaryToBase64WithLinesHaswell, kind: implementationHaswell,
+			required: cpuAVX2, available: true,
+		},
+	})
+	registerBinaryLengthFromBase64FuzzVariant(binaryLengthFromBase64FuzzVariant{
+		name: "westmere",
+		variant: variant[func([]byte) int]{
+			value: binaryLengthFromBase64Westmere, kind: implementationWestmere,
+			required: cpuSSSE3, available: true,
+		},
+	})
+	registerBinaryLengthFromBase64FuzzVariant(binaryLengthFromBase64FuzzVariant{
+		name: "haswell",
+		variant: variant[func([]byte) int]{
+			value: binaryLengthFromBase64Haswell, kind: implementationHaswell,
+			required: cpuAVX2, available: true,
+		},
+	})
+	registerBinaryLengthFromBase64UTF16FuzzVariant(binaryLengthFromBase64UTF16FuzzVariant{
+		name: "westmere",
+		variant: variant[func([]uint16) int]{
+			value: binaryLengthFromBase64UTF16Westmere, kind: implementationWestmere,
+			required: cpuSSSE3, available: true,
+		},
+	})
+	registerBinaryLengthFromBase64UTF16FuzzVariant(binaryLengthFromBase64UTF16FuzzVariant{
+		name: "haswell",
+		variant: variant[func([]uint16) int]{
+			value: binaryLengthFromBase64UTF16Haswell, kind: implementationHaswell,
+			required: cpuAVX2, available: true,
+		},
+	})
+}

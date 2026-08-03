@@ -2877,3 +2877,38 @@ func init() {
 		},
 	})
 }
+
+// Hand-authored Go-only direct Base64 encode differential fuzz registration
+// for the tagged archsimd adaptations pinned to
+// simdutf/simdutf@611becc2a08c27a4edc77d9a45ff74c97130129b:
+// src/generic/base64lengths.h and src/haswell/avx2_base64.cpp.
+func init() {
+	registerBinaryToBase64FuzzVariant(binaryToBase64FuzzVariant{
+		name: "archsimd",
+		variant: variant[func([]byte, []byte, Base64Options) int]{
+			value: binaryToBase64Archsimd, kind: implementationArchsimd,
+			required: cpuAVX2, available: true,
+		},
+	})
+	registerBinaryToBase64WithLinesFuzzVariant(binaryToBase64WithLinesFuzzVariant{
+		name: "archsimd",
+		variant: variant[func([]byte, []byte, int, Base64Options) int]{
+			value: binaryToBase64WithLinesArchsimd, kind: implementationArchsimd,
+			required: cpuAVX2, available: true,
+		},
+	})
+	registerBinaryLengthFromBase64FuzzVariant(binaryLengthFromBase64FuzzVariant{
+		name: "archsimd",
+		variant: variant[func([]byte) int]{
+			value: binaryLengthFromBase64Archsimd, kind: implementationArchsimd,
+			required: cpuAVX2, available: true,
+		},
+	})
+	registerBinaryLengthFromBase64UTF16FuzzVariant(binaryLengthFromBase64UTF16FuzzVariant{
+		name: "archsimd",
+		variant: variant[func([]uint16) int]{
+			value: binaryLengthFromBase64UTF16Archsimd, kind: implementationArchsimd,
+			required: cpuAVX2, available: true,
+		},
+	})
+}

@@ -219,6 +219,7 @@ func TestSourcesRecordPinnedProvenance(t *testing.T) {
 			"defines no\n// product dispatch behavior and translates no upstream algorithm",
 			"assembly port",
 			"Hand-authored Go-only direct Find and DetectEncodings differential",
+			"Hand-authored Go-only direct Base64 encode differential fuzz registration",
 		},
 		"page_guard_arm64_test.go": {
 			upstreamSHA,
@@ -274,6 +275,7 @@ func TestSourcesRecordPinnedProvenance(t *testing.T) {
 			"src/generic/validate_utf16.h:128-158",
 			"registers test functions only and adds no product behavior",
 			"Hand-authored Go-only direct Find and DetectEncodings differential",
+			"Hand-authored Go-only direct Base64 encode differential fuzz registration",
 		},
 		"page_guard_amd64_test.go": {
 			upstreamSHA,
@@ -322,6 +324,7 @@ func TestSourcesRecordPinnedProvenance(t *testing.T) {
 			"archsimd adaptation",
 			"registers test functions only and adds no product behavior",
 			"Hand-authored Go-only direct Find and DetectEncodings differential",
+			"Hand-authored Go-only direct Base64 encode differential fuzz registration",
 		},
 		"page_guard_archsimd_amd64_test.go": {
 			upstreamSHA,
@@ -678,6 +681,27 @@ func TestSourcesRecordPinnedProvenance(t *testing.T) {
 			"defines test",
 			"Go-only public/direct-versus-scalar differential fuzz scaffold",
 			"the full returned Encoding bitset is compared",
+		},
+		"base64_test.go": {
+			upstreamSHA,
+			"fuzz/base64.cpp",
+			"fuzz/base64_details.cpp",
+			"fuzz/roundtrip.cpp",
+			"include/simdutf/scalar/base64.h",
+			"src/fallback/implementation.cpp",
+			"src/westmere/sse_base64.cpp",
+			"src/haswell/avx2_base64.cpp",
+			"src/arm64/arm_base64.cpp",
+			"src/arm64/implementation.cpp",
+			"Hand-authored Go-only direct Base64 encode differential fuzz registry",
+			"defines test metadata only and adds no product",
+			"Go-only public/direct-versus-scalar differential fuzz scaffold",
+			"raw Base64Options value modulo eight is forbidden",
+			"aliases 8 to 0 and 12 to 4",
+			"the untouched destination tail are",
+			"straddle DefaultLineLength (76, options.go:20)",
+			"takes no Base64Options, so the corpus carries base64 text only",
+			"code units strictly above 0xff stay reachable",
 		},
 	}
 	requireProvenance(t, expectations)

@@ -2465,3 +2465,39 @@ func init() {
 		},
 	})
 }
+
+// Hand-authored Go-only direct Base64 encode differential fuzz registration
+// for the arm64 NEON ports pinned to
+// simdutf/simdutf@611becc2a08c27a4edc77d9a45ff74c97130129b:
+// src/arm64/arm_base64.cpp and src/arm64/implementation.cpp Base64 entry
+// points.
+func init() {
+	registerBinaryToBase64FuzzVariant(binaryToBase64FuzzVariant{
+		name: "neon",
+		variant: variant[func([]byte, []byte, Base64Options) int]{
+			value: binaryToBase64NEON, kind: implementationNEON,
+			required: cpuNEON, available: true,
+		},
+	})
+	registerBinaryToBase64WithLinesFuzzVariant(binaryToBase64WithLinesFuzzVariant{
+		name: "neon",
+		variant: variant[func([]byte, []byte, int, Base64Options) int]{
+			value: binaryToBase64WithLinesNEON, kind: implementationNEON,
+			required: cpuNEON, available: true,
+		},
+	})
+	registerBinaryLengthFromBase64FuzzVariant(binaryLengthFromBase64FuzzVariant{
+		name: "neon",
+		variant: variant[func([]byte) int]{
+			value: binaryLengthFromBase64NEON, kind: implementationNEON,
+			required: cpuNEON, available: true,
+		},
+	})
+	registerBinaryLengthFromBase64UTF16FuzzVariant(binaryLengthFromBase64UTF16FuzzVariant{
+		name: "neon",
+		variant: variant[func([]uint16) int]{
+			value: binaryLengthFromBase64UTF16NEON, kind: implementationNEON,
+			required: cpuNEON, available: true,
+		},
+	})
+}
