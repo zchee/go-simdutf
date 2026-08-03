@@ -44,6 +44,7 @@ const (
 	dispatchQualificationFindU16LESHA256     = "96e0c9f77ab0c6b07682cf5252710117ede55c74a5b30b06201602c714a10bfb"
 	dispatchQualificationDNSNormalizedSHA256 = "79f1eba2fe0c187f1086f7534b74cd1dd4ef795a515d7db13d613eebafdb1d6f"
 	dispatchQualificationDNSSourcePath       = ".omx/artifacts/phase0/benchmark-corpora/corpus/base64data/dns/swedenzonebase.txt"
+	dispatchQualificationDNSSourceSHA256     = "d837553e61f96476a75350142085983b366beb9754ed6f21ff9299878d2a1de0"
 	dispatchQualificationDNSSourceSize       = 35100000
 	dispatchQualificationDNSNormalizedSize   = 35000000
 	dispatchQualificationOperationEnv        = "SIMDUTF_BENCH_EXPECT_OPERATION"
@@ -256,6 +257,36 @@ func loadDispatchQualificationArabicLipsum() []byte {
 		))
 	}
 	return data
+}
+
+// requireDispatchQualificationCorpus fails the calling test immediately and
+// legibly when either frozen corpus blob is absent or does not match its
+// frozen size and SHA-256, instead of letting a loader panic abort the whole
+// test binary — under -shuffle=on that abort silently discards every test the
+// shuffle had not yet reached. The loader panics stay in place for
+// BenchmarkDispatchQualification, which has no usable *testing.T. This is
+// fail-closed, never a skip: an absent corpus is still a failure.
+func requireDispatchQualificationCorpus(t *testing.T) {
+	t.Helper()
+	for _, corpus := range []struct {
+		path   string
+		size   int
+		sha256 string
+	}{
+		{dispatchQualificationArabicLipsumPath, dispatchQualificationArabicLipsumSize, dispatchQualificationArabicLipsumSHA256},
+		{dispatchQualificationDNSSourcePath, dispatchQualificationDNSSourceSize, dispatchQualificationDNSSourceSHA256},
+	} {
+		data, err := os.ReadFile(corpus.path)
+		if err != nil {
+			t.Fatalf("frozen corpus missing at %s: %v\nprovision it with: go run ./internal/cmd/fetch-corpora", corpus.path, err)
+		}
+		if len(data) != corpus.size {
+			t.Fatalf("frozen corpus %s length = %d, want %d\nrepair it with: go run ./internal/cmd/fetch-corpora", corpus.path, len(data), corpus.size)
+		}
+		if got := fmt.Sprintf("%x", sha256.Sum256(data)); got != corpus.sha256 {
+			t.Fatalf("frozen corpus %s SHA-256 = %s, want %s\nrepair it with: go run ./internal/cmd/fetch-corpora", corpus.path, got, corpus.sha256)
+		}
+	}
 }
 
 func dispatchQualificationRows() []dispatchQualificationRow {
@@ -3237,6 +3268,7 @@ Base64ToBinaryDetailsUTF16/Q-dns-normalized/bulk/35000000
 `
 
 func TestDispatchQualificationSurface(t *testing.T) {
+	requireDispatchQualificationCorpus(t)
 	rows := dispatchQualificationRows()
 	wantNames := strings.Fields(dispatchQualificationExpectedNames)
 	if len(rows) != 1359 || len(wantNames) != 1359 {
@@ -3250,6 +3282,7 @@ func TestDispatchQualificationSurface(t *testing.T) {
 }
 
 func TestDispatchQualificationInputs(t *testing.T) {
+	requireDispatchQualificationCorpus(t)
 	byteZero, uint16Raw, uint16Zero, uint32Raw, uint32Zero, latin1Ramp := materializeDispatchQualificationCorpora()
 	if got := fmt.Sprintf("%x", sha256.Sum256(byteZero)); got != dispatchQualificationZeroSHA256 {
 		t.Fatalf("Q-byte-zero SHA-256 = %s, want %s", got, dispatchQualificationZeroSHA256)
