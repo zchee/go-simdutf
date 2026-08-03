@@ -458,7 +458,11 @@ func verifyDirectory(directory string, artifacts map[string][]byte) error {
 }
 
 func syncFile(name string) error {
-	file, err := os.Open(name)
+	// os.Open yields a read-only handle. On Windows, (*File).Sync calls
+	// FlushFileBuffers, which requires GENERIC_WRITE access and fails with
+	// "Access is denied." otherwise. POSIX fsync(2) has no such requirement,
+	// which is why this only ever failed on windows-latest.
+	file, err := os.OpenFile(name, os.O_RDWR, 0)
 	if err != nil {
 		return err
 	}
