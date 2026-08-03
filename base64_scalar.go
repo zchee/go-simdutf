@@ -762,9 +762,8 @@ func tailEncodeBase64(dst, src []byte, options Base64Options, useLines bool, lin
 						dst[out+1] = e1[((t1&0x03)<<4)|((t2>>4)&0x0F)]
 						dst[out+2] = e2[(t2&0x0F)<<2]
 						dst[out+3] = '\n'
-						// no trailing '=' newline case matches upstream: '=' after newline omitted at end? Upstream writes '=' without final newline.
-						dst[out+3] = '='
-						out += 4
+						dst[out+4] = '='
+						out += 5
 					}
 				} else {
 					dst[out] = e0[t1]
