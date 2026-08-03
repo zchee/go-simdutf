@@ -2437,3 +2437,31 @@ func TestUTF8LengthNEONFuzzRegistration(t *testing.T) {
 	}
 	t.Fatal("neon differential-fuzz registration not found")
 }
+
+// Hand-authored Go-only direct Find and DetectEncodings differential
+// fuzz registration for the arm64 NEON ports pinned to
+// simdutf/simdutf@611becc2a08c27a4edc77d9a45ff74c97130129b:
+// src/arm64/arm_find.cpp and src/fallback/implementation.cpp:8-32.
+func init() {
+	registerFindFuzzVariant(findFuzzVariant{
+		name: "neon",
+		variant: variant[func([]byte, byte) int]{
+			value: findNEON, kind: implementationNEON,
+			required: cpuNEON, available: true,
+		},
+	})
+	registerFindUTF16FuzzVariant(findUTF16FuzzVariant{
+		name: "neon",
+		variant: variant[func([]uint16, uint16) int]{
+			value: findUTF16NEON, kind: implementationNEON,
+			required: cpuNEON, available: true,
+		},
+	})
+	registerDetectEncodingsFuzzVariant(detectEncodingsFuzzVariant{
+		name: "neon",
+		variant: variant[func([]byte) Encoding]{
+			value: detectEncodingsNEON, kind: implementationNEON,
+			required: cpuNEON, available: true,
+		},
+	})
+}

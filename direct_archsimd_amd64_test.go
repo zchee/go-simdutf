@@ -2849,3 +2849,31 @@ func TestValidateUTF32ArchsimdDifferential(t *testing.T) {
 		}
 	}
 }
+
+// Hand-authored Go-only direct Find and DetectEncodings differential
+// fuzz registration for the tagged archsimd adaptations pinned to
+// simdutf/simdutf@611becc2a08c27a4edc77d9a45ff74c97130129b:
+// src/generic/find.h and src/fallback/implementation.cpp:8-32.
+func init() {
+	registerFindFuzzVariant(findFuzzVariant{
+		name: "archsimd",
+		variant: variant[func([]byte, byte) int]{
+			value: findArchsimd, kind: implementationArchsimd,
+			required: cpuAVX2, available: true,
+		},
+	})
+	registerFindUTF16FuzzVariant(findUTF16FuzzVariant{
+		name: "archsimd",
+		variant: variant[func([]uint16, uint16) int]{
+			value: findUTF16Archsimd, kind: implementationArchsimd,
+			required: cpuAVX2, available: true,
+		},
+	})
+	registerDetectEncodingsFuzzVariant(detectEncodingsFuzzVariant{
+		name: "archsimd",
+		variant: variant[func([]byte) Encoding]{
+			value: detectEncodingsArchsimd, kind: implementationArchsimd,
+			required: cpuAVX2, available: true,
+		},
+	})
+}

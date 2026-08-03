@@ -14,7 +14,10 @@
 
 package simdutf
 
-import "testing"
+import (
+	"bytes"
+	"testing"
+)
 
 // Contract cases derived from simdutf commit 611becc2a08c27a4edc77d9a45ff74c97130129b,
 // tests/detect_encodings_tests.cpp and src/fallback/implementation.cpp:8-32.
@@ -93,4 +96,104 @@ func TestDetectEncodingsLiveDispatchIsScalar(t *testing.T) {
 	if !sameFunction(activeImplementation.detectEncodings, detectEncodingsScalar) {
 		t.Fatalf("live detectEncodings selected %p, want scalar %p", activeImplementation.detectEncodings, detectEncodingsScalar)
 	}
+}
+
+// Hand-authored Go-only direct DetectEncodings differential fuzz registry
+// scaffolding for simdutf/simdutf@611becc2a08c27a4edc77d9a45ff74c97130129b:
+// fuzz/misc.cpp and src/fallback/implementation.cpp:8-32. It defines test
+// metadata only and adds no product behavior.
+
+type detectEncodingsFuzzVariant struct {
+	name string
+	variant[func([]byte) Encoding]
+}
+
+var detectEncodingsFuzzVariants []detectEncodingsFuzzVariant
+
+func registerDetectEncodingsFuzzVariant(candidate detectEncodingsFuzzVariant) {
+	if candidate.name == "" || candidate.value == nil {
+		panic("simdutf: invalid direct DetectEncodings fuzz variant")
+	}
+	for _, registered := range detectEncodingsFuzzVariants {
+		if registered.name == candidate.name {
+			panic("simdutf: duplicate direct DetectEncodings fuzz variant " + candidate.name)
+		}
+	}
+	detectEncodingsFuzzVariants = append(detectEncodingsFuzzVariants, candidate)
+}
+
+func TestRegisterDetectEncodingsFuzzVariant(t *testing.T) {
+	saved := detectEncodingsFuzzVariants
+	defer func() { detectEncodingsFuzzVariants = saved }()
+	registerDetectEncodingsFuzzVariant(detectEncodingsFuzzVariant{
+		name: "test-scalar",
+		variant: variant[func([]byte) Encoding]{
+			value:     detectEncodingsScalar,
+			kind:      implementationScalar,
+			available: true,
+		},
+	})
+	got := detectEncodingsFuzzVariants[len(detectEncodingsFuzzVariants)-1]
+	if got.name != "test-scalar" || !sameFunction(got.value, detectEncodingsScalar) {
+		t.Fatalf("registered fuzz variant = %q %p, want test-scalar %p", got.name, got.value, detectEncodingsScalar)
+	}
+}
+
+// Go-only public/direct-versus-scalar differential fuzz scaffold for the
+// detect port pinned to
+// simdutf/simdutf@611becc2a08c27a4edc77d9a45ff74c97130129b: fuzz/misc.cpp and
+// src/fallback/implementation.cpp:8-32. The scalar function is the explicit
+// oracle for the public entry point and every registered direct accelerated
+// implementation; the full returned Encoding bitset is compared, not just the
+// autodetect priority winner.
+
+func FuzzDetectEncodings(f *testing.F) {
+	for _, seed := range [][]byte{
+		nil,
+		{},
+		[]byte("hello"),
+		[]byte("hi"),
+		{0xef, 0xbb, 0xbf},
+		{0xff, 0xfe},
+		{0xfe, 0xff},
+		{0xff, 0xfe, 0x00, 0x00},
+		{0x00, 0x00, 0xfe, 0xff},
+		{'A', 0, 'B', 0},
+		{'A', 0, 0, 0},
+		{0x00, 0xd8, 0x00, 0xdc},
+		{0x20, 0xd8, 0x00, 0x00},
+		{0xff},
+		{
+			32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32,
+			32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 223, 164, 32,
+			32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32,
+			32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32,
+		},
+		bytes.Repeat([]byte{'a'}, 67),
+		bytes.Repeat([]byte{0xc2, 0xa2}, 64),
+	} {
+		f.Add(seed)
+	}
+	f.Fuzz(func(t *testing.T, input []byte) {
+		guard := newGuardedSlice(2, len(input), 3, byte(0xa5))
+		copy(guard.body, input)
+		before := bytes.Clone(guard.storage)
+		want := detectEncodingsScalar(guard.body)
+		if got := DetectEncodings(guard.body); got != want {
+			t.Errorf("DetectEncodings() = %d, scalar = %d", got, want)
+		}
+		selection := detectSelectionInput()
+		for _, candidate := range detectEncodingsFuzzVariants {
+			if !candidate.supportedBy(selection) {
+				continue
+			}
+			if got := candidate.value(guard.body); got != want {
+				t.Errorf("%s DetectEncodings() = %d, scalar = %d", candidate.name, got, want)
+			}
+		}
+		guard.requireCanariesIntact(t)
+		if !bytes.Equal(guard.storage, before) {
+			t.Fatal("DetectEncodings modified input or canaries")
+		}
+	})
 }

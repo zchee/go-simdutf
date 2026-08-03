@@ -218,6 +218,7 @@ func TestSourcesRecordPinnedProvenance(t *testing.T) {
 			"Go-only registration of the direct arm64 implementation",
 			"defines no\n// product dispatch behavior and translates no upstream algorithm",
 			"assembly port",
+			"Hand-authored Go-only direct Find and DetectEncodings differential",
 		},
 		"page_guard_arm64_test.go": {
 			upstreamSHA,
@@ -272,6 +273,7 @@ func TestSourcesRecordPinnedProvenance(t *testing.T) {
 			"independent Go assembly\n// translation",
 			"src/generic/validate_utf16.h:128-158",
 			"registers test functions only and adds no product behavior",
+			"Hand-authored Go-only direct Find and DetectEncodings differential",
 		},
 		"page_guard_amd64_test.go": {
 			upstreamSHA,
@@ -319,6 +321,7 @@ func TestSourcesRecordPinnedProvenance(t *testing.T) {
 			"Hand-authored Go-only direct fuzz registration",
 			"archsimd adaptation",
 			"registers test functions only and adds no product behavior",
+			"Hand-authored Go-only direct Find and DetectEncodings differential",
 		},
 		"page_guard_archsimd_amd64_test.go": {
 			upstreamSHA,
@@ -652,6 +655,29 @@ func TestSourcesRecordPinnedProvenance(t *testing.T) {
 			"Hand-authored Go-only uint16 PROT_NONE mmap adapter",
 			"Test-only unsafe",
 			"adds no\n// product behavior",
+		},
+		"find_test.go": {
+			upstreamSHA,
+			"tests/find_tests.cpp",
+			"src/fallback/implementation.cpp:575-593",
+			"fuzz/find.cpp",
+			"src/generic/find.h",
+			"src/arm64/arm_find.cpp",
+			"Hand-authored Go-only direct Find differential fuzz registry",
+			"defines test metadata only",
+			"Go-only public/direct-versus-scalar differential fuzz scaffold",
+			"the exact match index, not",
+			"the needle is assembled from two independent",
+		},
+		"detect_test.go": {
+			upstreamSHA,
+			"tests/detect_encodings_tests.cpp",
+			"src/fallback/implementation.cpp:8-32",
+			"fuzz/misc.cpp",
+			"Hand-authored Go-only direct DetectEncodings differential fuzz registry",
+			"defines test",
+			"Go-only public/direct-versus-scalar differential fuzz scaffold",
+			"the full returned Encoding bitset is compared",
 		},
 	}
 	requireProvenance(t, expectations)

@@ -3615,3 +3615,52 @@ func TestUTF8LengthAMD64FuzzRegistrations(t *testing.T) {
 		}
 	}
 }
+
+// Hand-authored Go-only direct Find and DetectEncodings differential
+// fuzz registration for the Westmere and Haswell ports pinned to
+// simdutf/simdutf@611becc2a08c27a4edc77d9a45ff74c97130129b:
+// src/generic/find.h and src/fallback/implementation.cpp:8-32,575-593.
+func init() {
+	registerFindFuzzVariant(findFuzzVariant{
+		name: "westmere",
+		variant: variant[func([]byte, byte) int]{
+			value: findWestmere, kind: implementationWestmere,
+			required: cpuSSSE3, available: true,
+		},
+	})
+	registerFindFuzzVariant(findFuzzVariant{
+		name: "haswell",
+		variant: variant[func([]byte, byte) int]{
+			value: findHaswell, kind: implementationHaswell,
+			required: cpuAVX2, available: true,
+		},
+	})
+	registerFindUTF16FuzzVariant(findUTF16FuzzVariant{
+		name: "westmere",
+		variant: variant[func([]uint16, uint16) int]{
+			value: findUTF16Westmere, kind: implementationWestmere,
+			required: cpuSSSE3, available: true,
+		},
+	})
+	registerFindUTF16FuzzVariant(findUTF16FuzzVariant{
+		name: "haswell",
+		variant: variant[func([]uint16, uint16) int]{
+			value: findUTF16Haswell, kind: implementationHaswell,
+			required: cpuAVX2, available: true,
+		},
+	})
+	registerDetectEncodingsFuzzVariant(detectEncodingsFuzzVariant{
+		name: "westmere",
+		variant: variant[func([]byte) Encoding]{
+			value: detectEncodingsWestmere, kind: implementationWestmere,
+			required: cpuSSSE3, available: true,
+		},
+	})
+	registerDetectEncodingsFuzzVariant(detectEncodingsFuzzVariant{
+		name: "haswell",
+		variant: variant[func([]byte) Encoding]{
+			value: detectEncodingsHaswell, kind: implementationHaswell,
+			required: cpuAVX2, available: true,
+		},
+	})
+}
