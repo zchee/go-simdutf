@@ -1957,62 +1957,68 @@ func checkUTF8ConvertArchsimdPreflight(t *testing.T, input []byte) {
 	}
 
 	required8 := latin1LengthFromUTF8Scalar(input)
-	dst8 := bytes.Repeat([]byte{0xa5}, required8-1)
-	requireUTF8ConvertArchsimdPanic(t, func() { convertUTF8ToLatin1Archsimd(input, dst8) })
-	if !allBytes(dst8, 0xa5) {
-		t.Fatal("Latin1 short destination was modified")
-	}
-	requireUTF8ConvertArchsimdPanic(t, func() { convertUTF8ToLatin1WithErrorsArchsimd(input, dst8) })
-	if !allBytes(dst8, 0xa5) {
-		t.Fatal("Latin1 WithErrors short destination was modified")
-	}
-	requireUTF8ConvertArchsimdPanic(t, func() { convertValidUTF8ToLatin1Archsimd(input, dst8) })
-	if !allBytes(dst8, 0xa5) {
-		t.Fatal("Valid Latin1 short destination was modified")
+	if required8 > 0 {
+		dst8 := bytes.Repeat([]byte{0xa5}, required8-1)
+		requireUTF8ConvertArchsimdPanic(t, func() { convertUTF8ToLatin1Archsimd(input, dst8) })
+		if !allBytes(dst8, 0xa5) {
+			t.Fatal("Latin1 short destination was modified")
+		}
+		requireUTF8ConvertArchsimdPanic(t, func() { convertUTF8ToLatin1WithErrorsArchsimd(input, dst8) })
+		if !allBytes(dst8, 0xa5) {
+			t.Fatal("Latin1 WithErrors short destination was modified")
+		}
+		requireUTF8ConvertArchsimdPanic(t, func() { convertValidUTF8ToLatin1Archsimd(input, dst8) })
+		if !allBytes(dst8, 0xa5) {
+			t.Fatal("Valid Latin1 short destination was modified")
+		}
 	}
 
 	required16 := utf16LengthFromUTF8Scalar(input)
-	dst16 := make([]uint16, required16-1)
-	fillU16(dst16, 0xa5a5)
-	requireUTF8ConvertArchsimdPanic(t, func() { convertUTF8ToUTF16LEArchsimd(input, dst16) })
-	if !allU16(dst16, 0xa5a5) {
-		t.Fatal("UTF-16LE short destination was modified")
-	}
-	requireUTF8ConvertArchsimdPanic(t, func() { convertUTF8ToUTF16BEArchsimd(input, dst16) })
-	if !allU16(dst16, 0xa5a5) {
-		t.Fatal("UTF-16BE short destination was modified")
-	}
-	requireUTF8ConvertArchsimdPanic(t, func() { convertUTF8ToUTF16LEWithErrorsArchsimd(input, dst16) })
-	if !allU16(dst16, 0xa5a5) {
-		t.Fatal("UTF-16LE WithErrors short destination was modified")
-	}
-	requireUTF8ConvertArchsimdPanic(t, func() { convertUTF8ToUTF16BEWithErrorsArchsimd(input, dst16) })
-	if !allU16(dst16, 0xa5a5) {
-		t.Fatal("UTF-16BE WithErrors short destination was modified")
-	}
-	requireUTF8ConvertArchsimdPanic(t, func() { convertValidUTF8ToUTF16LEArchsimd(input, dst16) })
-	if !allU16(dst16, 0xa5a5) {
-		t.Fatal("Valid UTF-16LE short destination was modified")
-	}
-	requireUTF8ConvertArchsimdPanic(t, func() { convertValidUTF8ToUTF16BEArchsimd(input, dst16) })
-	if !allU16(dst16, 0xa5a5) {
-		t.Fatal("Valid UTF-16BE short destination was modified")
+	if required16 > 0 {
+		dst16 := make([]uint16, required16-1)
+		fillU16(dst16, 0xa5a5)
+		requireUTF8ConvertArchsimdPanic(t, func() { convertUTF8ToUTF16LEArchsimd(input, dst16) })
+		if !allU16(dst16, 0xa5a5) {
+			t.Fatal("UTF-16LE short destination was modified")
+		}
+		requireUTF8ConvertArchsimdPanic(t, func() { convertUTF8ToUTF16BEArchsimd(input, dst16) })
+		if !allU16(dst16, 0xa5a5) {
+			t.Fatal("UTF-16BE short destination was modified")
+		}
+		requireUTF8ConvertArchsimdPanic(t, func() { convertUTF8ToUTF16LEWithErrorsArchsimd(input, dst16) })
+		if !allU16(dst16, 0xa5a5) {
+			t.Fatal("UTF-16LE WithErrors short destination was modified")
+		}
+		requireUTF8ConvertArchsimdPanic(t, func() { convertUTF8ToUTF16BEWithErrorsArchsimd(input, dst16) })
+		if !allU16(dst16, 0xa5a5) {
+			t.Fatal("UTF-16BE WithErrors short destination was modified")
+		}
+		requireUTF8ConvertArchsimdPanic(t, func() { convertValidUTF8ToUTF16LEArchsimd(input, dst16) })
+		if !allU16(dst16, 0xa5a5) {
+			t.Fatal("Valid UTF-16LE short destination was modified")
+		}
+		requireUTF8ConvertArchsimdPanic(t, func() { convertValidUTF8ToUTF16BEArchsimd(input, dst16) })
+		if !allU16(dst16, 0xa5a5) {
+			t.Fatal("Valid UTF-16BE short destination was modified")
+		}
 	}
 
 	required32 := utf32LengthFromUTF8Scalar(input)
-	dst32 := make([]uint32, required32-1)
-	fillU32(dst32, 0xa5a5a5a5)
-	requireUTF8ConvertArchsimdPanic(t, func() { convertUTF8ToUTF32Archsimd(input, dst32) })
-	if !allU32(dst32, 0xa5a5a5a5) {
-		t.Fatal("UTF-32 short destination was modified")
-	}
-	requireUTF8ConvertArchsimdPanic(t, func() { convertUTF8ToUTF32WithErrorsArchsimd(input, dst32) })
-	if !allU32(dst32, 0xa5a5a5a5) {
-		t.Fatal("UTF-32 WithErrors short destination was modified")
-	}
-	requireUTF8ConvertArchsimdPanic(t, func() { convertValidUTF8ToUTF32Archsimd(input, dst32) })
-	if !allU32(dst32, 0xa5a5a5a5) {
-		t.Fatal("Valid UTF-32 short destination was modified")
+	if required32 > 0 {
+		dst32 := make([]uint32, required32-1)
+		fillU32(dst32, 0xa5a5a5a5)
+		requireUTF8ConvertArchsimdPanic(t, func() { convertUTF8ToUTF32Archsimd(input, dst32) })
+		if !allU32(dst32, 0xa5a5a5a5) {
+			t.Fatal("UTF-32 short destination was modified")
+		}
+		requireUTF8ConvertArchsimdPanic(t, func() { convertUTF8ToUTF32WithErrorsArchsimd(input, dst32) })
+		if !allU32(dst32, 0xa5a5a5a5) {
+			t.Fatal("UTF-32 WithErrors short destination was modified")
+		}
+		requireUTF8ConvertArchsimdPanic(t, func() { convertValidUTF8ToUTF32Archsimd(input, dst32) })
+		if !allU32(dst32, 0xa5a5a5a5) {
+			t.Fatal("Valid UTF-32 short destination was modified")
+		}
 	}
 }
 
