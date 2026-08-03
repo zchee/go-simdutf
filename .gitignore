@@ -57,3 +57,6 @@ bench.txt
 
 # profile
 *.pprof
+
+# benchmark corpora and other local runtime evidence
+.omx/

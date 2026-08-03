@@ -1,0 +1,25 @@
+name: Fetch frozen benchmark corpora
+description: Restore or fetch the two pinned Phase 0 corpus blobs, hash-verified.
+# The cache key is `benchmark-corpora-v1-` + the frozen two-row manifest
+# SHA-256 from docs/porting/corpus-freeze.md. It is a hand-maintained literal:
+# if that manifest hash ever changes, re-derive this key by hand. No
+# restore-keys — partial-prefix restore would defeat content-addressing, and
+# the fetcher re-verifies every byte after a hit anyway, so a corrupted entry
+# is repaired rather than trusted. Restore and save are split (save gated on
+# success) so a failed job can never persist a tree the fetcher did not just
+# certify.
+runs:
+  using: composite
+  steps:
+    - id: restore
+      uses: actions/cache/restore@v4
+      with:
+        path: .omx/artifacts/phase0/benchmark-corpora/corpus
+        key: benchmark-corpora-v1-40456572d957bf16d0f9bd0d190cf6befe98674a40edcdb2010478fd95c112fb
+    - shell: bash
+      run: go run ./internal/cmd/fetch-corpora
+    - if: success()
+      uses: actions/cache/save@v4
+      with:
+        path: .omx/artifacts/phase0/benchmark-corpora/corpus
+        key: benchmark-corpora-v1-40456572d957bf16d0f9bd0d190cf6befe98674a40edcdb2010478fd95c112fb

@@ -40,6 +40,9 @@ jobs:
         with:
           go-version-file: go.mod
 
+      - name: Fetch frozen benchmark corpora
+        uses: ./.github/actions/fetch-corpora
+
       - name: go vet
         run: go vet ./...
 
