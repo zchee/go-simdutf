@@ -94,7 +94,14 @@ func publicAPIRecords(t *testing.T) []string {
 		t.Fatal("package has no buildable Go source files")
 	}
 
-	config := types.Config{Importer: importer.Default()}
+	// importer.Default() is the gc export-data importer: it resolves packages
+	// from $GOPATH/pkg/<GOOS>_<GOARCH>/*.a archives that module mode never
+	// populates, so it can only see GOROOT's stdlib. On amd64 the root package
+	// imports golang.org/x/sys/cpu (cpu_amd64.go), which the export-data
+	// importer can never resolve — the type-check below would fail on every
+	// amd64 host. The "source" importer resolves module dependencies (and the
+	// GOROOT-internal simd/archsimd on GOEXPERIMENT=simd builds) from source.
+	config := types.Config{Importer: importer.ForCompiler(fset, "source", nil)}
 	checked, err := config.Check(buildPackage.ImportPath, fset, files, nil)
 	if err != nil {
 		t.Fatal(err)
