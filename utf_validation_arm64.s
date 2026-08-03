@@ -31,21 +31,23 @@ TEXT ·validateUTF16LEPrefixNEON(SB), NOSPLIT|NOFRAME, $0-32
 	VDUP R3, V2.H8
 	MOVD $0xd800, R3
 	VDUP R3, V3.H8
+
 utf16le_prefix_loop:
-	CMP R1, R2
-	BEQ utf16le_prefix_done
+	CMP    R1, R2
+	BEQ    utf16le_prefix_done
 	VLD1.P 32(R0), [V0.H8, V1.H8]
-	VAND V2.B16, V0.B16, V0.B16
-	VAND V2.B16, V1.B16, V1.B16
-	VCMEQ V3.H8, V0.H8, V0.H8
-	VCMEQ V3.H8, V1.H8, V1.H8
-	VORR V1.B16, V0.B16, V0.B16
-	VMOV V0.D[0], R4
-	VMOV V0.D[1], R5
-	ORR R5, R4, R4
-	CBNZ R4, utf16le_prefix_done
-	ADD $16, R2
-	B utf16le_prefix_loop
+	VAND   V2.B16, V0.B16, V0.B16
+	VAND   V2.B16, V1.B16, V1.B16
+	VCMEQ  V3.H8, V0.H8, V0.H8
+	VCMEQ  V3.H8, V1.H8, V1.H8
+	VORR   V1.B16, V0.B16, V0.B16
+	VMOV   V0.D[0], R4
+	VMOV   V0.D[1], R5
+	ORR    R5, R4, R4
+	CBNZ   R4, utf16le_prefix_done
+	ADD    $16, R2
+	B      utf16le_prefix_loop
+
 utf16le_prefix_done:
 	MOVD R2, ret+24(FP)
 	RET
@@ -60,21 +62,23 @@ TEXT ·validateUTF16BEPrefixNEON(SB), NOSPLIT|NOFRAME, $0-32
 	VDUP R3, V2.H8
 	MOVD $0x00d8, R3
 	VDUP R3, V3.H8
+
 utf16be_prefix_loop:
-	CMP R1, R2
-	BEQ utf16be_prefix_done
+	CMP    R1, R2
+	BEQ    utf16be_prefix_done
 	VLD1.P 32(R0), [V0.H8, V1.H8]
-	VAND V2.B16, V0.B16, V0.B16
-	VAND V2.B16, V1.B16, V1.B16
-	VCMEQ V3.H8, V0.H8, V0.H8
-	VCMEQ V3.H8, V1.H8, V1.H8
-	VORR V1.B16, V0.B16, V0.B16
-	VMOV V0.D[0], R4
-	VMOV V0.D[1], R5
-	ORR R5, R4, R4
-	CBNZ R4, utf16be_prefix_done
-	ADD $16, R2
-	B utf16be_prefix_loop
+	VAND   V2.B16, V0.B16, V0.B16
+	VAND   V2.B16, V1.B16, V1.B16
+	VCMEQ  V3.H8, V0.H8, V0.H8
+	VCMEQ  V3.H8, V1.H8, V1.H8
+	VORR   V1.B16, V0.B16, V0.B16
+	VMOV   V0.D[0], R4
+	VMOV   V0.D[1], R5
+	ORR    R5, R4, R4
+	CBNZ   R4, utf16be_prefix_done
+	ADD    $16, R2
+	B      utf16be_prefix_loop
+
 utf16be_prefix_done:
 	MOVD R2, ret+24(FP)
 	RET
@@ -85,25 +89,28 @@ TEXT ·validateUTF32PrefixNEON(SB), NOSPLIT|NOFRAME, $0-32
 	MOVD input_len+8(FP), R1
 	AND  $-4, R1, R1
 	MOVD $0, R2
+
 	// A nonzero high half is left to the scalar oracle. This conservative
 	// vector fast path still rejects surrogate-containing BMP blocks in NEON.
 	MOVD $27, R3
 	VDUP R3, V3.S4
+
 utf32_prefix_loop:
-	CMP R1, R2
-	BEQ utf32_prefix_done
+	CMP    R1, R2
+	BEQ    utf32_prefix_done
 	VLD1.P 16(R0), [V0.S4]
-	VORR V0.B16, V0.B16, V1.B16
-	VUSHR $16, V0.S4, V0.S4
-	VUSHR $11, V1.S4, V1.S4
-	VCMEQ V3.S4, V1.S4, V1.S4
-	VORR V1.B16, V0.B16, V0.B16
-	VMOV V0.D[0], R4
-	VMOV V0.D[1], R5
-	ORR R5, R4, R4
-	CBNZ R4, utf32_prefix_done
-	ADD $4, R2
-	B utf32_prefix_loop
+	VORR   V0.B16, V0.B16, V1.B16
+	VUSHR  $16, V0.S4, V0.S4
+	VUSHR  $11, V1.S4, V1.S4
+	VCMEQ  V3.S4, V1.S4, V1.S4
+	VORR   V1.B16, V0.B16, V0.B16
+	VMOV   V0.D[0], R4
+	VMOV   V0.D[1], R5
+	ORR    R5, R4, R4
+	CBNZ   R4, utf32_prefix_done
+	ADD    $4, R2
+	B      utf32_prefix_loop
+
 utf32_prefix_done:
 	MOVD R2, ret+24(FP)
 	RET

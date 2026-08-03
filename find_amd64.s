@@ -31,10 +31,10 @@ TEXT ·findWestmere(SB), NOSPLIT|NOFRAME, $0-40
 	TESTQ   R11, R11
 	JE      find_westmere_ret_len
 
-	MOVD    R8, X0
+	MOVD      R8, X0
 	PUNPCKLBW X0, X0
 	PUNPCKLBW X0, X0
-	PSHUFL  $0, X0, X0
+	PSHUFL    $0, X0, X0
 
 	MOVQ SI, DI
 	LEAQ (SI)(R11*1), R9
@@ -183,13 +183,13 @@ find_haswell_tail:
 	JMP     find_haswell_tail
 
 find_haswell_found:
-	SUBQ       SI, DI
-	MOVQ       DI, ret+32(FP)
+	SUBQ SI, DI
+	MOVQ DI, ret+32(FP)
 	VZEROUPPER
 	RET
 
 find_haswell_ret_len:
-	MOVQ       R11, ret+32(FP)
+	MOVQ R11, ret+32(FP)
 	VZEROUPPER
 	RET
 
@@ -208,11 +208,11 @@ TEXT ·findUTF16Westmere(SB), NOSPLIT|NOFRAME, $0-40
 	MOVQ SI, DI
 	LEAQ (SI)(R11*2), R9
 
-	MOVQ SI, AX
-	ANDQ $63, AX
-	JZ   find_utf16_westmere_main
+	MOVQ  SI, AX
+	ANDQ  $63, AX
+	JZ    find_utf16_westmere_main
 	TESTQ $1, AX
-	JNZ  find_utf16_westmere_main
+	JNZ   find_utf16_westmere_main
 
 	MOVQ $64, BX
 	SUBQ AX, BX
@@ -302,11 +302,11 @@ TEXT ·findUTF16Haswell(SB), NOSPLIT|NOFRAME, $0-40
 	MOVQ SI, DI
 	LEAQ (SI)(R11*2), R9
 
-	MOVQ SI, AX
-	ANDQ $63, AX
-	JZ   find_utf16_haswell_main
+	MOVQ  SI, AX
+	ANDQ  $63, AX
+	JZ    find_utf16_haswell_main
 	TESTQ $1, AX
-	JNZ  find_utf16_haswell_main
+	JNZ   find_utf16_haswell_main
 
 	MOVQ $64, BX
 	SUBQ AX, BX
@@ -363,13 +363,13 @@ find_utf16_haswell_tail:
 	JMP     find_utf16_haswell_tail
 
 find_utf16_haswell_found:
-	SUBQ       SI, DI
-	SHRQ       $1, DI
-	MOVQ       DI, ret+32(FP)
+	SUBQ SI, DI
+	SHRQ $1, DI
+	MOVQ DI, ret+32(FP)
 	VZEROUPPER
 	RET
 
 find_utf16_haswell_ret_len:
-	MOVQ       R11, ret+32(FP)
+	MOVQ R11, ret+32(FP)
 	VZEROUPPER
 	RET

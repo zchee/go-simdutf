@@ -257,12 +257,12 @@ b64_len_w_done:
 
 // func binaryLengthFromBase64BlocksHaswell(input []byte) int
 TEXT ·binaryLengthFromBase64BlocksHaswell(SB), NOSPLIT|NOFRAME, $0-32
-	MOVQ  input_base+0(FP), SI
-	MOVQ  input_len+8(FP), CX
-	ANDQ  $-64, CX
-	XORQ  AX, AX
-	TESTQ CX, CX
-	JE    b64_len_h_done
+	MOVQ    input_base+0(FP), SI
+	MOVQ    input_len+8(FP), CX
+	ANDQ    $-64, CX
+	XORQ    AX, AX
+	TESTQ   CX, CX
+	JE      b64_len_h_done
 	VMOVDQU ·base64SpaceY<>(SB), Y7
 
 b64_len_h_loop:
@@ -364,12 +364,12 @@ b64_len16_w_done:
 
 // func binaryLengthFromBase64UTF16BlocksHaswell(input []uint16) int
 TEXT ·binaryLengthFromBase64UTF16BlocksHaswell(SB), NOSPLIT|NOFRAME, $0-32
-	MOVQ  input_base+0(FP), SI
-	MOVQ  input_len+8(FP), CX
-	ANDQ  $-32, CX
-	XORQ  AX, AX
-	TESTQ CX, CX
-	JE    b64_len16_h_done
+	MOVQ    input_base+0(FP), SI
+	MOVQ    input_len+8(FP), CX
+	ANDQ    $-32, CX
+	XORQ    AX, AX
+	TESTQ   CX, CX
+	JE      b64_len16_h_done
 	VMOVDQU ·base64SpaceWY<>(SB), Y7
 
 b64_len16_h_loop:
@@ -413,8 +413,8 @@ TEXT ·base64EncodeBlocksWestmere(SB), NOSPLIT|NOFRAME, $0-72
 	MOVQ dst_base+24(FP), DI
 	MOVQ dst_len+32(FP), R9
 	MOVQ url+48(FP), R10
-	XORQ AX, AX // consumed
-	XORQ BX, BX // written
+	XORQ AX, AX               // consumed
+	XORQ BX, BX               // written
 
 	MOVOU ·base64Shuf<>(SB), X8
 	MOVOU ·base64Mask0<>(SB), X9
@@ -427,6 +427,7 @@ TEXT ·base64EncodeBlocksWestmere(SB), NOSPLIT|NOFRAME, $0-72
 	JNZ   b64_enc_w_url
 	MOVOU ·base64ShiftStd<>(SB), X13
 	JMP   b64_enc_w_loop
+
 b64_enc_w_url:
 	MOVOU ·base64ShiftURL<>(SB), X13
 
@@ -451,15 +452,15 @@ b64_enc_w_loop:
 
 	// lookup_pshufb_improved
 	MOVOU   X1, X0
-	PSUBUSB X14, X0 // result = subs_epu8(indices, 51)
+	PSUBUSB X14, X0                // result = subs_epu8(indices, 51)
 	MOVOU   X15, X2
-	PCMPGTB X1, X2 // X2 = (26 > indices)
+	PCMPGTB X1, X2                 // X2 = (26 > indices)
 	MOVOU   ·base64Spl13<>(SB), X3
 	PAND    X3, X2
 	POR     X2, X0
 	MOVOU   X13, X2
-	PSHUFB  X0, X2 // X2 = shuffle(shift_LUT, result)
-	PADDB   X1, X2 // + indices
+	PSHUFB  X0, X2                 // X2 = shuffle(shift_LUT, result)
+	PADDB   X1, X2                 // + indices
 
 	MOVOU X2, 0(DI)
 
@@ -501,6 +502,7 @@ TEXT ·base64EncodeBlocksHaswell(SB), NOSPLIT|NOFRAME, $0-72
 	JNZ     b64_enc_h_url
 	VMOVDQU ·base64ShiftStdY<>(SB), Y13
 	JMP     b64_enc_h_loop
+
 b64_enc_h_url:
 	VMOVDQU ·base64ShiftURLY<>(SB), Y13
 
@@ -621,24 +623,24 @@ TEXT ·base64DecodeBlocksHaswell(SB), NOSPLIT|NOFRAME, $0-48
 
 b64_dec_h_loop:
 	// first 32 -> 24 at dst+0 (second 16-byte store overlaps +4 garbage)
-	VMOVDQU    0(SI), Y0
-	VPMADDUBSW Y8, Y0, Y0
-	VPMADDWD   Y9, Y0, Y0
-	VPSHUFB    Y10, Y0, Y0
-	VMOVDQU    X0, 0(DI)
+	VMOVDQU      0(SI), Y0
+	VPMADDUBSW   Y8, Y0, Y0
+	VPMADDWD     Y9, Y0, Y0
+	VPSHUFB      Y10, Y0, Y0
+	VMOVDQU      X0, 0(DI)
 	VEXTRACTI128 $1, Y0, X1
-	VMOVDQU    X1, 12(DI)
+	VMOVDQU      X1, 12(DI)
 
 	// second 32 -> 24 at dst+24; final 12-byte store is width-safe
-	VMOVDQU    32(SI), Y0
-	VPMADDUBSW Y8, Y0, Y0
-	VPMADDWD   Y9, Y0, Y0
-	VPSHUFB    Y10, Y0, Y0
-	VMOVDQU    X0, 24(DI)
+	VMOVDQU      32(SI), Y0
+	VPMADDUBSW   Y8, Y0, Y0
+	VPMADDWD     Y9, Y0, Y0
+	VPSHUFB      Y10, Y0, Y0
+	VMOVDQU      X0, 24(DI)
 	VEXTRACTI128 $1, Y0, X1
-	MOVQ       X1, 36(DI)
-	PEXTRD     $2, X1, AX
-	MOVL       AX, 44(DI)
+	MOVQ         X1, 36(DI)
+	PEXTRD       $2, X1, AX
+	MOVL         AX, 44(DI)
 
 	ADDQ $64, SI
 	ADDQ $48, DI

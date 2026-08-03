@@ -44,30 +44,30 @@ GLOBL ·utf16UTF8FF80<>(SB), RODATA|NOPTR, $32
 // func utf16LEToUTF8ASCIIBlocksWestmere(input []uint16, dst []byte) (consumed int)
 // Processes complete 8-uint16 ASCII-only groups with SSE2 PACKUSWB.
 TEXT ·utf16LEToUTF8ASCIIBlocksWestmere(SB), NOSPLIT|NOFRAME, $0-56
-	MOVQ input_base+0(FP), SI
-	MOVQ input_len+8(FP), CX
-	MOVQ dst_base+24(FP), DI
-	XORQ AX, AX
+	MOVQ  input_base+0(FP), SI
+	MOVQ  input_len+8(FP), CX
+	MOVQ  dst_base+24(FP), DI
+	XORQ  AX, AX
 	MOVOU ·utf16UTF8FF80<>(SB), X6
 
 loop_utf16LEToUTF8ASCIIBlocksWestmere:
-	CMPQ CX, $8
-	JB done_utf16LEToUTF8ASCIIBlocksWestmere
-	MOVOU (SI), X0
-	MOVOU X0, X1
-	PAND X6, X1
-	PXOR X2, X2
-	PCMPEQW X2, X1
+	CMPQ     CX, $8
+	JB       done_utf16LEToUTF8ASCIIBlocksWestmere
+	MOVOU    (SI), X0
+	MOVOU    X0, X1
+	PAND     X6, X1
+	PXOR     X2, X2
+	PCMPEQW  X2, X1
 	PMOVMSKB X1, DX
-	CMPL DX, $0xffff
-	JNE done_utf16LEToUTF8ASCIIBlocksWestmere
+	CMPL     DX, $0xffff
+	JNE      done_utf16LEToUTF8ASCIIBlocksWestmere
 	PACKUSWB X0, X0
-	MOVQ X0, (DI)
-	ADDQ $16, SI
-	ADDQ $8, DI
-	ADDQ $8, AX
-	SUBQ $8, CX
-	JMP loop_utf16LEToUTF8ASCIIBlocksWestmere
+	MOVQ     X0, (DI)
+	ADDQ     $16, SI
+	ADDQ     $8, DI
+	ADDQ     $8, AX
+	SUBQ     $8, CX
+	JMP      loop_utf16LEToUTF8ASCIIBlocksWestmere
 
 done_utf16LEToUTF8ASCIIBlocksWestmere:
 	MOVQ AX, consumed+48(FP)
@@ -75,32 +75,32 @@ done_utf16LEToUTF8ASCIIBlocksWestmere:
 
 // func utf16BEToUTF8ASCIIBlocksWestmere(input []uint16, dst []byte) (consumed int)
 TEXT ·utf16BEToUTF8ASCIIBlocksWestmere(SB), NOSPLIT|NOFRAME, $0-56
-	MOVQ input_base+0(FP), SI
-	MOVQ input_len+8(FP), CX
-	MOVQ dst_base+24(FP), DI
-	XORQ AX, AX
+	MOVQ  input_base+0(FP), SI
+	MOVQ  input_len+8(FP), CX
+	MOVQ  dst_base+24(FP), DI
+	XORQ  AX, AX
 	MOVOU ·utf16UTF8ByteSwapMask<>(SB), X5
 	MOVOU ·utf16UTF8FF80<>(SB), X6
 
 loop_utf16BEToUTF8ASCIIBlocksWestmere:
-	CMPQ CX, $8
-	JB done_utf16BEToUTF8ASCIIBlocksWestmere
-	MOVOU (SI), X0
-	PSHUFB X5, X0
-	MOVOU X0, X1
-	PAND X6, X1
-	PXOR X2, X2
-	PCMPEQW X2, X1
+	CMPQ     CX, $8
+	JB       done_utf16BEToUTF8ASCIIBlocksWestmere
+	MOVOU    (SI), X0
+	PSHUFB   X5, X0
+	MOVOU    X0, X1
+	PAND     X6, X1
+	PXOR     X2, X2
+	PCMPEQW  X2, X1
 	PMOVMSKB X1, DX
-	CMPL DX, $0xffff
-	JNE done_utf16BEToUTF8ASCIIBlocksWestmere
+	CMPL     DX, $0xffff
+	JNE      done_utf16BEToUTF8ASCIIBlocksWestmere
 	PACKUSWB X0, X0
-	MOVQ X0, (DI)
-	ADDQ $16, SI
-	ADDQ $8, DI
-	ADDQ $8, AX
-	SUBQ $8, CX
-	JMP loop_utf16BEToUTF8ASCIIBlocksWestmere
+	MOVQ     X0, (DI)
+	ADDQ     $16, SI
+	ADDQ     $8, DI
+	ADDQ     $8, AX
+	SUBQ     $8, CX
+	JMP      loop_utf16BEToUTF8ASCIIBlocksWestmere
 
 done_utf16BEToUTF8ASCIIBlocksWestmere:
 	MOVQ AX, consumed+48(FP)
@@ -109,30 +109,30 @@ done_utf16BEToUTF8ASCIIBlocksWestmere:
 // func utf16LEToUTF8ASCIIBlocksHaswell(input []uint16, dst []byte) (consumed int)
 // Processes complete 16-uint16 ASCII-only groups with AVX2.
 TEXT ·utf16LEToUTF8ASCIIBlocksHaswell(SB), NOSPLIT|NOFRAME, $0-56
-	MOVQ input_base+0(FP), SI
-	MOVQ input_len+8(FP), CX
-	MOVQ dst_base+24(FP), DI
-	XORQ AX, AX
+	MOVQ    input_base+0(FP), SI
+	MOVQ    input_len+8(FP), CX
+	MOVQ    dst_base+24(FP), DI
+	XORQ    AX, AX
 	VMOVDQU ·utf16UTF8FF80<>(SB), Y6
 
 loop_utf16LEToUTF8ASCIIBlocksHaswell:
-	CMPQ CX, $16
-	JB done_utf16LEToUTF8ASCIIBlocksHaswell
-	VMOVDQU (SI), Y0
-	VPAND Y6, Y0, Y1
-	VPXOR Y2, Y2, Y2
-	VPCMPEQW Y2, Y1, Y1
-	VPMOVMSKB Y1, DX
-	CMPL DX, $0xffffffff
-	JNE done_utf16LEToUTF8ASCIIBlocksHaswell
+	CMPQ         CX, $16
+	JB           done_utf16LEToUTF8ASCIIBlocksHaswell
+	VMOVDQU      (SI), Y0
+	VPAND        Y6, Y0, Y1
+	VPXOR        Y2, Y2, Y2
+	VPCMPEQW     Y2, Y1, Y1
+	VPMOVMSKB    Y1, DX
+	CMPL         DX, $0xffffffff
+	JNE          done_utf16LEToUTF8ASCIIBlocksHaswell
 	VEXTRACTI128 $1, Y0, X1
-	VPACKUSWB X1, X0, X0
-	VMOVDQU X0, (DI)
-	ADDQ $32, SI
-	ADDQ $16, DI
-	ADDQ $16, AX
-	SUBQ $16, CX
-	JMP loop_utf16LEToUTF8ASCIIBlocksHaswell
+	VPACKUSWB    X1, X0, X0
+	VMOVDQU      X0, (DI)
+	ADDQ         $32, SI
+	ADDQ         $16, DI
+	ADDQ         $16, AX
+	SUBQ         $16, CX
+	JMP          loop_utf16LEToUTF8ASCIIBlocksHaswell
 
 done_utf16LEToUTF8ASCIIBlocksHaswell:
 	VZEROUPPER
@@ -141,32 +141,32 @@ done_utf16LEToUTF8ASCIIBlocksHaswell:
 
 // func utf16BEToUTF8ASCIIBlocksHaswell(input []uint16, dst []byte) (consumed int)
 TEXT ·utf16BEToUTF8ASCIIBlocksHaswell(SB), NOSPLIT|NOFRAME, $0-56
-	MOVQ input_base+0(FP), SI
-	MOVQ input_len+8(FP), CX
-	MOVQ dst_base+24(FP), DI
-	XORQ AX, AX
+	MOVQ    input_base+0(FP), SI
+	MOVQ    input_len+8(FP), CX
+	MOVQ    dst_base+24(FP), DI
+	XORQ    AX, AX
 	VMOVDQU ·utf16UTF8ByteSwapMask<>(SB), Y5
 	VMOVDQU ·utf16UTF8FF80<>(SB), Y6
 
 loop_utf16BEToUTF8ASCIIBlocksHaswell:
-	CMPQ CX, $16
-	JB done_utf16BEToUTF8ASCIIBlocksHaswell
-	VMOVDQU (SI), Y0
-	VPSHUFB Y5, Y0, Y0
-	VPAND Y6, Y0, Y1
-	VPXOR Y2, Y2, Y2
-	VPCMPEQW Y2, Y1, Y1
-	VPMOVMSKB Y1, DX
-	CMPL DX, $0xffffffff
-	JNE done_utf16BEToUTF8ASCIIBlocksHaswell
+	CMPQ         CX, $16
+	JB           done_utf16BEToUTF8ASCIIBlocksHaswell
+	VMOVDQU      (SI), Y0
+	VPSHUFB      Y5, Y0, Y0
+	VPAND        Y6, Y0, Y1
+	VPXOR        Y2, Y2, Y2
+	VPCMPEQW     Y2, Y1, Y1
+	VPMOVMSKB    Y1, DX
+	CMPL         DX, $0xffffffff
+	JNE          done_utf16BEToUTF8ASCIIBlocksHaswell
 	VEXTRACTI128 $1, Y0, X1
-	VPACKUSWB X1, X0, X0
-	VMOVDQU X0, (DI)
-	ADDQ $32, SI
-	ADDQ $16, DI
-	ADDQ $16, AX
-	SUBQ $16, CX
-	JMP loop_utf16BEToUTF8ASCIIBlocksHaswell
+	VPACKUSWB    X1, X0, X0
+	VMOVDQU      X0, (DI)
+	ADDQ         $32, SI
+	ADDQ         $16, DI
+	ADDQ         $16, AX
+	SUBQ         $16, CX
+	JMP          loop_utf16BEToUTF8ASCIIBlocksHaswell
 
 done_utf16BEToUTF8ASCIIBlocksHaswell:
 	VZEROUPPER

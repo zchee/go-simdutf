@@ -52,24 +52,27 @@ TEXT ·utf16NoSurrogateWestmere(SB), NOSPLIT, $0-40
 	ANDQ $-8, CX
 	XORQ AX, AX
 	CMPB bigEndian+24(FP), $0
-	JEQ westmere_utf16_native
+	JEQ  westmere_utf16_native
 	LEAQ ·utf16BigMask<>(SB), DI
 	LEAQ ·utf16BigSurrogate<>(SB), BX
-	JMP westmere_utf16_loop
+	JMP  westmere_utf16_loop
+
 westmere_utf16_native:
 	LEAQ ·utf16NativeMask<>(SB), DI
 	LEAQ ·utf16NativeSurrogate<>(SB), BX
+
 westmere_utf16_loop:
-	CMPQ AX, CX
-	JAE westmere_utf16_done
-	MOVOU 0(SI)(AX*2), X0
-	PAND (DI), X0
-	PCMPEQW (BX), X0
+	CMPQ     AX, CX
+	JAE      westmere_utf16_done
+	MOVOU    0(SI)(AX*2), X0
+	PAND     (DI), X0
+	PCMPEQW  (BX), X0
 	PMOVMSKB X0, DX
-	TESTL DX, DX
-	JNE westmere_utf16_done
-	ADDQ $8, AX
-	JMP westmere_utf16_loop
+	TESTL    DX, DX
+	JNE      westmere_utf16_done
+	ADDQ     $8, AX
+	JMP      westmere_utf16_loop
+
 westmere_utf16_done:
 	MOVQ AX, ret+32(FP)
 	RET
@@ -81,24 +84,27 @@ TEXT ·utf16NoSurrogateHaswell(SB), NOSPLIT, $0-40
 	ANDQ $-16, CX
 	XORQ AX, AX
 	CMPB bigEndian+24(FP), $0
-	JEQ haswell_utf16_native
+	JEQ  haswell_utf16_native
 	LEAQ ·utf16BigMask<>(SB), DI
 	LEAQ ·utf16BigSurrogate<>(SB), BX
-	JMP haswell_utf16_loop
+	JMP  haswell_utf16_loop
+
 haswell_utf16_native:
 	LEAQ ·utf16NativeMask<>(SB), DI
 	LEAQ ·utf16NativeSurrogate<>(SB), BX
+
 haswell_utf16_loop:
-	CMPQ AX, CX
-	JAE haswell_utf16_done
-	VMOVDQU 0(SI)(AX*2), Y0
-	VPAND (DI), Y0, Y0
-	VPCMPEQW (BX), Y0, Y0
+	CMPQ      AX, CX
+	JAE       haswell_utf16_done
+	VMOVDQU   0(SI)(AX*2), Y0
+	VPAND     (DI), Y0, Y0
+	VPCMPEQW  (BX), Y0, Y0
 	VPMOVMSKB Y0, DX
-	TESTL DX, DX
-	JNE haswell_utf16_done
-	ADDQ $16, AX
-	JMP haswell_utf16_loop
+	TESTL     DX, DX
+	JNE       haswell_utf16_done
+	ADDQ      $16, AX
+	JMP       haswell_utf16_loop
+
 haswell_utf16_done:
 	VZEROUPPER
 	MOVQ AX, ret+32(FP)
@@ -111,15 +117,17 @@ TEXT ·utf32ASCIIPrefixWestmere(SB), NOSPLIT, $0-32
 	ANDQ $-4, CX
 	XORQ AX, AX
 	LEAQ ·utf32ASCIIMask<>(SB), DI
+
 westmere_utf32_loop:
-	CMPQ AX, CX
-	JAE westmere_utf32_done
+	CMPQ  AX, CX
+	JAE   westmere_utf32_done
 	MOVOU 0(SI)(AX*4), X0
-	PAND (DI), X0
+	PAND  (DI), X0
 	PTEST X0, X0
-	JNE westmere_utf32_done
-	ADDQ $4, AX
-	JMP westmere_utf32_loop
+	JNE   westmere_utf32_done
+	ADDQ  $4, AX
+	JMP   westmere_utf32_loop
+
 westmere_utf32_done:
 	MOVQ AX, ret+24(FP)
 	RET
@@ -131,32 +139,37 @@ TEXT ·utf32ASCIIPrefixHaswell(SB), NOSPLIT, $0-32
 	ANDQ $-8, CX
 	XORQ AX, AX
 	LEAQ ·utf32ASCIIMask<>(SB), DI
+
 haswell_utf32_loop:
-	CMPQ AX, CX
-	JAE haswell_utf32_done
+	CMPQ    AX, CX
+	JAE     haswell_utf32_done
 	VMOVDQU 0(SI)(AX*4), Y0
-	VPAND (DI), Y0, Y0
-	VPTEST Y0, Y0
-	JNE haswell_utf32_done
-	ADDQ $8, AX
-	JMP haswell_utf32_loop
+	VPAND   (DI), Y0, Y0
+	VPTEST  Y0, Y0
+	JNE     haswell_utf32_done
+	ADDQ    $8, AX
+	JMP     haswell_utf32_loop
+
 haswell_utf32_done:
 	VZEROUPPER
 	MOVQ AX, ret+24(FP)
 	RET
+
 // func utf16CopyWestmere(input, dst []uint16, n int)
 TEXT ·utf16CopyWestmere(SB), NOSPLIT, $0-56
 	MOVQ input_base+0(FP), SI
 	MOVQ dst_base+24(FP), DI
 	MOVQ n+48(FP), CX
 	XORQ AX, AX
+
 westmere_utf16_copy_loop:
-	CMPQ AX, CX
-	JAE westmere_utf16_copy_done
+	CMPQ  AX, CX
+	JAE   westmere_utf16_copy_done
 	MOVOU 0(SI)(AX*2), X0
 	MOVOU X0, 0(DI)(AX*2)
-	ADDQ $8, AX
-	JMP westmere_utf16_copy_loop
+	ADDQ  $8, AX
+	JMP   westmere_utf16_copy_loop
+
 westmere_utf16_copy_done:
 	RET
 
@@ -166,13 +179,15 @@ TEXT ·utf16CopyHaswell(SB), NOSPLIT, $0-56
 	MOVQ dst_base+24(FP), DI
 	MOVQ n+48(FP), CX
 	XORQ AX, AX
+
 haswell_utf16_copy_loop:
-	CMPQ AX, CX
-	JAE haswell_utf16_copy_done
+	CMPQ    AX, CX
+	JAE     haswell_utf16_copy_done
 	VMOVDQU 0(SI)(AX*2), Y0
 	VMOVDQU Y0, 0(DI)(AX*2)
-	ADDQ $16, AX
-	JMP haswell_utf16_copy_loop
+	ADDQ    $16, AX
+	JMP     haswell_utf16_copy_loop
+
 haswell_utf16_copy_done:
 	VZEROUPPER
 	RET

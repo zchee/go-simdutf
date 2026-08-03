@@ -40,21 +40,23 @@ utf16le_latin1_loop:
 	CMP  $8, R1
 	BLT  utf16le_latin1_done
 	VLD1 (R0), [V0.H8]
+
 	// vmax-style: any high byte non-zero => word > 0xff
 	VUSHR $8, V0.H8, V1.H8
-	VMOV V1.D[0], R5
-	VMOV V1.D[1], R6
-	ORR  R6, R5, R5
-	CBNZ R5, utf16le_latin1_done
+	VMOV  V1.D[0], R5
+	VMOV  V1.D[1], R6
+	ORR   R6, R5, R5
+	CBNZ  R5, utf16le_latin1_done
+
 	// VMOVN substitute: pack low bytes of 8 halfwords into 8 bytes
 	VUZP1 V0.B16, V0.B16, V1.B16
-	VMOV V1.D[0], R5
-	MOVD R5, (R2)
-	ADD  $8, R2
-	ADD  $16, R0
-	ADD  $8, R3
-	SUB  $8, R1
-	B    utf16le_latin1_loop
+	VMOV  V1.D[0], R5
+	MOVD  R5, (R2)
+	ADD   $8, R2
+	ADD   $16, R0
+	ADD   $8, R3
+	SUB   $8, R1
+	B     utf16le_latin1_loop
 
 utf16le_latin1_done:
 	MOVD R3, consumed+48(FP)
@@ -68,23 +70,23 @@ TEXT ·convertUTF16BEToLatin1BlocksNEON(SB), NOSPLIT|NOFRAME, $0-56
 	MOVD $0, R3
 
 utf16be_latin1_loop:
-	CMP  $8, R1
-	BLT  utf16be_latin1_done
-	VLD1 (R0), [V0.H8]
+	CMP    $8, R1
+	BLT    utf16be_latin1_done
+	VLD1   (R0), [V0.H8]
 	VREV16 V0.B16, V0.B16
-	VUSHR $8, V0.H8, V1.H8
-	VMOV V1.D[0], R5
-	VMOV V1.D[1], R6
-	ORR  R6, R5, R5
-	CBNZ R5, utf16be_latin1_done
-	VUZP1 V0.B16, V0.B16, V1.B16
-	VMOV V1.D[0], R5
-	MOVD R5, (R2)
-	ADD  $8, R2
-	ADD  $16, R0
-	ADD  $8, R3
-	SUB  $8, R1
-	B    utf16be_latin1_loop
+	VUSHR  $8, V0.H8, V1.H8
+	VMOV   V1.D[0], R5
+	VMOV   V1.D[1], R6
+	ORR    R6, R5, R5
+	CBNZ   R5, utf16be_latin1_done
+	VUZP1  V0.B16, V0.B16, V1.B16
+	VMOV   V1.D[0], R5
+	MOVD   R5, (R2)
+	ADD    $8, R2
+	ADD    $16, R0
+	ADD    $8, R3
+	SUB    $8, R1
+	B      utf16be_latin1_loop
 
 utf16be_latin1_done:
 	MOVD R3, consumed+48(FP)

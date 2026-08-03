@@ -36,6 +36,7 @@ utf16le_utf32_loop:
 	CMP  $8, R1
 	BLT  utf16le_utf32_done
 	VLD1 (R0), [V0.H8]
+
 	// surrogates when (word & 0xf800) == 0xd800
 	VAND  V2.B16, V0.B16, V1.B16
 	VCMEQ V3.H8, V1.H8, V1.H8
@@ -43,14 +44,15 @@ utf16le_utf32_loop:
 	VMOV  V1.D[1], R6
 	ORR   R6, R5, R5
 	CBNZ  R5, utf16le_utf32_done
+
 	// widen eight u16 → eight u32 and store
 	VUXTL  V0.H4, V4.S4
 	VUXTL2 V0.H8, V5.S4
 	VST1.P [V4.S4, V5.S4], 32(R2)
-	ADD  $16, R0
-	ADD  $8, R3
-	SUB  $8, R1
-	B    utf16le_utf32_loop
+	ADD    $16, R0
+	ADD    $8, R3
+	SUB    $8, R1
+	B      utf16le_utf32_loop
 
 utf16le_utf32_done:
 	MOVD R3, consumed+48(FP)
@@ -68,23 +70,23 @@ TEXT ·convertUTF16BEToUTF32BlocksNEON(SB), NOSPLIT|NOFRAME, $0-56
 	VDUP R4, V3.H8
 
 utf16be_utf32_loop:
-	CMP  $8, R1
-	BLT  utf16be_utf32_done
-	VLD1 (R0), [V0.H8]
+	CMP    $8, R1
+	BLT    utf16be_utf32_done
+	VLD1   (R0), [V0.H8]
 	VREV16 V0.B16, V0.B16
-	VAND  V2.B16, V0.B16, V1.B16
-	VCMEQ V3.H8, V1.H8, V1.H8
-	VMOV  V1.D[0], R5
-	VMOV  V1.D[1], R6
-	ORR   R6, R5, R5
-	CBNZ  R5, utf16be_utf32_done
+	VAND   V2.B16, V0.B16, V1.B16
+	VCMEQ  V3.H8, V1.H8, V1.H8
+	VMOV   V1.D[0], R5
+	VMOV   V1.D[1], R6
+	ORR    R6, R5, R5
+	CBNZ   R5, utf16be_utf32_done
 	VUXTL  V0.H4, V4.S4
 	VUXTL2 V0.H8, V5.S4
 	VST1.P [V4.S4, V5.S4], 32(R2)
-	ADD  $16, R0
-	ADD  $8, R3
-	SUB  $8, R1
-	B    utf16be_utf32_loop
+	ADD    $16, R0
+	ADD    $8, R3
+	SUB    $8, R1
+	B      utf16be_utf32_loop
 
 utf16be_utf32_done:
 	MOVD R3, consumed+48(FP)

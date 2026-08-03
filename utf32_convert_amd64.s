@@ -55,30 +55,30 @@ GLOBL ·utf32D800<>(SB), RODATA|NOPTR, $32
 
 // func utf32ToLatin1BlocksWestmere(input []uint32, dst []byte) (consumed int)
 TEXT ·utf32ToLatin1BlocksWestmere(SB), NOSPLIT|NOFRAME, $0-56
-	MOVQ input_base+0(FP), SI
-	MOVQ input_len+8(FP), CX
-	MOVQ dst_base+24(FP), DI
-	XORQ AX, AX
+	MOVQ  input_base+0(FP), SI
+	MOVQ  input_len+8(FP), CX
+	MOVQ  dst_base+24(FP), DI
+	XORQ  AX, AX
 	MOVOU ·utf32ByteExtract<>(SB), X7
 
 loop_utf32ToLatin1BlocksWestmere:
-	CMPQ CX, $4
-	JB done_utf32ToLatin1BlocksWestmere
-	MOVOU (SI), X0
-	MOVOU X0, X1
-	PSRLL $8, X1
-	PXOR X2, X2
-	PCMPEQL X2, X1
+	CMPQ     CX, $4
+	JB       done_utf32ToLatin1BlocksWestmere
+	MOVOU    (SI), X0
+	MOVOU    X0, X1
+	PSRLL    $8, X1
+	PXOR     X2, X2
+	PCMPEQL  X2, X1
 	PMOVMSKB X1, DX
-	CMPL DX, $0xffff
-	JNE done_utf32ToLatin1BlocksWestmere
-	PSHUFB X7, X0
-	MOVL X0, (DI)
-	ADDQ $16, SI
-	ADDQ $4, DI
-	ADDQ $4, AX
-	SUBQ $4, CX
-	JMP loop_utf32ToLatin1BlocksWestmere
+	CMPL     DX, $0xffff
+	JNE      done_utf32ToLatin1BlocksWestmere
+	PSHUFB   X7, X0
+	MOVL     X0, (DI)
+	ADDQ     $16, SI
+	ADDQ     $4, DI
+	ADDQ     $4, AX
+	SUBQ     $4, CX
+	JMP      loop_utf32ToLatin1BlocksWestmere
 
 done_utf32ToLatin1BlocksWestmere:
 	MOVQ AX, consumed+48(FP)
@@ -86,31 +86,31 @@ done_utf32ToLatin1BlocksWestmere:
 
 // func utf32ToLatin1BlocksHaswell(input []uint32, dst []byte) (consumed int)
 TEXT ·utf32ToLatin1BlocksHaswell(SB), NOSPLIT|NOFRAME, $0-56
-	MOVQ input_base+0(FP), SI
-	MOVQ input_len+8(FP), CX
-	MOVQ dst_base+24(FP), DI
-	XORQ AX, AX
+	MOVQ    input_base+0(FP), SI
+	MOVQ    input_len+8(FP), CX
+	MOVQ    dst_base+24(FP), DI
+	XORQ    AX, AX
 	VMOVDQU ·utf32ByteExtract<>(SB), Y7
 
 loop_utf32ToLatin1BlocksHaswell:
-	CMPQ CX, $8
-	JB done_utf32ToLatin1BlocksHaswell
-	VMOVDQU (SI), Y0
-	VPSRLD $8, Y0, Y1
-	VPXOR Y2, Y2, Y2
-	VPCMPEQD Y2, Y1, Y1
-	VPMOVMSKB Y1, DX
-	CMPL DX, $0xffffffff
-	JNE done_utf32ToLatin1BlocksHaswell
-	VPSHUFB Y7, Y0, Y0
+	CMPQ         CX, $8
+	JB           done_utf32ToLatin1BlocksHaswell
+	VMOVDQU      (SI), Y0
+	VPSRLD       $8, Y0, Y1
+	VPXOR        Y2, Y2, Y2
+	VPCMPEQD     Y2, Y1, Y1
+	VPMOVMSKB    Y1, DX
+	CMPL         DX, $0xffffffff
+	JNE          done_utf32ToLatin1BlocksHaswell
+	VPSHUFB      Y7, Y0, Y0
 	VEXTRACTI128 $1, Y0, X1
-	MOVL X0, (DI)
-	MOVL X1, 4(DI)
-	ADDQ $32, SI
-	ADDQ $8, DI
-	ADDQ $8, AX
-	SUBQ $8, CX
-	JMP loop_utf32ToLatin1BlocksHaswell
+	MOVL         X0, (DI)
+	MOVL         X1, 4(DI)
+	ADDQ         $32, SI
+	ADDQ         $8, DI
+	ADDQ         $8, AX
+	SUBQ         $8, CX
+	JMP          loop_utf32ToLatin1BlocksHaswell
 
 done_utf32ToLatin1BlocksHaswell:
 	VZEROUPPER
@@ -119,30 +119,30 @@ done_utf32ToLatin1BlocksHaswell:
 
 // func utf32ToUTF8ASCIIBlocksWestmere(input []uint32, dst []byte) (consumed int)
 TEXT ·utf32ToUTF8ASCIIBlocksWestmere(SB), NOSPLIT|NOFRAME, $0-56
-	MOVQ input_base+0(FP), SI
-	MOVQ input_len+8(FP), CX
-	MOVQ dst_base+24(FP), DI
-	XORQ AX, AX
+	MOVQ  input_base+0(FP), SI
+	MOVQ  input_len+8(FP), CX
+	MOVQ  dst_base+24(FP), DI
+	XORQ  AX, AX
 	MOVOU ·utf32ByteExtract<>(SB), X7
 
 loop_utf32ToUTF8ASCIIBlocksWestmere:
-	CMPQ CX, $4
-	JB done_utf32ToUTF8ASCIIBlocksWestmere
-	MOVOU (SI), X0
-	MOVOU X0, X1
-	PSRLL $7, X1
-	PXOR X2, X2
-	PCMPEQL X2, X1
+	CMPQ     CX, $4
+	JB       done_utf32ToUTF8ASCIIBlocksWestmere
+	MOVOU    (SI), X0
+	MOVOU    X0, X1
+	PSRLL    $7, X1
+	PXOR     X2, X2
+	PCMPEQL  X2, X1
 	PMOVMSKB X1, DX
-	CMPL DX, $0xffff
-	JNE done_utf32ToUTF8ASCIIBlocksWestmere
-	PSHUFB X7, X0
-	MOVL X0, (DI)
-	ADDQ $16, SI
-	ADDQ $4, DI
-	ADDQ $4, AX
-	SUBQ $4, CX
-	JMP loop_utf32ToUTF8ASCIIBlocksWestmere
+	CMPL     DX, $0xffff
+	JNE      done_utf32ToUTF8ASCIIBlocksWestmere
+	PSHUFB   X7, X0
+	MOVL     X0, (DI)
+	ADDQ     $16, SI
+	ADDQ     $4, DI
+	ADDQ     $4, AX
+	SUBQ     $4, CX
+	JMP      loop_utf32ToUTF8ASCIIBlocksWestmere
 
 done_utf32ToUTF8ASCIIBlocksWestmere:
 	MOVQ AX, consumed+48(FP)
@@ -150,31 +150,31 @@ done_utf32ToUTF8ASCIIBlocksWestmere:
 
 // func utf32ToUTF8ASCIIBlocksHaswell(input []uint32, dst []byte) (consumed int)
 TEXT ·utf32ToUTF8ASCIIBlocksHaswell(SB), NOSPLIT|NOFRAME, $0-56
-	MOVQ input_base+0(FP), SI
-	MOVQ input_len+8(FP), CX
-	MOVQ dst_base+24(FP), DI
-	XORQ AX, AX
+	MOVQ    input_base+0(FP), SI
+	MOVQ    input_len+8(FP), CX
+	MOVQ    dst_base+24(FP), DI
+	XORQ    AX, AX
 	VMOVDQU ·utf32ByteExtract<>(SB), Y7
 
 loop_utf32ToUTF8ASCIIBlocksHaswell:
-	CMPQ CX, $8
-	JB done_utf32ToUTF8ASCIIBlocksHaswell
-	VMOVDQU (SI), Y0
-	VPSRLD $7, Y0, Y1
-	VPXOR Y2, Y2, Y2
-	VPCMPEQD Y2, Y1, Y1
-	VPMOVMSKB Y1, DX
-	CMPL DX, $0xffffffff
-	JNE done_utf32ToUTF8ASCIIBlocksHaswell
-	VPSHUFB Y7, Y0, Y0
+	CMPQ         CX, $8
+	JB           done_utf32ToUTF8ASCIIBlocksHaswell
+	VMOVDQU      (SI), Y0
+	VPSRLD       $7, Y0, Y1
+	VPXOR        Y2, Y2, Y2
+	VPCMPEQD     Y2, Y1, Y1
+	VPMOVMSKB    Y1, DX
+	CMPL         DX, $0xffffffff
+	JNE          done_utf32ToUTF8ASCIIBlocksHaswell
+	VPSHUFB      Y7, Y0, Y0
 	VEXTRACTI128 $1, Y0, X1
-	MOVL X0, (DI)
-	MOVL X1, 4(DI)
-	ADDQ $32, SI
-	ADDQ $8, DI
-	ADDQ $8, AX
-	SUBQ $8, CX
-	JMP loop_utf32ToUTF8ASCIIBlocksHaswell
+	MOVL         X0, (DI)
+	MOVL         X1, 4(DI)
+	ADDQ         $32, SI
+	ADDQ         $8, DI
+	ADDQ         $8, AX
+	SUBQ         $8, CX
+	JMP          loop_utf32ToUTF8ASCIIBlocksHaswell
 
 done_utf32ToUTF8ASCIIBlocksHaswell:
 	VZEROUPPER
@@ -183,40 +183,42 @@ done_utf32ToUTF8ASCIIBlocksHaswell:
 
 // func utf32ToUTF16LEBlocksWestmere(input []uint32, dst []uint16) (consumed int)
 TEXT ·utf32ToUTF16LEBlocksWestmere(SB), NOSPLIT|NOFRAME, $0-56
-	MOVQ input_base+0(FP), SI
-	MOVQ input_len+8(FP), CX
-	MOVQ dst_base+24(FP), DI
-	XORQ AX, AX
+	MOVQ  input_base+0(FP), SI
+	MOVQ  input_len+8(FP), CX
+	MOVQ  dst_base+24(FP), DI
+	XORQ  AX, AX
 	MOVOU ·utf32F800<>(SB), X6
 	MOVOU ·utf32D800<>(SB), X7
 
 loop_utf32ToUTF16LEBlocksWestmere:
-	CMPQ CX, $4
-	JB done_utf32ToUTF16LEBlocksWestmere
+	CMPQ  CX, $4
+	JB    done_utf32ToUTF16LEBlocksWestmere
 	MOVOU (SI), X0
+
 	// Require high 16 bits zero (BMP).
-	MOVOU X0, X1
-	PSRLL $16, X1
-	PXOR X2, X2
-	PCMPEQL X2, X1
+	MOVOU    X0, X1
+	PSRLL    $16, X1
+	PXOR     X2, X2
+	PCMPEQL  X2, X1
 	PMOVMSKB X1, DX
-	CMPL DX, $0xffff
-	JNE done_utf32ToUTF16LEBlocksWestmere
+	CMPL     DX, $0xffff
+	JNE      done_utf32ToUTF16LEBlocksWestmere
+
 	// Reject surrogates: (word & 0xfffff800) == 0xd800.
-	MOVOU X0, X1
-	PAND X6, X1
-	PCMPEQL X7, X1
+	MOVOU    X0, X1
+	PAND     X6, X1
+	PCMPEQL  X7, X1
 	PMOVMSKB X1, DX
-	TESTL DX, DX
-	JNE done_utf32ToUTF16LEBlocksWestmere
-	PXOR X1, X1
+	TESTL    DX, DX
+	JNE      done_utf32ToUTF16LEBlocksWestmere
+	PXOR     X1, X1
 	PACKUSDW X1, X0
-	MOVQ X0, (DI)
-	ADDQ $16, SI
-	ADDQ $8, DI
-	ADDQ $4, AX
-	SUBQ $4, CX
-	JMP loop_utf32ToUTF16LEBlocksWestmere
+	MOVQ     X0, (DI)
+	ADDQ     $16, SI
+	ADDQ     $8, DI
+	ADDQ     $4, AX
+	SUBQ     $4, CX
+	JMP      loop_utf32ToUTF16LEBlocksWestmere
 
 done_utf32ToUTF16LEBlocksWestmere:
 	MOVQ AX, consumed+48(FP)
@@ -224,40 +226,40 @@ done_utf32ToUTF16LEBlocksWestmere:
 
 // func utf32ToUTF16BEBlocksWestmere(input []uint32, dst []uint16) (consumed int)
 TEXT ·utf32ToUTF16BEBlocksWestmere(SB), NOSPLIT|NOFRAME, $0-56
-	MOVQ input_base+0(FP), SI
-	MOVQ input_len+8(FP), CX
-	MOVQ dst_base+24(FP), DI
-	XORQ AX, AX
+	MOVQ  input_base+0(FP), SI
+	MOVQ  input_len+8(FP), CX
+	MOVQ  dst_base+24(FP), DI
+	XORQ  AX, AX
 	MOVOU ·utf32UTF16ByteSwap<>(SB), X5
 	MOVOU ·utf32F800<>(SB), X6
 	MOVOU ·utf32D800<>(SB), X7
 
 loop_utf32ToUTF16BEBlocksWestmere:
-	CMPQ CX, $4
-	JB done_utf32ToUTF16BEBlocksWestmere
-	MOVOU (SI), X0
-	MOVOU X0, X1
-	PSRLL $16, X1
-	PXOR X2, X2
-	PCMPEQL X2, X1
+	CMPQ     CX, $4
+	JB       done_utf32ToUTF16BEBlocksWestmere
+	MOVOU    (SI), X0
+	MOVOU    X0, X1
+	PSRLL    $16, X1
+	PXOR     X2, X2
+	PCMPEQL  X2, X1
 	PMOVMSKB X1, DX
-	CMPL DX, $0xffff
-	JNE done_utf32ToUTF16BEBlocksWestmere
-	MOVOU X0, X1
-	PAND X6, X1
-	PCMPEQL X7, X1
+	CMPL     DX, $0xffff
+	JNE      done_utf32ToUTF16BEBlocksWestmere
+	MOVOU    X0, X1
+	PAND     X6, X1
+	PCMPEQL  X7, X1
 	PMOVMSKB X1, DX
-	TESTL DX, DX
-	JNE done_utf32ToUTF16BEBlocksWestmere
-	PXOR X1, X1
+	TESTL    DX, DX
+	JNE      done_utf32ToUTF16BEBlocksWestmere
+	PXOR     X1, X1
 	PACKUSDW X1, X0
-	PSHUFB X5, X0
-	MOVQ X0, (DI)
-	ADDQ $16, SI
-	ADDQ $8, DI
-	ADDQ $4, AX
-	SUBQ $4, CX
-	JMP loop_utf32ToUTF16BEBlocksWestmere
+	PSHUFB   X5, X0
+	MOVQ     X0, (DI)
+	ADDQ     $16, SI
+	ADDQ     $8, DI
+	ADDQ     $4, AX
+	SUBQ     $4, CX
+	JMP      loop_utf32ToUTF16BEBlocksWestmere
 
 done_utf32ToUTF16BEBlocksWestmere:
 	MOVQ AX, consumed+48(FP)
@@ -265,40 +267,41 @@ done_utf32ToUTF16BEBlocksWestmere:
 
 // func utf32ToUTF16LEBlocksHaswell(input []uint32, dst []uint16) (consumed int)
 TEXT ·utf32ToUTF16LEBlocksHaswell(SB), NOSPLIT|NOFRAME, $0-56
-	MOVQ input_base+0(FP), SI
-	MOVQ input_len+8(FP), CX
-	MOVQ dst_base+24(FP), DI
-	XORQ AX, AX
+	MOVQ    input_base+0(FP), SI
+	MOVQ    input_len+8(FP), CX
+	MOVQ    dst_base+24(FP), DI
+	XORQ    AX, AX
 	VMOVDQU ·utf32F800<>(SB), Y6
 	VMOVDQU ·utf32D800<>(SB), Y7
 
 loop_utf32ToUTF16LEBlocksHaswell:
-	CMPQ CX, $8
-	JB done_utf32ToUTF16LEBlocksHaswell
-	VMOVDQU (SI), Y0
-	VPSRLD $16, Y0, Y1
-	VPXOR Y2, Y2, Y2
-	VPCMPEQD Y2, Y1, Y1
+	CMPQ      CX, $8
+	JB        done_utf32ToUTF16LEBlocksHaswell
+	VMOVDQU   (SI), Y0
+	VPSRLD    $16, Y0, Y1
+	VPXOR     Y2, Y2, Y2
+	VPCMPEQD  Y2, Y1, Y1
 	VPMOVMSKB Y1, DX
-	CMPL DX, $0xffffffff
-	JNE done_utf32ToUTF16LEBlocksHaswell
-	VPAND Y6, Y0, Y1
-	VPCMPEQD Y7, Y1, Y1
+	CMPL      DX, $0xffffffff
+	JNE       done_utf32ToUTF16LEBlocksHaswell
+	VPAND     Y6, Y0, Y1
+	VPCMPEQD  Y7, Y1, Y1
 	VPMOVMSKB Y1, DX
-	TESTL DX, DX
-	JNE done_utf32ToUTF16LEBlocksHaswell
+	TESTL     DX, DX
+	JNE       done_utf32ToUTF16LEBlocksHaswell
+
 	// Pack each 128-bit half: 4 dwords -> 4 words.
 	VEXTRACTI128 $1, Y0, X1
-	PXOR X2, X2
-	PACKUSDW X2, X0
-	PACKUSDW X2, X1
-	MOVQ X0, (DI)
-	MOVQ X1, 8(DI)
-	ADDQ $32, SI
-	ADDQ $16, DI
-	ADDQ $8, AX
-	SUBQ $8, CX
-	JMP loop_utf32ToUTF16LEBlocksHaswell
+	PXOR         X2, X2
+	PACKUSDW     X2, X0
+	PACKUSDW     X2, X1
+	MOVQ         X0, (DI)
+	MOVQ         X1, 8(DI)
+	ADDQ         $32, SI
+	ADDQ         $16, DI
+	ADDQ         $8, AX
+	SUBQ         $8, CX
+	JMP          loop_utf32ToUTF16LEBlocksHaswell
 
 done_utf32ToUTF16LEBlocksHaswell:
 	VZEROUPPER
@@ -307,42 +310,42 @@ done_utf32ToUTF16LEBlocksHaswell:
 
 // func utf32ToUTF16BEBlocksHaswell(input []uint32, dst []uint16) (consumed int)
 TEXT ·utf32ToUTF16BEBlocksHaswell(SB), NOSPLIT|NOFRAME, $0-56
-	MOVQ input_base+0(FP), SI
-	MOVQ input_len+8(FP), CX
-	MOVQ dst_base+24(FP), DI
-	XORQ AX, AX
+	MOVQ    input_base+0(FP), SI
+	MOVQ    input_len+8(FP), CX
+	MOVQ    dst_base+24(FP), DI
+	XORQ    AX, AX
 	VMOVDQU ·utf32F800<>(SB), Y6
 	VMOVDQU ·utf32D800<>(SB), Y7
 
 loop_utf32ToUTF16BEBlocksHaswell:
-	CMPQ CX, $8
-	JB done_utf32ToUTF16BEBlocksHaswell
-	VMOVDQU (SI), Y0
-	VPSRLD $16, Y0, Y1
-	VPXOR Y2, Y2, Y2
-	VPCMPEQD Y2, Y1, Y1
-	VPMOVMSKB Y1, DX
-	CMPL DX, $0xffffffff
-	JNE done_utf32ToUTF16BEBlocksHaswell
-	VPAND Y6, Y0, Y1
-	VPCMPEQD Y7, Y1, Y1
-	VPMOVMSKB Y1, DX
-	TESTL DX, DX
-	JNE done_utf32ToUTF16BEBlocksHaswell
+	CMPQ         CX, $8
+	JB           done_utf32ToUTF16BEBlocksHaswell
+	VMOVDQU      (SI), Y0
+	VPSRLD       $16, Y0, Y1
+	VPXOR        Y2, Y2, Y2
+	VPCMPEQD     Y2, Y1, Y1
+	VPMOVMSKB    Y1, DX
+	CMPL         DX, $0xffffffff
+	JNE          done_utf32ToUTF16BEBlocksHaswell
+	VPAND        Y6, Y0, Y1
+	VPCMPEQD     Y7, Y1, Y1
+	VPMOVMSKB    Y1, DX
+	TESTL        DX, DX
+	JNE          done_utf32ToUTF16BEBlocksHaswell
 	VEXTRACTI128 $1, Y0, X1
-	PXOR X2, X2
-	PACKUSDW X2, X0
-	PACKUSDW X2, X1
-	MOVOU ·utf32UTF16ByteSwap<>(SB), X3
-	PSHUFB X3, X0
-	PSHUFB X3, X1
-	MOVQ X0, (DI)
-	MOVQ X1, 8(DI)
-	ADDQ $32, SI
-	ADDQ $16, DI
-	ADDQ $8, AX
-	SUBQ $8, CX
-	JMP loop_utf32ToUTF16BEBlocksHaswell
+	PXOR         X2, X2
+	PACKUSDW     X2, X0
+	PACKUSDW     X2, X1
+	MOVOU        ·utf32UTF16ByteSwap<>(SB), X3
+	PSHUFB       X3, X0
+	PSHUFB       X3, X1
+	MOVQ         X0, (DI)
+	MOVQ         X1, 8(DI)
+	ADDQ         $32, SI
+	ADDQ         $16, DI
+	ADDQ         $8, AX
+	SUBQ         $8, CX
+	JMP          loop_utf32ToUTF16BEBlocksHaswell
 
 done_utf32ToUTF16BEBlocksHaswell:
 	VZEROUPPER

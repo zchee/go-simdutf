@@ -34,21 +34,23 @@ utf16le_utf8_loop:
 	CMP  $8, R1
 	BLT  utf16le_utf8_done
 	VLD1 (R0), [V0.H8]
+
 	// non-ASCII when any halfword >> 7 is non-zero (word > 0x7f)
 	VUSHR $7, V0.H8, V1.H8
-	VMOV V1.D[0], R5
-	VMOV V1.D[1], R6
-	ORR  R6, R5, R5
-	CBNZ R5, utf16le_utf8_done
+	VMOV  V1.D[0], R5
+	VMOV  V1.D[1], R6
+	ORR   R6, R5, R5
+	CBNZ  R5, utf16le_utf8_done
+
 	// pack low bytes of 8 halfwords into 8 UTF-8 ASCII bytes
 	VUZP1 V0.B16, V0.B16, V1.B16
-	VMOV V1.D[0], R5
-	MOVD R5, (R2)
-	ADD  $8, R2
-	ADD  $16, R0
-	ADD  $8, R3
-	SUB  $8, R1
-	B    utf16le_utf8_loop
+	VMOV  V1.D[0], R5
+	MOVD  R5, (R2)
+	ADD   $8, R2
+	ADD   $16, R0
+	ADD   $8, R3
+	SUB   $8, R1
+	B     utf16le_utf8_loop
 
 utf16le_utf8_done:
 	MOVD R3, consumed+48(FP)
@@ -62,23 +64,23 @@ TEXT ·convertUTF16BEToUTF8BlocksNEON(SB), NOSPLIT|NOFRAME, $0-56
 	MOVD $0, R3
 
 utf16be_utf8_loop:
-	CMP  $8, R1
-	BLT  utf16be_utf8_done
-	VLD1 (R0), [V0.H8]
+	CMP    $8, R1
+	BLT    utf16be_utf8_done
+	VLD1   (R0), [V0.H8]
 	VREV16 V0.B16, V0.B16
-	VUSHR $7, V0.H8, V1.H8
-	VMOV V1.D[0], R5
-	VMOV V1.D[1], R6
-	ORR  R6, R5, R5
-	CBNZ R5, utf16be_utf8_done
-	VUZP1 V0.B16, V0.B16, V1.B16
-	VMOV V1.D[0], R5
-	MOVD R5, (R2)
-	ADD  $8, R2
-	ADD  $16, R0
-	ADD  $8, R3
-	SUB  $8, R1
-	B    utf16be_utf8_loop
+	VUSHR  $7, V0.H8, V1.H8
+	VMOV   V1.D[0], R5
+	VMOV   V1.D[1], R6
+	ORR    R6, R5, R5
+	CBNZ   R5, utf16be_utf8_done
+	VUZP1  V0.B16, V0.B16, V1.B16
+	VMOV   V1.D[0], R5
+	MOVD   R5, (R2)
+	ADD    $8, R2
+	ADD    $16, R0
+	ADD    $8, R3
+	SUB    $8, R1
+	B      utf16be_utf8_loop
 
 utf16be_utf8_done:
 	MOVD R3, consumed+48(FP)

@@ -36,6 +36,7 @@ utf32_latin1_loop:
 	CMP  $8, R1
 	BLT  utf32_latin1_done
 	VLD1 (R0), [V0.S4, V1.S4]
+
 	// non-Latin-1 when any word >> 8 is non-zero
 	VUSHR $8, V0.S4, V2.S4
 	VUSHR $8, V1.S4, V3.S4
@@ -44,6 +45,7 @@ utf32_latin1_loop:
 	VMOV  V2.D[1], R6
 	ORR   R6, R5, R5
 	CBNZ  R5, utf32_latin1_done
+
 	// pack low bytes of 8 uint32 → 8 Latin-1 bytes
 	VUZP1 V1.H8, V0.H8, V4.H8
 	VUZP1 V4.B16, V4.B16, V5.B16
@@ -70,6 +72,7 @@ utf32_utf8_loop:
 	CMP  $8, R1
 	BLT  utf32_utf8_done
 	VLD1 (R0), [V0.S4, V1.S4]
+
 	// non-ASCII when any word >> 7 is non-zero
 	VUSHR $7, V0.S4, V2.S4
 	VUSHR $7, V1.S4, V3.S4
@@ -107,6 +110,7 @@ utf32_utf16le_loop:
 	CMP  $8, R1
 	BLT  utf32_utf16le_done
 	VLD1 (R0), [V0.S4, V1.S4]
+
 	// stop before supplementary / too-large words
 	VUSHR $16, V0.S4, V2.S4
 	VUSHR $16, V1.S4, V3.S4
@@ -115,6 +119,7 @@ utf32_utf16le_loop:
 	VMOV  V2.D[1], R6
 	ORR   R6, R5, R5
 	CBNZ  R5, utf32_utf16le_done
+
 	// pack low 16 bits; reject surrogate BMP words
 	VUZP1 V1.H8, V0.H8, V4.H8
 	VAND  V6.B16, V4.B16, V5.B16
@@ -146,30 +151,30 @@ TEXT ·convertUTF32ToUTF16BEBlocksNEON(SB), NOSPLIT|NOFRAME, $0-56
 	VDUP R4, V7.H8
 
 utf32_utf16be_loop:
-	CMP  $8, R1
-	BLT  utf32_utf16be_done
-	VLD1 (R0), [V0.S4, V1.S4]
-	VUSHR $16, V0.S4, V2.S4
-	VUSHR $16, V1.S4, V3.S4
-	VORR  V3.B16, V2.B16, V2.B16
-	VMOV  V2.D[0], R5
-	VMOV  V2.D[1], R6
-	ORR   R6, R5, R5
-	CBNZ  R5, utf32_utf16be_done
-	VUZP1 V1.H8, V0.H8, V4.H8
-	VAND  V6.B16, V4.B16, V5.B16
-	VCMEQ V7.H8, V5.H8, V5.H8
-	VMOV  V5.D[0], R5
-	VMOV  V5.D[1], R6
-	ORR   R6, R5, R5
-	CBNZ  R5, utf32_utf16be_done
+	CMP    $8, R1
+	BLT    utf32_utf16be_done
+	VLD1   (R0), [V0.S4, V1.S4]
+	VUSHR  $16, V0.S4, V2.S4
+	VUSHR  $16, V1.S4, V3.S4
+	VORR   V3.B16, V2.B16, V2.B16
+	VMOV   V2.D[0], R5
+	VMOV   V2.D[1], R6
+	ORR    R6, R5, R5
+	CBNZ   R5, utf32_utf16be_done
+	VUZP1  V1.H8, V0.H8, V4.H8
+	VAND   V6.B16, V4.B16, V5.B16
+	VCMEQ  V7.H8, V5.H8, V5.H8
+	VMOV   V5.D[0], R5
+	VMOV   V5.D[1], R6
+	ORR    R6, R5, R5
+	CBNZ   R5, utf32_utf16be_done
 	VREV16 V4.B16, V4.B16
-	VST1  [V4.H8], (R2)
-	ADD   $16, R2
-	ADD   $32, R0
-	ADD   $8, R3
-	SUB   $8, R1
-	B     utf32_utf16be_loop
+	VST1   [V4.H8], (R2)
+	ADD    $16, R2
+	ADD    $32, R0
+	ADD    $8, R3
+	SUB    $8, R1
+	B      utf32_utf16be_loop
 
 utf32_utf16be_done:
 	MOVD R3, consumed+48(FP)
@@ -188,8 +193,9 @@ TEXT ·utf8LengthFromUTF32BlocksNEON(SB), NOSPLIT|NOFRAME, $0-32
 	VDUP R3, V5.S4
 
 utf8_len_loop:
-	CBZ  R1, utf8_len_done
+	CBZ    R1, utf8_len_done
 	VLD1.P 16(R0), [V0.S4]
+
 	// 1 per lane, plus one each for >0x7f / >0x7ff / >0xffff
 	VUSHR $7, V0.S4, V1.S4
 	VCMEQ V7.S4, V1.S4, V1.S4
@@ -231,8 +237,9 @@ TEXT ·utf16LengthFromUTF32BlocksNEON(SB), NOSPLIT|NOFRAME, $0-32
 	VDUP R3, V5.S4
 
 utf16_len_loop:
-	CBZ  R1, utf16_len_done
+	CBZ    R1, utf16_len_done
 	VLD1.P 16(R0), [V0.S4]
+
 	// 4 + number of words > 0xffff
 	VUSHR $16, V0.S4, V1.S4
 	VCMEQ V7.S4, V1.S4, V1.S4

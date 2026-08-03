@@ -41,25 +41,26 @@ TEXT ·utf16LEToLatin1BlocksWestmere(SB), NOSPLIT|NOFRAME, $0-56
 	XORQ AX, AX
 
 loop_utf16LEToLatin1BlocksWestmere:
-	CMPQ CX, $8
-	JB done_utf16LEToLatin1BlocksWestmere
+	CMPQ  CX, $8
+	JB    done_utf16LEToLatin1BlocksWestmere
 	MOVOU (SI), X0
+
 	// Isolate high bytes into low word lanes, then require every word == 0.
 	// (PSRLW+PMOVMSKB alone only sees the MSB of each high byte.)
-	MOVOU X0, X1
-	PSRLW $8, X1
-	PXOR X2, X2
-	PCMPEQW X2, X1
+	MOVOU    X0, X1
+	PSRLW    $8, X1
+	PXOR     X2, X2
+	PCMPEQW  X2, X1
 	PMOVMSKB X1, DX
-	CMPL DX, $0xffff
-	JNE done_utf16LEToLatin1BlocksWestmere
+	CMPL     DX, $0xffff
+	JNE      done_utf16LEToLatin1BlocksWestmere
 	PACKUSWB X0, X0
-	MOVQ X0, (DI)
-	ADDQ $16, SI
-	ADDQ $8, DI
-	ADDQ $8, AX
-	SUBQ $8, CX
-	JMP loop_utf16LEToLatin1BlocksWestmere
+	MOVQ     X0, (DI)
+	ADDQ     $16, SI
+	ADDQ     $8, DI
+	ADDQ     $8, AX
+	SUBQ     $8, CX
+	JMP      loop_utf16LEToLatin1BlocksWestmere
 
 done_utf16LEToLatin1BlocksWestmere:
 	MOVQ AX, consumed+48(FP)
@@ -67,31 +68,31 @@ done_utf16LEToLatin1BlocksWestmere:
 
 // func utf16BEToLatin1BlocksWestmere(input []uint16, dst []byte) (consumed int)
 TEXT ·utf16BEToLatin1BlocksWestmere(SB), NOSPLIT|NOFRAME, $0-56
-	MOVQ input_base+0(FP), SI
-	MOVQ input_len+8(FP), CX
-	MOVQ dst_base+24(FP), DI
-	XORQ AX, AX
+	MOVQ  input_base+0(FP), SI
+	MOVQ  input_len+8(FP), CX
+	MOVQ  dst_base+24(FP), DI
+	XORQ  AX, AX
 	MOVOU ·utf16Latin1ByteSwapMask<>(SB), X7
 
 loop_utf16BEToLatin1BlocksWestmere:
-	CMPQ CX, $8
-	JB done_utf16BEToLatin1BlocksWestmere
-	MOVOU (SI), X0
-	PSHUFB X7, X0
-	MOVOU X0, X1
-	PSRLW $8, X1
-	PXOR X2, X2
-	PCMPEQW X2, X1
+	CMPQ     CX, $8
+	JB       done_utf16BEToLatin1BlocksWestmere
+	MOVOU    (SI), X0
+	PSHUFB   X7, X0
+	MOVOU    X0, X1
+	PSRLW    $8, X1
+	PXOR     X2, X2
+	PCMPEQW  X2, X1
 	PMOVMSKB X1, DX
-	CMPL DX, $0xffff
-	JNE done_utf16BEToLatin1BlocksWestmere
+	CMPL     DX, $0xffff
+	JNE      done_utf16BEToLatin1BlocksWestmere
 	PACKUSWB X0, X0
-	MOVQ X0, (DI)
-	ADDQ $16, SI
-	ADDQ $8, DI
-	ADDQ $8, AX
-	SUBQ $8, CX
-	JMP loop_utf16BEToLatin1BlocksWestmere
+	MOVQ     X0, (DI)
+	ADDQ     $16, SI
+	ADDQ     $8, DI
+	ADDQ     $8, AX
+	SUBQ     $8, CX
+	JMP      loop_utf16BEToLatin1BlocksWestmere
 
 done_utf16BEToLatin1BlocksWestmere:
 	MOVQ AX, consumed+48(FP)
@@ -106,24 +107,25 @@ TEXT ·utf16LEToLatin1BlocksHaswell(SB), NOSPLIT|NOFRAME, $0-56
 	XORQ AX, AX
 
 loop_utf16LEToLatin1BlocksHaswell:
-	CMPQ CX, $16
-	JB done_utf16LEToLatin1BlocksHaswell
+	CMPQ    CX, $16
+	JB      done_utf16LEToLatin1BlocksHaswell
 	VMOVDQU (SI), Y0
+
 	// Isolate high bytes; require every word == 0 (VPMOVMSKB-of-shift is MSB-only).
-	VPSRLW $8, Y0, Y1
-	VPXOR Y2, Y2, Y2
-	VPCMPEQW Y2, Y1, Y1
-	VPMOVMSKB Y1, DX
-	CMPL DX, $0xffffffff
-	JNE done_utf16LEToLatin1BlocksHaswell
+	VPSRLW       $8, Y0, Y1
+	VPXOR        Y2, Y2, Y2
+	VPCMPEQW     Y2, Y1, Y1
+	VPMOVMSKB    Y1, DX
+	CMPL         DX, $0xffffffff
+	JNE          done_utf16LEToLatin1BlocksHaswell
 	VEXTRACTI128 $1, Y0, X1
-	VPACKUSWB X1, X0, X0
-	VMOVDQU X0, (DI)
-	ADDQ $32, SI
-	ADDQ $16, DI
-	ADDQ $16, AX
-	SUBQ $16, CX
-	JMP loop_utf16LEToLatin1BlocksHaswell
+	VPACKUSWB    X1, X0, X0
+	VMOVDQU      X0, (DI)
+	ADDQ         $32, SI
+	ADDQ         $16, DI
+	ADDQ         $16, AX
+	SUBQ         $16, CX
+	JMP          loop_utf16LEToLatin1BlocksHaswell
 
 done_utf16LEToLatin1BlocksHaswell:
 	VZEROUPPER
@@ -132,31 +134,31 @@ done_utf16LEToLatin1BlocksHaswell:
 
 // func utf16BEToLatin1BlocksHaswell(input []uint16, dst []byte) (consumed int)
 TEXT ·utf16BEToLatin1BlocksHaswell(SB), NOSPLIT|NOFRAME, $0-56
-	MOVQ input_base+0(FP), SI
-	MOVQ input_len+8(FP), CX
-	MOVQ dst_base+24(FP), DI
-	XORQ AX, AX
+	MOVQ    input_base+0(FP), SI
+	MOVQ    input_len+8(FP), CX
+	MOVQ    dst_base+24(FP), DI
+	XORQ    AX, AX
 	VMOVDQU ·utf16Latin1ByteSwapMask<>(SB), Y7
 
 loop_utf16BEToLatin1BlocksHaswell:
-	CMPQ CX, $16
-	JB done_utf16BEToLatin1BlocksHaswell
-	VMOVDQU (SI), Y0
-	VPSHUFB Y7, Y0, Y0
-	VPSRLW $8, Y0, Y1
-	VPXOR Y2, Y2, Y2
-	VPCMPEQW Y2, Y1, Y1
-	VPMOVMSKB Y1, DX
-	CMPL DX, $0xffffffff
-	JNE done_utf16BEToLatin1BlocksHaswell
+	CMPQ         CX, $16
+	JB           done_utf16BEToLatin1BlocksHaswell
+	VMOVDQU      (SI), Y0
+	VPSHUFB      Y7, Y0, Y0
+	VPSRLW       $8, Y0, Y1
+	VPXOR        Y2, Y2, Y2
+	VPCMPEQW     Y2, Y1, Y1
+	VPMOVMSKB    Y1, DX
+	CMPL         DX, $0xffffffff
+	JNE          done_utf16BEToLatin1BlocksHaswell
 	VEXTRACTI128 $1, Y0, X1
-	VPACKUSWB X1, X0, X0
-	VMOVDQU X0, (DI)
-	ADDQ $32, SI
-	ADDQ $16, DI
-	ADDQ $16, AX
-	SUBQ $16, CX
-	JMP loop_utf16BEToLatin1BlocksHaswell
+	VPACKUSWB    X1, X0, X0
+	VMOVDQU      X0, (DI)
+	ADDQ         $32, SI
+	ADDQ         $16, DI
+	ADDQ         $16, AX
+	SUBQ         $16, CX
+	JMP          loop_utf16BEToLatin1BlocksHaswell
 
 done_utf16BEToLatin1BlocksHaswell:
 	VZEROUPPER
