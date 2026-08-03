@@ -33,6 +33,8 @@ jobs:
       GOEXPERIMENT: ${{ matrix.goexperiment || '' }}
     steps:
       - uses: actions/checkout@v5
+        with:
+          fetch-depth: 2 # completion_build.go:307 runs `git rev-parse HEAD^`
 
       - uses: actions/setup-go@v6
         with:
