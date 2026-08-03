@@ -1921,6 +1921,11 @@ func TestCountUTF8NEONScalarParity(t *testing.T) {
 	}
 }
 
+// TestCountUTF8NEONAllByteClasses drives every byte value through the real
+// kernel, locking the lowering chosen because
+// Go 1.26's Plan 9 arm64 assembler has VCMEQ but no signed integer
+// VCMGT mnemonic: (byte >> 6) == 2 is the complement of int8(byte) > -65, so
+// subtracting its population yields upstream's non-continuation count.
 func TestCountUTF8NEONAllByteClasses(t *testing.T) {
 	classes := make([]byte, 256)
 	for i := range classes {
@@ -1935,20 +1940,6 @@ func TestCountUTF8NEONAllByteClasses(t *testing.T) {
 	}
 	for value := 0; value <= 0xff; value++ {
 		checkCountUTF8NEON(t, bytes.Repeat([]byte{byte(value)}, 129))
-	}
-}
-
-// TestCountUTF8NEONByteClassLoweringMatchesSignedGT locks the exact lowering
-// used because Go 1.26's Plan 9 arm64 assembler has VCMEQ but no signed integer
-// VCMGT mnemonic: (byte >> 6) == 2 is the complement of int8(byte) > -65, so
-// subtracting its population yields upstream's non-continuation count.
-func TestCountUTF8NEONByteClassLoweringMatchesSignedGT(t *testing.T) {
-	for value := 0; value <= 0xff; value++ {
-		continuationByNEONLowering := byte(value)>>6 == 2
-		continuationByPinnedComparison := !(int8(byte(value)) > -65)
-		if continuationByNEONLowering != continuationByPinnedComparison {
-			t.Fatalf("byte %#02x lowering continuation = %t, pinned comparison = %t", value, continuationByNEONLowering, continuationByPinnedComparison)
-		}
 	}
 }
 
@@ -2288,35 +2279,6 @@ func TestUTF8LengthNEONAllByteValues(t *testing.T) {
 	}
 	for value := 0; value <= 0xff; value++ {
 		checkUTF8LengthNEON(t, bytes.Repeat([]byte{byte(value)}, 257))
-	}
-}
-
-// TestUTF16LengthFromUTF8NEONByteClassLowering locks the exact all-byte
-// equivalence used by the Plan 9 NEON kernel: continuation bytes are
-// (byte>>6)==2, and four-byte leads are (byte>>4)==15.
-func TestUTF16LengthFromUTF8NEONByteClassLowering(t *testing.T) {
-	for value := 0; value <= 0xff; value++ {
-		input := byte(value)
-		nonContinuation := input>>6 != 2
-		pinnedNonContinuation := int8(input) > -65
-		if nonContinuation != pinnedNonContinuation {
-			t.Errorf("byte %#02x non-continuation lowering = %t, pinned = %t", value, nonContinuation, pinnedNonContinuation)
-		}
-		fourByteLead := input>>4 == 15
-		pinnedFourByteLead := input >= 0xf0
-		if fourByteLead != pinnedFourByteLead {
-			t.Errorf("byte %#02x four-byte lowering = %t, pinned = %t", value, fourByteLead, pinnedFourByteLead)
-		}
-		got := 0
-		if nonContinuation {
-			got++
-		}
-		if fourByteLead {
-			got++
-		}
-		if want := utf16LengthFromUTF8Scalar([]byte{input}); got != want {
-			t.Errorf("byte %#02x lowered contribution = %d, scalar = %d", value, got, want)
-		}
 	}
 }
 

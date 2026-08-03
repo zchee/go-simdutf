@@ -17,7 +17,10 @@ package simdutf
 import (
 	"bytes"
 	"encoding/base64"
+	"reflect"
+	"runtime"
 	"slices"
+	"strings"
 	"testing"
 )
 
@@ -1177,18 +1180,58 @@ func FuzzBase64ToBinaryDetailsUTF16(f *testing.F) {
 // scalar-differential target" rows for Base64Ignorable and
 // Base64IgnorableUTF16. Both are single-value predicates with no accelerated
 // variant (base64.go:94, base64.go:99), delegating straight to isIgnorableByte
-// and isIgnorableUTF16 (base64_scalar.go:63, base64_scalar.go:75). Their domain
-// is finite, so fuzzing is the wrong instrument: every byte value and every
-// interesting code unit is enumerated against the scalar predicate instead. The
-// absent fuzz target is deliberate, not an omission.
+// and isIgnorableUTF16 (base64_scalar.go:63, base64_scalar.go:75), so a
+// scalar differential would only compare the delegation with itself. Their
+// domain is finite, so fuzzing is the wrong instrument: every byte value and
+// every interesting code unit is enumerated against a spec-derived oracle —
+// WHATWG forgiving-base64 whitespace and the upstream alphabet per option —
+// independent of the production value tables. The absent fuzz target is
+// deliberate, not an omission.
 func TestBase64IgnorableExhaustive(t *testing.T) {
+	const (
+		base64Alphabet   = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"
+		base64Whitespace = " \t\n\f\r"
+	)
+	modes := map[Base64Options]struct {
+		alphabetExtra string
+		acceptGarbage bool
+	}{
+		Base64Default:                   {alphabetExtra: "+/"},
+		Base64URL:                       {alphabetExtra: "-_"},
+		Base64DefaultNoPadding:          {alphabetExtra: "+/"},
+		Base64URLWithPadding:            {alphabetExtra: "-_"},
+		Base64DefaultAcceptGarbage:      {alphabetExtra: "+/", acceptGarbage: true},
+		Base64URLAcceptGarbage:          {alphabetExtra: "-_", acceptGarbage: true},
+		Base64DefaultOrURL:              {alphabetExtra: "+/-_"},
+		Base64DefaultOrURLAcceptGarbage: {alphabetExtra: "+/-_", acceptGarbage: true},
+	}
+	wantIgnorable := func(t *testing.T, unit uint16, options Base64Options) bool {
+		t.Helper()
+		mode, known := modes[options]
+		if !known {
+			t.Fatalf("no spec-derived expectation for %s", Base64OptionsString(options))
+		}
+		if unit > 0xff {
+			// Units outside the eight-byte range can never be alphabet or
+			// whitespace characters.
+			return mode.acceptGarbage
+		}
+		c := byte(unit)
+		switch {
+		case strings.IndexByte(base64Whitespace, c) >= 0:
+			return true
+		case strings.IndexByte(base64Alphabet, c) >= 0 || strings.IndexByte(mode.alphabetExtra, c) >= 0:
+			return false
+		default:
+			return mode.acceptGarbage
+		}
+	}
 	t.Run("byte", func(t *testing.T) {
 		for value := range 256 {
 			c := byte(value)
 			for _, options := range base64FuzzOptions {
-				got, want := Base64Ignorable(c, options), isIgnorableByte(c, options)
-				if got != want {
-					t.Fatalf("Base64Ignorable(%#02x, %s) = %v, scalar = %v",
+				if got, want := Base64Ignorable(c, options), wantIgnorable(t, uint16(c), options); got != want {
+					t.Fatalf("Base64Ignorable(%#02x, %s) = %v, spec = %v",
 						c, Base64OptionsString(options), got, want)
 				}
 			}
@@ -1208,9 +1251,8 @@ func TestBase64IgnorableExhaustive(t *testing.T) {
 		)
 		for _, unit := range units {
 			for _, options := range base64FuzzOptions {
-				got, want := Base64IgnorableUTF16(unit, options), isIgnorableUTF16(unit, options)
-				if got != want {
-					t.Fatalf("Base64IgnorableUTF16(%#04x, %s) = %v, scalar = %v",
+				if got, want := Base64IgnorableUTF16(unit, options), wantIgnorable(t, unit, options); got != want {
+					t.Fatalf("Base64IgnorableUTF16(%#04x, %s) = %v, spec = %v",
 						unit, Base64OptionsString(options), got, want)
 				}
 			}
@@ -1230,8 +1272,10 @@ func TestBase64IgnorableExhaustive(t *testing.T) {
 // functions themselves, so a rename breaks the build instead of silently
 // invalidating the claim.
 func TestPlannedFuzzCoverageIsDischarged(t *testing.T) {
-	// Compile-time existence check for every artifact named in the table.
-	_ = []func(*testing.F){
+	// Referencing the artifact functions makes a rename a compile error, and
+	// their runtime names catch a stale target string left in the table.
+	discharged := make(map[string]bool)
+	for _, artifact := range []any{
 		FuzzFind,
 		FuzzFindUTF16,
 		FuzzDetectEncodings,
@@ -1241,8 +1285,11 @@ func TestPlannedFuzzCoverageIsDischarged(t *testing.T) {
 		FuzzBinaryLengthFromBase64UTF16,
 		FuzzBase64ToBinaryDetails,
 		FuzzBase64ToBinaryDetailsUTF16,
+		TestBase64IgnorableExhaustive,
+	} {
+		name := runtime.FuncForPC(reflect.ValueOf(artifact).Pointer()).Name()
+		discharged[name[strings.LastIndexByte(name, '.')+1:]] = true
 	}
-	_ = []func(*testing.T){TestBase64IgnorableExhaustive}
 
 	const (
 		// kernelDifferenced: accelerated variants are differenced against the
@@ -1277,12 +1324,9 @@ func TestPlannedFuzzCoverageIsDischarged(t *testing.T) {
 		"Base64Ignorable":             {"TestBase64IgnorableExhaustive", noAcceleratedVariant},
 		"Base64IgnorableUTF16":        {"TestBase64IgnorableExhaustive", noAcceleratedVariant},
 	}
-	if len(tests) != 13 {
-		t.Fatalf("manifest row table has %d rows, want 13", len(tests))
-	}
 	for row, test := range tests {
-		if test.target == "" || test.coverage == "" {
-			t.Errorf("manifest row %q has no discharging artifact", row)
+		if !discharged[test.target] {
+			t.Errorf("manifest row %q names %q, which is not a live discharging artifact", row, test.target)
 		}
 	}
 
