@@ -2912,3 +2912,26 @@ func init() {
 		},
 	})
 }
+
+// Hand-authored Go-only direct Base64 decode differential fuzz registration
+// for the tagged archsimd adaptations pinned to
+// simdutf/simdutf@611becc2a08c27a4edc77d9a45ff74c97130129b:
+// src/haswell/avx2_base64.cpp and src/generic/base64lengths.h. The base64ToBinary and
+// base64ToBinaryUTF16 tier variants are deliberately not registered: they are
+// pure …Details*(…).Result() delegations over these kernels.
+func init() {
+	registerBase64DetailsFuzzVariant(base64DetailsFuzzVariant{
+		name: "archsimd",
+		variant: variant[func([]byte, []byte, Base64Options, LastChunkHandlingOptions) FullResult]{
+			value: base64ToBinaryDetailsArchsimd, kind: implementationArchsimd,
+			required: cpuAVX2, available: true,
+		},
+	})
+	registerBase64DetailsUTF16FuzzVariant(base64DetailsUTF16FuzzVariant{
+		name: "archsimd",
+		variant: variant[func([]uint16, []byte, Base64Options, LastChunkHandlingOptions) FullResult]{
+			value: base64ToBinaryDetailsUTF16Archsimd, kind: implementationArchsimd,
+			required: cpuAVX2, available: true,
+		},
+	})
+}

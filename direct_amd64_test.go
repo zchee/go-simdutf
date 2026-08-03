@@ -3729,3 +3729,42 @@ func init() {
 		},
 	})
 }
+
+// Hand-authored Go-only direct Base64 decode differential fuzz registration
+// for the Westmere and Haswell ports pinned to
+// simdutf/simdutf@611becc2a08c27a4edc77d9a45ff74c97130129b:
+// src/westmere/sse_base64.cpp, src/haswell/avx2_base64.cpp and the
+// src/westmere/implementation.cpp and src/haswell/implementation.cpp Base64
+// decode entry points. The base64ToBinary and base64ToBinaryUTF16 tier
+// variants are deliberately not registered: they are pure
+// …Details*(…).Result() delegations over these kernels.
+func init() {
+	registerBase64DetailsFuzzVariant(base64DetailsFuzzVariant{
+		name: "westmere",
+		variant: variant[func([]byte, []byte, Base64Options, LastChunkHandlingOptions) FullResult]{
+			value: base64ToBinaryDetailsWestmere, kind: implementationWestmere,
+			required: cpuSSSE3, available: true,
+		},
+	})
+	registerBase64DetailsFuzzVariant(base64DetailsFuzzVariant{
+		name: "haswell",
+		variant: variant[func([]byte, []byte, Base64Options, LastChunkHandlingOptions) FullResult]{
+			value: base64ToBinaryDetailsHaswell, kind: implementationHaswell,
+			required: cpuAVX2, available: true,
+		},
+	})
+	registerBase64DetailsUTF16FuzzVariant(base64DetailsUTF16FuzzVariant{
+		name: "westmere",
+		variant: variant[func([]uint16, []byte, Base64Options, LastChunkHandlingOptions) FullResult]{
+			value: base64ToBinaryDetailsUTF16Westmere, kind: implementationWestmere,
+			required: cpuSSSE3, available: true,
+		},
+	})
+	registerBase64DetailsUTF16FuzzVariant(base64DetailsUTF16FuzzVariant{
+		name: "haswell",
+		variant: variant[func([]uint16, []byte, Base64Options, LastChunkHandlingOptions) FullResult]{
+			value: base64ToBinaryDetailsUTF16Haswell, kind: implementationHaswell,
+			required: cpuAVX2, available: true,
+		},
+	})
+}

@@ -220,6 +220,7 @@ func TestSourcesRecordPinnedProvenance(t *testing.T) {
 			"assembly port",
 			"Hand-authored Go-only direct Find and DetectEncodings differential",
 			"Hand-authored Go-only direct Base64 encode differential fuzz registration",
+			"Hand-authored Go-only direct Base64 decode differential fuzz registration",
 		},
 		"page_guard_arm64_test.go": {
 			upstreamSHA,
@@ -276,6 +277,7 @@ func TestSourcesRecordPinnedProvenance(t *testing.T) {
 			"registers test functions only and adds no product behavior",
 			"Hand-authored Go-only direct Find and DetectEncodings differential",
 			"Hand-authored Go-only direct Base64 encode differential fuzz registration",
+			"Hand-authored Go-only direct Base64 decode differential fuzz registration",
 		},
 		"page_guard_amd64_test.go": {
 			upstreamSHA,
@@ -325,6 +327,7 @@ func TestSourcesRecordPinnedProvenance(t *testing.T) {
 			"registers test functions only and adds no product behavior",
 			"Hand-authored Go-only direct Find and DetectEncodings differential",
 			"Hand-authored Go-only direct Base64 encode differential fuzz registration",
+			"Hand-authored Go-only direct Base64 decode differential fuzz registration",
 		},
 		"page_guard_archsimd_amd64_test.go": {
 			upstreamSHA,
@@ -702,6 +705,14 @@ func TestSourcesRecordPinnedProvenance(t *testing.T) {
 			"straddle DefaultLineLength (76, options.go:20)",
 			"takes no Base64Options, so the corpus carries base64 text only",
 			"code units strictly above 0xff stay reachable",
+			"Hand-authored Go-only direct Base64 decode differential fuzz registry",
+			"decoder mode divergence is tail- and error-position-driven",
+			"Base64DefaultAcceptGarbage is kept in",
+			"reports the *input* offset on error",
+			"isEightByteUTF16 rejection branch",
+			"Dispatch-identity check, not kernel coverage",
+			"discharges the manifest's \"planned direct",
+			"a rename breaks the build instead of silently",
 		},
 	}
 	requireProvenance(t, expectations)
